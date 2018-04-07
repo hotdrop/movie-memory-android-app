@@ -78,8 +78,9 @@ dependencies {
     // data binding
     kapt 'com.android.databinding:compiler:3.1.0'
 
-    // log
+    // log, Date
     implementation 'com.jakewharton.timber:timber:4.6.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.5.0'
