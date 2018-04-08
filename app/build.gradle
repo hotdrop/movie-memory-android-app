@@ -75,6 +75,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
+    // json parser kotshi
+    implementation 'se.ansman.kotshi:api:0.3.0'
+    kapt 'se.ansman.kotshi:compiler:0.3.0'
+
     // data binding
     kapt 'com.android.databinding:compiler:3.1.0'
 
