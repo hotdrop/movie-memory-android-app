@@ -5,7 +5,7 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 data class MovieResponse(
-        // 一旦これで
+
         val page: Int,
 
         @Json(name = "start_date")

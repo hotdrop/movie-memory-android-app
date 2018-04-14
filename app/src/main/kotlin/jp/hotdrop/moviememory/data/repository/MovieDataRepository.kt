@@ -1,9 +1,9 @@
 package jp.hotdrop.moviememory.data.repository
 
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Single
 import jp.hotdrop.moviememory.data.remote.MovieApi
 import jp.hotdrop.moviememory.data.remote.mapper.toMovies
+import jp.hotdrop.moviememory.model.Movie
 import javax.inject.Inject
 
 class MovieDataRepository @Inject constructor(
@@ -11,6 +11,8 @@ class MovieDataRepository @Inject constructor(
 ): MovieRepository {
     //override val nowPlayingMovies: Flowable<List<Movie>> =
 
+    // DBに一度保存するパターン。これはあとで
+    /*
     override fun loadNowPlayingMovies(index: Int, offset: Int): Completable {
         return api.getNowPraying(index, offset)
                 .map { it.toMovies() }
@@ -20,5 +22,13 @@ class MovieDataRepository @Inject constructor(
                 }
                 .subscribeOn(Schedulers.io())
                 .toCompletable()
+    }*/
+
+    /**
+     * TODO MovieResponse直下のあたいは今完全に無視
+     */
+    override fun loadNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
+        return api.getNowPraying(index, offset)
+                .map { it.toMovies() }
     }
 }
