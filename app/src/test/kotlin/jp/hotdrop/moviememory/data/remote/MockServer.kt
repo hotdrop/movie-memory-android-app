@@ -20,8 +20,8 @@ class MockServer {
         ComingSoon
     }
     private val urlPatterns = mapOf(
-            Pair("/movie/now\\_playing\\?index=\\d+\\&offset=\\d+", UrlType.NowPlaying),
-            Pair("/movie/coming\\_soon\\?index=\\d+\\&offset=\\d+", UrlType.ComingSoon)
+            Pair("/movie/now_playing\\?index=\\d+\\&offset=\\d+", UrlType.NowPlaying),
+            Pair("/movie/coming_soon\\?index=\\d+\\&offset=\\d+", UrlType.ComingSoon)
     )
 
     fun getUrl(): HttpUrl = server.url("/")
@@ -42,8 +42,8 @@ class MockServer {
             }
 
             return when (urlType(request.path)) {
-                UrlType.NowPlaying -> MockResponse().setBody(readJson("nowplaying.json")).setResponseCode(200)
-                else -> MockResponse().setResponseCode(400)
+                UrlType.NowPlaying -> MockResponse().setBody(readJson("movies_now_playing.json")).setResponseCode(200)
+                UrlType.ComingSoon -> MockResponse().setBody(readJson("movies_coming_soon.json")).setResponseCode(200)
             }
         }
     })

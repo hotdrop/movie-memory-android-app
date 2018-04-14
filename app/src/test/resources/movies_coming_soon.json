@@ -1,0 +1,23 @@
+{
+  "page": 1,
+  "start_date": "2018-4-20",
+  "end_date": "2018-5-19",
+  "total_pages": 2,
+  "total_results": 10,
+  "results": [
+    {
+      "id": 1,
+      "title": "近日公開その1",
+      "overview": "概要です",
+      "posterPath": "",
+      "releaseDate": "2018-4-20"
+    },
+    {
+      "id": 2,
+      "title": "近日公開その2",
+      "overview": "2つ目の概要です",
+      "posterPath": "/thumbnail/test",
+      "releaseDate": "2018-5-10"
+    }
+  ]
+}

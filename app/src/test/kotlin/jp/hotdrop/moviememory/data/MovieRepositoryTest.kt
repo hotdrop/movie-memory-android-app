@@ -9,7 +9,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
- * sdk=23にしない場合はNetworkSecurityPoicyを自前で設定する必要がある。
+ * sdk=23にしない場合はNetworkSecurityPolicyを自前で実装する必要がある。
+ * それが面倒だったのでsdk=23で済ませる。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [23], manifest = Config.NONE)
@@ -17,21 +18,37 @@ class MovieRepositoryTest {
 
     @Test
     fun loadNowPlayingMoviesTest() {
-        val mockServer = MockServer()
-
-        // getUrlを実行するとHttpUrl.Builderが走ってしまうためその前にMockServerを起動する
-        mockServer.start()
-        val repository = MovieDataRepository(MockHttpClient(mockServer.getUrl()).movieApi())
-
-        // indexもoffsetも無視したテスト
-        repository.loadNowPlayingMovies(1, 0).test().run {
-            assertNoErrors()
-            val response = values().first()
-            println(" movie title ${response[0].title}")
-            assert(response[0].title == "映画その1")
-            assert(response[1].title == "映画その2")
-            assertComplete()
+        testOnMockServer { repository ->
+            repository.loadNowPlayingMovies(1, 0).test().run {
+                assertNoErrors()
+                assertValueAt(0, { movies ->
+                    movies[0].title == "映画その1" && movies[1].title == "映画その2"
+                })
+                assertComplete()
+            }
         }
-        mockServer.stop()
+    }
+
+    @Test
+    fun loadComingSoonMoviesTest() {
+        testOnMockServer { repository ->
+            repository.loadComingSoonMovies(1, 0).test().run {
+                assertNoErrors()
+                // これちゃんとMovieオブジェクト作った方がいいかも・・
+                assertValueAt(0, { movies ->
+                    movies[0].title == "近日公開その1" && movies[1].title == "近日公開その2"
+                })
+                assertComplete()
+            }
+        }
+    }
+
+    private fun testOnMockServer(test: (repo: MovieDataRepository) -> Unit) {
+        MockServer().run {
+            start()
+            val repository = MovieDataRepository(MockHttpClient(this.getUrl()).movieApi())
+            test(repository)
+            stop()
+        }
     }
 }
