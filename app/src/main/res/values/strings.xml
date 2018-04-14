@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="tab_name_now_playing">公開中</string>
+    <string name="tab_name_coming_soon">公開予定</string>
 </resources>
