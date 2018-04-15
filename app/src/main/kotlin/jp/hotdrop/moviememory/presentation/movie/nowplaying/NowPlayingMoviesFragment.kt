@@ -1,8 +1,8 @@
 package jp.hotdrop.moviememory.presentation.movie.nowplaying
 
-import android.support.v4.app.Fragment
+import jp.hotdrop.moviememory.presentation.BaseFragment
 
-class NowPlayingMoviesFragment: Fragment() {
+class NowPlayingMoviesFragment: BaseFragment() {
 
     companion object {
         fun newInstance() = NowPlayingMoviesFragment()

@@ -23,8 +23,15 @@ android {
         vectorDrawables.useSupportLibrary= true
     }
     buildTypes {
-        release {
+        debug {
+            debuggable true
             minifyEnabled false
+            buildConfigField "String", "API_ENDPOINT", '"https://localhost/api/v1"'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.presentation.movie
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -8,11 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
+import jp.hotdrop.moviememory.presentation.BaseFragment
 
-class MoviesFragment: Fragment() {
+class MoviesFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMoviesBinding
     private lateinit var viewPagerAdapter: MoviesViewPagerAdapter
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +39,10 @@ class MoviesFragment: Fragment() {
         viewPagerAdapter.setMovieTab()
 
         binding.moviesViewPager.adapter = viewPagerAdapter
+    }
+
+    companion object {
+        fun newInstance(): MoviesFragment = MoviesFragment()
     }
 
     private inner class MoviesViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
