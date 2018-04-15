@@ -48,18 +48,16 @@ class MockServer {
         }
     })
 
-    private fun urlType(url: String): UrlType {
-        return urlPatterns.filter { Regex(it.key).matches(url) }
+    private fun urlType(url: String): UrlType =
+            urlPatterns.filter { it.key.toRegex().matches(url) }
                 .map { it.value }
                 .first()
-    }
 
-    private fun readJson(jsonFileName: String): String {
-        val sb = StringBuilder()
-        val inputStream = javaClass.classLoader.getResourceAsStream(jsonFileName)
-        BufferedReader(InputStreamReader(inputStream)).use {
-            it.lines().forEach { sb.append(it) }
-        }
-        return sb.toString()
-    }
+    private fun readJson(jsonFileName: String) =
+            StringBuilder().apply {
+                val inputStream = javaClass.classLoader.getResourceAsStream(jsonFileName)
+                BufferedReader(InputStreamReader(inputStream)).use { br ->
+                    br.lines().forEach { this.append(br) }
+                }
+            }.toString()
 }

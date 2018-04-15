@@ -16,6 +16,7 @@ class MoviesFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // TODO 検索アイコン作る
         setHasOptionsMenu(true)
     }
 

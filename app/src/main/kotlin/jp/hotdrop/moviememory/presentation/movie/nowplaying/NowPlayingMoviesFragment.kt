@@ -6,7 +6,5 @@ class NowPlayingMoviesFragment: Fragment() {
 
     companion object {
         fun newInstance() = NowPlayingMoviesFragment()
-        // これはstrings.xmlから持ってくる。companionだと持ってこれないが・・
-        fun title() = "公開中"
     }
 }

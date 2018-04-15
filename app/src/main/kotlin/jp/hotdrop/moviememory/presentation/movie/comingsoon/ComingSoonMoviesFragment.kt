@@ -6,7 +6,5 @@ import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFrag
 class ComingSoonMoviesFragment: Fragment() {
     companion object {
         fun newInstance() = NowPlayingMoviesFragment()
-        // これはstrings.xmlから持ってくる。companionだと持ってこれないが・・
-        fun title() = "近日公開"
     }
 }
