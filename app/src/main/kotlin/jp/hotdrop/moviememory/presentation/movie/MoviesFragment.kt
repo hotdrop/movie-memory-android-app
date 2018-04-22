@@ -1,7 +1,5 @@
 package jp.hotdrop.moviememory.presentation.movie
 
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,17 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.presentation.BaseFragment
-import javax.inject.Inject
 
 class MoviesFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMoviesBinding
     private lateinit var viewPagerAdapter: MoviesViewPagerAdapter
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private  val moviesViewModel: MoviesViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
-    }
+//    @Inject
+//    lateinit var viewModelFactory: ViewModelProvider.Factory
+//    private  val moviesViewModel: MoviesViewModel by lazy {
+//        ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
+//    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
