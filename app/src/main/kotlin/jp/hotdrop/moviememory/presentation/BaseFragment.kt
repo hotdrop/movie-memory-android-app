@@ -11,4 +11,5 @@ abstract class BaseFragment: Fragment() {
     }
 
     fun getComponent(): FragmentComponent = fragmentComponent
+
 }

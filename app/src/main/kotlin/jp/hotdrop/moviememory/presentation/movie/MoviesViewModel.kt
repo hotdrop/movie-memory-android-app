@@ -9,5 +9,4 @@ class MoviesViewModel @Inject constructor(
         private val repository: MovieRepository
 ): ViewModel(), LifecycleObserver {
 
-
 }
