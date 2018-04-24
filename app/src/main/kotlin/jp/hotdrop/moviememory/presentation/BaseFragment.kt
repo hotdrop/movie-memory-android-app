@@ -1,8 +1,8 @@
 package jp.hotdrop.moviememory.presentation
 
 import android.support.v4.app.Fragment
-import jp.hotdrop.moviememory.di.FragmentComponent
-import jp.hotdrop.moviememory.di.FragmentModule
+import jp.hotdrop.moviememory.di.component.FragmentComponent
+import jp.hotdrop.moviememory.di.module.FragmentModule
 
 abstract class BaseFragment: Fragment() {
 

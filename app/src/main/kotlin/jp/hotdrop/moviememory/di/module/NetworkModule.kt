@@ -1,12 +1,9 @@
-package jp.hotdrop.moviememory.di
+package jp.hotdrop.moviememory.di.module
 
-import android.app.Application
-import android.content.Context
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import jp.hotdrop.moviememory.BuildConfig
-import jp.hotdrop.moviememory.data.remote.mapper.AppJsonAdapterFactory
+import jp.hotdrop.moviememory.data.remote.MovieApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -14,12 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-internal class AppModule(
-        private val appContext: Application
-) {
-    @Provides
-    @Singleton
-    fun provideContext(): Context = appContext
+class NetworkModule {
 
     @Provides
     @Singleton
@@ -32,10 +24,11 @@ internal class AppModule(
                 .client(okHttpClient)
                 .baseUrl(BuildConfig.API_ENDPOINT)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder()
-                        .add(AppJsonAdapterFactory.INSTANCE)
-                        // TODO DateTimeの解決をしないとダメかも
-                        .build()))
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideMovieApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
 }

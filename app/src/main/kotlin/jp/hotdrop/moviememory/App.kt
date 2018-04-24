@@ -2,22 +2,21 @@ package jp.hotdrop.moviememory
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
-import jp.hotdrop.moviememory.di.AppComponent
-import jp.hotdrop.moviememory.di.AppModule
-import jp.hotdrop.moviememory.di.DaggerAppComponent
+import jp.hotdrop.moviememory.di.component.AppComponent
+import jp.hotdrop.moviememory.di.component.DaggerAppComponent
+import jp.hotdrop.moviememory.di.module.AppModule
 
 class App: Application() {
 
-    private lateinit var mainComponent: AppComponent
+    private lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
-
-        mainComponent = DaggerAppComponent.builder()
+        appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
     }
 
-    fun getComponent(): AppComponent = mainComponent
+    fun getComponent(): AppComponent = appComponent
 }

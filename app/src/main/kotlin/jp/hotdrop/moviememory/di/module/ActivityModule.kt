@@ -1,13 +1,11 @@
-package jp.hotdrop.moviememory.di
+package jp.hotdrop.moviememory.di.module
 
 import android.support.v7.app.AppCompatActivity
 import dagger.Module
 import dagger.Provides
 
 @Module
-class ActivityModule constructor(
-        private var activity: AppCompatActivity
-) {
+class ActivityModule constructor(private var activity: AppCompatActivity) {
     @Provides
     fun provideActivity(): AppCompatActivity = activity
 }

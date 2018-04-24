@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.di
+package jp.hotdrop.moviememory.di.module
 
 import dagger.Module
 
