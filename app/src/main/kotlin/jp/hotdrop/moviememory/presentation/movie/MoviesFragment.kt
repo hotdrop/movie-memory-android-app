@@ -48,6 +48,7 @@ class MoviesFragment: BaseFragment() {
 
         binding.moviesViewPager.adapter = viewPagerAdapter
         binding.tabLayout.setupWithViewPager(binding.moviesViewPager)
+
     }
 
     companion object {

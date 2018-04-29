@@ -26,7 +26,7 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", "API_ENDPOINT", '"https://localhost/api/v1"'
+            buildConfigField "String", "API_ENDPOINT", '"https://localhost/api/v1/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {

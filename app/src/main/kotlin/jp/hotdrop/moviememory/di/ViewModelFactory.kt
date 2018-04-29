@@ -12,7 +12,7 @@ class ViewModelFactory @Inject constructor(
     override fun <T: ViewModel?> create(modelClass: Class<T>): T {
         var vmProvider: Provider<out ViewModel>? = creatorMap[modelClass]
         if (vmProvider == null) {
-            // filter使った方がいいのでは・・
+            // TODO あとで書き換える
             for((key, value) in creatorMap) {
                 if (modelClass.isAssignableFrom(key)) {
                     vmProvider = value
