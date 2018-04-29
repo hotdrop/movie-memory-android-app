@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class NowPlayingMoviesFragment: BaseFragment() {
         binding = FragmentNowPlayingMoviesBinding.inflate(inflater, container, false)
 
         // RecyclerViewの初期化
+        binding.nowplayingMoviesRecyclerView.layoutManager = GridLayoutManager(activity, 3)
         adapter = NowPlayingMoviesAdapter()
         binding.nowplayingMoviesRecyclerView.adapter = adapter
 
@@ -51,11 +53,6 @@ class NowPlayingMoviesFragment: BaseFragment() {
                 adapter.addAll(movies)
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.onRefresh()
     }
 
     companion object {
