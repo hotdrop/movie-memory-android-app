@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.data.repository
 
-import io.reactivex.Single
+import io.reactivex.Flowable
 import jp.hotdrop.moviememory.data.remote.MovieApi
 import jp.hotdrop.moviememory.data.remote.mapper.toComingSoonMovies
 import jp.hotdrop.moviememory.model.Movie
@@ -13,19 +13,14 @@ class MovieDataRepository @Inject constructor(
     /**
      * TODO MovieResponse直下の値は今完全に無視している
      */
-    override fun loadNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
+    override fun loadNowPlayingMovies(index: Int, offset: Int): Flowable<List<Movie>> {
 //        return api.getNowPraying(index, offset)
 //                .map { it.toNowPlayingMovies() }
-        val list = mutableListOf(
-                Movie(1, "テスト1", "", Movie.Status.NowPlaying),
-                Movie(2, "テスト2", "", Movie.Status.NowPlaying),
-                Movie(3, "テスト3", "", Movie.Status.NowPlaying),
-                Movie(4, "テスト4", "", Movie.Status.NowPlaying)
-        )
-        return Single.just(list)
+        val list = (1..10).map { Movie(it, "テスト$it", "概要", Movie.Status.NowPlaying) }
+        return Flowable.fromArray(list)
     }
 
-    override fun loadComingSoonMovies(index: Int, offset: Int): Single<List<Movie>> {
-        return api.getComingSoon(index, offset).map { it.toComingSoonMovies() }
-    }
+    override fun loadComingSoonMovies(index: Int, offset: Int): Flowable<List<Movie>> =
+            api.getComingSoon(index, offset)
+                .map { it.toComingSoonMovies() }
 }
