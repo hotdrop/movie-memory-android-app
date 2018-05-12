@@ -1,10 +1,13 @@
 package jp.hotdrop.moviememory.data.remote.response
 
 data class MovieResult(
-        // TODO もっと色々あるが一旦これで
         val id: Int,
         val title: String,
-        val overview: String,
-        val posterPath: String?,
-        val releaseDate: String
+        val overview: String?,
+        val imageUrl: String?,
+        val playingDate: String?,
+        val filmDirector: String?,
+        val url: String?,
+        val movieUrl: String?,
+        val createdAt: String
 )

@@ -5,6 +5,7 @@ import jp.hotdrop.moviememory.model.Movie
 
 interface MovieRepository {
     // TODO データはDBに一度保持し、そこから持ってくるようにする
-    fun loadNowPlayingMovies(index: Int = 0, offset: Int = 20): Flowable<List<Movie>>
+    // TODO hogeFlagはいずれ消す
+    fun loadNowPlayingMovies(index: Int = 0, offset: Int = 20, hogeFlagTest: Boolean = false): Flowable<List<Movie>>
     fun loadComingSoonMovies(index: Int = 0, offset: Int = 20): Flowable<List<Movie>>
 }

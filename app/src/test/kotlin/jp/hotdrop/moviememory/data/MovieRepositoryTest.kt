@@ -34,7 +34,6 @@ class MovieRepositoryTest {
         testOnMockServer { repository ->
             repository.loadComingSoonMovies(1, 0).test().run {
                 assertNoErrors()
-                // これちゃんとMovieオブジェクト作った方がいいかも・・
                 assertValueAt(0, { movies ->
                     movies[0].title == "近日公開その1" && movies[1].title == "近日公開その2"
                 })
@@ -47,8 +46,11 @@ class MovieRepositoryTest {
         MockServer().run {
             start()
             val repository = MovieDataRepository(MockHttpClient(this.getUrl()).movieApi())
-            test(repository)
-            stop()
+            try {
+                test(repository)
+            } finally {
+                stop()
+            }
         }
     }
 }
