@@ -7,9 +7,10 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     AppModule::class,
+    ViewModelModule::class,
+    UseCaseModel::class,
     RepositoryModule::class,
-    NetworkModule::class,
-    ViewModelModule::class
+    NetworkModule::class
 ])
 interface AppComponent {
     fun plus(module: ActivityModule): ActivityComponent
