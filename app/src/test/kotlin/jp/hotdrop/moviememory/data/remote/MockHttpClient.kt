@@ -1,7 +1,6 @@
 package jp.hotdrop.moviememory.data.remote
 
 import com.squareup.moshi.Moshi
-import jp.hotdrop.moviememory.data.remote.mapper.AppJsonAdapterFactory
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

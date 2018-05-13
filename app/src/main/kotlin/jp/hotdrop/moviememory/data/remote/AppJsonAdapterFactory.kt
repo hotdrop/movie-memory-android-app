@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.data.remote.mapper
+package jp.hotdrop.moviememory.data.remote
 
 import com.squareup.moshi.JsonAdapter
 import se.ansman.kotshi.KotshiJsonAdapterFactory

@@ -19,7 +19,7 @@ class MovieRepositoryTest {
     @Test
     fun loadNowPlayingMoviesTest() {
         testOnMockServer { repository ->
-            repository.loadNowPlayingMovies(1, 0).test().run {
+            repository.nowPlayingMovies(1, 0).test().run {
                 assertNoErrors()
                 assertValueAt(0, { movies ->
                     movies[0].title == "映画その1" && movies[1].title == "映画その2"

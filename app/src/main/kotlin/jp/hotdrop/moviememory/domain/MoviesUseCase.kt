@@ -10,6 +10,6 @@ class MoviesUseCase @Inject constructor(
 ) {
 
     fun nowPlayingMovies(): Flowable<List<Movie>> {
-        return repository.loadNowPlayingMovies(0, 20, true)
+        return repository.nowPlayingMovies(0, 20, true)
     }
 }
