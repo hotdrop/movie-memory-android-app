@@ -53,11 +53,12 @@ class MockServer {
                 .map { it.value }
                 .first()
 
-    private fun readJson(jsonFileName: String) =
-            StringBuilder().apply {
-                val inputStream = javaClass.classLoader.getResourceAsStream(jsonFileName)
-                BufferedReader(InputStreamReader(inputStream)).use { br ->
-                    br.lines().forEach { this.append(br) }
-                }
-            }.toString()
+    private fun readJson(jsonFileName: String): String {
+        val sb = StringBuilder()
+        val inputStream = javaClass.classLoader.getResourceAsStream(jsonFileName)
+        BufferedReader(InputStreamReader(inputStream)).use {
+            it.lines().forEach { sb.append(it) }
+        }
+        return sb.toString()
+    }
 }

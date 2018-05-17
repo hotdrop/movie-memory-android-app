@@ -1,31 +1,24 @@
-{
-  "page": 1,
-  "start_date": "2018-3-1",
-  "end_date": "2018-4-10",
-  "total_pages": 2,
-  "total_results": 10,
-  "results": [
-    {
-      "id": 1,
-      "title": "映画その1",
-      "overview": "概要です",
-      "imageUrl": "",
-      "playingDate": "2018-3-20",
-      "filmDirector": "ディレクター",
-      "url": "test",
-      "movieUrl": "movieUrl",
-      "createdAt": "2018-4-20 14:32:12"
-    },
-    {
-      "id": 2,
-      "title": "映画その2",
-      "overview": "2つ目の概要です",
-      "imageUrl": "/thumbnail/test",
-      "playingDate": "2018-4-1",
-      "filmDirector": "ディレクター",
-      "url": "test",
-      "movieUrl": "movieUrl",
-      "createdAt": "2018-4-20 14:32:12"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "title": "映画その1",
+    "overview": "概要です",
+    "imageUrl": "",
+    "playingDate": "2018-03-20",
+    "filmDirector": "ディレクター",
+    "url": "test",
+    "movieUrl": "movieUrl",
+    "createdAt": "2018-04-20T14:32:12"
+  },
+  {
+    "id": 2,
+    "title": "映画その2",
+    "overview": "2つ目の概要です",
+    "imageUrl": "/thumbnail/test",
+    "playingDate": "2018-04-01",
+    "filmDirector": "ディレクター",
+    "url": "test",
+    "movieUrl": "movieUrl",
+    "createdAt": "2018-04-20T14:32:12"
+  }
+]

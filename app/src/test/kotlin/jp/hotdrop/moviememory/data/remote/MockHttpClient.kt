@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.data.remote
 
-import com.squareup.moshi.Moshi
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,10 +16,7 @@ class MockHttpClient(
                 .client(httpClient)
                 .baseUrl(url)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder()
-                        .add(AppJsonAdapterFactory.INSTANCE)
-                        // TODO DateTimeの解決をしないとダメかも
-                        .build()))
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
     }
 

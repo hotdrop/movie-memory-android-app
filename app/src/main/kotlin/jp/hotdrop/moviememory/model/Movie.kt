@@ -12,7 +12,7 @@ data class Movie(
         val filmDirector: String?,
         val url: String?,
         val movieUrl: String?,
-        val createAt: LocalDateTime,
+        val createAt: LocalDateTime?,
         val isSaw: Boolean,
         val sawDate: LocalDate?,
         val memo: String?,
