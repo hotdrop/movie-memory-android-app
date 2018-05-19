@@ -9,20 +9,17 @@ import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 
 @Dao
-abstract class MovieDao {
+interface MovieDao {
 
     @Query("SELECT * FROM movie WHERE playingDate BETWEEN :startAt AND :endAt")
-    abstract fun getMovies(startAt: Long, endAt: Long): Flowable<List<MovieEntity>>
+    fun getMovies(startAt: Long, endAt: Long): Flowable<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(movies: List<MovieEntity>)
+    fun insert(movies: List<MovieEntity>)
 
     @Query("SELECT * FROM movie_local_info WHERE id = :id")
-    abstract fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity
+    fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertLocalMovieInfo(entities: List<LocalMovieInfoEntity>)
-
-
-
+    fun insertLocalMovieInfo(entities: LocalMovieInfoEntity)
 }

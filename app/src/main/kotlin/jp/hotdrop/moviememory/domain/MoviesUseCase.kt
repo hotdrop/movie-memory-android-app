@@ -10,10 +10,9 @@ class MoviesUseCase @Inject constructor(
 ) {
 
     /**
-     * ローカルからデータを取得する
-     * データがなければネットワークから取得する
+     * 今の所こいつがある意味はない
      */
-    fun nowPlayingMovies(): Flowable<List<Movie>> {
-        return Flowable.fromArray()
+    fun runNowPlayingMovies(): Flowable<List<Movie>> {
+        return repository.nowPlayingMovies
     }
 }

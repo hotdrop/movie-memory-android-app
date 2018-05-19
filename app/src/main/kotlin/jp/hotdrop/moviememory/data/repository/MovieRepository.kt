@@ -6,10 +6,12 @@ import io.reactivex.Flowable
 import jp.hotdrop.moviememory.model.Movie
 
 interface MovieRepository {
+
+    val nowPlayingMovies: Flowable<List<Movie>>
     @CheckResult
     fun loadNowPlayingMovies(index: Int = 0, offset: Int = 20): Completable
 
-    fun nowPlayingMovies(index: Int = 0, offset: Int = 20, hogeFlagTest: Boolean = false): Flowable<List<Movie>>
+    //fun nowPlayingMovies(index: Int = 0, offset: Int = 20, hogeFlagTest: Boolean = false): Flowable<List<Movie>>
 
     //fun loadComingSoonMovies(index: Int = 0, offset: Int = 20): Flowable<List<Movie>>
 }

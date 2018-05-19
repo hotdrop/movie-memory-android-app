@@ -12,6 +12,6 @@ class NowPlayingMoviesViewModel @Inject constructor(
 ): ViewModel() {
 
     val movies: LiveData<List<Movie>> by lazy {
-        LiveDataReactiveStreams.fromPublisher(useCase.nowPlayingMovies())
+        LiveDataReactiveStreams.fromPublisher(useCase.runNowPlayingMovies())
     }
 }
