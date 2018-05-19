@@ -9,9 +9,11 @@ class MoviesUseCase @Inject constructor(
         private val repository: MovieRepository
 ) {
 
+    /**
+     * ローカルからデータを取得する
+     * データがなければネットワークから取得する
+     */
     fun nowPlayingMovies(): Flowable<List<Movie>> {
-        // TODO
-        //return repository.nowPlayingMovies(0, 20, true)
         return Flowable.fromArray()
     }
 }

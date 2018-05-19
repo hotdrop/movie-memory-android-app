@@ -20,6 +20,9 @@ import org.robolectric.annotation.Config
 @Config(sdk = [23], manifest = Config.NONE)
 class MovieRepositoryTest {
 
+    /**
+     * このテストはRoomを使用しているのでエラーになる。
+     */
     @Test
     fun loadNowPlayingMoviesTest() {
         testOnMockServer { repository ->
@@ -27,6 +30,17 @@ class MovieRepositoryTest {
                     .test()
                     .assertNoErrors()
                     .assertComplete()
+        }
+    }
+
+    @Test
+    fun nowPlayingMoviesTest() {
+        testOnMockServer { repository ->
+            repository.nowPlayingMovies(hogeFlagTest = true)
+                    .test()
+                    .assertValueAt(0, { movies ->
+                        (movies.size == 10 && movies[0].title == "テスト1")
+                    })
         }
     }
 
