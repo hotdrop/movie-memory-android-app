@@ -47,12 +47,33 @@ class NowPlayingMoviesFragment: BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        setupRecyclerView()
+        setupSwipeRefresh()
+
         viewModel.movies.observe(this, Observer { movies ->
             movies?.let {
                 binding.nowplayingProgress.visibility = View.GONE
                 adapter.addAll(movies)
             }
         })
+    }
+
+    private fun setupRecyclerView() {
+        binding.nowplayingMoviesRecyclerView.layoutManager = GridLayoutManager(activity, 3)
+        adapter = NowPlayingMoviesAdapter()
+        binding.nowplayingMoviesRecyclerView.adapter = adapter
+    }
+
+    private fun setupSwipeRefresh() {
+        binding.nowPlayingSwipeRefresh.apply {
+            setColorSchemeResources(R.color.colorAccent)
+            setOnRefreshListener ({
+                viewModel.onRefresh()
+                if (binding.nowPlayingSwipeRefresh.isRefreshing) {
+                    binding.nowPlayingSwipeRefresh.isRefreshing = false
+                }
+            })
+        }
     }
 
     companion object {

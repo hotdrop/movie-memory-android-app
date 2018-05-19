@@ -9,11 +9,11 @@ import retrofit2.http.Query
 
 interface MovieApi {
 
-    @GET("/movie/now_playing")
+    @GET("/movies/now-playing")
     @CheckResult
     fun getNowPraying(@Query("index") index: Int, @Query("offset") offset: Int): Single<List<MovieResult>>
 
-    @GET("/movie/coming_soon")
+    @GET("/movies/coming-soon")
     @CheckResult
     fun getComingSoon(@Query("index") index: Int, @Query("offset") offset: Int): Flowable<List<MovieResult>>
 

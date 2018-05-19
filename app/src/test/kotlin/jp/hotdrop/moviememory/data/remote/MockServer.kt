@@ -20,8 +20,8 @@ class MockServer {
         ComingSoon
     }
     private val urlPatterns = mapOf(
-            Pair("/movie/now_playing\\?index=\\d+\\&offset=\\d+", UrlType.NowPlaying),
-            Pair("/movie/coming_soon\\?index=\\d+\\&offset=\\d+", UrlType.ComingSoon)
+            Pair("/movies/now-playing\\?index=\\d+\\&offset=\\d+", UrlType.NowPlaying),
+            Pair("/movies/coming-soon\\?index=\\d+\\&offset=\\d+", UrlType.ComingSoon)
     )
 
     fun getUrl(): HttpUrl = server.url("/")

@@ -1,6 +1,8 @@
 package jp.hotdrop.moviememory.domain
 
+import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
 import jp.hotdrop.moviememory.model.Movie
 import javax.inject.Inject
@@ -12,7 +14,10 @@ class MoviesUseCase @Inject constructor(
     /**
      * 今の所こいつがある意味はない
      */
-    fun runNowPlayingMovies(): Flowable<List<Movie>> {
-        return repository.nowPlayingMovies
-    }
+    fun runNowPlayingMovies(): Flowable<List<Movie>> =
+            repository.nowPlayingMovies
+
+    fun loadNowPlayingMovies(): Completable =
+        repository.loadNowPlayingMovies()
+                .subscribeOn(Schedulers.io())
 }
