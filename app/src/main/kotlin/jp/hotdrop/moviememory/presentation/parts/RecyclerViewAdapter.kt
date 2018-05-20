@@ -10,6 +10,8 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
 
     fun addAll(items: List<T>) {
         list.addAll(items)
+        // TODO 一律これはよくないので範囲を指定した更新にする
+        notifyDataSetChanged()
     }
 
     fun getItem(index: Int) = list[index]
