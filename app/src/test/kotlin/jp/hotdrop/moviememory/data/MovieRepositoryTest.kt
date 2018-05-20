@@ -25,7 +25,7 @@ class MovieRepositoryTest {
 //    @Test
 //    fun loadNowPlayingMoviesTest() {
 //        testOnMockServer { repository ->
-//            repository.loadNowPlayingMovies()
+//            repository.refreshNowPlayingMovies()
 //                    .test()
 //                    .assertNoErrors()
 //                    .assertComplete()

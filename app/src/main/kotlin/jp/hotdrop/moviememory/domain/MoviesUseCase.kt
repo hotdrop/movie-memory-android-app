@@ -12,12 +12,12 @@ class MoviesUseCase @Inject constructor(
 ) {
 
     /**
-     * 今の所こいつがある意味はない
+     * TODO ProcessorにしないとUseCaseの意味ない気がするのでそうする。ただ今の所やることないのでデータをもらって流すだけ・・
      */
-    fun nowPlayingMovies(): Flowable<List<Movie>> =
-            repository.nowPlayingMovies
+    fun nowPlayingMovies(index: Int, offset: Int): Flowable<List<Movie>> =
+            repository.nowPlayingMovies(index, offset)
 
-    fun loadNowPlayingMovies(): Completable =
-        repository.loadNowPlayingMovies()
+    fun refreshNowPlayingMovies(index: Int, offset: Int): Completable =
+        repository.loadNowPlayingMovies(index, offset)
                 .subscribeOn(Schedulers.io())
 }

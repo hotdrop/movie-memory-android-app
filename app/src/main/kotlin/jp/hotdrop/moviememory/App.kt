@@ -5,6 +5,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import jp.hotdrop.moviememory.di.component.AppComponent
 import jp.hotdrop.moviememory.di.component.DaggerAppComponent
 import jp.hotdrop.moviememory.di.module.AppModule
+import timber.log.Timber
 
 class App: Application() {
 
@@ -12,7 +13,10 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         AndroidThreeTen.init(this)
+        Timber.plant(Timber.DebugTree())
+
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()

@@ -11,7 +11,7 @@ interface MovieApi {
 
     @GET("/movies/now-playing")
     @CheckResult
-    fun getNowPraying(@Query("index") index: Int, @Query("offset") offset: Int): Single<List<MovieResult>>
+    fun getNowPlaying(@Query("index") index: Int, @Query("offset") offset: Int): Single<List<MovieResult>>
 
     @GET("/movies/coming-soon")
     @CheckResult

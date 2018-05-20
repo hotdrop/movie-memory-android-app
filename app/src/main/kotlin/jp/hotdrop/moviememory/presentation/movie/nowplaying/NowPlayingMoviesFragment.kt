@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
@@ -44,10 +45,19 @@ class NowPlayingMoviesFragment: BaseFragment() {
         setupRecyclerView()
         setupSwipeRefresh()
 
+        // 通常通りに取得して、データが空ならリフレッシュする
         viewModel.movies.observe(this, Observer { movies ->
             movies?.let {
-                binding.nowplayingProgress.visibility = View.GONE
-                adapter.addAll(movies)
+                if (movies.isEmpty()) {
+                    viewModel.onRefreshWithRetry()
+                    // これ当たり前だがリトライする前にでるので・・なんとかする
+                    Toast.makeText(this@NowPlayingMoviesFragment.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
+                } else {
+                    binding.nowplayingProgress.visibility = View.GONE
+                    // TODO 無条件にaddAllしているが、これは更新しないとダメ
+                    // TODO 上スワイプは全removeして良い。下スワイプはそのアイテムだけInsertNotifyする
+                    adapter.addAll(movies)
+                }
             }
         })
         lifecycle.addObserver(viewModel)
