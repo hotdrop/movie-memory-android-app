@@ -14,7 +14,7 @@ class MoviesUseCase @Inject constructor(
     /**
      * 今の所こいつがある意味はない
      */
-    fun runNowPlayingMovies(): Flowable<List<Movie>> =
+    fun nowPlayingMovies(): Flowable<List<Movie>> =
             repository.nowPlayingMovies
 
     fun loadNowPlayingMovies(): Completable =

@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.data.repository
 
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.toNowPlayingMovie
@@ -25,7 +26,7 @@ class MovieDataRepository @Inject constructor(
     /**
      * 公開中の映画情報を取得する
      */
-    override fun loadNowPlayingMovies(index: Int, offset: Int) =
+    override fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
             api.getNowPraying(index, offset)
                     .doOnSuccess { movieResults ->
                         movieResults.forEach {

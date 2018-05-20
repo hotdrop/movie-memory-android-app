@@ -17,8 +17,6 @@ class MoviesFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMoviesBinding
     private lateinit var viewPagerAdapter: MoviesViewPagerAdapter
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

@@ -11,17 +11,18 @@ import javax.inject.Inject
 
 class NowPlayingMoviesViewModel @Inject constructor(
         private val useCase: MoviesUseCase
-): ViewModel() {
+): ViewModel(), LifecycleObserver {
 
     private lateinit var compositeDisposable: CompositeDisposable
 
     val movies: LiveData<List<Movie>> by lazy {
-        LiveDataReactiveStreams.fromPublisher(useCase.runNowPlayingMovies())
+        LiveDataReactiveStreams.fromPublisher(useCase.nowPlayingMovies())
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
         compositeDisposable = CompositeDisposable()
+        refresh()
     }
 
     /**

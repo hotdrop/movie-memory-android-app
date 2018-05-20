@@ -35,12 +35,6 @@ class NowPlayingMoviesFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentNowPlayingMoviesBinding.inflate(inflater, container, false)
-
-        // RecyclerViewの初期化
-        binding.nowplayingMoviesRecyclerView.layoutManager = GridLayoutManager(activity, 3)
-        adapter = NowPlayingMoviesAdapter()
-        binding.nowplayingMoviesRecyclerView.adapter = adapter
-
         return binding.root
     }
 
@@ -56,6 +50,7 @@ class NowPlayingMoviesFragment: BaseFragment() {
                 adapter.addAll(movies)
             }
         })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun setupRecyclerView() {
