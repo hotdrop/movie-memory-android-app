@@ -45,18 +45,14 @@ class NowPlayingMoviesFragment: BaseFragment() {
         setupRecyclerView()
         setupSwipeRefresh()
 
-        // 通常通りに取得して、データが空ならリフレッシュする
         viewModel.movies.observe(this, Observer { movies ->
             movies?.let {
                 if (movies.isEmpty()) {
-                    viewModel.onRefreshWithRetry()
-                    // これ当たり前だがリトライする前にでるので・・なんとかする
-                    Toast.makeText(this@NowPlayingMoviesFragment.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
+                    // データが空ならリフレッシュ要請する
+                    onRefresh()
                 } else {
                     binding.nowplayingProgress.visibility = View.GONE
-                    // TODO 無条件にaddAllしているが、これは更新しないとダメ
-                    // TODO 上スワイプは全removeして良い。下スワイプはそのアイテムだけInsertNotifyする
-                    adapter.addAll(movies)
+                    adapter.refresh(movies)
                 }
             }
         })
@@ -73,11 +69,17 @@ class NowPlayingMoviesFragment: BaseFragment() {
         binding.nowPlayingSwipeRefresh.apply {
             setColorSchemeResources(R.color.colorAccent)
             setOnRefreshListener ({
-                viewModel.onRefresh()
+                onRefresh()
                 if (binding.nowPlayingSwipeRefresh.isRefreshing) {
                     binding.nowPlayingSwipeRefresh.isRefreshing = false
                 }
             })
+        }
+    }
+
+    private fun onRefresh() {
+        viewModel.onRefresh {
+            Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
         }
     }
 

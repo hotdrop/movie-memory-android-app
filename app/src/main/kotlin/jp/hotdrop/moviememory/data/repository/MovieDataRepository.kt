@@ -34,8 +34,8 @@ class MovieDataRepository @Inject constructor(
      */
     override fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            //dummyGetNowPlaying(index, offset)
-            api.getNowPlaying(index, offset)
+            dummyGetNowPlaying(index, offset)
+            //api.getNowPlaying(index, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("API経由で公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -44,7 +44,7 @@ class MovieDataRepository @Inject constructor(
                         val movieEntities = movieResults.map { it.toMovieEntity() }
                         movieDatabase.save(movieEntities)
                     }.doOnError {
-                        Timber.d(it, "公開中の映画情報の読み込みに失敗")
+                        Timber.e(it, "公開中の映画情報の読み込みに失敗")
                     }.toCompletable()
 
     private fun dummyGetNowPlaying(index: Int, offset: Int): Single<List<MovieResult>> =

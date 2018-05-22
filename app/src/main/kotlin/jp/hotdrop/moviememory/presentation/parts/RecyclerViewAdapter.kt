@@ -14,5 +14,11 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
         notifyDataSetChanged()
     }
 
+    fun refresh(items: List<T>) {
+        list.clear()
+        list.addAll(items)
+        notifyDataSetChanged()
+    }
+
     fun getItem(index: Int) = list[index]
 }

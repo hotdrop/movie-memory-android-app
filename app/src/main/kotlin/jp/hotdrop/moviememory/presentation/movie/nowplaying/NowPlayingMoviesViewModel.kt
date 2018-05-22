@@ -1,6 +1,7 @@
 package jp.hotdrop.moviememory.presentation.movie.nowplaying
 
 import android.arch.lifecycle.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -34,34 +35,24 @@ class NowPlayingMoviesViewModel @Inject constructor(
         compositeDisposable.clear()
     }
 
-    fun onRefresh() {
-        refresh(currentIndex)
+    fun onRefresh(errorPredicate:() -> Unit) {
+        refresh(currentIndex, errorPredicate)
     }
 
     /**
      * indexを指定したデータの更新と取得を行う。
      * 主にViewerを下までスクロールして続きを取得する場合、または上にスワイプして最新情報を取得する場合に使う。
      */
-    private fun refresh(index: Int) {
+    private fun refresh(index: Int, errorPredicate:() -> Unit) {
         useCase.refreshNowPlayingMovies(index, offset)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onComplete = { /* TODO 更新した旨のtoast表示 */ },
-                        onError = { Timber.e(it) }
-                )
-                .addTo(compositeDisposable)
-    }
-
-    /**
-     * データが取得できなかった場合はこのリトライつきメソッドで再度取得を試みる。
-     * それでもダメならToast出して終わる
-     */
-    fun onRefreshWithRetry() {
-        useCase.refreshNowPlayingMovies(currentIndex, offset)
-                .retry(3)
-                .subscribeBy(
-                        onComplete = { /* TODO 更新した旨のtoast表示 */ },
+                        onComplete = {
+                            Timber.d( "公開中の映画をrefresh... onComplete")
+                        },
                         onError = {
-                            Timber.e(it)
+                            errorPredicate()
+                            Timber.d("公開中の映画をrefresh... onError!")
                         }
                 )
                 .addTo(compositeDisposable)
