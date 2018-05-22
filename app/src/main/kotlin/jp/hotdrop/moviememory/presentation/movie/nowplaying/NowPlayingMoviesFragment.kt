@@ -98,7 +98,7 @@ class NowPlayingMoviesFragment: BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemMovieBinding>, position: Int) {
             val binding = holder.binding
-            binding.movie = getItem(position)
+            binding?.movie = getItem(position)
 
             // TODO onClickListenerとか
         }

@@ -11,5 +11,5 @@ class BindingHolder<out T: ViewDataBinding>(
         parent: ViewGroup,
         @LayoutRes layoutResId: Int
 ): RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)) {
-    val binding: T = DataBindingUtil.bind(itemView)
+    val binding: T? = DataBindingUtil.bind(itemView)
 }
