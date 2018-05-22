@@ -19,7 +19,6 @@ import org.junit.runner.RunWith
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneOffset
-import timber.log.Timber
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -54,7 +53,7 @@ class MovieDatabaseTest {
             createTestMovieEntity(it, nowEpoch)
         }
         movieDb.save(movieEntities)
-        movieDb.getNowPlayingMovies()
+        movieDb.getNowPlayingMovies(0, 20)
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -70,7 +69,6 @@ class MovieDatabaseTest {
         (1..9).forEach {
             val nowEpoch = LocalDate.now().toEpochDay()
             val entity = createTestMovieEntity(it, nowEpoch)
-            Timber.d("メッセージテスト")
             movieEntities.add(entity)
         }
 
@@ -92,7 +90,7 @@ class MovieDatabaseTest {
         inDustMovieEntities.add(overEntity)
 
         movieDb.save(inDustMovieEntities)
-        movieDb.getNowPlayingMovies()
+        movieDb.getNowPlayingMovies(0, 20)
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -116,6 +114,48 @@ class MovieDatabaseTest {
 
         val resultTwo = movieDb.getLocalMovieInfo(secondDataId)
         assert(resultTwo == secondData)
+    }
+
+    @Test
+    fun orderByTest() {
+        val movieEntities = mutableListOf<MovieEntity>()
+
+        val nowDate = LocalDate.now()
+        val secondReleaseEpoch = nowDate.minusDays(5L).toEpochDay()
+        movieEntities.add(createTestMovieEntity(1, secondReleaseEpoch))
+
+        val oldReleaseEpoch = nowDate.minusMonths(1L).toEpochDay()
+        movieEntities.add(createTestMovieEntity(2, oldReleaseEpoch))
+
+        val latestReleaseEpoch = nowDate.toEpochDay()
+        movieEntities.add(createTestMovieEntity(3, latestReleaseEpoch))
+
+        movieDb.save(movieEntities)
+
+        movieDb.getNowPlayingMovies(0, 20)
+                .test()
+                .assertValue { result ->
+                    result[0].playingDate == latestReleaseEpoch &&
+                    result[1].playingDate == secondReleaseEpoch &&
+                    result[2].playingDate == oldReleaseEpoch
+                }
+    }
+
+    // TODO まだテスト通らない
+    fun takeLimitDataTest() {
+        val limitSize = 20
+        val movieEntities = mutableListOf<MovieEntity>()
+        (1..(limitSize + 1)).forEach {
+            val nowEpoch = LocalDate.now().toEpochDay()
+            val entity = createTestMovieEntity(it, nowEpoch)
+            movieEntities.add(entity)
+        }
+        movieDb.save(movieEntities)
+        movieDb.getNowPlayingMovies(0, limitSize)
+                .test()
+                .assertValue { results ->
+                    results.size == limitSize
+                }
     }
 
     private fun assertMovieEntity(o1: List<MovieEntity>, o2: List<MovieEntity>): Boolean {

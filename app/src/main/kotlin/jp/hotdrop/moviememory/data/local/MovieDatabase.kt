@@ -20,7 +20,7 @@ class MovieDatabase @Inject constructor(
         val endAt = LocalDate.now()
         val startAt = endAt.minusMonths(2L)
         // TODO index, offset
-        return dao.getMovies(startAt.toEpochDay(), endAt.toEpochDay())
+        return dao.getMovies(startAt.toEpochDay(), endAt.toEpochDay()).onBackpressureDrop()
     }
 
     fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity =
