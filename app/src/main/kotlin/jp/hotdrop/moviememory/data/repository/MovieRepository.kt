@@ -8,7 +8,9 @@ import jp.hotdrop.moviememory.model.Movie
 interface MovieRepository {
 
     @CheckResult
-    fun nowPlayingMovies(index: Int, offset: Int): Flowable<List<Movie>>
+    fun nowPlayingMovies(offset: Int): Flowable<List<Movie>>
     @CheckResult
     fun loadNowPlayingMovies(index: Int, offset: Int): Completable
+    @CheckResult
+    fun refreshNowPlayingMovies(offset: Int): Completable
 }

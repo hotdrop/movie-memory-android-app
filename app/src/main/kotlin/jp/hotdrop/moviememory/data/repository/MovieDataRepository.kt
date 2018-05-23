@@ -17,8 +17,19 @@ class MovieDataRepository @Inject constructor(
         private val movieDatabase: MovieDatabase
 ): MovieRepository {
 
-    override fun nowPlayingMovies(index: Int, offset: Int): Flowable<List<Movie>> =
-        movieDatabase.getNowPlayingMovies(index, offset)
+    /**
+     * DBからデータ取得する
+     * 全データ持ってきてFlatMapで絞っているので一時的にメモリ上に置いているのがきになる・・
+     * もっといいやり方はないものか。これ解決策はSQLでなんとかする、になるのだがROWNUMみたいなのないので自作するしかないか
+     */
+    override fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> =
+        movieDatabase.getNowPlayingMovies()
+                .filter { it.isNotEmpty() }
+                .flatMap {
+                    // TODO とりあえず片方向のみ対応。メモリを食いつぶして行くので一定数の要素のみ保持するならindexも引数にしてよしなにやる。
+                    val startIdx = it.size - offset - 1
+                    Flowable.fromArray(it.subList(startIdx, it.size - 1))
+                }
                 .map { movieEntities ->
                     Timber.d("DBから映画情報を取得。件数=${movieEntities.size}")
                     movieEntities.forEach {
@@ -29,13 +40,33 @@ class MovieDataRepository @Inject constructor(
                         entity.toNowPlayingMovie(localMovieInfo)
                     }
                 }
+
+    /**
+     * ネットワークから最新データを取得してDBを全リフレッシュする。
+     *
+     */
+    override fun refreshNowPlayingMovies(offset: Int): Completable =
+            // 開発中、API通信なしでデータを取得したい場合にこっち使う。
+            dummyGetNowPlaying(0, offset)
+            //api.getNowPlaying(index, offset)
+                    .doOnSuccess { movieResults ->
+                        Timber.d("Refresh！再度API経由で公開中の映画情報を取得。件数=${movieResults.size}")
+                        movieResults.forEach {
+                            Timber.d("  取得した映画情報のタイトル: ${it.title}")
+                        }
+                        val movieEntities = movieResults.map { it.toMovieEntity() }
+                        movieDatabase.refresh(movieEntities)
+                    }.doOnError {
+                        Timber.e(it, "公開中の映画情報の読み込みに失敗")
+                    }.toCompletable()
+
     /**
      * 公開中の映画情報を取得する
      */
     override fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
-            // 開発中、API通信なしでデータを取得したい場合にこっち使う。
+    // 開発中、API通信なしでデータを取得したい場合にこっち使う。
             dummyGetNowPlaying(index, offset)
-            //api.getNowPlaying(index, offset)
+                    //api.getNowPlaying(index, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("API経由で公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -49,7 +80,7 @@ class MovieDataRepository @Inject constructor(
 
     private fun dummyGetNowPlaying(index: Int, offset: Int): Single<List<MovieResult>> =
         Single.just(
-                (1..4).map { createDummyResponse(it) }
+                (index..(index+offset)).map { createDummyResponse(it) }
         )
 
     private fun createDummyResponse(id: Int): MovieResult =

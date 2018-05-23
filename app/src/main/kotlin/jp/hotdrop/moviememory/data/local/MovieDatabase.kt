@@ -16,11 +16,10 @@ class MovieDatabase @Inject constructor(
     /**
      * 公開日から2ヶ月以内の映画情報を取得する
      */
-    fun getNowPlayingMovies(index: Int, offset: Int): Flowable<List<MovieEntity>> {
+    fun getNowPlayingMovies(): Flowable<List<MovieEntity>> {
         val endAt = LocalDate.now()
         val startAt = endAt.minusMonths(2L)
-        // TODO index, offset
-        return dao.getMovies(startAt.toEpochDay(), endAt.toEpochDay()).onBackpressureDrop()
+        return dao.getMovies(startAt.toEpochDay(), endAt.toEpochDay())
     }
 
     fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity =
@@ -29,6 +28,12 @@ class MovieDatabase @Inject constructor(
     fun save(entities: List<MovieEntity>) {
         database.runInTransaction {
             dao.insert(entities)
+        }
+    }
+
+    fun refresh(entities: List<MovieEntity>) {
+        database.runInTransaction {
+            dao.clearAndInsert(entities)
         }
     }
 

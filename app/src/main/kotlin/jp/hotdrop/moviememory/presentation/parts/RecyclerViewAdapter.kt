@@ -9,15 +9,14 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
     override fun getItemCount() = list.size
 
     fun addAll(items: List<T>) {
+        val startIdx = if (list.size > 0) list.size - 1 else 0
         list.addAll(items)
-        // TODO 一律これはよくないので範囲を指定した更新にする
-        notifyDataSetChanged()
+        val endIdx = list.size - 1
+        notifyItemRangeChanged(startIdx, endIdx)
     }
 
-    fun refresh(items: List<T>) {
+    fun clear() {
         list.clear()
-        list.addAll(items)
-        notifyDataSetChanged()
     }
 
     fun getItem(index: Int) = list[index]

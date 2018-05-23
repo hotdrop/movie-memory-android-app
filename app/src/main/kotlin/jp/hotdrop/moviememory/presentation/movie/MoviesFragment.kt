@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.presentation.movie
 
-import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.presentation.BaseFragment
-import javax.inject.Inject
 
 class MoviesFragment: BaseFragment() {
 
@@ -39,10 +37,9 @@ class MoviesFragment: BaseFragment() {
 
         viewPagerAdapter = MoviesViewPagerAdapter(childFragmentManager)
         viewPagerAdapter.setMovieTab()
-
         binding.moviesViewPager.adapter = viewPagerAdapter
-        binding.tabLayout.setupWithViewPager(binding.moviesViewPager)
 
+        binding.tabLayout.setupWithViewPager(binding.moviesViewPager)
     }
 
     companion object {
@@ -64,10 +61,8 @@ class MoviesFragment: BaseFragment() {
 
         fun setMovieTab() {
             tabFragments.clear()
-            MovieTab.values().forEach {
-                tabFragments.add(it)
-            }
-            notifyDataSetChanged()
+            tabFragments.add(MovieTab.NowPlaying)
+            //tabFragments.add(MovieTab.ComingSoon)
         }
     }
 }

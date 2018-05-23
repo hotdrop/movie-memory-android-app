@@ -15,11 +15,10 @@ class NowPlayingMoviesViewModel @Inject constructor(
 ): ViewModel(), LifecycleObserver {
 
     private lateinit var compositeDisposable: CompositeDisposable
-    private var currentIndex = 0
     private val offset = 20
 
     val movies: LiveData<List<Movie>> by lazy {
-        LiveDataReactiveStreams.fromPublisher(useCase.nowPlayingMovies(currentIndex, offset))
+        LiveDataReactiveStreams.fromPublisher(useCase.nowPlayingMovies(offset))
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -36,15 +35,38 @@ class NowPlayingMoviesViewModel @Inject constructor(
     }
 
     fun onRefresh(errorPredicate:() -> Unit) {
-        refresh(currentIndex, errorPredicate)
+        refresh(errorPredicate)
+    }
+
+    fun onLoad(page: Int, errorPredicate:() -> Unit) {
+        val index = page * offset
+        Timber.i("NowPlayingMovies load start index = $index")
+        load(index, errorPredicate)
     }
 
     /**
-     * indexを指定したデータの更新と取得を行う。
-     * 主にViewerを下までスクロールして続きを取得する場合、または上にスワイプして最新情報を取得する場合に使う。
+     * 初回起動時と上にスワイプして最新情報を取得する場合に使う
      */
-    private fun refresh(index: Int, errorPredicate:() -> Unit) {
-        useCase.refreshNowPlayingMovies(index, offset)
+    private fun refresh(errorPredicate:() -> Unit) {
+        useCase.refreshNowPlayingMovies(offset)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onComplete = {
+                            Timber.d( "公開中の映画をrefresh... onComplete")
+                        },
+                        onError = {
+                            errorPredicate()
+                            Timber.d("公開中の映画をrefresh... onError!")
+                        }
+                )
+                .addTo(compositeDisposable)
+    }
+
+    /**
+     * Viewerを下までスクロールして続きを取得する場合に使う
+     */
+    private fun load(index: Int, errorPredicate:() -> Unit) {
+        useCase.loadNowPlayingMovies(index, offset)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onComplete = {

@@ -53,7 +53,7 @@ class MovieDatabaseTest {
             createTestMovieEntity(it, nowEpoch)
         }
         movieDb.save(movieEntities)
-        movieDb.getNowPlayingMovies(0, 20)
+        movieDb.getNowPlayingMovies()
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -90,7 +90,7 @@ class MovieDatabaseTest {
         inDustMovieEntities.add(overEntity)
 
         movieDb.save(inDustMovieEntities)
-        movieDb.getNowPlayingMovies(0, 20)
+        movieDb.getNowPlayingMovies()
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -132,29 +132,12 @@ class MovieDatabaseTest {
 
         movieDb.save(movieEntities)
 
-        movieDb.getNowPlayingMovies(0, 20)
+        movieDb.getNowPlayingMovies()
                 .test()
                 .assertValue { result ->
                     result[0].playingDate == latestReleaseEpoch &&
                     result[1].playingDate == secondReleaseEpoch &&
                     result[2].playingDate == oldReleaseEpoch
-                }
-    }
-
-    // TODO まだテスト通らない
-    fun takeLimitDataTest() {
-        val limitSize = 20
-        val movieEntities = mutableListOf<MovieEntity>()
-        (1..(limitSize + 1)).forEach {
-            val nowEpoch = LocalDate.now().toEpochDay()
-            val entity = createTestMovieEntity(it, nowEpoch)
-            movieEntities.add(entity)
-        }
-        movieDb.save(movieEntities)
-        movieDb.getNowPlayingMovies(0, limitSize)
-                .test()
-                .assertValue { results ->
-                    results.size == limitSize
                 }
     }
 
