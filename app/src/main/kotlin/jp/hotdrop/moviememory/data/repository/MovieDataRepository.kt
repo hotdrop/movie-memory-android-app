@@ -26,9 +26,8 @@ class MovieDataRepository @Inject constructor(
         movieDatabase.getNowPlayingMovies()
                 .filter { it.isNotEmpty() }
                 .flatMap {
-                    // TODO とりあえず片方向のみ対応。メモリを食いつぶして行くので一定数の要素のみ保持するならindexも引数にしてよしなにやる。
-                    val startIdx = it.size - offset - 1
-                    Flowable.fromArray(it.subList(startIdx, it.size - 1))
+                    val startIdx = it.size - offset
+                    Flowable.fromArray(it.subList(startIdx, it.size))
                 }
                 .map { movieEntities ->
                     Timber.d("DBから映画情報を取得。件数=${movieEntities.size}")
@@ -43,14 +42,13 @@ class MovieDataRepository @Inject constructor(
 
     /**
      * ネットワークから最新データを取得してDBを全リフレッシュする。
-     *
      */
     override fun refreshNowPlayingMovies(offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
             dummyGetNowPlaying(0, offset)
             //api.getNowPlaying(index, offset)
                     .doOnSuccess { movieResults ->
-                        Timber.d("Refresh！再度API経由で公開中の映画情報を取得。件数=${movieResults.size}")
+                        Timber.d("公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
                             Timber.d("  取得した映画情報のタイトル: ${it.title}")
                         }
@@ -80,7 +78,7 @@ class MovieDataRepository @Inject constructor(
 
     private fun dummyGetNowPlaying(index: Int, offset: Int): Single<List<MovieResult>> =
         Single.just(
-                (index..(index+offset)).map { createDummyResponse(it) }
+                (index..(index + offset - 1)).map { createDummyResponse(it) }
         )
 
     private fun createDummyResponse(id: Int): MovieResult =

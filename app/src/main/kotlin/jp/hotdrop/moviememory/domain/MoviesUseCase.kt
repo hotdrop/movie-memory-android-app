@@ -14,6 +14,9 @@ class MoviesUseCase @Inject constructor(
     fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> =
             repository.nowPlayingMovies(offset)
 
+    /**
+     * この時、COmp
+     */
     fun refreshNowPlayingMovies(offset: Int): Completable =
         repository.refreshNowPlayingMovies(offset)
                 .subscribeOn(Schedulers.io())

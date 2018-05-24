@@ -31,12 +31,12 @@ class NowPlayingMoviesFragment: BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: NowPlayingMoviesViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory)
+                .get(NowPlayingMoviesViewModel::class.java)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        Timber.i("TabFragment start OnAttach")
         getComponent().inject(this)
     }
 
@@ -53,13 +53,9 @@ class NowPlayingMoviesFragment: BaseFragment() {
 
         viewModel.movies.observe(this, Observer { movies ->
             movies?.let {
-                if (movies.isEmpty()) {
-                    // データが空ならリフレッシュ要請する
-                    onRefresh()
-                } else {
-                    binding.nowplayingProgress.visibility = View.GONE
-                    adapter.addAll(movies)
-                }
+                // TODO ここでリフレッシュの操作をしたい
+                binding.nowplayingProgress.visibility = View.GONE
+                adapter.addAll(movies)
             }
         })
         lifecycle.addObserver(viewModel)
@@ -86,20 +82,15 @@ class NowPlayingMoviesFragment: BaseFragment() {
         binding.nowPlayingSwipeRefresh.apply {
             setColorSchemeResources(R.color.colorAccent)
             setOnRefreshListener ({
-                onRefresh()
+                Timber.i("start onLoad")
+                scrollListener.resetState()
+                viewModel.onRefresh {
+                    Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
+                }
                 if (binding.nowPlayingSwipeRefresh.isRefreshing) {
                     binding.nowPlayingSwipeRefresh.isRefreshing = false
                 }
             })
-        }
-    }
-
-    private fun onRefresh() {
-        Timber.i("NowPlayingMoviesFragment start onRefresh")
-        adapter.clear()
-        scrollListener.resetState()
-        viewModel.onRefresh {
-            Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -109,7 +100,6 @@ class NowPlayingMoviesFragment: BaseFragment() {
 
     /**
      * Adapter
-     * とりあえず個々のitemはViewModelを使わずにやってみる
      */
     inner class NowPlayingMoviesAdapter: RecyclerViewAdapter<Movie, BindingHolder<ItemMovieBinding>>() {
 

@@ -46,6 +46,9 @@ class MoviesFragment: BaseFragment() {
         fun newInstance(): MoviesFragment = MoviesFragment()
     }
 
+    /**
+     * Tabのアダプター
+     */
     private inner class MoviesViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
 
         private val tabFragments = mutableListOf<MovieTab>()
