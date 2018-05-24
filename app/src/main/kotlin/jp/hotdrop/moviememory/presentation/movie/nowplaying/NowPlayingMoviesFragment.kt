@@ -35,6 +35,9 @@ class NowPlayingMoviesFragment: BaseFragment() {
                 .get(NowPlayingMoviesViewModel::class.java)
     }
 
+    // 状態を持ってしまっているがLiveDataをzipできないので試行錯誤の結果、一旦こうすることにした。
+    private var isRefresh = false
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
@@ -51,11 +54,15 @@ class NowPlayingMoviesFragment: BaseFragment() {
         setupRecyclerView()
         setupSwipeRefresh()
 
-        viewModel.movies.observe(this, Observer { movies ->
-            movies?.let {
-                // TODO ここでリフレッシュの操作をしたい
+        viewModel.movies.observe(this, Observer {
+            it?.let { movies ->
                 binding.nowplayingProgress.visibility = View.GONE
-                adapter.addAll(movies)
+                if (isRefresh) {
+                    adapter.refresh(movies)
+                    isRefresh = false
+                } else {
+                    adapter.addAll(movies)
+                }
             }
         })
         lifecycle.addObserver(viewModel)
@@ -82,8 +89,9 @@ class NowPlayingMoviesFragment: BaseFragment() {
         binding.nowPlayingSwipeRefresh.apply {
             setColorSchemeResources(R.color.colorAccent)
             setOnRefreshListener ({
-                Timber.i("start onLoad")
+                Timber.i("start Refresh")
                 scrollListener.resetState()
+                isRefresh = true
                 viewModel.onRefresh {
                     Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
                 }

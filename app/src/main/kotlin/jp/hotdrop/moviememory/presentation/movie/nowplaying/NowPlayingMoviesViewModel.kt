@@ -38,7 +38,9 @@ class NowPlayingMoviesViewModel @Inject constructor(
         useCase.refreshNowPlayingMovies(offset)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onComplete = { Timber.d( "公開中の映画をrefresh... onComplete") },
+                        onComplete = {
+                            Timber.d( "公開中の映画をrefresh... onComplete")
+                        },
                         onError = {
                             if (errorPredicate != null) errorPredicate()
                             Timber.d("公開中の映画をrefresh... onError!")
@@ -60,7 +62,9 @@ class NowPlayingMoviesViewModel @Inject constructor(
         useCase.loadNowPlayingMovies(index, offset)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onComplete = { Timber.d( "公開中の映画をrefresh... onComplete") },
+                        onComplete = {
+                            Timber.d( "公開中の映画をrefresh... onComplete")
+                        },
                         onError = {
                             errorPredicate()
                             Timber.d("公開中の映画をrefresh... onError!")

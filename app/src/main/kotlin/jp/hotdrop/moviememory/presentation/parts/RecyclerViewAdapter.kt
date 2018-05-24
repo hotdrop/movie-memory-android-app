@@ -14,12 +14,19 @@ abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: RecyclerView.ViewHol
 
     fun addAll(items: List<T>) {
         val startIdx = if (list.size > 0) list.size - 1 else 0
+
         list.addAll(items)
         val endIdx = list.size - 1
 
-        Timber.d(" Adapter addAll. 開始位置 $startIdx 終了位置 $endIdx 総件数: ${list.size} ")
-        // RangeChangeでIndexOutOfBoundsException
+        Timber.d("Adapter addAll. 開始位置 $startIdx 終了位置 $endIdx 総件数: ${list.size} ")
         notifyItemRangeChanged(startIdx, endIdx)
+    }
+
+    fun refresh(items: List<T>) {
+        Timber.d("Adapter refresh.")
+        clear()
+        list.addAll(items)
+        notifyDataSetChanged()
     }
 
     fun clear() {
