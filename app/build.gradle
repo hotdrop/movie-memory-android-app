@@ -27,6 +27,12 @@ android {
             main {
                 java.srcDir 'src/main/kotlin'
             }
+            debug {
+                java.srcDir 'src/debug/kotlin'
+            }
+            release {
+                java.srcDir 'src/release/kotlin'
+            }
             test {
                 java.srcDir 'src/test/kotlin'
             }
@@ -45,6 +51,7 @@ android {
         release {
             debuggable false
             minifyEnabled true
+            buildConfigField "String", "API_ENDPOINT", '"https://XXX/api/v1/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -92,6 +99,7 @@ dependencies {
 
     // network
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'

@@ -86,7 +86,7 @@ class MovieDataRepository @Inject constructor(
                     id,
                     "テスト$id",
                 "概要$id",
-                    "https://imageUrl.test",
+                    "",
                     "2018-05-10",
                     "Directorです",
                     "https://urltest.test",

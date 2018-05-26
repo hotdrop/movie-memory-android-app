@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory.di.component
 
 import dagger.Component
 import jp.hotdrop.moviememory.di.module.*
+import jp.hotdrop.moviememory.presentation.util.MovieMemoryGlideModule
 import javax.inject.Singleton
 
 @Singleton
@@ -15,4 +16,5 @@ import javax.inject.Singleton
 ])
 interface AppComponent {
     fun plus(module: ActivityModule): ActivityComponent
+    fun plus(glideModule: MovieMemoryGlideModule)
 }
