@@ -45,13 +45,15 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField "String", "API_ENDPOINT", '"https://localhost/api/v1/"'
+            buildConfigField 'jp.hotdrop.moviememory.util.StethoHelper', 'STETHO', 'new jp.hotdrop.moviememory.util.EnableStethoHelper()'
+            buildConfigField 'String', 'API_ENDPOINT', '"https://localhost/api/v1/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             debuggable false
             minifyEnabled true
-            buildConfigField "String", "API_ENDPOINT", '"https://XXX/api/v1/"'
+            buildConfigField 'jp.hotdrop.moviememory.util.StethoHelper', 'STETHO', 'new jp.hotdrop.moviememory.util.DisableStethoHelper()'
+            buildConfigField 'String', 'API_ENDPOINT', '"https://XXXX/api/v1/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.squareup.leakcanary.LeakCanary
 import jp.hotdrop.moviememory.di.component.AppComponent
 import jp.hotdrop.moviememory.di.component.DaggerAppComponent
 import jp.hotdrop.moviememory.di.module.AppModule
@@ -14,8 +15,14 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        AndroidThreeTen.init(this)
-        Timber.plant(Timber.DebugTree())
+        if (!canInitApp()) {
+            return
+        }
+
+        initLeakCanary()
+        initTreeTen()
+        initTimber()
+        initStetho()
 
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
@@ -23,4 +30,22 @@ class App: Application() {
     }
 
     fun getComponent(): AppComponent = appComponent
+
+    private fun canInitApp(): Boolean =
+            !LeakCanary.isInAnalyzerProcess(this)
+
+    private fun initLeakCanary() {
+        LeakCanary.install(this)
+    }
+    private fun initTreeTen() {
+        AndroidThreeTen.init(this)
+    }
+
+    private fun initTimber() {
+        Timber.plant(Timber.DebugTree())
+    }
+
+    private fun initStetho() {
+        BuildConfig.STETHO.init(this)
+    }
 }
