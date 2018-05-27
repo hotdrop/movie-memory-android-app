@@ -2,6 +2,7 @@
 .gradle
 .idea
 
+schemas
 /local.properties
 .DS_Store
 /build
