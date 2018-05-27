@@ -45,8 +45,8 @@ class MovieDataRepository @Inject constructor(
      */
     override fun refreshNowPlayingMovies(offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            dummyGetNowPlaying(0, offset)
-            //api.getNowPlaying(index, offset)
+            //dummyGetNowPlaying(0, offset)
+            api.getNowPlaying(0, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -62,9 +62,9 @@ class MovieDataRepository @Inject constructor(
      * 公開中の映画情報を取得する
      */
     override fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
-    // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            dummyGetNowPlaying(index, offset)
-                    //api.getNowPlaying(index, offset)
+            // 開発中、API通信なしでデータを取得したい場合にこっち使う。
+            //dummyGetNowPlaying(index, offset)
+            api.getNowPlaying(index, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("API経由で公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
