@@ -47,24 +47,8 @@ class MovieDatabaseTest {
     }
 
     @Test
-    fun saveTest() {
-        val movieEntities = (1..10).map {
-            val nowEpoch = LocalDate.now().toEpochDay()
-            createTestMovieEntity(it, nowEpoch)
-        }
-        movieDb.save(movieEntities)
-        movieDb.getNowPlayingMovies()
-                .test()
-                .assertValue { results ->
-                    assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
-                            results.size == movieEntities.size)
-                    assertMovieEntity(results, movieEntities)
-                }
-    }
-
-    @Test
-    fun getNowPlayingMoviesTest() {
-        // 2ヶ月以内のデータのみ取得対象であることをテスト
+    fun getMoviesTest() {
+        // 指定した期間のデータのみ取得対象であることをテスト
         val movieEntities = mutableListOf<MovieEntity>()
         (1..9).forEach {
             val nowEpoch = LocalDate.now().toEpochDay()
@@ -74,13 +58,14 @@ class MovieDatabaseTest {
 
         // ちょうど2ヶ月前はOK
         val nowDate = LocalDate.now()
-        val justTwoMonthAgoEpoch = nowDate.minusMonths(2L).toEpochDay()
+        val startAt = nowDate.minusMonths(2L)
+        val justTwoMonthAgoEpoch = startAt.toEpochDay()
         val justTwoMonthAgoEntity = createTestMovieEntity(10, justTwoMonthAgoEpoch)
         movieEntities.add(justTwoMonthAgoEntity)
 
         // 2ヶ月と1日前のデータは除外
         val inDustMovieEntities = movieEntities.toMutableList()
-        val expiredEpoch = nowDate.minusMonths(2L).minusDays(1L).toEpochDay()
+        val expiredEpoch = startAt.minusDays(1L).toEpochDay()
         val expiredEntity = createTestMovieEntity(11, expiredEpoch)
         inDustMovieEntities.add(expiredEntity)
 
@@ -90,7 +75,7 @@ class MovieDatabaseTest {
         inDustMovieEntities.add(overEntity)
 
         movieDb.save(inDustMovieEntities)
-        movieDb.getNowPlayingMovies()
+        movieDb.getMovies(startAt, nowDate)
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -132,7 +117,7 @@ class MovieDatabaseTest {
 
         movieDb.save(movieEntities)
 
-        movieDb.getNowPlayingMovies()
+        movieDb.getMovies(nowDate.minusMonths(5L), nowDate)
                 .test()
                 .assertValue { result ->
                     result[0].playingDate == latestReleaseEpoch &&

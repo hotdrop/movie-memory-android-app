@@ -6,26 +6,26 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
 import jp.hotdrop.moviememory.model.Movie
+import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(
         private val repository: MovieRepository
 ) {
 
-    /**
-     * 公開日からいつまでがNowPlayingかはここで判定すべき。
-     * そもそもnowPlayingとかComingSoonは、APIで取得したものではなくアプリ側で勝手に決めて表示するため
-     * その公開日の判断などはここでやるべき。Repositoryは単純に指定の条件でデータを持ってくるだけの方がいい。
-     */
+    // 公開日から2ヶ月以内の映画を公開中とする。refreshがあるのでメンバでlazy定義する
+    private val nowPlayingStartAt by lazy { nowPlayingEndAt.minusMonths(2L) }
+    private val nowPlayingEndAt by lazy { LocalDate.now() }
+
     fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> =
-            repository.moviesByPlayingDate(offset)
+        repository.movies(offset, nowPlayingStartAt, nowPlayingEndAt)
 
     fun movie(id: Int): Single<Movie> =
             repository.movie(id)
                     .subscribeOn(Schedulers.io())
 
     fun refreshNowPlayingMovies(offset: Int): Completable =
-        repository.refreshNowPlayingMovies(offset)
+        repository.refresh(offset, nowPlayingStartAt, nowPlayingEndAt)
                 .subscribeOn(Schedulers.io())
 
     fun loadNowPlayingMovies(index: Int, offset: Int): Completable =

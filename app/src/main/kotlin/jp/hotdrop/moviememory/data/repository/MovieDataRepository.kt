@@ -9,6 +9,7 @@ import jp.hotdrop.moviememory.data.remote.MovieApi
 import jp.hotdrop.moviememory.data.remote.response.MovieResult
 import jp.hotdrop.moviememory.data.remote.response.toMovieEntity
 import jp.hotdrop.moviememory.model.Movie
+import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -19,11 +20,10 @@ class MovieDataRepository @Inject constructor(
 
     /**
      * DBからデータ取得する
-     * 全データ持ってきてFlatMapで絞っているので一時的にメモリ上に置いているのがきになる・・
-     * もっといいやり方はないものか。これ解決策はSQLでなんとかする、になるのだがROWNUMみたいなのないので自作するしかないか
+     * 全データ持ってきてFlatMapで絞っているので一時的にメモリ上に置いているの、もっといいやり方はないものか
      */
-    override fun moviesByPlayingDate(offset: Int): Flowable<List<Movie>> =
-        movieDatabase.getNowPlayingMovies()
+    override fun movies(offset: Int, startAt: LocalDate, endAt: LocalDate): Flowable<List<Movie>> =
+        movieDatabase.getMovies(startAt, endAt)
                 .filter { it.isNotEmpty() }
                 .flatMap {
                     val startIdx = it.size - offset
@@ -49,9 +49,10 @@ class MovieDataRepository @Inject constructor(
                 }
 
     /**
-     * ネットワークから最新データを取得してDBを全リフレッシュする。
+     * ネットワークから最新データを取得してDBをリフレッシュする。
+     * startAtとendAtがnullなら全データをリフレッシュする
      */
-    override fun refreshNowPlayingMovies(offset: Int): Completable =
+    override fun refresh(offset: Int, startAt: LocalDate?, endAt: LocalDate?): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
             dummyGetNowPlaying(0, offset)
             //api.getNowPlaying(0, offset)
@@ -61,7 +62,7 @@ class MovieDataRepository @Inject constructor(
                             Timber.d("  取得した映画情報のタイトル: ${it.title}")
                         }
                         val movieEntities = movieResults.map { it.toMovieEntity() }
-                        movieDatabase.refresh(movieEntities)
+                        movieDatabase.refresh(movieEntities, startAt, endAt)
                     }.doOnError {
                         Timber.e(it, "公開中の映画情報の読み込みに失敗")
                     }.toCompletable()
