@@ -13,7 +13,9 @@ class MovieUseCase @Inject constructor(
 ) {
 
     /**
-     * 公開日からいつまでがNowPlayingかはここで判定すべき
+     * 公開日からいつまでがNowPlayingかはここで判定すべき。
+     * そもそもnowPlayingとかComingSoonは、APIで取得したものではなくアプリ側で勝手に決めて表示するため
+     * その公開日の判断などはここでやるべき。Repositoryは単純に指定の条件でデータを持ってくるだけの方がいい。
      */
     fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> =
             repository.nowPlayingMovies(offset)

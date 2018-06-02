@@ -38,8 +38,13 @@ class NowPlayingMoviesFragment: BaseFragment() {
         ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
     }
 
-    // 状態を持ってしまっているがLiveDataをzipできないので試行錯誤の結果、一旦こうすることにした。
-    private var isRefresh = false
+    // TODO 時代を逆行して状態を持ってしまった。。もっといいやり方がないか模索する・・
+    private var nowObserveState = ObserveState.Normal
+    private enum class ObserveState {
+        Normal,  // 一覧に、取得したアイテムを追加していく
+        Refresh, // 一覧のアイテムを全部クリアして、取得したアイテムをセットする
+        OneStop  // 何もしない。onResumeでLiveDataがActiveになってしまうのでこれで止める
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -60,15 +65,22 @@ class NowPlayingMoviesFragment: BaseFragment() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
                 binding.nowplayingProgress.visibility = View.GONE
-                if (isRefresh) {
-                    adapter.refresh(movies)
-                    isRefresh = false
-                } else {
-                    adapter.addAll(movies)
+                when (nowObserveState) {
+                    ObserveState.Normal -> adapter.addAll(movies)
+                    ObserveState.Refresh -> adapter.refresh(movies)
+                    ObserveState.OneStop -> Timber.i("画面更新しない")
                 }
+                nowObserveState = ObserveState.Normal
             }
         })
         lifecycle.addObserver(viewModel)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // このステータスはsaveInstanceはしない
+        // 理由はFragment自体がkillされたら再度LiveDataがアクティブにならないとデータ取ってこれないので。
+        nowObserveState = ObserveState.OneStop
     }
 
     private fun setupRecyclerView() {
@@ -93,8 +105,8 @@ class NowPlayingMoviesFragment: BaseFragment() {
             setColorSchemeResources(R.color.colorAccent)
             setOnRefreshListener ({
                 Timber.i("start Refresh")
-                scrollListener.resetState()
-                isRefresh = true
+                scrollListener.reset()
+                nowObserveState = ObserveState.Refresh
                 viewModel.onRefresh {
                     Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
                 }

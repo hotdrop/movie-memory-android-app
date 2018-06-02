@@ -60,7 +60,7 @@ abstract class EndlessRecyclerViewScrollListener: RecyclerView.OnScrollListener 
     private fun notLoadingAndNeedToReloadMoreData(lastVisibleItemPosition: Int): Boolean =
             !loading && ((lastVisibleItemPosition + visibleThreshold) > layoutManager.itemCount)
 
-    fun resetState() {
+    fun reset() {
         currentPage = startPageIndex
         previousTotalItemCount = 0
         loading = true
