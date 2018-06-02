@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.domain
+package jp.hotdrop.moviememory.usecase
 
 import io.reactivex.Completable
 import io.reactivex.Flowable

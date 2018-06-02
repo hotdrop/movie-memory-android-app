@@ -5,8 +5,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import jp.hotdrop.moviememory.domain.MovieUseCase
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.usecase.MovieUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
