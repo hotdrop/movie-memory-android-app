@@ -5,16 +5,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import jp.hotdrop.moviememory.domain.MoviesUseCase
+import jp.hotdrop.moviememory.domain.MovieUseCase
 import jp.hotdrop.moviememory.model.Movie
 import timber.log.Timber
 import javax.inject.Inject
 
 class NowPlayingMoviesViewModel @Inject constructor(
-        private val useCase: MoviesUseCase
+        private val useCase: MovieUseCase
 ): ViewModel(), LifecycleObserver {
 
-    private lateinit var compositeDisposable: CompositeDisposable
+    private val compositeDisposable = CompositeDisposable()
     private val offset = 20
 
     val movies: LiveData<List<Movie>> by lazy {
@@ -23,7 +23,6 @@ class NowPlayingMoviesViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        compositeDisposable = CompositeDisposable()
         refresh(null)
     }
 

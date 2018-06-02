@@ -21,7 +21,7 @@ data class MovieEntity(
         var createdAt: Instant
 )
 
-fun MovieEntity.toNowPlayingMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
+fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
     val playingDate = this.playingDate?.let { LocalDate.ofEpochDay(it) }
     val createAt = LocalDateTime.ofInstant(this.createdAt, ZoneId.systemDefault())
     val sawDate = localMovieInfo?.sawDate?.let { LocalDate.ofEpochDay(it) }
@@ -37,7 +37,6 @@ fun MovieEntity.toNowPlayingMovie(localMovieInfo: LocalMovieInfoEntity?): Movie 
             createAt,
             localMovieInfo?.isSaw ?: false,
             sawDate,
-            localMovieInfo?.memo,
-            Movie.Status.NowPlaying
+            localMovieInfo?.memo
     )
 }

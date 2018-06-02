@@ -4,7 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.entity.toNowPlayingMovie
+import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.MovieApi
 import jp.hotdrop.moviememory.data.remote.response.MovieResult
 import jp.hotdrop.moviememory.data.remote.response.toMovieEntity
@@ -36,8 +36,16 @@ class MovieDataRepository @Inject constructor(
                     }
                     movieEntities.map { entity ->
                         val localMovieInfo = movieDatabase.getLocalMovieInfo(entity.id)
-                        entity.toNowPlayingMovie(localMovieInfo)
+                        entity.toMovie(localMovieInfo)
                     }
+                }
+
+    override fun movie(id: Int): Single<Movie> =
+        movieDatabase.getMovie(id)
+                .map { movieEntity ->
+                    Timber.d("映画情報詳細を取得。id=$id")
+                    val localMovieInfo = movieDatabase.getLocalMovieInfo(movieEntity.id)
+                    movieEntity.toMovie(localMovieInfo)
                 }
 
     /**
@@ -45,8 +53,8 @@ class MovieDataRepository @Inject constructor(
      */
     override fun refreshNowPlayingMovies(offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            //dummyGetNowPlaying(0, offset)
-            api.getNowPlaying(0, offset)
+            dummyGetNowPlaying(0, offset)
+            //api.getNowPlaying(0, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -63,8 +71,8 @@ class MovieDataRepository @Inject constructor(
      */
     override fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            //dummyGetNowPlaying(index, offset)
-            api.getNowPlaying(index, offset)
+            dummyGetNowPlaying(index, offset)
+            //api.getNowPlaying(index, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("API経由で公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -85,7 +93,7 @@ class MovieDataRepository @Inject constructor(
             MovieResult(
                     id,
                     "テスト$id",
-                "概要$id",
+                "ここは概要が入ります。映画のあらすじなどで本当は編集可能にしたい。$id",
                     "",
                     "2018-05-10",
                     "Directorです",

@@ -16,6 +16,7 @@ import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.presentation.NavigationController
 import jp.hotdrop.moviememory.presentation.parts.BindingHolder
 import jp.hotdrop.moviememory.presentation.parts.EndlessRecyclerViewScrollListener
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
@@ -24,6 +25,9 @@ import javax.inject.Inject
 
 class NowPlayingMoviesFragment: BaseFragment() {
 
+    @Inject
+    lateinit var navigationController: NavigationController
+
     private lateinit var binding: FragmentNowPlayingMoviesBinding
     private lateinit var adapter: NowPlayingMoviesAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
@@ -31,8 +35,7 @@ class NowPlayingMoviesFragment: BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: NowPlayingMoviesViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)
-                .get(NowPlayingMoviesViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
     }
 
     // 状態を持ってしまっているがLiveDataをzipできないので試行錯誤の結果、一旦こうすることにした。
@@ -116,9 +119,13 @@ class NowPlayingMoviesFragment: BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemMovieBinding>, position: Int) {
             val binding = holder.binding
-            binding?.movie = getItem(position)
-
-            // TODO onClickListenerとか
+            binding?.let {
+                val movie = getItem(position)
+                it.movie = movie
+                it.imageView.setOnClickListener { _ ->
+                    navigationController.navigateToMovieDetail(movie.id)
+                }
+            }
         }
     }
 }

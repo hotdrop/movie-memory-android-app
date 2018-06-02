@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory.data.local
 
 import android.arch.persistence.room.RoomDatabase
 import io.reactivex.Flowable
+import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
@@ -21,6 +22,9 @@ class MovieDatabase @Inject constructor(
         val startAt = endAt.minusMonths(2L)
         return dao.getMovies(startAt.toEpochDay(), endAt.toEpochDay())
     }
+
+    fun getMovie(id: Int): Single<MovieEntity> =
+            dao.getMovie(id)
 
     fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity =
             dao.getLocalMovieInfo(id)

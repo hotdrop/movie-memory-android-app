@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory.data.local.dao
 
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
+import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 
@@ -10,6 +11,9 @@ interface MovieDao {
 
     @Query("SELECT * FROM movie WHERE playingDate BETWEEN :startAt AND :endAt Order by playingDate DESC")
     fun getMovies(startAt: Long, endAt: Long): Flowable<List<MovieEntity>>
+
+    @Query("SELECT * FROM movie WHERE id = :id")
+    fun getMovie(id: Int): Single<MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<MovieEntity>)

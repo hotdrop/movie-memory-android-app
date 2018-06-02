@@ -8,6 +8,7 @@ import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFrag
 
 /**
  * トップ画面にタブを追加する時はFragmentを用意し、ここにクラスを追加する。
+ * このEnumやめたほうがいいのではなかろうか・・
  */
 enum class MovieTab(
         val fragment: Fragment,

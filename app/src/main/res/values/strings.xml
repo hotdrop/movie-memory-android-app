@@ -7,4 +7,8 @@
 
     <string name="tab_name_now_playing">公開中</string>
     <string name="tab_name_coming_soon">公開予定</string>
+
+    <string name="movie_playing_date_label">公開日:</string>
+    <string name="movie_film_director">監督:</string>
+    <string name="movie_overview_title">概要</string>
 </resources>

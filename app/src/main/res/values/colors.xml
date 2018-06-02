@@ -2,5 +2,12 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#21e7f9</color>
+
+    <color name="movieDetailLabel">@color/black</color>
+    <color name="movieDetailText">@color/black</color>
+
+    <!--plane color-->
+    <color name="black">#000000</color>
+    <color name="darkGray">#383838</color>
 </resources>

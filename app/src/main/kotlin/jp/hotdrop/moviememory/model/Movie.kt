@@ -16,15 +16,10 @@ data class Movie(
         val createAt: LocalDateTime?,
         val isSaw: Boolean,
         val sawDate: LocalDate?,
-        val memo: String?,
-        val status: Status
+        val memo: String?
 ): RecyclerDiffable {
-    enum class Status {
-        NowPlaying,
-        ComingSoon,
-        Played
-    }
-
     override fun isItemTheSame(o: RecyclerDiffable) = (id == (o as? Movie)?.id)
     override fun isContentsTheSame(o: RecyclerDiffable) = (this == (o as? Movie ?: false))
+
+    fun toTextByPlayingDate() = playingDate.toString()
 }

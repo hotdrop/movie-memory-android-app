@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
+import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import javax.inject.Inject
 
 /**
@@ -15,6 +16,10 @@ class NavigationController @Inject constructor(
         private val activity: AppCompatActivity
 ) {
     private val containerId: Int = R.id.content_view
+
+    fun navigateToMovieDetail(movieId: Int) {
+        MovieDetailActivity.start(activity, movieId)
+    }
 
     fun navigateToMovies() {
         replaceFragment(MoviesFragment.newInstance())

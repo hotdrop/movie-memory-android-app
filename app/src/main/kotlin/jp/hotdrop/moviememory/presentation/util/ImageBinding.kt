@@ -5,8 +5,8 @@ import android.widget.ImageView
 import jp.hotdrop.moviememory.R
 
 @BindingAdapter("imageUrl")
-fun setImageUrl(view: ImageView, url: String) {
-    if (url.isEmpty()) {
+fun setImageUrl(view: ImageView, url: String?) {
+    if (url.isNullOrEmpty()) {
         return
     }
     GlideApp.with(view.context)
