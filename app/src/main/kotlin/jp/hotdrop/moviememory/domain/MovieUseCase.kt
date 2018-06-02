@@ -18,7 +18,7 @@ class MovieUseCase @Inject constructor(
      * その公開日の判断などはここでやるべき。Repositoryは単純に指定の条件でデータを持ってくるだけの方がいい。
      */
     fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> =
-            repository.nowPlayingMovies(offset)
+            repository.moviesByPlayingDate(offset)
 
     fun movie(id: Int): Single<Movie> =
             repository.movie(id)

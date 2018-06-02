@@ -22,7 +22,7 @@ class MovieDataRepository @Inject constructor(
      * 全データ持ってきてFlatMapで絞っているので一時的にメモリ上に置いているのがきになる・・
      * もっといいやり方はないものか。これ解決策はSQLでなんとかする、になるのだがROWNUMみたいなのないので自作するしかないか
      */
-    override fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> =
+    override fun moviesByPlayingDate(offset: Int): Flowable<List<Movie>> =
         movieDatabase.getNowPlayingMovies()
                 .filter { it.isNotEmpty() }
                 .flatMap {

@@ -5,8 +5,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,28 +13,26 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.NavigationController
 import jp.hotdrop.moviememory.presentation.parts.BindingHolder
-import jp.hotdrop.moviememory.presentation.parts.EndlessRecyclerViewScrollListener
+import jp.hotdrop.moviememory.presentation.parts.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
 import javax.inject.Inject
 
-class NowPlayingMoviesFragment: BaseFragment() {
+class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
     @Inject
     lateinit var navigationController: NavigationController
-
-    private lateinit var binding: FragmentNowPlayingMoviesBinding
-    private lateinit var adapter: NowPlayingMoviesAdapter
-    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel: NowPlayingMoviesViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
     }
+
+    private lateinit var binding: FragmentNowPlayingMoviesBinding
+    private lateinit var adapter: NowPlayingMoviesAdapter
 
     // TODO 時代を逆行して状態を持ってしまった。。もっといいやり方がないか模索する・・
     private var nowObserveState = ObserveState.Normal
@@ -59,8 +55,7 @@ class NowPlayingMoviesFragment: BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        setupRecyclerView()
-        setupSwipeRefresh()
+        initView()
 
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
@@ -83,37 +78,20 @@ class NowPlayingMoviesFragment: BaseFragment() {
         nowObserveState = ObserveState.OneStop
     }
 
-    private fun setupRecyclerView() {
-        binding.nowplayingMoviesRecyclerView.let {
-            val gridLayoutManager = GridLayoutManager(activity, 3)
-            it.layoutManager = gridLayoutManager
-            scrollListener = (object: EndlessRecyclerViewScrollListener(gridLayoutManager) {
-                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                    viewModel.onLoad(page) {
-                        Toast.makeText(this@NowPlayingMoviesFragment.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-            it.addOnScrollListener(scrollListener)
-            adapter = NowPlayingMoviesAdapter()
-            it.adapter = adapter
+    private fun initView() {
+        super.setupRecyclerView(binding.nowplayingMoviesRecyclerView) { page: Int, _: Int ->
+            viewModel.onLoad(page) {
+                Toast.makeText(this@NowPlayingMoviesFragment.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
+        adapter = NowPlayingMoviesAdapter()
+        binding.nowplayingMoviesRecyclerView.adapter = adapter
 
-    private fun setupSwipeRefresh() {
-        binding.nowPlayingSwipeRefresh.apply {
-            setColorSchemeResources(R.color.colorAccent)
-            setOnRefreshListener ({
-                Timber.i("start Refresh")
-                scrollListener.reset()
-                nowObserveState = ObserveState.Refresh
-                viewModel.onRefresh {
-                    Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
-                }
-                if (binding.nowPlayingSwipeRefresh.isRefreshing) {
-                    binding.nowPlayingSwipeRefresh.isRefreshing = false
-                }
-            })
+        super.setupSwipeRefresh(binding.nowPlayingSwipeRefresh) {
+            nowObserveState = ObserveState.Refresh
+            viewModel.onRefresh {
+                Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
