@@ -11,7 +11,6 @@ import android.support.design.widget.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
-import kotlinx.android.synthetic.main.activity_movie_detail.*
 import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
@@ -39,9 +38,15 @@ class MovieDetailActivity: BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+        }
+
+        // Droidkaigi2018のCoordinatorLayoutの動きが素晴らしかったので真似ました。。
+        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val factor = (-verticalOffset).toFloat() / appBarLayout.totalScrollRange.toFloat()
+            binding.toolbarTextColorFactor = factor
         }
 
         viewModel.movie.observe(this, Observer {
@@ -50,6 +55,7 @@ class MovieDetailActivity: BaseActivity() {
             }
         })
         lifecycle.addObserver(viewModel)
+
     }
 
     private fun load() {

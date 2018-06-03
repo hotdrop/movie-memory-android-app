@@ -4,10 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#cc65ff</color>
 
+    <color name="moveDetailAppBarText">@color/white</color>
     <color name="movieDetailLabel">@color/black</color>
     <color name="movieDetailText">@color/black</color>
 
     <!--plane color-->
     <color name="black">#000000</color>
     <color name="darkGray">#383838</color>
+    <color name="white">#FFFFFF</color>
 </resources>

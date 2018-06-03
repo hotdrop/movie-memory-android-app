@@ -5,9 +5,14 @@
     tools:context="jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity">
 
     <data>
+        <import type="jp.hotdrop.moviememory.presentation.util.ColorCalculator" />
         <variable
             name="movie"
             type="jp.hotdrop.moviememory.model.Movie" />
+        <variable
+            name="toolbarTextColorFactor"
+            type="float"
+            />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -33,6 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="?android:attr/actionBarSize"
+                    android:alpha="@{1.0f - toolbarTextColorFactor}"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax">
 
@@ -41,13 +47,16 @@
                         style="@style/MovieTitleForDetail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="32dp"
+                        android:layout_marginBottom="24dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
                         android:text="@{movie.title}"
+                        android:textColor="@color/moveDetailAppBarText"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/image_cover"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="映画タイトルが長いものはどうするか考える必要があるアイウエオですかきくけこ" />
 
                     <ImageView
@@ -70,10 +79,11 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:textColor="@color/moveDetailAppBarText"
                     app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
                     app:layout_constraintBottom_toTopOf="@+id/image_cover"
                     app:navigationIcon="?attr/homeAsUpIndicator"
+                    app:titleTextColor="@{ColorCalculator.calc(toolbarTextColorFactor, @color/moveDetailAppBarText)}"
                     app:title="@{movie.title}"/>
 
             </android.support.design.widget.CollapsingToolbarLayout>
