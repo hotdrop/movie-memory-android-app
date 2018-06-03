@@ -16,19 +16,33 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Title">
+    <!--極力styleを少なくする -->
+    <style name="MovieTitleForDetail">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="MovieDataLabel">
+    <style name="SubTitleLabel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/darkGray</item>
+    </style>
+
+    <style name="ItemLabel">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/darkGray</item>
     </style>
 
-    <style name="MovieDataText">
+    <style name="ItemText">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/darkGray</item>
+    </style>
+
+    <style name="LabelBorder">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:background">@color/darkGray</item>
     </style>
 
 </resources>
