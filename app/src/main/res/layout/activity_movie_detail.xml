@@ -57,7 +57,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/image_cover"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="映画タイトルが長いものはどうするか考える必要があるアイウエオですかきくけこ" />
+                        tools:text="アベンジャーズ インフィニティーウォー(awesome! awesome!)" />
 
                     <ImageView
                         android:id="@+id/image_cover"
@@ -84,7 +84,8 @@
                     app:layout_constraintBottom_toTopOf="@+id/image_cover"
                     app:navigationIcon="?attr/homeAsUpIndicator"
                     app:titleTextColor="@{ColorCalculator.calc(toolbarTextColorFactor, @color/moveDetailAppBarText)}"
-                    app:title="@{movie.title}"/>
+                    app:title="@{movie.title}"
+                    tools:title="アベンジャーズ インフィニティーウォー(awesome! awesome!)"/>
 
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
@@ -107,6 +108,13 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_begin="16dp"/>
 
+                <android.support.constraint.Guideline
+                    android:id="@+id/right_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="16dp"/>
+
                 <TextView
                     android:id="@+id/movie_info_label"
                     style="@style/SubTitleLabel"
@@ -120,6 +128,8 @@
                 <View
                     android:id="@+id/line_movie_title"
                     style="@style/LabelBorder"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/movie_info_label" />
 
                 <TextView
@@ -135,23 +145,96 @@
                 <TextView
                     android:id="@+id/movie_playing_date_text"
                     style="@style/ItemText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:text="@{movie.toTextByPlayingDate()}"
                     app:layout_constraintStart_toEndOf="@+id/movie_playing_date_label"
-                    app:layout_constraintTop_toBottomOf="@+id/line_movie_title"/>
+                    app:layout_constraintTop_toBottomOf="@+id/line_movie_title"
+                    tools:text="2018-04-28"/>
 
                 <TextView
                     android:id="@+id/movie_film_director_label"
                     style="@style/ItemLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/movie_film_director"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/movie_film_director_label"
                     app:layout_constraintTop_toBottomOf="@+id/movie_playing_date_label"
                     app:layout_constraintStart_toStartOf="@id/left_guideline"/>
+
+                <TextView
+                    android:id="@+id/movie_film_director"
+                    style="@style/ItemText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{movie.filmDirector}"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/movie_film_director_label"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_playing_date_label"
+                    tools:text="アンソニー・ルッソ、ジョー・ルッソ" />
+
+                <TextView
+                    android:id="@+id/movie_url_label"
+                    style="@style/SubTitleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableStart="@drawable/ic_local_movies"
+                    android:gravity="center_vertical"
+                    android:text="@string/movie_url_label"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_film_director_label"
+                     />
+
+                <TextView
+                    android:id="@+id/movie_url_text"
+                    style="@style/ItemText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:autoLink="web"
+                    android:gravity="center_vertical"
+                    android:text="@{movie.movieUrl}"
+                    app:layout_constraintStart_toEndOf="@id/movie_url_label"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_film_director"
+                    tools:text="https://www.youtube.com/watch?v=KghFrtkLk0s" />
+                
+                <TextView
+                    android:id="@+id/official_url_label"
+                    style="@style/SubTitleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableStart="@drawable/ic_open_in_browser"
+                    android:gravity="center_vertical"
+                    android:text="@string/movie_official_url_label"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/movie_url_label" />
+
+                <TextView
+                    android:id="@+id/official_url"
+                    style="@style/ItemText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:autoLink="web"
+                    android:gravity="center_vertical"
+                    android:text="@{movie.url}"
+                    app:layout_constraintStart_toEndOf="@id/official_url_label"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_url_text"
+                    tools:text="https://marvel.disney.co.jp/movie/avengers-iw/home.html" />
 
                 <TextView
                     android:id="@+id/movie_overview_label"
@@ -160,23 +243,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/movie_overview_title"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_film_director_label"
+                    app:layout_constraintTop_toBottomOf="@+id/official_url_label"
                     app:layout_constraintStart_toStartOf="@id/left_guideline" />
 
                 <View
                     android:id="@+id/line_overview_title"
                     style="@style/LabelBorder"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/movie_overview_label" />
 
                 <TextView
                     android:id="@+id/movie_overview_text"
                     style="@style/ItemText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/overview_sample"
-                    app:layout_constraintTop_toBottomOf="@+id/line_overview_title"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/line_overview_title" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
@@ -185,6 +272,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:scaleType="center"
