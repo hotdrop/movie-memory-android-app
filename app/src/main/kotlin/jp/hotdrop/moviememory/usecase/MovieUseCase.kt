@@ -13,22 +13,21 @@ class MovieUseCase @Inject constructor(
         private val repository: MovieRepository
 ) {
 
-    // 公開日から2ヶ月以内の映画を公開中とする。refreshがあるのでメンバでlazy定義する
-    private val nowPlayingStartAt by lazy { nowPlayingEndAt.minusMonths(2L) }
-    private val nowPlayingEndAt by lazy { LocalDate.now() }
-
-    fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> =
-        repository.movies(offset, nowPlayingStartAt, nowPlayingEndAt)
+    fun nowPlayingMovies(offset: Int): Flowable<List<Movie>> {
+        val endAt = LocalDate.now()
+        val startAt = endAt.minusMonths(2L)
+        return repository.movies(offset, startAt, endAt)
+    }
 
     fun movie(id: Int): Single<Movie> =
             repository.movie(id)
                     .subscribeOn(Schedulers.io())
 
-    fun refreshNowPlayingMovies(offset: Int): Completable =
-        repository.refresh(offset, nowPlayingStartAt, nowPlayingEndAt)
-                .subscribeOn(Schedulers.io())
-
     fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
             repository.loadNowPlayingMovies(index, offset)
+                    .subscribeOn(Schedulers.io())
+
+    fun refresh(offset: Int): Completable =
+            repository.refresh(offset)
                     .subscribeOn(Schedulers.io())
 }

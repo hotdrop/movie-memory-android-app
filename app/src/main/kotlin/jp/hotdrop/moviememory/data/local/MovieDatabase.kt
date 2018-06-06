@@ -31,9 +31,9 @@ class MovieDatabase @Inject constructor(
         }
     }
 
-    fun refresh(entities: List<MovieEntity>, startAt: LocalDate?, endAt: LocalDate?) {
+    fun refresh(entities: List<MovieEntity>) {
         database.runInTransaction {
-            dao.clearAndInsert(entities, startAt, endAt)
+            dao.clearAndInsert(entities)
         }
     }
 

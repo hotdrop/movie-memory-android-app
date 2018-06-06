@@ -15,11 +15,10 @@ interface MovieRepository {
     @CheckResult
     fun movie(id: Int): Single<Movie>
 
-    // refreshを呼ぶ際は必ずstartAtとendAtを意識する必要があるのでデフォルト値は指定しない。
-    @CheckResult
-    fun refresh(offset: Int, startAt: LocalDate?, endAt: LocalDate?): Completable
-
     @CheckResult
     fun loadNowPlayingMovies(index: Int, offset: Int): Completable
 
+    // TODO 無条件で全リフレッシュが本当にいいかはあとで考える
+    @CheckResult
+    fun refresh(offset: Int): Completable
 }

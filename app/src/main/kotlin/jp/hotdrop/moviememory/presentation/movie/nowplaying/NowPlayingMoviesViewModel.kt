@@ -34,7 +34,7 @@ class NowPlayingMoviesViewModel @Inject constructor(
      * 初回起動時と上にスワイプして最新情報を取得する場合に使う
      */
     private fun refresh(errorPredicate:(() -> Unit)?) {
-        useCase.refreshNowPlayingMovies(offset)
+        useCase.refresh(offset)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onComplete = {

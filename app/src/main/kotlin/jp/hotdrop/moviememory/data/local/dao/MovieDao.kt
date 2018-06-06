@@ -5,7 +5,6 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
-import org.threeten.bp.LocalDate
 
 @Dao
 interface MovieDao {
@@ -32,12 +31,8 @@ interface MovieDao {
     fun insertLocalMovieInfo(entities: LocalMovieInfoEntity)
 
     @Transaction
-    fun clearAndInsert(movies: List<MovieEntity>, startAt: LocalDate?, endAt: LocalDate?) {
-        if (startAt != null && endAt != null) {
-            deleteRange(startAt.toEpochDay(), endAt.toEpochDay())
-        } else {
-            deleteAll()
-        }
+    fun clearAndInsert(movies: List<MovieEntity>) {
+        deleteAll()
         insert(movies)
     }
 }
