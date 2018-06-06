@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#cc65ff</color>
+    <color name="colorAccent">#0019f9</color>
 
     <color name="moveDetailAppBarText">@color/white</color>
     <color name="movieDetailLabel">@color/black</color>

@@ -259,11 +259,61 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/overview_sample"
+                    android:text="overview_sample"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintStart_toStartOf="@id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/line_overview_title" />
+
+                <TextView
+                    android:id="@+id/movie_memo_label"
+                    style="@style/SubTitleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/movie_memo_title"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_overview_text"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline" />
+
+                <View
+                    android:id="@+id/line_memo_title"
+                    style="@style/LabelBorder"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_memo_label" />
+
+                <TextView
+                    android:id="@+id/movie_saw_date_label"
+                    style="@style/ItemLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/movie_saw_date"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/line_memo_title" />
+
+                <TextView
+                    android:id="@+id/movie_saw_date_text"
+                    style="@style/ItemText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@{movie.toTextBySawDate()}"
+                    app:layout_constraintStart_toEndOf="@+id/movie_saw_date_label"
+                    app:layout_constraintTop_toBottomOf="@+id/line_memo_title"
+                    tools:text="2018-04-30"/>
+
+                <TextView
+                    android:id="@+id/movie_local_memo_text"
+                    style="@style/ItemText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{movie.memo}"
+                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_saw_date_label"
+                    tools:text="自分が書いたメモ"/>
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
@@ -272,7 +322,6 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:scaleType="center"

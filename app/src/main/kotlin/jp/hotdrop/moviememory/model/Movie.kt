@@ -22,4 +22,6 @@ data class Movie(
     override fun isContentsTheSame(o: RecyclerDiffable) = (this == (o as? Movie ?: false))
 
     fun toTextByPlayingDate() = playingDate.toString()
+
+    fun toTextBySawDate() = sawDate?.toString() ?: ""
 }
