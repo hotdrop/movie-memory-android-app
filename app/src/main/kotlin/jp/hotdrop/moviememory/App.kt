@@ -25,5 +25,4 @@ open class App: Application() {
     private fun initTreeTenABP() {
         AndroidThreeTen.init(this)
     }
-
 }

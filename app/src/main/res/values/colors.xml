@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#0019f9</color>
+    <color name="colorPrimary">#6b81ff</color>
+    <color name="colorPrimaryDark">#364bd2</color>
+    <color name="colorAccent">#4254f9</color>
 
     <color name="moveDetailAppBarText">@color/white</color>
     <color name="movieDetailLabel">@color/black</color>

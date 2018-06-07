@@ -9,7 +9,7 @@ import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 @Dao
 interface MovieDao {
 
-    @Query("SELECT * FROM movie WHERE playingDate BETWEEN :startAt AND :endAt Order by playingDate DESC")
+    @Query("SELECT * FROM movie WHERE playingDate BETWEEN :startAt AND :endAt ORDER BY playingDate DESC")
     fun getMovies(startAt: Long, endAt: Long): Flowable<List<MovieEntity>>
 
     @Query("SELECT * FROM movie WHERE id = :id")

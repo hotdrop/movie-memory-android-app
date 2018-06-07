@@ -28,9 +28,9 @@ fun MovieResult.toMovieEntity(): MovieEntity {
             this.overview,
             this.imageUrl,
             playingDateEpoch,
-            "",
-            "",
-            "",
+            this.filmDirector,
+            this.url,
+            this.movieUrl,
             createAtInstant
     )
 }

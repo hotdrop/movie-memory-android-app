@@ -3,6 +3,7 @@ package jp.hotdrop.moviememory.data.repository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import jp.hotdrop.moviememory.data.SampleData
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.MovieApi
@@ -26,7 +27,10 @@ class MovieDataRepository @Inject constructor(
         movieDatabase.getMovies(startAt, endAt)
                 .filter { it.isNotEmpty() }
                 .flatMap {
-                    val startIdx = it.size - offset
+                    var startIdx = 0
+                    if (it.size > offset) {
+                        startIdx = it.size - offset
+                    }
                     Flowable.fromArray(it.subList(startIdx, it.size))
                 }
                 .map { movieEntities ->
@@ -50,9 +54,8 @@ class MovieDataRepository @Inject constructor(
 
     /**
      * ネットワークから最新データを取得してDBをリフレッシュする。
-     * startAtとendAtがnullなら全データをリフレッシュする
      */
-    override fun refresh(offset: Int, startAt: LocalDate?, endAt: LocalDate?): Completable =
+    override fun refresh(offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
             dummyGetNowPlaying(0, offset)
             //api.getNowPlaying(0, offset)
@@ -62,7 +65,7 @@ class MovieDataRepository @Inject constructor(
                             Timber.d("  取得した映画情報のタイトル: ${it.title}")
                         }
                         val movieEntities = movieResults.map { it.toMovieEntity() }
-                        movieDatabase.refresh(movieEntities, startAt, endAt)
+                        movieDatabase.refresh(movieEntities)
                     }.doOnError {
                         Timber.e(it, "公開中の映画情報の読み込みに失敗")
                     }.toCompletable()
@@ -85,21 +88,10 @@ class MovieDataRepository @Inject constructor(
                         Timber.e(it, "公開中の映画情報の読み込みに失敗")
                     }.toCompletable()
 
-    private fun dummyGetNowPlaying(index: Int, offset: Int): Single<List<MovieResult>> =
-        Single.just(
-                (index..(index + offset - 1)).map { createDummyResponse(it) }
-        )
 
-    private fun createDummyResponse(id: Int): MovieResult =
-            MovieResult(
-                    id,
-                    "テスト$id",
-                "ここは概要が入ります。映画のあらすじなどで本当は編集可能にしたい。$id",
-                    "",
-                    "2018-05-10",
-                    "Directorです",
-                    "https://urltest.test",
-                    "https://movieurl.test",
-                    "2018-05-20T12:34:56"
-            )
+
+    // こっから下は完全ダミーデータ
+    private val dummyData = SampleData()
+    private fun dummyGetNowPlaying(index: Int, offset: Int): Single<List<MovieResult>> =
+        Single.just(dummyData.create(index, offset))
 }

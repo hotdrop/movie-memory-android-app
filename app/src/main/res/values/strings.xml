@@ -8,7 +8,12 @@
     <string name="tab_name_now_playing">公開中</string>
     <string name="tab_name_coming_soon">公開予定</string>
 
+    <string name="movie_info_label">概要</string>
     <string name="movie_playing_date_label">公開日:</string>
-    <string name="movie_film_director">監督:</string>
-    <string name="movie_overview_title">概要</string>
+    <string name="movie_film_director_label">監督:</string>
+    <string name="movie_url_label">予告動画:</string>
+    <string name="movie_official_url_label">公式サイト:</string>
+    <string name="movie_overview_title">あらすじ</string>
+    <string name="movie_memo_title">メモ</string>
+    <string name="movie_saw_date">観た日:</string>
 </resources>
