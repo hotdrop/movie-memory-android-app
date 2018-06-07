@@ -5,11 +5,12 @@
     <color name="colorAccent">#4254f9</color>
 
     <color name="moveDetailAppBarText">@color/white</color>
-    <color name="movieDetailLabel">@color/black</color>
+    <color name="movieDetailLink">@color/blue</color>
     <color name="movieDetailText">@color/black</color>
 
     <!--plane color-->
     <color name="black">#000000</color>
     <color name="darkGray">#383838</color>
     <color name="white">#FFFFFF</color>
+    <color name="blue">#0000ff</color>
 </resources>

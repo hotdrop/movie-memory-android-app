@@ -6,8 +6,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.widget.Toast
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
@@ -38,10 +40,7 @@ class MovieDetailActivity: BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        setOnClickEvent()
 
         // Droidkaigi2018のCoordinatorLayoutの動きが素晴らしかったので真似ました。。
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -55,7 +54,33 @@ class MovieDetailActivity: BaseActivity() {
             }
         })
         lifecycle.addObserver(viewModel)
+    }
 
+    private fun setOnClickEvent() {
+
+        fun startToWebLink(url: String?) {
+            if (url.isNullOrEmpty()) {
+                Toast.makeText(this, getString(R.string.movie_link_tap_non_url), Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            }
+        }
+
+        binding.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        }
+
+        binding.movieUrlLink.setOnClickListener {
+            val url = viewModel.movie.value?.movieUrl
+            startToWebLink(url)
+        }
+
+        binding.officialUrlLink.setOnClickListener {
+            val url = viewModel.movie.value?.url
+            startToWebLink(url)
+        }
     }
 
     private fun load() {
