@@ -13,7 +13,8 @@
         android:id="@+id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true" >
+        app:cardUseCompatPadding="true"
+        android:layout_margin="4dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,8 +22,9 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
                 app:imageUrl="@{movie.imageUrl}"
                 android:src="@drawable/image_default"
                 app:layout_constraintEnd_toEndOf="parent"
