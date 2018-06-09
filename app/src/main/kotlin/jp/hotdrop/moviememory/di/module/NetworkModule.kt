@@ -1,8 +1,10 @@
 package jp.hotdrop.moviememory.di.module
 
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import jp.hotdrop.moviememory.BuildConfig
+import jp.hotdrop.moviememory.data.remote.AppJsonAdapterFactory
 import jp.hotdrop.moviememory.data.remote.MovieApi
 import jp.hotdrop.moviememory.di.InterceptorModule
 import okhttp3.Interceptor
@@ -33,8 +35,10 @@ class NetworkModule {
         return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BuildConfig.API_ENDPOINT)
+                .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder()
+                        .add(AppJsonAdapterFactory.INSTANCE)
+                        .build()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
     }
 
