@@ -16,6 +16,7 @@ data class Movie(
         val createAt: LocalDateTime?,
         val isSaw: Boolean,
         val sawDate: LocalDate?,
+        val sawPlace: String?,
         val memo: String?
 ): RecyclerDiffable {
     override fun isItemTheSame(o: RecyclerDiffable) = (id == (o as? Movie)?.id)

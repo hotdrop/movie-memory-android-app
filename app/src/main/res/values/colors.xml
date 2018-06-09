@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6b81ff</color>
+    <color name="colorPrimary">#566cfd</color>
     <color name="colorPrimaryDark">#364bd2</color>
     <color name="colorAccent">#4254f9</color>
 
     <color name="moveDetailAppBarText">@color/white</color>
     <color name="movieDetailLink">@color/blue</color>
+    <color name="movieDetailLabel">@color/lightGray</color>
     <color name="movieDetailText">@color/black</color>
 
     <!--plane color-->
     <color name="black">#000000</color>
+    <color name="lightGray">#a4a3a3</color>
     <color name="darkGray">#383838</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#0000ff</color>

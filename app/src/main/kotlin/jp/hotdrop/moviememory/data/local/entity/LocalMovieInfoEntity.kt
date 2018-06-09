@@ -8,5 +8,6 @@ class LocalMovieInfoEntity (
         @PrimaryKey var id: Int,
         var isSaw: Boolean,
         var sawDate: Long?,
+        var sawPlace: String?,
         var memo: String?
 )

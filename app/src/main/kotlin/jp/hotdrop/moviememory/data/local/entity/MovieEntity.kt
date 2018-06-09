@@ -37,6 +37,7 @@ fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
             createAt,
             localMovieInfo?.isSaw ?: false,
             sawDate,
+            localMovieInfo?.sawPlace,
             localMovieInfo?.memo
     )
 }

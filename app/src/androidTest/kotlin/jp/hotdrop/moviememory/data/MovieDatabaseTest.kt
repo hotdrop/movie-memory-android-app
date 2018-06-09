@@ -151,6 +151,7 @@ class MovieDatabaseTest {
             LocalMovieInfoEntity(id,
                     false,
                     LocalDate.parse("2018-05-20").toEpochDay(),
+                    "Dummy Place",
                     "Memo dummy"
             )
 }

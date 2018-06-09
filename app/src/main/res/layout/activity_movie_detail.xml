@@ -89,14 +89,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="16dp"/>
+                    app:layout_constraintGuide_begin="@dimen/guide_line_default_margin"/>
 
                 <android.support.constraint.Guideline
                     android:id="@+id/right_guideline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_end="16dp"/>
+                    app:layout_constraintGuide_end="@dimen/guide_line_default_margin"/>
 
                 <ImageView
                     android:id="@+id/image_cover"
@@ -111,6 +111,7 @@
                     app:layout_constraintStart_toStartOf="@id/left_guideline"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!--イメージの右側の項目-->
                 <TextView
                     android:id="@+id/movie_playing_date_label"
                     style="@style/ItemLabel"
@@ -202,7 +203,7 @@
                     app:layout_constraintStart_toEndOf="@id/image_cover"
                     app:layout_constraintTop_toBottomOf="@id/movie_url_link" />
 
-
+                <!-- あらすじ -->
                 <TextView
                     android:id="@+id/movie_overview_label"
                     style="@style/MovieDetailSubTitle"
@@ -233,6 +234,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/line_overview_title"
                     tools:text="ここには概要が入ります。"/>
 
+                <!-- ここからメモ枠 -->
                 <TextView
                     android:id="@+id/movie_memo_label"
                     style="@style/MovieDetailSubTitle"
@@ -265,12 +267,11 @@
                     style="@style/ItemText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@{movie.toTextBySawDate()}"
-                    app:layout_constraintStart_toEndOf="@+id/movie_saw_date_label"
-                    app:layout_constraintTop_toBottomOf="@+id/line_memo_title"
-                    tools:text="2018-04-30"/>
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_saw_date_label"
+                    tools:text="2018-04-30" />
 
                 <TextView
                     android:id="@+id/movie_local_memo_text"
@@ -280,8 +281,8 @@
                     android:layout_marginTop="16dp"
                     android:text="@{movie.memo}"
                     app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_saw_date_label"
-                    tools:text="自分が書いたメモ"/>
+                    app:layout_constraintTop_toBottomOf="@+id/movie_saw_date_text"
+                    tools:text="自分が書いたメモ" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>

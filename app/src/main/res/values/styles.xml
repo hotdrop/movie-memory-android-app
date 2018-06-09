@@ -14,6 +14,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!--極力styleを少なくする -->
@@ -24,14 +25,14 @@
 
     <style name="MovieDetailSubTitle">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/movieDetailText</item>
+        <item name="android:textColor">@color/movieDetailLabel</item>
     </style>
 
     <style name="ItemLabel">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/movieDetailText</item>
+        <item name="android:textColor">@color/movieDetailLabel</item>
     </style>
-    
+
     <style name="ItemWebLink" parent="ItemLabel">
         <item name="android:textColor">@color/movieDetailLink</item>
     </style>
@@ -39,6 +40,19 @@
     <style name="ItemText">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/movieDetailText</item>
+    </style>
+
+    <style name="SingleLineEditText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/movieDetailText</item>
+        <item name="android:inputType">text</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="MultiLineEditText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/movieDetailText</item>
+        <item name="android:inputType">textMultiLine</item>
     </style>
 
     <style name="LabelBorder">
