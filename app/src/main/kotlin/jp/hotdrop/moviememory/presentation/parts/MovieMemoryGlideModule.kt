@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.util
+package jp.hotdrop.moviememory.presentation.parts
 
 import android.content.Context
 import com.bumptech.glide.Glide

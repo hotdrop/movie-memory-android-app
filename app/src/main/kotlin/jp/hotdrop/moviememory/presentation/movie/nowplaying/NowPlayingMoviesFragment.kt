@@ -14,8 +14,8 @@ import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.NavigationController
+import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.parts.BindingHolder
-import jp.hotdrop.moviememory.presentation.parts.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
 import javax.inject.Inject

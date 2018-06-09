@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.util
+package jp.hotdrop.moviememory.presentation.parts
 
 import android.support.annotation.ColorInt
 import android.support.v4.graphics.ColorUtils

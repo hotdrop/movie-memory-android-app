@@ -2,7 +2,7 @@ package jp.hotdrop.moviememory.di.component
 
 import dagger.Component
 import jp.hotdrop.moviememory.di.module.*
-import jp.hotdrop.moviememory.presentation.util.MovieMemoryGlideModule
+import jp.hotdrop.moviememory.presentation.parts.MovieMemoryGlideModule
 import javax.inject.Singleton
 
 @Singleton

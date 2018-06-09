@@ -5,7 +5,7 @@
     tools:context="jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity">
 
     <data>
-        <import type="jp.hotdrop.moviememory.presentation.util.ColorCalculator" />
+        <import type="jp.hotdrop.moviememory.presentation.parts.ColorCalculator" />
         <variable
             name="movie"
             type="jp.hotdrop.moviememory.model.Movie" />
