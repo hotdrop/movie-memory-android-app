@@ -17,7 +17,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import org.threeten.bp.LocalDate
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -54,27 +53,11 @@ class MovieRepositoryTest {
         MockServer().run {
             start()
             val repository = MovieDataRepository(MockHttpClient(this.getUrl()).movieApi(), movieDatabase)
-            repository.refresh(2, null, null)
+            repository.refresh(2)
                     .test()
                     .assertNoErrors()
                     .assertComplete()
-            verify(movieDatabase).refresh(movieEntities, null, null)
-            stop()
-        }
-    }
-
-    fun refreshByBetweenTest() {
-        val movieEntities = createMoviesForReadJson("movies_now_playing.json")
-        val endAt = LocalDate.now()
-        val startAt = endAt.minusMonths(2L)
-        MockServer().run {
-            start()
-            val repository = MovieDataRepository(MockHttpClient(this.getUrl()).movieApi(), movieDatabase)
-            repository.refresh(2, startAt, endAt)
-                    .test()
-                    .assertNoErrors()
-                    .assertComplete()
-            verify(movieDatabase).refresh(movieEntities, startAt, endAt)
+            verify(movieDatabase).refresh(movieEntities)
             stop()
         }
     }
