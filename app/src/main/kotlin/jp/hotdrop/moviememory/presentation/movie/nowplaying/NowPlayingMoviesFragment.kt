@@ -34,7 +34,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private lateinit var binding: FragmentNowPlayingMoviesBinding
     private lateinit var adapter: NowPlayingMoviesAdapter
 
-    // TODO 時代を逆行して状態を持ってしまった。。もっといいやり方がないか模索する・・
+    // TODO もっといいやり方がないか模索する・・
     private var nowObserveState = ObserveState.Normal
     private enum class ObserveState {
         Normal,  // 一覧に、取得したアイテムを追加していく
@@ -81,7 +81,8 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private fun initView() {
         super.setupRecyclerView(binding.nowplayingMoviesRecyclerView) { page: Int, _: Int ->
             viewModel.onLoad(page) {
-                Toast.makeText(this@NowPlayingMoviesFragment.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
+                val message = getString(R.string.toast_message_failure_load_data)
+                Toast.makeText(this@NowPlayingMoviesFragment.context, message, Toast.LENGTH_SHORT).show()
             }
         }
         adapter = NowPlayingMoviesAdapter()
@@ -90,7 +91,8 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         super.setupSwipeRefresh(binding.nowPlayingSwipeRefresh) {
             nowObserveState = ObserveState.Refresh
             viewModel.onRefresh {
-                Toast.makeText(this.context, "データを取得できませんでした。", Toast.LENGTH_SHORT).show()
+                val message = getString(R.string.toast_message_failure_load_data)
+                Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
             }
         }
     }

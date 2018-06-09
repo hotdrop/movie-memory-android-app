@@ -5,6 +5,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.SampleData
 import jp.hotdrop.moviememory.data.local.MovieDatabase
+import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.MovieApi
 import jp.hotdrop.moviememory.data.remote.response.MovieResult
@@ -88,7 +89,21 @@ class MovieDataRepository @Inject constructor(
                         Timber.e(it, "公開中の映画情報の読み込みに失敗")
                     }.toCompletable()
 
+    private fun Movie.toLocal(): LocalMovieInfoEntity =
+            LocalMovieInfoEntity(
+                    this.id,
+                    this.isSaw,
+                    this.sawDate?.toEpochDay(),
+                    this.sawPlace,
+                    this.memo
+            )
 
+    override fun saveLocalMovieInfo(movie: Movie): Completable =
+        Completable.create {
+            Timber.d("編集した値を保存します。isSaw = ${movie.isSaw}, sawDate=${movie.sawDate}, sawPlace=${movie.sawPlace}")
+            movieDatabase.saveLocalInfo(movie.toLocal())
+            it.onComplete()
+        }
 
     // こっから下は完全ダミーデータ
     private val dummyData = SampleData()

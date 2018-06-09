@@ -95,7 +95,7 @@
                 android:hint="@string/movie_saw_place"
                 android:maxLength="100"
                 android:maxLines="1"
-                android:text="@{movie.sawPlace}"
+                android:text="@={movie.sawPlace}"
                 tools:text="TOHOシネマズ日本橋" />
 
         </android.support.design.widget.TextInputLayout>
@@ -116,7 +116,7 @@
                 android:hint="@string/movie_memo_title"
                 android:maxLength="1000"
                 android:maxLines="20"
-                android:text="@{movie.memo}"
+                android:text="@={movie.memo}"
                 tools:text="ここにはメモが入ります。" />
 
         </android.support.design.widget.TextInputLayout>

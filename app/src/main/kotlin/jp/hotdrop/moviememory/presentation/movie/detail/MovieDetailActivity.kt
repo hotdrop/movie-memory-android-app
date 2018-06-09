@@ -13,9 +13,13 @@ import android.widget.Toast
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
+import jp.hotdrop.moviememory.presentation.NavigationController
 import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
+
+    @Inject
+    lateinit var navigationController: NavigationController
 
     private lateinit var binding: ActivityMovieDetailBinding
 
@@ -42,7 +46,7 @@ class MovieDetailActivity: BaseActivity() {
 
         setOnClickEvent()
 
-        // Droidkaigi2018のCoordinatorLayoutの動きが素晴らしかったので真似ました。。
+        // Droidkaigi2018のCoordinatorLayoutの動きが素晴らしかったので真似ました。
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val factor = (-verticalOffset).toFloat() / appBarLayout.totalScrollRange.toFloat()
             binding.toolbarTextColorFactor = factor
@@ -67,19 +71,22 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
 
+        // TODO このfabは単なるお気に入りにする予定
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
 
         binding.movieUrlLink.setOnClickListener {
-            val url = viewModel.movie.value?.movieUrl
-            startToWebLink(url)
+            viewModel.movie.value?.let { startToWebLink(it.imageUrl) }
         }
 
         binding.officialUrlLink.setOnClickListener {
-            val url = viewModel.movie.value?.url
-            startToWebLink(url)
+            viewModel.movie.value?.let { startToWebLink(it.url) }
+        }
+
+        binding.movieEditImage.setOnClickListener {
+            binding.movie?.let { navigationController.navigationToMovieEdit(it.id) }
         }
     }
 

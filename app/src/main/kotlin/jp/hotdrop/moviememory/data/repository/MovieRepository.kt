@@ -18,7 +18,10 @@ interface MovieRepository {
     @CheckResult
     fun loadNowPlayingMovies(index: Int, offset: Int): Completable
 
-    // TODO 無条件で全リフレッシュが本当にいいかはあとで考える
+    // TODO 無条件で全リフレッシュが本当にいいか考える
     @CheckResult
     fun refresh(offset: Int): Completable
+
+    @CheckResult
+    fun saveLocalMovieInfo(movie: Movie): Completable
 }

@@ -30,4 +30,8 @@ class MovieUseCase @Inject constructor(
     fun refresh(offset: Int): Completable =
             repository.refresh(offset)
                     .subscribeOn(Schedulers.io())
+
+    fun saveLocalEdit(movie: Movie): Completable =
+            repository.saveLocalMovieInfo(movie)
+                    .subscribeOn(Schedulers.io())
 }
