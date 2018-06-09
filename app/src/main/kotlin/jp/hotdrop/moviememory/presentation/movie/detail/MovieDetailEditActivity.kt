@@ -71,7 +71,6 @@ class MovieDetailEditActivity: BaseActivity() {
     }
 
     private fun showDatePickerDialog() {
-        //val sawDate = binding.movie?.sawDate ?: LocalDate.now()
         var sawDate = LocalDate.now()
         if (binding.movieSawDateText.text.isNotEmpty()) {
             sawDate = LocalDate.parse(binding.movieSawDateText.text)
