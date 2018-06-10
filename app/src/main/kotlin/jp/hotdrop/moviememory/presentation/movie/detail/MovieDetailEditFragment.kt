@@ -5,42 +5,54 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.ActivityMovieDetailEditBinding
-import jp.hotdrop.moviememory.presentation.BaseActivity
-import kotlinx.android.synthetic.main.activity_movie_detail_edit.*
+import jp.hotdrop.moviememory.databinding.FragmentMovieDetailEditBinding
+import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.presentation.BaseFragment
+import kotlinx.android.synthetic.main.fragment_movie_detail_edit.*
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
-class MovieDetailEditActivity: BaseActivity() {
-
-    private lateinit var binding: ActivityMovieDetailEditBinding
+class MovieDetailEditFragment: BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieDetailEditViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java)
+    private val viewModel: MovieDetailEditViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java) }
+    private lateinit var binding: FragmentMovieDetailEditBinding
+    private val movieId by lazy { arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail_edit)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentMovieDetailEditBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        getComponent().inject(this)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView()
         load()
     }
 
     private fun initView() {
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowTitleEnabled(false)
+            }
+        }
 
         viewModel.movie.observe(this, Observer {
             it?.let { binding.movie = it }
@@ -53,9 +65,8 @@ class MovieDetailEditActivity: BaseActivity() {
         viewModel.saveSuccess.observe(this, Observer {
             it?.let {
                 if (it) {
-                    val message = getString(R.string.toast_message_save_success)
-                    Toast.makeText(this@MovieDetailEditActivity, message, Toast.LENGTH_SHORT).show()
-                    finish()
+                    Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
+                    (activity as MovieDetailActivity).showDetailFragment(movieId)
                 }
             }
         })
@@ -66,7 +77,6 @@ class MovieDetailEditActivity: BaseActivity() {
     }
 
     private fun load() {
-        val movieId = intent.getIntExtra(EXTRA_TAG, -1)
         viewModel.loadMovie(movieId)
     }
 
@@ -76,7 +86,7 @@ class MovieDetailEditActivity: BaseActivity() {
             sawDate = LocalDate.parse(binding.movieSawDateText.text)
         }
         DatePickerDialog(
-                this,
+                activity,
                 DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                     val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                     Timber.d("選択した日付 = $selectedDate")
@@ -87,9 +97,8 @@ class MovieDetailEditActivity: BaseActivity() {
 
     companion object {
         private const val EXTRA_TAG = "EXTRA_TAG"
-        fun start(context: Context, movieId: Int) =
-                context.startActivity(Intent(context, MovieDetailEditActivity::class.java).apply {
-                    putExtra(EXTRA_TAG, movieId)
-                })
+        fun newInstance(movieId: Int) = MovieDetailEditFragment().apply {
+            arguments = Bundle().apply { putInt(EXTRA_TAG, movieId) }
+        }
     }
 }

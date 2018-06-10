@@ -29,4 +29,8 @@ data class Movie(
     fun setSawDateFromText(strSawDate: String) {
         sawDate = LocalDate.parse(strSawDate)
     }
+
+    companion object {
+        const val ILLEGAL_MOVIE_ID = -1
+    }
 }

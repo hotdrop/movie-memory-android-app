@@ -25,10 +25,6 @@
             android:name=".presentation.movie.detail.MovieDetailActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".presentation.movie.detail.MovieDetailEditActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
