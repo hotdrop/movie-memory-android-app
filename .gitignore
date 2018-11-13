@@ -9,5 +9,7 @@ schemas
 /captures
 .externalNativeBuild
 
-app/google-services.json
+app/src/debug/google-services.json
+app/src/main/google-services.json
+app/src/release/google-services.json
 app/src/main/kotlin/jp/hotdrop/moviememory/data/SampleData.kt
