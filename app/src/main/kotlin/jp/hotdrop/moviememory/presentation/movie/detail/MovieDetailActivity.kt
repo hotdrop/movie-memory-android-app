@@ -2,10 +2,10 @@ package jp.hotdrop.moviememory.presentation.movie.detail
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
@@ -42,7 +42,7 @@ class MovieDetailActivity: BaseActivity() {
         startActivity(intent)
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.content_view, fragment)

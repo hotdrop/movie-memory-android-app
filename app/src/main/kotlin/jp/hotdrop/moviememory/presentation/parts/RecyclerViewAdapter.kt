@@ -1,10 +1,10 @@
 package jp.hotdrop.moviememory.presentation.parts
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import timber.log.Timber
 import kotlin.properties.Delegates
 
-abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: RecyclerView.ViewHolder>: RecyclerView.Adapter<VH>() {
+abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: androidx.recyclerview.widget.RecyclerView.ViewHolder>: androidx.recyclerview.widget.RecyclerView.Adapter<VH>() {
 
     private val list: MutableList<T> by Delegates.observable(mutableListOf()) { _, oldList, newList ->
         calculateDiff(oldList, newList).dispatchUpdatesTo(this)

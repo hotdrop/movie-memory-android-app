@@ -1,7 +1,7 @@
 package jp.hotdrop.moviememory.presentation.movie
 
-import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.presentation.movie.comingsoon.ComingSoonMoviesFragment
 import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFragment
@@ -11,7 +11,7 @@ import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFrag
  * このEnumやめたほうがいいのではなかろうか・・
  */
 enum class MovieTab(
-        val fragment: Fragment,
+        val fragment: androidx.fragment.app.Fragment,
         @StringRes val titleRes: Int
 ) {
     NowPlaying(NowPlayingMoviesFragment.newInstance(), R.string.tab_name_now_playing),

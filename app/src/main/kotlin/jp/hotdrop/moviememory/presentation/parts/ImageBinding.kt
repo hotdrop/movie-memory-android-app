@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.presentation.parts
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.widget.ImageView
 import com.google.firebase.storage.FirebaseStorage
 import jp.hotdrop.moviememory.R

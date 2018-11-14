@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.presentation
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import jp.hotdrop.moviememory.App
 import jp.hotdrop.moviememory.di.component.ActivityComponent

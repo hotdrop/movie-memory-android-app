@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.data.local
 
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.RoomDatabase
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao

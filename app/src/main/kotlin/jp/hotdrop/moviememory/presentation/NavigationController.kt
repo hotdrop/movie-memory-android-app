@@ -1,7 +1,7 @@
 package jp.hotdrop.moviememory.presentation
 
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
@@ -25,7 +25,7 @@ class NavigationController @Inject constructor(
         MovieDetailActivity.start(activity, movieId)
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
         activity.supportFragmentManager
                 .beginTransaction()
                 .replace(containerId, fragment)

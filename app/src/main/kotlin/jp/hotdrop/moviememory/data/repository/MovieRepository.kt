@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.data.repository
 
-import android.support.annotation.CheckResult
+import androidx.annotation.CheckResult
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

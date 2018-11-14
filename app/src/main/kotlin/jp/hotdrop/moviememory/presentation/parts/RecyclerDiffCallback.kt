@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.presentation.parts
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 
 private class RecyclerDiffCallback(
         private val oldList: List<RecyclerDiffable>,

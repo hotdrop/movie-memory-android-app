@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'org.owasp.dependencycheck'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     dataBinding {
         enabled = true
@@ -17,11 +17,12 @@ android {
     defaultConfig {
         applicationId "jp.hotdrop.moviememory"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -29,38 +30,24 @@ android {
             }
         }
     }
-    android {
-        sourceSets {
-            main {
-                java.srcDir 'src/main/kotlin'
-            }
-            debug {
-                java.srcDir 'src/debug/kotlin'
-            }
-            release {
-                java.srcDir 'src/release/kotlin'
-            }
-            test {
-                java.srcDir 'src/test/kotlin'
-            }
-            androidTest {
-                java.srcDir 'src/androidTest/kotlin'
-            }
-        }
-    }
     buildTypes {
         debug {
-            debuggable true
-            minifyEnabled false
             buildConfigField 'String', 'API_ENDPOINT', '"https://localhost/api/v1/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            debuggable false
             minifyEnabled true
             buildConfigField 'String', 'API_ENDPOINT', '"https://XXXX/api/v1/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        debug.java.srcDirs += 'src/debug/kotlin'
+        release.java.srcDirs += 'src/release/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
 }
 
@@ -75,29 +62,29 @@ dependencies {
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.android.support:support-v4:${support_lib_version}"
-    implementation "com.android.support:appcompat-v7:${support_lib_version}"
-    implementation "com.android.support:design:${support_lib_version}"
-    implementation "com.android.support:support-annotations:${support_lib_version}"
-    implementation "com.android.support:recyclerview-v7:${support_lib_version}"
-    implementation "com.android.support:cardview-v7:${support_lib_version}"
-    implementation "com.android.support:support-vector-drawable:${support_lib_version}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.1.0-alpha01'
+    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.core:core-ktx:1.0.1'
+
+    implementation 'com.android.support:multidex:1.0.3'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-storage:16.0.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.firebaseui:firebase-ui-storage:4.0.1'
 
     // android architecture components
-    implementation 'android.arch.lifecycle:runtime:1.1.1'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
-    implementation 'android.arch.persistence.room:runtime:1.1.0'
-    implementation 'android.arch.persistence.room:rxjava2:1.1.0'
-    kapt 'android.arch.persistence.room:compiler:1.1.0'
-
-    // data binding
-    kapt 'com.android.databinding:compiler:3.1.2'
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha02'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha02'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha02'
 
     // dagger
     implementation 'com.google.dagger:dagger:2.15'
@@ -126,9 +113,10 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
 
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    implementation 'com.github.bumptech.glide:okhttp3-integration:4.7.1'
-    kapt 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
+    kapt 'androidx.annotation:annotation:1.0.0'
+    kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
     // stetho
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
@@ -145,17 +133,17 @@ dependencies {
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
 
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.10.0'
-    testImplementation "android.arch.core:core-testing:1.1.1"
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
     testImplementation('org.threeten:threetenbp:1.3.2') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 
     androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation "com.android.support.test:rules:1.0.2"
-    androidTestImplementation "android.arch.persistence.room:testing:1.1.0"
-    androidTestImplementation "android.arch.core:core-testing:1.1.1"
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation "androidx.test:rules:1.1.0"
+    androidTestImplementation "androidx.room:room-testing:2.1.0-alpha02"
+    androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
 }
 
