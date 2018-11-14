@@ -3,12 +3,10 @@ package jp.hotdrop.moviememory.data.repository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import jp.hotdrop.moviememory.data.SampleData
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.MovieApi
-import jp.hotdrop.moviememory.data.remote.response.MovieResult
 import jp.hotdrop.moviememory.data.remote.response.toMovieEntity
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.LocalDate
@@ -58,8 +56,7 @@ class MovieDataRepository @Inject constructor(
      */
     override fun refresh(offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            dummyGetNowPlaying(0, offset)
-            //api.getNowPlaying(0, offset)
+            api.getNowPlaying(0, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -76,8 +73,7 @@ class MovieDataRepository @Inject constructor(
      */
     override fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
             // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            dummyGetNowPlaying(index, offset)
-            //api.getNowPlaying(index, offset)
+            api.getNowPlaying(index, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("API経由で公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -104,9 +100,4 @@ class MovieDataRepository @Inject constructor(
             movieDatabase.saveLocalInfo(movie.toLocal())
             it.onComplete()
         }
-
-    // こっから下は完全ダミーデータ
-    private val dummyData = SampleData()
-    private fun dummyGetNowPlaying(index: Int, offset: Int): Single<List<MovieResult>> =
-        Single.just(dummyData.create(index, offset))
 }

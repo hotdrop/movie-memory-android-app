@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.data.remote
 
-import android.support.annotation.CheckResult
+import androidx.annotation.CheckResult
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.remote.response.MovieResult

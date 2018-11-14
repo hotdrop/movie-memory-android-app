@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.presentation.movie.nowplaying
 
-import android.arch.lifecycle.*
+import androidx.lifecycle.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo

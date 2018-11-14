@@ -1,6 +1,6 @@
 package jp.hotdrop.moviememory.data.local.entity
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import org.threeten.bp.Instant
 
 object Converters {

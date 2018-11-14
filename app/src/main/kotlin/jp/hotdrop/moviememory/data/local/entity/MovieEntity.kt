@@ -1,7 +1,7 @@
 package jp.hotdrop.moviememory.data.local.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate

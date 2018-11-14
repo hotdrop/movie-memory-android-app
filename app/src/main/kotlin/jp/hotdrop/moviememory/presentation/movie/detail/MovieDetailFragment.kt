@@ -1,15 +1,16 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.material.appbar.AppBarLayout
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieDetailBinding
 import jp.hotdrop.moviememory.model.Movie
@@ -51,10 +52,10 @@ class MovieDetailFragment: BaseFragment() {
         }
 
         // Droidkaigi2018のCoordinatorLayoutの動きが素晴らしかったので真似ました。
-        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val factor = (-verticalOffset).toFloat() / appBarLayout.totalScrollRange.toFloat()
             binding.toolbarTextColorFactor = factor
-        }
+        })
 
         viewModel.movie.observe(this, Observer {
             it?.let {
