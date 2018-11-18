@@ -1,15 +1,14 @@
 package jp.hotdrop.moviememory.presentation
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
-import javax.inject.Inject
+import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
 
 class MainActivity: BaseActivity() {
-
-    @Inject
-    lateinit var navigationController: NavigationController
 
     private val binding: ActivityMainBinding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -34,10 +33,20 @@ class MainActivity: BaseActivity() {
             item.isChecked = true
 
             when (item.itemId) {
-                R.id.navigation_movie -> navigationController.navigateToMovies()
+                R.id.navigation_movie -> navigationToMovies()
                 R.id.navigation_dashboard -> { }
                 R.id.navigation_notifications -> { }
             }
+        }
+    }
+
+    private fun navigationToMovies() {
+        replaceFragment(MoviesFragment.newInstance())
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.transaction {
+            replace(R.id.content_view, fragment)
         }
     }
 
