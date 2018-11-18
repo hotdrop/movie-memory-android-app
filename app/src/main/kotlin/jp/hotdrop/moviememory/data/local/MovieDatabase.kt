@@ -1,7 +1,6 @@
 package jp.hotdrop.moviememory.data.local
 
 import androidx.room.RoomDatabase
-import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
@@ -17,14 +16,14 @@ class MovieDatabase @Inject constructor(
     fun findMovies(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
             dao.selectMovies(startAt.toEpochDay(), endAt.toEpochDay())
 
-    fun getMovie(id: Int): Single<MovieEntity> =
-            dao.getMovie(id)
+    fun findMovie(id: Int): Single<MovieEntity> =
+            dao.selectMovie(id)
 
     fun isExist(): Single<Boolean> =
             dao.count().map { it > 0 }
 
-    fun getRecentMovieId(): Single<Int> =
-            dao.getRecentMovieId()
+    fun findRecentMovieId(): Single<Int> =
+            dao.selectRecentMovieId()
 
     fun save(entities: List<MovieEntity>) {
         database.runInTransaction {
@@ -32,14 +31,8 @@ class MovieDatabase @Inject constructor(
         }
     }
 
-    fun refresh(entities: List<MovieEntity>) {
-        database.runInTransaction {
-            dao.clearAndInsert(entities)
-        }
-    }
-
-    fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity =
-            dao.getLocalMovieInfo(id)
+    fun findLocalMovieInfo(id: Int): LocalMovieInfoEntity =
+            dao.selectLocalMovieInfo(id)
 
     fun saveLocalInfo(entity: LocalMovieInfoEntity) {
         database.runInTransaction {

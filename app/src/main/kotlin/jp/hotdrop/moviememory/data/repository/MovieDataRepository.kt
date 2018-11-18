@@ -1,7 +1,6 @@
 package jp.hotdrop.moviememory.data.repository
 
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
@@ -35,39 +34,44 @@ class MovieDataRepository @Inject constructor(
                     }
                 }
 
-    override fun findMovies(startIndex: Int, offset: Int, startAt: LocalDate, endAt: LocalDate): Single<List<Movie>> =
-            movieDatabase.findMovies(startAt, endAt)
-                    .map {
-                        val endIndex = if (startIndex + offset < it.size) {
-                            startIndex + offset - 1
-                        } else {
-                            it.size - 1
+    override fun findNowPlayingMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
+        val endAt = LocalDate.now()
+        val startAt = endAt.minusMonths(2L)
+        return movieDatabase.findMovies(startAt, endAt)
+                .map { movieEntities ->
+                    when {
+                        startIndex >= movieEntities.size -> {
+                            println("  最後まで取得済みのため何もしない")
+                            listOf()
                         }
-                        println("  $startIndex から $endIndex の映画情報を取得")
-                        it.subList(startIndex, endIndex)
-                        // TODO startIndexが保持量以上なら何もしない
-                    }.map { movieEntities ->
-                        movieEntities.map { entity ->
-                            val localMovieInfo = movieDatabase.getLocalMovieInfo(entity.id)
-                            entity.toMovie(localMovieInfo)
+                        else -> {
+                            val endIndex = if (startIndex + offset < movieEntities.size) startIndex + offset - 1 else movieEntities.size - 1
+                            println("  $startIndex から $endIndex の映画情報を取得")
+                            movieEntities.subList(startIndex, endIndex)
+                                    .map { entity ->
+                                        val localMovieInfo = movieDatabase.findLocalMovieInfo(entity.id)
+                                        entity.toMovie(localMovieInfo)
+                                    }
                         }
                     }
-
-    override fun movie(id: Int): Single<Movie> =
-        movieDatabase.getMovie(id)
-                .map { movieEntity ->
-                    Timber.d("映画情報詳細を取得。id=$id")
-                    val localMovieInfo = movieDatabase.getLocalMovieInfo(movieEntity.id)
-                    movieEntity.toMovie(localMovieInfo)
                 }
+    }
 
     /**
      * 最新の映画情報を取得する
      */
     override fun loadRecentMovies(): Completable =
-        movieDatabase.getRecentMovieId()
-                .flatMapCompletable {
-                    refresh(it)
+            movieDatabase.findRecentMovieId()
+                    .flatMapCompletable {
+                        refresh(it)
+                    }
+
+    override fun movie(id: Int): Single<Movie> =
+        movieDatabase.findMovie(id)
+                .map { movieEntity ->
+                    Timber.d("映画情報詳細を取得。id=$id")
+                    val localMovieInfo = movieDatabase.findLocalMovieInfo(movieEntity.id)
+                    movieEntity.toMovie(localMovieInfo)
                 }
 
     /**

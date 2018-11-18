@@ -43,7 +43,7 @@ class MovieRepositoryTest {
 //        MockServer().run {
 //            start()
 //            val repository = MovieDataRepository(MockHttpClient(this.getUrl()).movieApi(), movieDatabase)
-//            repository.findMovies(1, 2)
+//            repository.findNowPlayingMovies(1, 2)
 //                    .test()
 //                    .assertNoErrors()
 //                    .assertComplete()

@@ -16,10 +16,10 @@ interface MovieDao {
     fun count(): Single<Long>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun getMovie(id: Int): Single<MovieEntity>
+    fun selectMovie(id: Int): Single<MovieEntity>
 
     @Query("SELECT max(id) FROM movie")
-    fun getRecentMovieId(): Single<Int>
+    fun selectRecentMovieId(): Single<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<MovieEntity>)
@@ -28,7 +28,7 @@ interface MovieDao {
     fun deleteAll()
 
     @Query("SELECT * FROM movie_local_info WHERE id = :id")
-    fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity
+    fun selectLocalMovieInfo(id: Int): LocalMovieInfoEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocalMovieInfo(entities: LocalMovieInfoEntity)

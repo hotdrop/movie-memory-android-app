@@ -1,12 +1,10 @@
 package jp.hotdrop.moviememory.usecase
 
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
 import jp.hotdrop.moviememory.model.Movie
-import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(
@@ -17,13 +15,9 @@ class MovieUseCase @Inject constructor(
             repository.prepared()
                     .subscribeOn(Schedulers.io())
 
-    fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
-        // これ絶対Repositoryに持っていくべき・・
-        val endAt = LocalDate.now()
-        val startAt = endAt.minusMonths(2L)
-        return repository.findMovies(index, offset, startAt, endAt)
-                .subscribeOn(Schedulers.io())
-    }
+    fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> =
+            repository.findNowPlayingMovies(index, offset)
+                    .subscribeOn(Schedulers.io())
 
     fun movie(id: Int): Single<Movie> =
             repository.movie(id)

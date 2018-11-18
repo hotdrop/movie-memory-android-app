@@ -89,7 +89,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     private fun initView() {
-        super.setupRecyclerView(binding.nowplayingMoviesRecyclerView) { page: Int, _: Int ->
+        super.setupRecyclerView(binding.nowplayingMoviesRecyclerView) { page, _ ->
             viewModel.onLoad(page)
         }
         adapter = NowPlayingMoviesAdapter()

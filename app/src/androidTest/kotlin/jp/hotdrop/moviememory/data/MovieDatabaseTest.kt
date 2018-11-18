@@ -93,10 +93,10 @@ class MovieDatabaseTest {
         val secondData = createLocalMovieInfoEntity(secondDataId)
         movieDb.saveLocalInfo(secondData)
 
-        val resultOne = movieDb.getLocalMovieInfo(firstDataId)
+        val resultOne = movieDb.findLocalMovieInfo(firstDataId)
         assert(resultOne == firstData)
 
-        val resultTwo = movieDb.getLocalMovieInfo(secondDataId)
+        val resultTwo = movieDb.findLocalMovieInfo(secondDataId)
         assert(resultTwo == secondData)
     }
 
