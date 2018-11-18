@@ -2,9 +2,9 @@ package jp.hotdrop.moviememory.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import jp.hotdrop.moviememory.data.local.AppDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
@@ -34,7 +34,7 @@ class MovieDatabaseTest {
 
     @Before
     fun createDb() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         appDb = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
@@ -144,7 +144,6 @@ class MovieDatabaseTest {
                     nowEpoch,
                     "監督です。",
                     "https://www.google.co.jp",
-                    "https://www.youtube.test",
                     LocalDateTime.now().toInstant(ZoneOffset.UTC))
 
     private fun createLocalMovieInfoEntity(id: Int) =
