@@ -10,17 +10,16 @@ import org.threeten.bp.LocalDate
 interface MovieRepository {
 
     @CheckResult
-    fun movies(offset: Int, startAt: LocalDate, endAt: LocalDate): Flowable<List<Movie>>
+    fun prepared(): Completable
+
+    @CheckResult
+    fun findMovies(startIndex: Int, offset: Int, startAt: LocalDate, endAt: LocalDate): Single<List<Movie>>
 
     @CheckResult
     fun movie(id: Int): Single<Movie>
 
     @CheckResult
-    fun loadNowPlayingMovies(index: Int, offset: Int): Completable
-
-    // TODO 無条件で全リフレッシュが本当にいいか考える
-    @CheckResult
-    fun refresh(offset: Int): Completable
+    fun loadRecentMovies(): Completable
 
     @CheckResult
     fun saveLocalMovieInfo(movie: Movie): Completable

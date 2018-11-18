@@ -29,8 +29,11 @@ class DummyApi {
         dummyData = data
     }
 
-    fun getNowPlaying(index: Int, offset: Int): Single<List<MovieResult>> =
-        Single.just(dummyData.subList(index, index + offset))
+    fun getMovies(fromId: Int?): Single<List<MovieResult>> =
+            fromId?.let {
+                Single.just(dummyData.subList(fromId - 1, dummyData.size - 1))
+            } ?: Single.just(dummyData)
+
 
     fun getComingSoon(index: Int, offset: Int): Flowable<List<MovieResult>> =
         Flowable.just(dummyData.subList(index, index + offset))

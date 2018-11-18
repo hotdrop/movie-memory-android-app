@@ -14,16 +14,17 @@ class MovieDatabase @Inject constructor(
         private val dao: MovieDao
 ) {
 
-
-    fun getMovies(startAt: LocalDate, endAt: LocalDate): Flowable<List<MovieEntity>> {
-        return dao.getMovies(startAt.toEpochDay(), endAt.toEpochDay())
-    }
+    fun findMovies(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
+            dao.selectMovies(startAt.toEpochDay(), endAt.toEpochDay())
 
     fun getMovie(id: Int): Single<MovieEntity> =
             dao.getMovie(id)
 
-    fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity =
-            dao.getLocalMovieInfo(id)
+    fun isExist(): Single<Boolean> =
+            dao.count().map { it > 0 }
+
+    fun getRecentMovieId(): Single<Int> =
+            dao.getRecentMovieId()
 
     fun save(entities: List<MovieEntity>) {
         database.runInTransaction {
@@ -36,6 +37,9 @@ class MovieDatabase @Inject constructor(
             dao.clearAndInsert(entities)
         }
     }
+
+    fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity =
+            dao.getLocalMovieInfo(id)
 
     fun saveLocalInfo(entity: LocalMovieInfoEntity) {
         database.runInTransaction {

@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
@@ -56,8 +56,18 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        observe()
         initView()
+    }
 
+    override fun onStop() {
+        super.onStop()
+        // このステータスはsaveInstanceはしない
+        // 理由はFragment自体がkillされたら再度LiveDataがアクティブにならないとデータ取ってこれないので。
+        nowObserveState = ObserveState.OneStop
+    }
+
+    private fun observe() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
                 binding.nowplayingProgress.visibility = View.GONE
@@ -69,32 +79,25 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                 nowObserveState = ObserveState.Normal
             }
         })
+        viewModel.error.observe(this, Observer {
+            it?.let {
+                val message = getString(R.string.toast_message_failure_load_data)
+                Snackbar.make(binding.nowPlayingMovieArea, message, Snackbar.LENGTH_LONG).show()
+            }
+        })
         lifecycle.addObserver(viewModel)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // このステータスはsaveInstanceはしない
-        // 理由はFragment自体がkillされたら再度LiveDataがアクティブにならないとデータ取ってこれないので。
-        nowObserveState = ObserveState.OneStop
     }
 
     private fun initView() {
         super.setupRecyclerView(binding.nowplayingMoviesRecyclerView) { page: Int, _: Int ->
-            viewModel.onLoad(page) {
-                val message = getString(R.string.toast_message_failure_load_data)
-                Toast.makeText(this@NowPlayingMoviesFragment.context, message, Toast.LENGTH_SHORT).show()
-            }
+            viewModel.onLoad(page)
         }
         adapter = NowPlayingMoviesAdapter()
         binding.nowplayingMoviesRecyclerView.adapter = adapter
 
         super.setupSwipeRefresh(binding.nowPlayingSwipeRefresh) {
             nowObserveState = ObserveState.Refresh
-            viewModel.onRefresh {
-                val message = getString(R.string.toast_message_failure_load_data)
-                Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
-            }
+            viewModel.onRefresh()
         }
     }
 

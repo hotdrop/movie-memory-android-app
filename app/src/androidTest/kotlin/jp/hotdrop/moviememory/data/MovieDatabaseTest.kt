@@ -25,7 +25,6 @@ import org.threeten.bp.ZoneOffset
 class MovieDatabaseTest {
 
     // AACが使用するバックグラウンドExecutorを、各タスクを同期して実行する別物と入れ替える
-    // これがないとFlowableでデータが流れてこない
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -75,7 +74,7 @@ class MovieDatabaseTest {
         inDustMovieEntities.add(overEntity)
 
         movieDb.save(inDustMovieEntities)
-        movieDb.getMovies(startAt, nowDate)
+        movieDb.findMovies(startAt, nowDate)
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -117,7 +116,7 @@ class MovieDatabaseTest {
 
         movieDb.save(movieEntities)
 
-        movieDb.getMovies(nowDate.minusMonths(5L), nowDate)
+        movieDb.findMovies(nowDate.minusMonths(5L), nowDate)
                 .test()
                 .assertValue { result ->
                     result[0].playingDate == latestReleaseEpoch &&
