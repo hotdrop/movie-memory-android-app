@@ -14,7 +14,6 @@ import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.MainActivity
-import jp.hotdrop.moviememory.presentation.NavigationController
 import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
@@ -24,9 +23,8 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
     private lateinit var binding: FragmentNowPlayingMoviesBinding
     private lateinit var adapter: NowPlayingMoviesAdapter
+    private var activity: MainActivity? = null
 
-    @Inject
-    lateinit var navigationController: NavigationController
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -45,6 +43,9 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
+        (getActivity() as? MainActivity)?.let {
+            activity = it
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -115,7 +116,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                 val movie = getItem(position)
                 it.movie = movie
                 it.imageView.setOnClickListener {
-                    navigationController.navigateToMovieDetail(movie.id)
+                    activity?.navigationToMovieDetail(movie.id) ?: Timber.e("activityがnullです。")
                 }
             }
         }

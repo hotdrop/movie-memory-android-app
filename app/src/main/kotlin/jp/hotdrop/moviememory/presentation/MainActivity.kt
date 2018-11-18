@@ -7,6 +7,7 @@ import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
+import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 
 class MainActivity: BaseActivity() {
 
@@ -44,10 +45,13 @@ class MainActivity: BaseActivity() {
         replaceFragment(MoviesFragment.newInstance())
     }
 
+    fun navigationToMovieDetail(movieId: Int) {
+        MovieDetailActivity.start(this, movieId)
+    }
+
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.transaction {
             replace(R.id.content_view, fragment)
         }
     }
-
 }
