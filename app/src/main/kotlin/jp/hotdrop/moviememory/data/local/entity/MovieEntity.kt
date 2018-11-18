@@ -3,10 +3,7 @@ package jp.hotdrop.moviememory.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import jp.hotdrop.moviememory.model.Movie
-import org.threeten.bp.Instant
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.ZoneId
+import org.threeten.bp.*
 
 @Entity(tableName = "movie")
 data class MovieEntity(
@@ -17,7 +14,6 @@ data class MovieEntity(
         var playingDate: Long?,
         var filmDirector: String?,
         var url: String?,
-        var movieUrl: String?,
         var createdAt: Instant
 )
 
@@ -33,7 +29,6 @@ fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
             playingDate,
             this.filmDirector,
             this.url,
-            this.movieUrl,
             createAt,
             localMovieInfo?.isSaw ?: false,
             sawDate,

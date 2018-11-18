@@ -6,7 +6,9 @@ import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.toMovie
+import jp.hotdrop.moviememory.data.remote.DummyApi
 import jp.hotdrop.moviememory.data.remote.MovieApi
+import jp.hotdrop.moviememory.data.remote.response.MovieResult
 import jp.hotdrop.moviememory.data.remote.response.toMovieEntity
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.LocalDate
@@ -51,12 +53,16 @@ class MovieDataRepository @Inject constructor(
                     movieEntity.toMovie(localMovieInfo)
                 }
 
+    // TODO ダミー！
+    private val dummyApi = DummyApi()
+
     /**
      * ネットワークから最新データを取得してDBをリフレッシュする。
      */
     override fun refresh(offset: Int): Completable =
-            // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            api.getNowPlaying(0, offset)
+            // TODO 開発中、APIがまともに動かないのでダミーAPI（ローカルでデータを生成する）を使う。この状態だとUnitTest通らないので注意
+//            api.getNowPlaying(0, offset)
+            dummyApi.getNowPlaying(0, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
@@ -72,8 +78,9 @@ class MovieDataRepository @Inject constructor(
      * 公開中の映画情報を取得する
      */
     override fun loadNowPlayingMovies(index: Int, offset: Int): Completable =
-            // 開発中、API通信なしでデータを取得したい場合にこっち使う。
-            api.getNowPlaying(index, offset)
+            // TODO 開発中、APIがまともに動かないのでダミーAPI（ローカルでデータを生成する）を使う。この状態だとUnitTest通らないので注意
+//            api.getNowPlaying(index, offset)
+            dummyApi.getNowPlaying(index, offset)
                     .doOnSuccess { movieResults ->
                         Timber.d("API経由で公開中の映画情報を取得。件数=${movieResults.size}")
                         movieResults.forEach {
