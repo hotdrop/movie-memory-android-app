@@ -2,14 +2,18 @@ package jp.hotdrop.moviememory.presentation.movie
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.presentation.movie.comingsoon.ComingSoonMoviesFragment
+import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFragment
 
 class MoviesFragment: BaseFragment() {
 
@@ -49,7 +53,7 @@ class MoviesFragment: BaseFragment() {
     /**
      * Tabのアダプター
      */
-    private inner class MoviesViewPagerAdapter(fm: androidx.fragment.app.FragmentManager): androidx.fragment.app.FragmentStatePagerAdapter(fm) {
+    private inner class MoviesViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
 
         private val tabFragments = mutableListOf<MovieTab>()
 
@@ -67,5 +71,10 @@ class MoviesFragment: BaseFragment() {
             tabFragments.add(MovieTab.NowPlaying)
             //tabFragments.add(MovieTab.ComingSoon)
         }
+    }
+
+    enum class MovieTab(val fragment: Fragment, @StringRes val titleRes: Int) {
+        NowPlaying(NowPlayingMoviesFragment.newInstance(), R.string.tab_name_now_playing),
+        ComingSoon(ComingSoonMoviesFragment.newInstance(), R.string.tab_name_coming_soon)
     }
 }

@@ -13,14 +13,17 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.presentation.MainActivity
 import jp.hotdrop.moviememory.presentation.NavigationController
 import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
-import jp.hotdrop.moviememory.presentation.parts.BindingHolder
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
 import javax.inject.Inject
 
 class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
+
+    private lateinit var binding: FragmentNowPlayingMoviesBinding
+    private lateinit var adapter: NowPlayingMoviesAdapter
 
     @Inject
     lateinit var navigationController: NavigationController
@@ -31,10 +34,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
     }
 
-    private lateinit var binding: FragmentNowPlayingMoviesBinding
-    private lateinit var adapter: NowPlayingMoviesAdapter
-
-    // TODO もっといいやり方がないか模索する・・
+    // TODO もっといいやり方がないか模索する・・これモデルにしてステータス更新は全部そいつに任せたほうがいい
     private var nowObserveState = ObserveState.Normal
     private enum class ObserveState {
         Normal,  // 一覧に、取得したアイテムを追加していく
@@ -102,9 +102,9 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     /**
-     * Adapter
+     * アダプター
      */
-    inner class NowPlayingMoviesAdapter: RecyclerViewAdapter<Movie, BindingHolder<ItemMovieBinding>>() {
+    inner class NowPlayingMoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemMovieBinding> =
                 BindingHolder(parent, R.layout.item_movie)
@@ -114,7 +114,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             binding?.let {
                 val movie = getItem(position)
                 it.movie = movie
-                it.imageView.setOnClickListener { _ ->
+                it.imageView.setOnClickListener {
                     navigationController.navigateToMovieDetail(movie.id)
                 }
             }
