@@ -22,11 +22,17 @@ import javax.inject.Inject
 
 class MovieDetailEditFragment: BaseFragment() {
 
+    private lateinit var binding: FragmentMovieDetailEditBinding
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieDetailEditViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java) }
-    private lateinit var binding: FragmentMovieDetailEditBinding
-    private val movieId by lazy { arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID }
+    private val viewModel: MovieDetailEditViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java)
+    }
+
+    private val movieId by lazy {
+        arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -40,23 +46,22 @@ class MovieDetailEditFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initView()
-        load()
+        observe()
+
+        viewModel.loadMovie(movieId)
     }
 
     private fun initView() {
 
-        (activity as AppCompatActivity).apply {
+        (activity as MovieDetailActivity).apply {
             setSupportActionBar(binding.toolbar)
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
                 setDisplayShowTitleEnabled(false)
             }
         }
-
-        viewModel.movie.observe(this, Observer {
-            it?.let { binding.movie = it }
-        })
 
         binding.calendarImageIcon.setOnClickListener {
             showDatePickerDialog()
@@ -66,6 +71,7 @@ class MovieDetailEditFragment: BaseFragment() {
             it?.let {
                 if (it) {
                     Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
+                    // TODO 戻るんじゃなくてFragmentをbackstackから取り出す
                     (activity as MovieDetailActivity).showDetailFragment(movieId)
                 }
             }
@@ -76,23 +82,30 @@ class MovieDetailEditFragment: BaseFragment() {
         }
     }
 
-    private fun load() {
-        viewModel.loadMovie(movieId)
+    private fun observe() {
+        viewModel.movie.observe(this, Observer {
+            it?.let { binding.movie = it }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun showDatePickerDialog() {
+
         var sawDate = LocalDate.now()
+
         if (binding.movieSawDateText.text.isNotEmpty()) {
             sawDate = LocalDate.parse(binding.movieSawDateText.text)
         }
-        DatePickerDialog(
-                activity,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                    Timber.d("選択した日付 = $selectedDate")
-                    binding.movieSawDateText.text = selectedDate.toString()
-                }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
-        ).show()
+
+        context?.let {
+            DatePickerDialog(it,
+                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                        val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                        Timber.d("選択した日付 = $selectedDate")
+                        binding.movieSawDateText.text = selectedDate.toString()
+                    }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
+            ).show()
+        }
     }
 
     companion object {

@@ -19,8 +19,8 @@ class MovieDetailEditViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _movie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie> = _movie
+    private val mutableMovie = MutableLiveData<Movie>()
+    val movie: LiveData<Movie> = mutableMovie
 
     private val _saveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = _saveSuccess
@@ -29,7 +29,7 @@ class MovieDetailEditViewModel @Inject constructor(
         useCase.movie(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onSuccess = { _movie.postValue(it) },
+                        onSuccess = { mutableMovie.postValue(it) },
                         onError = { Timber.e(it) }
                 ).addTo(compositeDisposable)
     }

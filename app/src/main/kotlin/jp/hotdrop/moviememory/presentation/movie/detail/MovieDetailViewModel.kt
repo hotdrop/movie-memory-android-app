@@ -18,6 +18,7 @@ class MovieDetailViewModel @Inject constructor(
 ): ViewModel(), LifecycleObserver {
 
     private val compositeDisposable = CompositeDisposable()
+
     private val mutableMovie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> = mutableMovie
 

@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
@@ -33,7 +34,7 @@ class MovieDetailActivity: BaseActivity() {
 
     fun showEditFragment(movieId: Int) {
         val fragment = MovieDetailEditFragment.newInstance(movieId)
-        // stackに積んだ方がいい
+        // TODO stackに積んだ方がいい
         replaceFragment(fragment)
     }
 
@@ -43,10 +44,9 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.content_view, fragment)
-                .commit()
+        supportFragmentManager.transaction {
+            replace(R.id.content_view, fragment)
+        }
     }
 
     companion object {
