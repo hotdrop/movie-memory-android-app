@@ -22,8 +22,8 @@ class MovieDetailEditViewModel @Inject constructor(
     private val mutableMovie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> = mutableMovie
 
-    private val _saveSuccess = MutableLiveData<Boolean>()
-    val saveSuccess: LiveData<Boolean> = _saveSuccess
+    private val mutableSaveSuccess = MutableLiveData<Boolean>()
+    val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
 
     fun loadMovie(id: Int) {
         useCase.movie(id)
@@ -42,7 +42,7 @@ class MovieDetailEditViewModel @Inject constructor(
         useCase.saveLocalEdit(movie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onComplete = { _saveSuccess.postValue(true) },
+                        onComplete = { mutableSaveSuccess.postValue(true) },
                         onError = { Timber.e(it) }
                 ).addTo(compositeDisposable)
     }

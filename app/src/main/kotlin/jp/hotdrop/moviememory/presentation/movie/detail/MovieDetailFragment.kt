@@ -66,14 +66,6 @@ class MovieDetailFragment: BaseFragment() {
             binding.toolbarTextColorFactor = factor
         })
 
-        fun startToWebLink(url: String?) {
-            if (url.isNullOrEmpty()) {
-                Toast.makeText(activity, getString(R.string.movie_link_tap_non_url), Toast.LENGTH_SHORT).show()
-            } else {
-                (activity as MovieDetailActivity).startBrowser(url!!)
-            }
-        }
-
         // TODO このfabは単なるお気に入りにする予定
         binding.fab.setOnClickListener { view ->
             TODO()
@@ -99,6 +91,14 @@ class MovieDetailFragment: BaseFragment() {
             }
         })
         lifecycle.addObserver(viewModel)
+    }
+
+    private fun startToWebLink(url: String?) {
+        if (url.isNullOrEmpty()) {
+            Toast.makeText(activity, getString(R.string.movie_link_tap_non_url), Toast.LENGTH_SHORT).show()
+        } else {
+            (activity as MovieDetailActivity).startBrowser(url)
+        }
     }
 
     companion object {

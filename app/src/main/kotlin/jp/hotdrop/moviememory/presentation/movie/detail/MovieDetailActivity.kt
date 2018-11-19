@@ -22,19 +22,26 @@ class MovieDetailActivity: BaseActivity() {
         initView()
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount <= 1) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun initView() {
         val movieId = intent.getIntExtra(EXTRA_MOVIE_TAG, -1)
         showDetailFragment(movieId)
     }
 
-    fun showDetailFragment(movieId: Int) {
+    private fun showDetailFragment(movieId: Int) {
         val fragment = MovieDetailFragment.newInstance(movieId)
         replaceFragment(fragment)
     }
 
     fun showEditFragment(movieId: Int) {
         val fragment = MovieDetailEditFragment.newInstance(movieId)
-        // TODO stackに積んだ方がいい
         replaceFragment(fragment)
     }
 
@@ -43,9 +50,10 @@ class MovieDetailActivity: BaseActivity() {
         startActivity(intent)
     }
 
-    private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
+    private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.transaction {
             replace(R.id.content_view, fragment)
+            addToBackStack(null)
         }
     }
 

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieDetailEditBinding
 import jp.hotdrop.moviememory.model.Movie
@@ -67,16 +68,6 @@ class MovieDetailEditFragment: BaseFragment() {
             showDatePickerDialog()
         }
 
-        viewModel.saveSuccess.observe(this, Observer {
-            it?.let {
-                if (it) {
-                    Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
-                    // TODO 戻るんじゃなくてFragmentをbackstackから取り出す
-                    (activity as MovieDetailActivity).showDetailFragment(movieId)
-                }
-            }
-        })
-
         fab.setOnClickListener {
             viewModel.saveMovie(binding.movieSawDateText.text.toString())
         }
@@ -84,7 +75,17 @@ class MovieDetailEditFragment: BaseFragment() {
 
     private fun observe() {
         viewModel.movie.observe(this, Observer {
-            it?.let { binding.movie = it }
+            it?.let {
+                binding.movie = it
+            }
+        })
+        viewModel.saveSuccess.observe(this, Observer {
+            it?.let {
+                if (it) {
+                    Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
+                    fragmentManager?.popBackStack()
+                }
+            }
         })
         lifecycle.addObserver(viewModel)
     }
@@ -97,6 +98,7 @@ class MovieDetailEditFragment: BaseFragment() {
             sawDate = LocalDate.parse(binding.movieSawDateText.text)
         }
 
+        // これは別Componentとして切り出す
         context?.let {
             DatePickerDialog(it,
                     DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
