@@ -14,6 +14,6 @@ internal class InterceptorModule {
     @Provides
     @IntoSet
     fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BASIC
+        level = HttpLoggingInterceptor.Level.NONE
     }
 }

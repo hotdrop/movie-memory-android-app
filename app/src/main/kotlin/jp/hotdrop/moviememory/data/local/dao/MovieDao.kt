@@ -10,10 +10,16 @@ import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 interface MovieDao {
 
     @Query("SELECT * FROM movie WHERE playingDate BETWEEN :startAt AND :endAt ORDER BY playingDate DESC")
-    fun getMovies(startAt: Long, endAt: Long): Flowable<List<MovieEntity>>
+    fun selectMovies(startAt: Long, endAt: Long): Single<List<MovieEntity>>
+
+    @Query("SELECT COUNT(*) FROM movie")
+    fun count(): Single<Long>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun getMovie(id: Int): Single<MovieEntity>
+    fun selectMovie(id: Int): Single<MovieEntity>
+
+    @Query("SELECT max(id) FROM movie")
+    fun selectRecentMovieId(): Single<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<MovieEntity>)
@@ -21,11 +27,8 @@ interface MovieDao {
     @Query("DELETE FROM movie")
     fun deleteAll()
 
-    @Query("DELETE FROM movie WHERE playingDate BETWEEN :startAt AND :endAt")
-    fun deleteRange(startAt: Long, endAt: Long)
-
     @Query("SELECT * FROM movie_local_info WHERE id = :id")
-    fun getLocalMovieInfo(id: Int): LocalMovieInfoEntity
+    fun selectLocalMovieInfo(id: Int): LocalMovieInfoEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocalMovieInfo(entities: LocalMovieInfoEntity)

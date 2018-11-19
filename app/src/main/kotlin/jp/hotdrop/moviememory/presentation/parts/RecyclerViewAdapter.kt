@@ -1,6 +1,10 @@
 package jp.hotdrop.moviememory.presentation.parts
 
-import androidx.recyclerview.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import timber.log.Timber
 import kotlin.properties.Delegates
 
@@ -34,4 +38,14 @@ abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: androidx.recyclervie
     }
 
     fun getItem(index: Int) = list[index]
+
+    /**
+     * ViewAdapterのBindingHolder
+     */
+    class BindingHolder<out T: ViewDataBinding>(
+            parent: ViewGroup,
+            @LayoutRes layoutResId: Int
+    ): androidx.recyclerview.widget.RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)) {
+        val binding: T? = DataBindingUtil.bind(itemView)
+    }
 }

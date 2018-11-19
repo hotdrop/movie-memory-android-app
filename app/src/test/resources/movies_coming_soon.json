@@ -12,9 +12,7 @@
       "imageUrl": "",
       "playingDate": "2018-4-20",
       "filmDirector": "ディレクター",
-      "url": "test",
-      "movieUrl": "movieUrl",
-      "createdAt": "2018-4-20 14:32:12"
+      "url": "test"
     },
     {
       "id": 2,
@@ -23,9 +21,7 @@
       "imageUrl": "/thumbnail/test",
       "playingDate": "2018-5-10",
       "filmDirector": "ディレクター",
-      "url": "test",
-      "movieUrl": "movieUrl",
-      "createdAt": "2018-4-20 14:32:12"
+      "url": "test"
     }
   ]
 }

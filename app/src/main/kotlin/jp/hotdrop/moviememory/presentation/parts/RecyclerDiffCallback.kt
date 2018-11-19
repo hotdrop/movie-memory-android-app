@@ -2,6 +2,11 @@ package jp.hotdrop.moviememory.presentation.parts
 
 import androidx.recyclerview.widget.DiffUtil
 
+interface RecyclerDiffable {
+    fun isItemTheSame(o: RecyclerDiffable): Boolean
+    fun isContentsTheSame(o: RecyclerDiffable): Boolean
+}
+
 private class RecyclerDiffCallback(
         private val oldList: List<RecyclerDiffable>,
         private val newList: List<RecyclerDiffable>
@@ -15,11 +20,6 @@ private class RecyclerDiffCallback(
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldList[oldItemPosition].isContentsTheSame(newList[newItemPosition])
-}
-
-interface RecyclerDiffable {
-    fun isItemTheSame(o: RecyclerDiffable): Boolean
-    fun isContentsTheSame(o: RecyclerDiffable): Boolean
 }
 
 fun calculateDiff(

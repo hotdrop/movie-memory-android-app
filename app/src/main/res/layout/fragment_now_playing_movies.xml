@@ -5,13 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFragment">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/now_playing_movie_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
