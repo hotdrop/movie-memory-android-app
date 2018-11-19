@@ -19,11 +19,17 @@ import javax.inject.Inject
 
 class MovieDetailFragment: BaseFragment() {
 
+    private lateinit var binding: FragmentMovieDetailBinding
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieDetailViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java) }
-    private lateinit var binding: FragmentMovieDetailBinding
-    private val movieId by lazy { arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID }
+    private val viewModel: MovieDetailViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
+    }
+
+    private val movieId by lazy {
+        arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -37,8 +43,11 @@ class MovieDetailFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initView()
-        load()
+        observe()
+
+        viewModel.loadMovie(movieId)
     }
 
     private fun initView() {
@@ -56,26 +65,6 @@ class MovieDetailFragment: BaseFragment() {
             val factor = (-verticalOffset).toFloat() / appBarLayout.totalScrollRange.toFloat()
             binding.toolbarTextColorFactor = factor
         })
-
-        viewModel.movie.observe(this, Observer {
-            it?.let {
-                binding.movie = it
-            }
-        })
-        lifecycle.addObserver(viewModel)
-
-        setOnClickEvent()
-    }
-
-    private fun setOnClickEvent() {
-
-        fun startToWebLink(url: String?) {
-            if (url.isNullOrEmpty()) {
-                Toast.makeText(activity, getString(R.string.movie_link_tap_non_url), Toast.LENGTH_SHORT).show()
-            } else {
-                (activity as MovieDetailActivity).startBrowser(url!!)
-            }
-        }
 
         // TODO このfabは単なるお気に入りにする予定
         binding.fab.setOnClickListener { view ->
@@ -95,8 +84,21 @@ class MovieDetailFragment: BaseFragment() {
         }
     }
 
-    private fun load() {
-        viewModel.loadMovie(movieId)
+    private fun observe() {
+        viewModel.movie.observe(this, Observer {
+            it?.let {
+                binding.movie = it
+            }
+        })
+        lifecycle.addObserver(viewModel)
+    }
+
+    private fun startToWebLink(url: String?) {
+        if (url.isNullOrEmpty()) {
+            Toast.makeText(activity, getString(R.string.movie_link_tap_non_url), Toast.LENGTH_SHORT).show()
+        } else {
+            (activity as MovieDetailActivity).startBrowser(url)
+        }
     }
 
     companion object {

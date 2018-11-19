@@ -12,7 +12,6 @@ data class Movie(
         val playingDate: LocalDate?,
         val filmDirector: String?,
         val url: String?,
-        val movieUrl: String?,
         val createAt: LocalDateTime?,
         var isSaw: Boolean,
         var sawDate: LocalDate?,

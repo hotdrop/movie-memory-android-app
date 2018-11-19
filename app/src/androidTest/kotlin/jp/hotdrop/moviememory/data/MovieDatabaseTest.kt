@@ -2,9 +2,9 @@ package jp.hotdrop.moviememory.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import jp.hotdrop.moviememory.data.local.AppDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
@@ -25,7 +25,6 @@ import org.threeten.bp.ZoneOffset
 class MovieDatabaseTest {
 
     // AACが使用するバックグラウンドExecutorを、各タスクを同期して実行する別物と入れ替える
-    // これがないとFlowableでデータが流れてこない
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -34,7 +33,7 @@ class MovieDatabaseTest {
 
     @Before
     fun createDb() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         appDb = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
@@ -75,7 +74,7 @@ class MovieDatabaseTest {
         inDustMovieEntities.add(overEntity)
 
         movieDb.save(inDustMovieEntities)
-        movieDb.getMovies(startAt, nowDate)
+        movieDb.findMovies(startAt, nowDate)
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -94,10 +93,10 @@ class MovieDatabaseTest {
         val secondData = createLocalMovieInfoEntity(secondDataId)
         movieDb.saveLocalInfo(secondData)
 
-        val resultOne = movieDb.getLocalMovieInfo(firstDataId)
+        val resultOne = movieDb.findLocalMovieInfo(firstDataId)
         assert(resultOne == firstData)
 
-        val resultTwo = movieDb.getLocalMovieInfo(secondDataId)
+        val resultTwo = movieDb.findLocalMovieInfo(secondDataId)
         assert(resultTwo == secondData)
     }
 
@@ -117,7 +116,7 @@ class MovieDatabaseTest {
 
         movieDb.save(movieEntities)
 
-        movieDb.getMovies(nowDate.minusMonths(5L), nowDate)
+        movieDb.findMovies(nowDate.minusMonths(5L), nowDate)
                 .test()
                 .assertValue { result ->
                     result[0].playingDate == latestReleaseEpoch &&
@@ -144,7 +143,6 @@ class MovieDatabaseTest {
                     nowEpoch,
                     "監督です。",
                     "https://www.google.co.jp",
-                    "https://www.youtube.test",
                     LocalDateTime.now().toInstant(ZoneOffset.UTC))
 
     private fun createLocalMovieInfoEntity(id: Int) =

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieDetailEditBinding
 import jp.hotdrop.moviememory.model.Movie
@@ -22,11 +23,17 @@ import javax.inject.Inject
 
 class MovieDetailEditFragment: BaseFragment() {
 
+    private lateinit var binding: FragmentMovieDetailEditBinding
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieDetailEditViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java) }
-    private lateinit var binding: FragmentMovieDetailEditBinding
-    private val movieId by lazy { arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID }
+    private val viewModel: MovieDetailEditViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java)
+    }
+
+    private val movieId by lazy {
+        arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -40,13 +47,16 @@ class MovieDetailEditFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initView()
-        load()
+        observe()
+
+        viewModel.loadMovie(movieId)
     }
 
     private fun initView() {
 
-        (activity as AppCompatActivity).apply {
+        (activity as MovieDetailActivity).apply {
             setSupportActionBar(binding.toolbar)
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
@@ -54,45 +64,50 @@ class MovieDetailEditFragment: BaseFragment() {
             }
         }
 
-        viewModel.movie.observe(this, Observer {
-            it?.let { binding.movie = it }
-        })
-
         binding.calendarImageIcon.setOnClickListener {
             showDatePickerDialog()
         }
-
-        viewModel.saveSuccess.observe(this, Observer {
-            it?.let {
-                if (it) {
-                    Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
-                    (activity as MovieDetailActivity).showDetailFragment(movieId)
-                }
-            }
-        })
 
         fab.setOnClickListener {
             viewModel.saveMovie(binding.movieSawDateText.text.toString())
         }
     }
 
-    private fun load() {
-        viewModel.loadMovie(movieId)
+    private fun observe() {
+        viewModel.movie.observe(this, Observer {
+            it?.let {
+                binding.movie = it
+            }
+        })
+        viewModel.saveSuccess.observe(this, Observer {
+            it?.let {
+                if (it) {
+                    Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
+                    fragmentManager?.popBackStack()
+                }
+            }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun showDatePickerDialog() {
+
         var sawDate = LocalDate.now()
+
         if (binding.movieSawDateText.text.isNotEmpty()) {
             sawDate = LocalDate.parse(binding.movieSawDateText.text)
         }
-        DatePickerDialog(
-                activity,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                    Timber.d("選択した日付 = $selectedDate")
-                    binding.movieSawDateText.text = selectedDate.toString()
-                }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
-        ).show()
+
+        // これは別Componentとして切り出す
+        context?.let {
+            DatePickerDialog(it,
+                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                        val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                        Timber.d("選択した日付 = $selectedDate")
+                        binding.movieSawDateText.text = selectedDate.toString()
+                    }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
+            ).show()
+        }
     }
 
     companion object {
