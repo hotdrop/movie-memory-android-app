@@ -60,13 +60,6 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         initView()
     }
 
-    override fun onStop() {
-        super.onStop()
-        // このステータスはsaveInstanceはしない
-        // 理由はFragment自体がkillされたら再度LiveDataがアクティブにならないとデータ取ってこれないので。
-        nowObserveState = ObserveState.OneStop
-    }
-
     private fun observe() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
