@@ -1,13 +1,17 @@
 package jp.hotdrop.moviememory.presentation.movie.nowplaying
 
+import android.app.ActivityOptions
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
@@ -58,13 +62,6 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         observe()
         initView()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // このステータスはsaveInstanceはしない
-        // 理由はFragment自体がkillされたら再度LiveDataがアクティブにならないとデータ取ってこれないので。
-        nowObserveState = ObserveState.OneStop
     }
 
     private fun observe() {
@@ -119,9 +116,28 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                 val movie = getItem(position)
                 it.movie = movie
                 it.imageView.setOnClickListener {
-                    activity?.navigationToMovieDetail(movie.id) ?: Timber.e("activityがnullです。")
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        underKitkatApiLevelTransition(movie)
+                    } else {
+                        transitionWithSharedElements(binding, movie)
+                    }
                 }
             }
+        }
+
+        private fun underKitkatApiLevelTransition(movie: Movie) {
+            activity?.navigationToMovieDetail(movie.id) ?: Timber.e("activityがnullです。")
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        private fun transitionWithSharedElements(binding: ItemMovieBinding ,movie: Movie) {
+            activity?.let {  activity ->
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                        activity,
+                        Pair.create(binding.imageView, activity.getString(R.string.transition_movie_image))
+                )
+                activity.navigationToMovieDetail(movie.id, options)
+            } ?: Timber.e("activityがnullです。")
         }
     }
 }

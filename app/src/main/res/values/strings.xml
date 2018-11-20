@@ -27,5 +27,7 @@
     <string name="movie_date_select_button_label">日付を選択</string>
     <string name="toast_message_save_success">登録が完了しました。</string>
 
+    <!-- 画面遷移 -->
+    <string name="transition_movie_image">movieImage</string>
 
 </resources>
