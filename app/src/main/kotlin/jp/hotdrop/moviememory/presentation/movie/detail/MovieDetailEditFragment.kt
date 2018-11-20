@@ -6,15 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieDetailEditBinding
-import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import kotlinx.android.synthetic.main.fragment_movie_detail_edit.*
 import org.threeten.bp.LocalDate
@@ -24,20 +21,21 @@ import javax.inject.Inject
 class MovieDetailEditFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMovieDetailEditBinding
+    private lateinit var activity: MovieDetailActivity
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieDetailEditViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java)
-    }
-
-    private val movieId by lazy {
-        arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID
+    private val viewModel: MovieDetailViewModel by lazy {
+        ViewModelProviders.of(activity, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
+
+        (getActivity() as MovieDetailActivity).let {
+            activity = it
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,33 +46,12 @@ class MovieDetailEditFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView()
         observe()
-
-        viewModel.loadMovie(movieId)
-    }
-
-    private fun initView() {
-
-        (activity as MovieDetailActivity).apply {
-            setSupportActionBar(binding.toolbar)
-            supportActionBar?.apply {
-                setDisplayHomeAsUpEnabled(true)
-                setDisplayShowTitleEnabled(false)
-            }
-        }
-
-        binding.calendarImageIcon.setOnClickListener {
-            showDatePickerDialog()
-        }
-
-        fab.setOnClickListener {
-            viewModel.saveMovie(binding.movieSawDateText.text.toString())
-        }
+        initView()
     }
 
     private fun observe() {
-        viewModel.movie.observe(this, Observer {
+        viewModel.movie?.observe(this, Observer {
             it?.let {
                 binding.movie = it
             }
@@ -87,7 +64,25 @@ class MovieDetailEditFragment: BaseFragment() {
                 }
             }
         })
-        lifecycle.addObserver(viewModel)
+    }
+
+    private fun initView() {
+
+        activity.apply {
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowTitleEnabled(false)
+            }
+        }
+
+        binding.calendarImageIcon.setOnClickListener {
+            showDatePickerDialog()
+        }
+
+        fab.setOnClickListener {
+            viewModel.save(binding.movieSawDateText.text.toString())
+        }
     }
 
     private fun showDatePickerDialog() {
@@ -111,9 +106,6 @@ class MovieDetailEditFragment: BaseFragment() {
     }
 
     companion object {
-        private const val EXTRA_TAG = "EXTRA_TAG"
-        fun newInstance(movieId: Int) = MovieDetailEditFragment().apply {
-            arguments = Bundle().apply { putInt(EXTRA_TAG, movieId) }
-        }
+        fun newInstance() = MovieDetailEditFragment()
     }
 }

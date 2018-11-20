@@ -20,20 +20,21 @@ import javax.inject.Inject
 class MovieDetailFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMovieDetailBinding
+    private lateinit var activity: MovieDetailActivity
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MovieDetailViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
-    }
-
-    private val movieId by lazy {
-        arguments?.getInt(EXTRA_TAG) ?: Movie.ILLEGAL_MOVIE_ID
+        ViewModelProviders.of(activity, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
+
+        (getActivity() as MovieDetailActivity).let {
+            activity = it
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,13 +47,19 @@ class MovieDetailFragment: BaseFragment() {
 
         initView()
         observe()
+    }
 
-        viewModel.loadMovie(movieId)
+    private fun observe() {
+        viewModel.movie?.observe(this, Observer {
+            it?.let {
+                binding.movie = it
+            }
+        })
     }
 
     private fun initView() {
 
-        (activity as AppCompatActivity).apply {
+        activity.apply {
             setSupportActionBar(binding.toolbar)
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
@@ -72,39 +79,33 @@ class MovieDetailFragment: BaseFragment() {
         }
 
         binding.movieUrlLink.setOnClickListener {
-            viewModel.movie.value?.let { startToWebLink(it.imageUrl) }
+            binding.movie?.let {
+                startToWebLink(it.imageUrl)
+            }
         }
 
         binding.officialUrlLink.setOnClickListener {
-            viewModel.movie.value?.let { startToWebLink(it.url) }
+            binding.movie?.let {
+                startToWebLink(it.url)
+            }
         }
 
         binding.movieEditImage.setOnClickListener {
-            binding.movie?.let { (activity as MovieDetailActivity).showEditFragment(it.id) }
-        }
-    }
-
-    private fun observe() {
-        viewModel.movie.observe(this, Observer {
-            it?.let {
-                binding.movie = it
+            binding.movie?.let {
+                activity.showEditFragment()
             }
-        })
-        lifecycle.addObserver(viewModel)
+        }
     }
 
     private fun startToWebLink(url: String?) {
         if (url.isNullOrEmpty()) {
             Toast.makeText(activity, getString(R.string.movie_link_tap_non_url), Toast.LENGTH_SHORT).show()
         } else {
-            (activity as MovieDetailActivity).startBrowser(url)
+            activity.startBrowser(url)
         }
     }
 
     companion object {
-        private const val EXTRA_TAG = "EXTRA_MOVIE_DETAIL_TAG"
-        fun newInstance(movieId: Int) = MovieDetailFragment().apply {
-            arguments = Bundle().apply { putInt(EXTRA_TAG, movieId) }
-        }
+        fun newInstance() = MovieDetailFragment()
     }
 }

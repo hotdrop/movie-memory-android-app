@@ -16,7 +16,7 @@ interface MovieDao {
     fun count(): Single<Long>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectMovie(id: Int): Single<MovieEntity>
+    fun selectMovie(id: Int): Flowable<MovieEntity>
 
     @Query("SELECT max(id) FROM movie")
     fun selectRecentMovieId(): Single<Int>

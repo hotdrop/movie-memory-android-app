@@ -1,9 +1,6 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -19,14 +16,24 @@ class MovieDetailViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val mutableMovie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie> = mutableMovie
+    var movie: LiveData<Movie>? = null
 
-    fun loadMovie(id: Int) {
-        useCase.movie(id)
+    private val mutableSaveSuccess = MutableLiveData<Boolean>()
+    val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
+
+    fun setUp(id: Int) {
+        movie = LiveDataReactiveStreams.fromPublisher(useCase.movie(id))
+    }
+
+    fun save(sawDateStr: String) {
+        val movie = movie?.value ?: return
+        if (sawDateStr.isNotEmpty()) {
+            movie.setSawDateFromText(sawDateStr)
+        }
+        useCase.saveLocalEdit(movie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onSuccess = { mutableMovie.postValue(it) },
+                        onComplete = { mutableSaveSuccess.postValue(true) },
                         onError = { Timber.e(it) }
                 ).addTo(compositeDisposable)
     }
