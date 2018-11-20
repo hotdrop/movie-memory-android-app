@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:src="@drawable/image_default"
+                android:transitionName="@string/transition_movie_image"
                 app:imageUrl="@{movie.imageUrl}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

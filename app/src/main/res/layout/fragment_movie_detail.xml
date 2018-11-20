@@ -106,6 +106,7 @@
                     android:fitsSystemWindows="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/image_default"
+                    android:transitionName="@string/transition_movie_image"
                     app:imageUrl="@{movie.imageUrl}"
                     app:layout_constraintBottom_toBottomOf="@+id/official_url_link"
                     app:layout_constraintStart_toStartOf="@id/left_guideline"

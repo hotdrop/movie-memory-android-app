@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.presentation
 
+import android.app.ActivityOptions
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -45,8 +46,8 @@ class MainActivity: BaseActivity() {
         replaceFragment(MoviesFragment.newInstance())
     }
 
-    fun navigationToMovieDetail(movieId: Int) {
-        MovieDetailActivity.start(this, movieId)
+    fun navigationToMovieDetail(movieId: Int, options: ActivityOptions? = null) {
+        MovieDetailActivity.start(this, movieId, options)
     }
 
     private fun replaceFragment(fragment: Fragment) {

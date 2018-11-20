@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import androidx.databinding.DataBindingUtil
@@ -69,9 +70,10 @@ class MovieDetailActivity: BaseActivity() {
 
     companion object {
         private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
-        fun start(context: Context, movieId: Int) =
-                context.startActivity(Intent(context, MovieDetailActivity::class.java).apply {
-                    putExtra(EXTRA_MOVIE_TAG, movieId)
-                })
+        fun start(context: Context, movieId: Int, options: ActivityOptions? = null) =
+                context.startActivity(Intent(context, MovieDetailActivity::class.java)
+                        .apply {
+                            putExtra(EXTRA_MOVIE_TAG, movieId)
+                        }, options?.toBundle())
     }
 }
