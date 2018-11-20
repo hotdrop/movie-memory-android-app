@@ -18,8 +18,12 @@ data class Movie(
         var sawPlace: String?,
         var memo: String?
 ): RecyclerDiffable {
-    override fun isItemTheSame(o: RecyclerDiffable) = (id == (o as? Movie)?.id)
-    override fun isContentsTheSame(o: RecyclerDiffable) = (this == (o as? Movie ?: false))
+
+    override fun isItemTheSame(o: RecyclerDiffable) =
+            (id == (o as? Movie)?.id)
+
+    override fun isContentsTheSame(o: RecyclerDiffable) =
+            (this == (o as? Movie ?: false))
 
     fun toTextByPlayingDate() = playingDate.toString()
 
@@ -27,9 +31,5 @@ data class Movie(
 
     fun setSawDateFromText(strSawDate: String) {
         sawDate = LocalDate.parse(strSawDate)
-    }
-
-    companion object {
-        const val ILLEGAL_MOVIE_ID = -1
     }
 }
