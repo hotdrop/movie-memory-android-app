@@ -1,6 +1,7 @@
 package jp.hotdrop.moviememory.data.repository
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
@@ -66,7 +67,7 @@ class MovieDataRepository @Inject constructor(
                         refresh(it)
                     }
 
-    override fun movie(id: Int): Single<Movie> =
+    override fun movie(id: Int): Flowable<Movie> =
         movieDatabase.findMovie(id)
                 .map { movieEntity ->
                     Timber.d("映画情報詳細を取得。id=$id")

@@ -1,6 +1,7 @@
 package jp.hotdrop.moviememory.data.local
 
 import androidx.room.RoomDatabase
+import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
@@ -16,7 +17,7 @@ class MovieDatabase @Inject constructor(
     fun findMovies(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
             dao.selectMovies(startAt.toEpochDay(), endAt.toEpochDay())
 
-    fun findMovie(id: Int): Single<MovieEntity> =
+    fun findMovie(id: Int): Flowable<MovieEntity> =
             dao.selectMovie(id)
 
     fun isExist(): Single<Boolean> =
