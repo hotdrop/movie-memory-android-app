@@ -22,7 +22,7 @@
 
     <!--映画情報の編集画面-->
     <string name="movie_date_select_button_label">日付を選択</string>
-    <string name="toast_message_save_success">登録が完了しました。</string>
+    <string name="toast_message_save_success">保存しました。</string>
 
     <!-- 画面遷移 -->
     <string name="transition_movie_image">movieImage</string>
