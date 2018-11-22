@@ -10,7 +10,7 @@ fun setImageUrl(view: ImageView, url: String?) {
     if (url.isNullOrEmpty()) {
         return
     }
-    val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url!!)
+    val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url)
     GlideApp.with(view.context)
             .load(storageRef)
             .placeholder(R.drawable.image_default)

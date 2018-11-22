@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import android.widget.Toast
 import com.google.android.material.appbar.AppBarLayout
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieDetailBinding
-import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import javax.inject.Inject
 
@@ -67,33 +65,22 @@ class MovieDetailFragment: BaseFragment() {
             }
         }
 
-        // Droidkaigi2018のCoordinatorLayoutの動きが素晴らしかったので真似ました。
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val factor = (-verticalOffset).toFloat() / appBarLayout.totalScrollRange.toFloat()
-            binding.toolbarTextColorFactor = factor
-        })
-
-        // TODO このfabは単なるお気に入りにする予定
-        binding.fab.setOnClickListener { view ->
-            TODO()
-        }
-
+        // ここら辺、なかったら灰色にしたい。
         binding.movieUrlLink.setOnClickListener {
             binding.movie?.let {
                 startToWebLink(it.imageUrl)
             }
         }
 
+        // こっちも
         binding.officialUrlLink.setOnClickListener {
             binding.movie?.let {
                 startToWebLink(it.url)
             }
         }
 
-        binding.movieEditImage.setOnClickListener {
-            binding.movie?.let {
-                activity.showEditFragment()
-            }
+        binding.editFab.setOnClickListener {
+            activity.showEditFragment()
         }
     }
 

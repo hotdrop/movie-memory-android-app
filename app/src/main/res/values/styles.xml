@@ -34,13 +34,19 @@
     </style>
 
     <style name="ItemText.Link" parent="ItemText">
-        <item name="android:textColor">@color/movieDetailLink</item>
+        <item name="android:textColor">@color/blue</item>
     </style>
 
     <style name="LabelBorder">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/gray</item>
+    </style>
+
+    <style name="MultiLineEditText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:inputType">textMultiLine</item>
     </style>
 
 </resources>

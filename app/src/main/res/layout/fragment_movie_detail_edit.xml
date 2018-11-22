@@ -113,7 +113,7 @@
                 style="@style/MultiLineEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/movie_memo_title"
+                android:hint="メモです"
                 android:maxLength="1000"
                 android:maxLines="20"
                 android:text="@={movie.memo}"
