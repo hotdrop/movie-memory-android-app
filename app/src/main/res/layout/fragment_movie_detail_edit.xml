@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/movie_saw_date_label"
-            style="@style/ItemLabel"
+            style="@style/ItemText.Sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

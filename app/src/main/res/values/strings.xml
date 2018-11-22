@@ -13,14 +13,11 @@
 
     <!--映画情報の詳細画面-->
     <string name="movie_info_label">概要</string>
-    <string name="movie_playing_date_label">公開日</string>
-    <string name="movie_film_director_label">監督</string>
+    <string name="movie_film_director_label">監督:</string>
     <string name="movie_url_link">予告動画</string>
     <string name="movie_official_url_link">公式サイト</string>
-    <string name="movie_overview_title">あらすじ</string>
-    <string name="movie_saw_date">観た日</string>
-    <string name="movie_saw_place">観た映画館</string>
-    <string name="movie_memo_title">自分用メモ</string>
+    <string name="movie_saw_date">鑑賞日:</string>
+    <string name="movie_saw_place">映画館:</string>
     <string name="movie_link_tap_non_url">URLのリンクが未設定です。そしてアプリから設定はできません。</string>
 
     <!--映画情報の編集画面-->
