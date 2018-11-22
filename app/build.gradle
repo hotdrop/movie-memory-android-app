@@ -120,9 +120,6 @@ dependencies {
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
-    // leakCanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-
     // test
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.6.1'
