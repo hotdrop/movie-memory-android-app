@@ -31,14 +31,15 @@ class MainActivity: BaseActivity() {
 
     private fun initView() {
         binding.navigation.setOnNavigationItemReselectedListener { item ->
-
             item.isChecked = true
-
             when (item.itemId) {
                 R.id.navigation_movie -> navigationToMovies()
                 R.id.navigation_dashboard -> { }
                 R.id.navigation_notifications -> { }
             }
+        }
+        supportActionBar?.let {
+            it.elevation = 0f
         }
     }
 

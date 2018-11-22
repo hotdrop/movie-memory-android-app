@@ -72,6 +72,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.5'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.firebaseui:firebase-ui-storage:4.0.1'
 
@@ -118,9 +119,6 @@ dependencies {
     // stetho
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
-
-    // leakCanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 
     // test
     testImplementation 'junit:junit:4.12'

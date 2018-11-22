@@ -13,7 +13,7 @@ abstract class MovieFragmentWithEndlessRecyclerView: BaseFragment() {
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     protected fun setupRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView, runLoadMore: (page: Int, totalItemsCount: Int) -> Unit) {
-        val gridLayoutManager = androidx.recyclerview.widget.GridLayoutManager(activity, 3)
+        val gridLayoutManager = androidx.recyclerview.widget.GridLayoutManager(activity, 2)
         recyclerView.layoutManager = gridLayoutManager
         scrollListener = (object: EndlessRecyclerViewScrollListener(gridLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: androidx.recyclerview.widget.RecyclerView?) {

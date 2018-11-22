@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/movie_saw_date_label"
-            style="@style/ItemLabel"
+            style="@style/ItemText.Sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -113,7 +113,7 @@
                 style="@style/MultiLineEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/movie_memo_title"
+                android:hint="メモです"
                 android:maxLength="1000"
                 android:maxLines="20"
                 android:text="@={movie.memo}"
@@ -129,7 +129,7 @@
             android:layout_margin="@dimen/fab_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_check" />
+            app:srcCompat="@android:drawable/ic_menu_save" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

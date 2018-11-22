@@ -25,19 +25,10 @@ class MovieDetailActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        DataBindingUtil.setContentView<ActivityMovieDetailBinding>(this, R.layout.activity_movie_detail)
         getComponent().inject(this)
 
+        DataBindingUtil.setContentView<ActivityMovieDetailBinding>(this, R.layout.activity_movie_detail)
         initView()
-    }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount <= 1) {
-            finish()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     private fun initView() {
@@ -50,22 +41,20 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     private fun showDetailFragment() {
-        replaceFragment(MovieDetailFragment.newInstance())
+        supportFragmentManager.transaction {
+            replace(R.id.content_view, MovieDetailFragment.newInstance())
+        }
     }
 
     fun showEditFragment() {
-        replaceFragment(MovieDetailEditFragment.newInstance())
+        supportFragmentManager.transaction {
+            replace(R.id.content_view, MovieDetailEditFragment.newInstance())
+            addToBackStack(null)
+        }
     }
 
     fun startBrowser(url: String) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.transaction {
-            replace(R.id.content_view, fragment)
-            addToBackStack(null)
-        }
     }
 
     companion object {
