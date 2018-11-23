@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
@@ -80,14 +82,25 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     private fun navigationToEdit() {
-        MovieDetailEditActivity.start(this, movieId)
+        MovieDetailEditActivity.startForResult(this, movieId, MOVIE_DETAIL_REQUEST_CODE)
     }
 
     private fun startBrowser(url: String) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK) {
+            return
+        }
+        if (requestCode == MOVIE_DETAIL_REQUEST_CODE) {
+            Snackbar.make(binding.contentsArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
     companion object {
+        const val MOVIE_DETAIL_REQUEST_CODE = 1000
         private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
         fun start(context: Context, movieId: Int, options: ActivityOptions? = null) =
                 context.startActivity(Intent(context, MovieDetailActivity::class.java)

@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -50,7 +51,7 @@ class MovieDetailEditActivity: BaseActivity() {
         viewModel.saveSuccess.observe(this, Observer {
             it?.let { success ->
                 if (success) {
-                    Toast.makeText(this, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK)
                     finish()
                 }
             }
@@ -108,10 +109,10 @@ class MovieDetailEditActivity: BaseActivity() {
 
     companion object {
         private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
-        fun start(context: Context, movieId: Int) =
-                context.startActivity(Intent(context, MovieDetailEditActivity::class.java)
+        fun startForResult(activity: Activity, movieId: Int, requestCode: Int) =
+                activity.startActivityForResult(Intent(activity, MovieDetailEditActivity::class.java)
                         .apply {
                             putExtra(EXTRA_MOVIE_TAG, movieId)
-                        })
+                        }, requestCode)
     }
 }
