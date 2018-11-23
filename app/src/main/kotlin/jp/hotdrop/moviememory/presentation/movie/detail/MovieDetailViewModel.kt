@@ -28,7 +28,7 @@ class MovieDetailViewModel @Inject constructor(
     fun save(sawDateStr: String) {
         val movie = movie?.value ?: return
         if (sawDateStr.isNotEmpty()) {
-            movie.setSawDateFromText(sawDateStr)
+            movie.setWatchDateFromText(sawDateStr)
         }
         useCase.saveLocalEdit(movie)
                 .observeOn(AndroidSchedulers.mainThread())

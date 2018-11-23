@@ -24,7 +24,7 @@ data class MovieEntity(
 fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
     val playingDate = this.playingDate?.let { LocalDate.ofEpochDay(it) }
     val createAt = LocalDateTime.ofInstant(this.createdAt, ZoneId.systemDefault())
-    val sawDate = localMovieInfo?.sawDate?.let { LocalDate.ofEpochDay(it) }
+    val watchDate = localMovieInfo?.watchDate?.let { LocalDate.ofEpochDay(it) }
     return Movie(
             this.id,
             this.title,
@@ -36,18 +36,16 @@ fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
             this.officialUrl,
             this.trailerMovieUrl,
             createAt,
-            localMovieInfo?.isSaw ?: false,
-            sawDate,
-            localMovieInfo?.sawPlace,
-            localMovieInfo?.memo
+            watchDate,
+            localMovieInfo?.watchPlace,
+            localMovieInfo?.note
     )
 }
 
 fun Movie.toLocal(): LocalMovieInfoEntity =
         LocalMovieInfoEntity(
                 this.id,
-                this.isSaw,
-                this.sawDate?.toEpochDay(),
-                this.sawPlace,
-                this.memo
+                this.watchDate?.toEpochDay(),
+                this.watchPlace,
+                this.note
         )

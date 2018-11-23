@@ -76,7 +76,7 @@ class MovieDetailEditFragment: BaseFragment() {
             }
         }
 
-        binding.sawDateEditArea.run {
+        binding.watchDateEditArea.run {
             setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     showDatePickerDialog()
@@ -85,16 +85,16 @@ class MovieDetailEditFragment: BaseFragment() {
         }
 
         fab.setOnClickListener {
-            viewModel.save(binding.sawDateEditArea.text.toString())
+            viewModel.save(binding.watchDateEditArea.text.toString())
         }
     }
 
     private fun showDatePickerDialog() {
 
-        val sawDate = if (binding.sawDateEditArea.text.isNullOrEmpty()) {
+        val sawDate = if (binding.watchDateEditArea.text.isNullOrEmpty()) {
             LocalDate.now()
         } else {
-            LocalDate.parse(binding.sawDateEditArea.text)
+            LocalDate.parse(binding.watchDateEditArea.text)
         }
 
         // sawDateEditAreaはユーザーに編集させたくないので操作の後は必ずclearFocusする。
@@ -103,14 +103,14 @@ class MovieDetailEditFragment: BaseFragment() {
                 DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                     val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                     Timber.d("選択した日付 = $selectedDate")
-                    binding.sawDateEditArea.let {
+                    binding.watchDateEditArea.let {
                         it.setText(selectedDate.toString())
                         it.clearFocus()
                     }
                 }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
         ).let { datePickerDialog ->
             datePickerDialog.setOnCancelListener {
-                binding.sawDateEditArea.clearFocus()
+                binding.watchDateEditArea.clearFocus()
             }
             datePickerDialog.show()
         }

@@ -67,7 +67,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private fun observe() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
-                binding.nowplayingProgress.visibility = View.GONE
+                binding.nowPlayingProgress.visibility = View.GONE
                 when (nowObserveState) {
                     ObserveState.Normal -> adapter.addAll(movies)
                     ObserveState.Refresh -> adapter.refresh(movies)
@@ -86,11 +86,11 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     private fun initView() {
-        super.setupRecyclerView(binding.nowplayingMoviesRecyclerView) { page, _ ->
+        super.setupRecyclerView(binding.nowPlayingMoviesRecyclerView) { page, _ ->
             viewModel.onLoad(page)
         }
         adapter = NowPlayingMoviesAdapter()
-        binding.nowplayingMoviesRecyclerView.adapter = adapter
+        binding.nowPlayingMoviesRecyclerView.adapter = adapter
 
         super.setupSwipeRefresh(binding.nowPlayingSwipeRefresh) {
             nowObserveState = ObserveState.Refresh

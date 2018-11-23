@@ -15,10 +15,9 @@ data class Movie(
         val officialUrl: String?,
         val trailerMovieUrl: String?,
         val createAt: LocalDateTime?,
-        var isSaw: Boolean,
-        var sawDate: LocalDate?,
-        var sawPlace: String?,
-        var memo: String?
+        var watchDate: LocalDate?,
+        var watchPlace: String?,
+        var note: String?
 ): RecyclerDiffable {
 
     override fun isItemTheSame(o: RecyclerDiffable) =
@@ -27,13 +26,13 @@ data class Movie(
     override fun isContentsTheSame(o: RecyclerDiffable) =
             (this == (o as? Movie ?: false))
 
-    fun toTextByPlayingDate() = playingDate.toString()
+    fun toTextPlayingDate() = playingDate.toString()
 
-    fun toTextBySawDate() = sawDate?.toString() ?: ""
+    fun toTextWatchDate() = watchDate?.toString() ?: ""
 
     fun categoryName() = category.name
 
-    fun setSawDateFromText(strSawDate: String) {
-        sawDate = LocalDate.parse(strSawDate)
+    fun setWatchDateFromText(strSawDate: String) {
+        watchDate = LocalDate.parse(strSawDate)
     }
 }

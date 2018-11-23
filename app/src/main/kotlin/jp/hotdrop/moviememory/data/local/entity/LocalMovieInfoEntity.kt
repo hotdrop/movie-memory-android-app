@@ -7,8 +7,7 @@ import androidx.room.PrimaryKey
 class LocalMovieInfoEntity (
         // TODO ローカルで保存できるものもっと増やす。URLやカテゴリー
         @PrimaryKey var id: Int,
-        var isSaw: Boolean,
-        var sawDate: Long?,
-        var sawPlace: String?,
-        var memo: String?
+        var watchDate: Long?,
+        var watchPlace: String?,
+        var note: String?
 )

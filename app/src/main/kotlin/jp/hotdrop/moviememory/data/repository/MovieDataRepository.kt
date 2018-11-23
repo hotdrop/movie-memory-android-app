@@ -92,7 +92,7 @@ class MovieDataRepository @Inject constructor(
 
     override fun saveLocalMovieInfo(movie: Movie): Completable =
         Completable.create {
-            Timber.d("編集した値を保存します。isSaw = ${movie.isSaw}, sawDate=${movie.sawDate}, sawPlace=${movie.sawPlace}")
+            Timber.d("編集した値を保存します。watchDate=${movie.watchDate}, watchPlace=${movie.watchPlace}")
             movieDatabase.saveLocalInfo(movie.toLocal())
             it.onComplete()
         }
