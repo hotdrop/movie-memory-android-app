@@ -32,6 +32,7 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     private fun initView() {
+
         intent.getIntExtra(EXTRA_MOVIE_TAG, -1).let { movieId ->
             viewModel.setUp(movieId)
         }

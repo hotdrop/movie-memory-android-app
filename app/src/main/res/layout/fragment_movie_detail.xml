@@ -20,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:visibility="gone">
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
@@ -159,7 +158,7 @@
                     android:id="@+id/film_director_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:src="@drawable/ic_person"
                     app:layout_constraintStart_toStartOf="@+id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
@@ -170,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/film_director_label"
                     app:layout_constraintStart_toEndOf="@+id/film_director_icon"
                     app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
@@ -196,9 +195,7 @@
                     android:drawableStart="@drawable/ic_open_in_browser"
                     android:gravity="center_vertical"
                     android:text="@string/official_url_link_label"
-                    app:layout_constraintEnd_toStartOf="@+id/trailer_url_link"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/film_director_icon"
                     app:layout_constraintTop_toBottomOf="@+id/film_director"
                     app:webLinkColor="@{movie.officialUrl}" />
 
@@ -211,8 +208,6 @@
                     android:drawableStart="@drawable/ic_local_movies"
                     android:gravity="center_vertical"
                     android:text="@string/trailer_movie_url_link_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/official_url_link"
                     app:layout_constraintTop_toTopOf="@+id/official_url_link"
                     app:webLinkColor="@{movie.trailerMovieUrl}" />
@@ -261,7 +256,7 @@
                     android:id="@+id/watch_place_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:src="@drawable/ic_place"
                     app:layout_constraintStart_toStartOf="@+id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/watch_date_text" />
@@ -272,7 +267,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/watch_place_label"
                     app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
                     app:layout_constraintTop_toBottomOf="@+id/watch_date_text" />
@@ -295,9 +290,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="80dp"
                     android:text="@{movie.note}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
