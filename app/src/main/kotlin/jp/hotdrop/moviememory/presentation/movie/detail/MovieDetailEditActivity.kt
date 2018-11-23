@@ -1,90 +1,80 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentMovieDetailEditBinding
-import jp.hotdrop.moviememory.presentation.BaseFragment
-import kotlinx.android.synthetic.main.fragment_movie_detail_edit.*
+import jp.hotdrop.moviememory.databinding.ActivityMovieDetailEditBinding
+import jp.hotdrop.moviememory.presentation.BaseActivity
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
-class MovieDetailEditFragment: BaseFragment() {
+class MovieDetailEditActivity: BaseActivity() {
 
-    private lateinit var binding: FragmentMovieDetailEditBinding
-    private lateinit var activity: MovieDetailActivity
+    private lateinit var binding: ActivityMovieDetailEditBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieDetailViewModel by lazy {
-        ViewModelProviders.of(activity, viewModelFactory).get(MovieDetailViewModel::class.java)
+    private val viewModel: MovieDetailEditViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
+    private val movieId: Int by lazy {
+        intent.getIntExtra(EXTRA_MOVIE_TAG, -1)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         getComponent().inject(this)
 
-        (getActivity() as MovieDetailActivity).let {
-            activity = it
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMovieDetailEditBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail_edit)
 
         observe()
         initView()
     }
 
     private fun observe() {
+        viewModel.setUp(movieId)
         viewModel.movie?.observe(this, Observer {
-            it?.let {
-                binding.movie = it
+            it?.run {
+                binding.movie = this
             }
         })
         viewModel.saveSuccess.observe(this, Observer {
-            it?.let {
-                if (it) {
-                    Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
-                    activity.showDetailFragment()
+            it?.let { success ->
+                if (success) {
+                    Toast.makeText(this, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
         })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun initView() {
 
-        activity.apply {
-            setSupportActionBar(binding.toolbar)
-            supportActionBar?.apply {
-                setDisplayHomeAsUpEnabled(true)
-                setDisplayShowTitleEnabled(false)
-            }
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
         }
 
         binding.watchDateEditArea.run {
-            setOnFocusChangeListener { v, hasFocus ->
+            setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     showDatePickerDialog()
                 }
             }
         }
 
-        fab.setOnClickListener {
+        binding.fab.setOnClickListener {
             viewModel.save(binding.watchDateEditArea.text.toString())
         }
     }
@@ -99,7 +89,7 @@ class MovieDetailEditFragment: BaseFragment() {
 
         // sawDateEditAreaはユーザーに編集させたくないので操作の後は必ずclearFocusする。
         // もしまたDatePickerを使う場面が出てきたらComponentとして切り出したい
-        DatePickerDialog(activity,
+        DatePickerDialog(this,
                 DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                     val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                     Timber.d("選択した日付 = $selectedDate")
@@ -117,6 +107,11 @@ class MovieDetailEditFragment: BaseFragment() {
     }
 
     companion object {
-        fun newInstance() = MovieDetailEditFragment()
+        private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
+        fun start(context: Context, movieId: Int) =
+                context.startActivity(Intent(context, MovieDetailEditActivity::class.java)
+                        .apply {
+                            putExtra(EXTRA_MOVIE_TAG, movieId)
+                        })
     }
 }
