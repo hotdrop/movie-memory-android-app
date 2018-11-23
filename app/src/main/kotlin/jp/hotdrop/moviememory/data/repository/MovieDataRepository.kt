@@ -4,7 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
+import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.DummyApi
 import jp.hotdrop.moviememory.data.remote.MovieApi
@@ -89,15 +89,6 @@ class MovieDataRepository @Inject constructor(
                     }.doOnError {
                         Timber.e(it, "映画情報の読み込みに失敗")
                     }.toCompletable()
-
-    private fun Movie.toLocal(): LocalMovieInfoEntity =
-            LocalMovieInfoEntity(
-                    this.id,
-                    this.isSaw,
-                    this.sawDate?.toEpochDay(),
-                    this.sawPlace,
-                    this.memo
-            )
 
     override fun saveLocalMovieInfo(movie: Movie): Completable =
         Completable.create {

@@ -37,10 +37,6 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="ItemText.Link" parent="ItemText">
-        <item name="android:textColor">@color/blue</item>
-    </style>
-
     <style name="ItemText.Small" parent="ItemText">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/gray</item>

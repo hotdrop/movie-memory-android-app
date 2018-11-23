@@ -65,17 +65,15 @@ class MovieDetailFragment: BaseFragment() {
             }
         }
 
-        // ここら辺、なかったら灰色にしたい。
         binding.movieUrlLink.setOnClickListener {
-            binding.movie?.let {
-                startToWebLink(it.imageUrl)
+            binding.movie?.trailerMovieUrl?.run {
+                startToWebLink(this)
             }
         }
 
-        // こっちも
         binding.officialUrlLink.setOnClickListener {
-            binding.movie?.let {
-                startToWebLink(it.url)
+            binding.movie?.officialUrl?.run {
+                startToWebLink(this)
             }
         }
 
@@ -84,10 +82,8 @@ class MovieDetailFragment: BaseFragment() {
         }
     }
 
-    private fun startToWebLink(url: String?) {
-        if (url.isNullOrEmpty()) {
-            Toast.makeText(activity, getString(R.string.movie_link_tap_non_url), Toast.LENGTH_SHORT).show()
-        } else {
+    private fun startToWebLink(url: String) {
+        if (url.startsWith("http")) {
             activity.startBrowser(url)
         }
     }

@@ -16,7 +16,8 @@ data class MovieEntity(
         var imageUrl: String?,
         var playingDate: Long?,
         var filmDirector: String?,
-        var url: String?,
+        var officialUrl: String?,
+        var trailerMovieUrl: String?,
         var createdAt: Instant
 )
 
@@ -32,7 +33,8 @@ fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
             this.imageUrl,
             playingDate,
             this.filmDirector,
-            this.url,
+            this.officialUrl,
+            this.trailerMovieUrl,
             createAt,
             localMovieInfo?.isSaw ?: false,
             sawDate,
@@ -40,3 +42,12 @@ fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
             localMovieInfo?.memo
     )
 }
+
+fun Movie.toLocal(): LocalMovieInfoEntity =
+        LocalMovieInfoEntity(
+                this.id,
+                this.isSaw,
+                this.sawDate?.toEpochDay(),
+                this.sawPlace,
+                this.memo
+        )
