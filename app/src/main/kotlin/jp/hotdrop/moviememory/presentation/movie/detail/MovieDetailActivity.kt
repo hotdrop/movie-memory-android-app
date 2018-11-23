@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -95,7 +96,13 @@ class MovieDetailActivity: BaseActivity() {
             return
         }
         if (requestCode == MOVIE_DETAIL_REQUEST_CODE) {
-            Snackbar.make(binding.contentsArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                    binding.snackbarArea,
+                    R.string.message_save_success,
+                    Snackbar.LENGTH_SHORT
+            ).also { snackbar ->
+                snackbar.view.background = ContextCompat.getDrawable(this, R.drawable.shape_corner_circle)
+            }.show()
         }
     }
 
