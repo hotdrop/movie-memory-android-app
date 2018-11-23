@@ -78,7 +78,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         })
         viewModel.error.observe(this, Observer {
             it?.let {
-                val message = getString(R.string.toast_message_failure_load_data)
+                val message = getString(R.string.message_failure_load_data)
                 Snackbar.make(binding.nowPlayingMovieArea, message, Snackbar.LENGTH_LONG).show()
             }
         })

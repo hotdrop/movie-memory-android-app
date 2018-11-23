@@ -2,7 +2,7 @@ package jp.hotdrop.moviememory.model
 
 import timber.log.Timber
 
-// TODO 一旦。近いうちに見直す
+// TODO 見直す
 class AppError constructor(
         private val throwable: Throwable
 ) {
