@@ -76,32 +76,43 @@ class MovieDetailEditFragment: BaseFragment() {
             }
         }
 
-        binding.calendarImageIcon.setOnClickListener {
-            showDatePickerDialog()
+        binding.sawDateEditArea.run {
+            setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    showDatePickerDialog()
+                }
+            }
         }
 
         fab.setOnClickListener {
-            viewModel.save(binding.movieSawDateText.text.toString())
+            viewModel.save(binding.sawDateEditArea.text.toString())
         }
     }
 
     private fun showDatePickerDialog() {
 
-        var sawDate = LocalDate.now()
-
-        if (binding.movieSawDateText.text.isNotEmpty()) {
-            sawDate = LocalDate.parse(binding.movieSawDateText.text)
+        val sawDate = if (binding.sawDateEditArea.text.isNullOrEmpty()) {
+            LocalDate.now()
+        } else {
+            LocalDate.parse(binding.sawDateEditArea.text)
         }
 
-        // これは別Componentとして切り出す
-        context?.let {
-            DatePickerDialog(it,
-                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                        val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                        Timber.d("選択した日付 = $selectedDate")
-                        binding.movieSawDateText.text = selectedDate.toString()
-                    }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
-            ).show()
+        // sawDateEditAreaはユーザーに編集させたくないので操作の後は必ずclearFocusする。
+        // もしまたDatePickerを使う場面が出てきたらComponentとして切り出したい
+        DatePickerDialog(activity,
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                    Timber.d("選択した日付 = $selectedDate")
+                    binding.sawDateEditArea.let {
+                        it.setText(selectedDate.toString())
+                        it.clearFocus()
+                    }
+                }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
+        ).let { datePickerDialog ->
+            datePickerDialog.setOnCancelListener {
+                binding.sawDateEditArea.clearFocus()
+            }
+            datePickerDialog.show()
         }
     }
 

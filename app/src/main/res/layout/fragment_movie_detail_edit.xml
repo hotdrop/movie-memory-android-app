@@ -19,6 +19,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="@dimen/default_elevation"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
@@ -48,78 +49,70 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/guide_line_default_margin" />
 
-        <TextView
-            android:id="@+id/movie_saw_date_label"
-            style="@style/ItemText.Sub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/movie_saw_date"
-            app:layout_constraintStart_toEndOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"/>
-
-        <ImageView
-            android:id="@+id/calendar_image_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toEndOf="@+id/movie_saw_date_label"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:srcCompat="@drawable/ic_action_calendar_month" />
-
-        <TextView
-            android:id="@+id/movie_saw_date_text"
-            style="@style/ItemText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@{movie.toTextBySawDate()}"
-            app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/movie_saw_date_label"
-            tools:text="2018-05-26" />
-
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_saw_place"
+            android:id="@+id/text_input_saw_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="30"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/movie_saw_date_hint"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
             app:layout_constraintEnd_toStartOf="@id/right_guideline"
-            app:layout_constraintStart_toEndOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/movie_saw_date_text">
+            app:layout_constraintStart_toEndOf="@id/left_guideline" >
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/saw_date_edit_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/ItemText"
-                android:hint="@string/movie_saw_place"
+                android:text="@{movie.toTextBySawDate()}"
+                android:drawableStart="@drawable/ic_action_calendar_day"
+                android:drawablePadding="8dp"
+                tools:text="2018-11-20" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_saw_place"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="@string/movie_saw_place_hint"
+            app:counterEnabled="true"
+            app:counterMaxLength="30"
+            app:layout_constraintEnd_toStartOf="@id/right_guideline"
+            app:layout_constraintStart_toEndOf="@id/left_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_saw_date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/ItemText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:maxLength="30"
-                android:singleLine="true"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:text="@={movie.sawPlace}"
                 tools:text="TOHOシネマズ日本橋" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:hint="@string/movie_memo_hint"
             app:counterEnabled="true"
             app:counterMaxLength="600"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintEnd_toStartOf="@id/right_guideline"
             app:layout_constraintStart_toEndOf="@id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/text_input_saw_place">
 
             <androidx.appcompat.widget.AppCompatEditText
+                style="@style/ItemText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/movie_memo_hint"
-                style="@style/ItemText"
                 android:maxLength="600"
                 android:maxLines="20"
                 android:text="@={movie.memo}" />
