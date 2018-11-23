@@ -11,19 +11,17 @@
     <string name="tab_name_coming_soon">公開予定</string>
     <string name="toast_message_failure_load_data">データの取得に失敗しました。</string>
 
-    <!--映画情報の詳細画面-->
-    <string name="movie_info_label">概要</string>
-    <string name="movie_film_director_label">監督:</string>
-    <string name="movie_url_link">予告動画</string>
-    <string name="movie_official_url_link">公式サイト</string>
-    <string name="movie_saw_date">鑑賞日:</string>
-    <string name="movie_saw_place">映画館:</string>
+    <!--映画詳細-->
+    <string name="overview_label">概要</string>
+    <string name="playing_date_label">公開日</string>
+    <string name="film_director_label">監督</string>
+    <string name="trailer_movie_url_link_label">予告動画</string>
+    <string name="official_url_link_label">公式サイト</string>
+    <string name="watch_date_label">鑑賞日</string>
+    <string name="watch_place_label">鑑賞した映画館</string>
 
     <!--映画情報の編集画面-->
-    <string name="movie_saw_date_hint">鑑賞日</string>
-    <string name="movie_saw_place_hint">鑑賞した映画館</string>
-    <string name="movie_memo_hint">自分用のメモ</string>
-    <string name="movie_date_select_button_label">日付を選択</string>
+    <string name="movie_memo_hint">自分用ノート</string>
     <string name="toast_message_save_success">保存しました。</string>
 
     <!-- 画面遷移 -->

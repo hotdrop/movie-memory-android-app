@@ -65,7 +65,7 @@ class MovieDetailFragment: BaseFragment() {
             }
         }
 
-        binding.movieUrlLink.setOnClickListener {
+        binding.trailerUrlLink.setOnClickListener {
             binding.movie?.trailerMovieUrl?.run {
                 startToWebLink(this)
             }

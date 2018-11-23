@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:visibility="gone">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
@@ -123,66 +124,98 @@
                     app:layout_constraintStart_toStartOf="@id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/overview" />
 
+                <ImageView
+                    android:id="@+id/playing_date_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/ic_event"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/line_film_director_label" />
+
                 <TextView
-                    android:id="@+id/movie_playing_date_text"
-                    style="@style/ItemText"
+                    android:id="@+id/playing_date_label"
+                    style="@style/ItemText.Sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:text="@{movie.toTextByPlayingDate()}"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/line_film_director_label"
-                    tools:text="2018-04-28" />
+                    android:text="@string/playing_date_label"
+                    app:layout_constraintStart_toEndOf="@+id/playing_date_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/line_film_director_label" />
 
                 <TextView
-                    android:id="@+id/movie_film_director_label"
+                    android:id="@+id/playing_date_text"
+                    style="@style/ItemText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{movie.toTextByPlayingDate()}"
+                    app:layout_constraintStart_toEndOf="@+id/playing_date_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/playing_date_label"
+                    tools:text="2018-04-28" />
+
+                <ImageView
+                    android:id="@+id/film_director_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_person"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
+
+                <TextView
+                    android:id="@+id/film_director_label"
                     style="@style/ItemText.Sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/movie_film_director_label"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_playing_date_text" />
+                    android:text="@string/film_director_label"
+                    app:layout_constraintStart_toEndOf="@+id/film_director_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
 
                 <TextView
-                    android:id="@+id/movie_film_director"
-                    style="@style/ItemText.Sub"
+                    android:id="@+id/film_director"
+                    style="@style/ItemText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@{movie.filmDirector}"
-                    app:layout_constraintStart_toEndOf="@+id/movie_film_director_label"
-                    app:layout_constraintTop_toTopOf="@+id/movie_film_director_label"
+                    app:layout_constraintStart_toEndOf="@+id/film_director_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/film_director_label"
                     tools:text="アンソニー・ルッソ、ジョー・ルッソ" />
-
-                <TextView
-                    android:id="@+id/movie_url_link"
-                    style="@style/ItemText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:drawableStart="@drawable/ic_local_movies"
-                    android:gravity="center_vertical"
-                    android:text="@string/movie_url_link"
-                    app:webLinkColor="@{movie.trailerMovieUrl}"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_film_director_label" />
 
                 <TextView
                     android:id="@+id/official_url_link"
                     style="@style/ItemText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
                     android:drawableStart="@drawable/ic_open_in_browser"
                     android:gravity="center_vertical"
-                    android:text="@string/movie_official_url_link"
-                    app:webLinkColor="@{movie.officialUrl}"
-                    app:layout_constraintStart_toEndOf="@+id/movie_url_link"
-                    app:layout_constraintTop_toTopOf="@+id/movie_url_link" />
+                    android:text="@string/official_url_link_label"
+                    app:layout_constraintEnd_toStartOf="@+id/trailer_url_link"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/film_director"
+                    app:webLinkColor="@{movie.officialUrl}" />
+
+                <TextView
+                    android:id="@+id/trailer_url_link"
+                    style="@style/ItemText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:drawableStart="@drawable/ic_local_movies"
+                    android:gravity="center_vertical"
+                    android:text="@string/trailer_movie_url_link_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/official_url_link"
+                    app:layout_constraintTop_toTopOf="@+id/official_url_link"
+                    app:webLinkColor="@{movie.trailerMovieUrl}" />
 
                 <View
                     android:id="@+id/line_memo_border"
@@ -190,52 +223,70 @@
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_url_link" />
+                    app:layout_constraintTop_toBottomOf="@+id/trailer_url_link" />
 
                 <!-- ここからメモ枠 -->
+                <ImageView
+                    android:id="@+id/watch_date_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/ic_event"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/line_memo_border" />
+
                 <TextView
-                    android:id="@+id/movie_saw_date_label"
+                    android:id="@+id/watch_date_label"
                     style="@style/ItemText.Sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/movie_saw_date"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/watch_date_label"
+                    app:layout_constraintStart_toEndOf="@+id/watch_date_icon"
                     app:layout_constraintTop_toBottomOf="@+id/line_memo_border" />
 
                 <TextView
-                    android:id="@+id/movie_saw_date_text"
+                    android:id="@+id/watch_date_text"
                     style="@style/ItemText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@{movie.toTextBySawDate()}"
-                    app:layout_constraintStart_toEndOf="@+id/movie_saw_date_label"
-                    app:layout_constraintTop_toTopOf="@+id/movie_saw_date_label"
+                    app:layout_constraintStart_toEndOf="@+id/watch_date_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/watch_date_label"
                     tools:text="2018-04-30" />
 
+                <ImageView
+                    android:id="@+id/watch_place_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_place"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/watch_date_text" />
+
                 <TextView
-                    android:id="@+id/movie_saw_place_label"
+                    android:id="@+id/watch_place_label"
                     style="@style/ItemText.Sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/movie_saw_place"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_saw_date_label" />
+                    android:text="@string/watch_place_label"
+                    app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/watch_date_text" />
 
                 <TextView
-                    android:id="@+id/movie_saw_place_text"
+                    android:id="@+id/watch_place_text"
                     style="@style/ItemText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@{movie.sawPlace}"
-                    app:layout_constraintStart_toEndOf="@+id/movie_saw_place_label"
                     app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-                    app:layout_constraintTop_toTopOf="@+id/movie_saw_place_label"
+                    app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/watch_place_label"
                     tools:text="TOHOシネマズ日本橋" />
 
                 <TextView
@@ -243,11 +294,16 @@
                     style="@style/ItemText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
                     android:text="@{movie.memo}"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_saw_place_label"
+                    app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/watch_place_text"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:text="ここに自分が書いたメモが表示されます。インフィニティーウォーのラストでキャプテンマーベルにヘルプを求めていましたが、フューリーはなぜ今までハルクやソー並の強さを持つキャプテンマーベルを呼ばなかったのでしょうか？" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
