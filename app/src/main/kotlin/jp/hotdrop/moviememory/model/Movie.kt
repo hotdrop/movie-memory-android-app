@@ -7,6 +7,7 @@ import org.threeten.bp.LocalDateTime
 data class Movie(
         val id: Int,
         val title: String,
+        val category: Category,
         val overview: String?,
         val imageUrl: String?,
         val playingDate: LocalDate?,
@@ -28,6 +29,8 @@ data class Movie(
     fun toTextByPlayingDate() = playingDate.toString()
 
     fun toTextBySawDate() = sawDate?.toString() ?: ""
+
+    fun categoryName() = category.name
 
     fun setSawDateFromText(strSawDate: String) {
         sawDate = LocalDate.parse(strSawDate)
