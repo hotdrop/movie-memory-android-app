@@ -40,7 +40,11 @@ class MovieDetailActivity: BaseActivity() {
         showDetailFragment()
     }
 
-    private fun showDetailFragment() {
+    fun showDetailFragment() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        }
+        viewModel.clear()
         supportFragmentManager.transaction {
             replace(R.id.content_view, MovieDetailFragment.newInstance())
         }

@@ -97,6 +97,7 @@
                 style="@style/ItemText"
                 android:hint="@string/movie_saw_place"
                 android:maxLength="30"
+                android:singleLine="true"
                 android:maxLines="1"
                 android:text="@={movie.sawPlace}"
                 tools:text="TOHOシネマズ日本橋" />

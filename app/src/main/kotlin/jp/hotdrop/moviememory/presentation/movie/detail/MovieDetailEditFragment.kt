@@ -60,7 +60,7 @@ class MovieDetailEditFragment: BaseFragment() {
             it?.let {
                 if (it) {
                     Toast.makeText(activity, getString(R.string.toast_message_save_success), Toast.LENGTH_SHORT).show()
-                    fragmentManager?.popBackStack()
+                    activity.showDetailFragment()
                 }
             }
         })
