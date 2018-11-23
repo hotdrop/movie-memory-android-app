@@ -21,7 +21,7 @@ class DummyApi {
                 overview = "6つ全てを手に入れると、全宇宙の生命の半分を滅ぼす力を得る「インフィニティーストーン」その無限のエネルギーを持つ石を手にせんと迫り来るサノス。\n" +
                         "彼の野望を阻止するため、最強ヒーロチーム・アベンジャーズが結集し、人類の命運をかけた壮絶なバトルが今、始まる！",
                 playDate = "2018-11-23",
-                imageUrl = ""))
+                imageUrl = "https://firebasestorage.googleapis.com/v0/b/movie-memory.appspot.com/o/infini.jpg?alt=media&token=484ef333-a0bb-498b-b9cd-25a4205b00d3"))
         data.add(createMovie(id = 4, title = "シャークフォース", overview = "ダミーサメが出てくる映画です。", playDate = "2018-10-16"))
         data.add(createMovie(id = 5, title = "ファイブセンス", overview = "碁盤目なだけに光ると五番映画ができます。際がそろそろ消える気がします。", playDate = "2018-10-16"))
         data.add(createMovie(id = 6, title = "シックスエレメンツ", overview = "色々混じったダミー映画であります。", playDate = "2018-07-21"))
