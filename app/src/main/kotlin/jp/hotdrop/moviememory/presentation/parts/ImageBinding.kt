@@ -2,6 +2,9 @@ package jp.hotdrop.moviememory.presentation.parts
 
 import androidx.databinding.BindingAdapter
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.google.firebase.storage.FirebaseStorage
 import jp.hotdrop.moviememory.R
 
@@ -22,4 +25,14 @@ fun setImageUrl(view: ImageView, url: String?) {
                     .into(view)
         }
     }
+}
+
+@BindingAdapter("webLinkColor")
+fun setWebLinkColor(view: TextView, url: String?) {
+    val textColor = if (url.isNullOrEmpty() || !url.startsWith("http")) {
+        ContextCompat.getColor(view.context, R.color.lightGray)
+    } else {
+        ContextCompat.getColor(view.context, R.color.blue)
+    }
+    view.setTextColor(textColor)
 }

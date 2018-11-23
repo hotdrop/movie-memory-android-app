@@ -18,9 +18,11 @@
     <string name="movie_official_url_link">公式サイト</string>
     <string name="movie_saw_date">鑑賞日:</string>
     <string name="movie_saw_place">映画館:</string>
-    <string name="movie_link_tap_non_url">URLのリンクが未設定です。</string>
 
     <!--映画情報の編集画面-->
+    <string name="movie_saw_date_hint">鑑賞日</string>
+    <string name="movie_saw_place_hint">鑑賞した映画館</string>
+    <string name="movie_memo_hint">自分用のメモ</string>
     <string name="movie_date_select_button_label">日付を選択</string>
     <string name="toast_message_save_success">保存しました。</string>
 

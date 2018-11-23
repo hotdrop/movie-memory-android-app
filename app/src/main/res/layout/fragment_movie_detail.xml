@@ -99,7 +99,7 @@
                     android:text="@{movie.categoryName()}"
                     app:layout_constraintStart_toStartOf="@id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/title"
-                    tools:text="ファンタジー・SF" />
+                    tools:text="SF・ファンタジー" />
 
                 <TextView
                     android:id="@+id/overview"
@@ -159,7 +159,7 @@
 
                 <TextView
                     android:id="@+id/movie_url_link"
-                    style="@style/ItemText.Link"
+                    style="@style/ItemText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -167,18 +167,20 @@
                     android:drawableStart="@drawable/ic_local_movies"
                     android:gravity="center_vertical"
                     android:text="@string/movie_url_link"
+                    app:webLinkColor="@{movie.trailerMovieUrl}"
                     app:layout_constraintStart_toStartOf="@id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/movie_film_director_label" />
 
                 <TextView
                     android:id="@+id/official_url_link"
-                    style="@style/ItemText.Link"
+                    style="@style/ItemText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:drawableStart="@drawable/ic_open_in_browser"
                     android:gravity="center_vertical"
                     android:text="@string/movie_official_url_link"
+                    app:webLinkColor="@{movie.officialUrl}"
                     app:layout_constraintStart_toEndOf="@+id/movie_url_link"
                     app:layout_constraintTop_toTopOf="@+id/movie_url_link" />
 

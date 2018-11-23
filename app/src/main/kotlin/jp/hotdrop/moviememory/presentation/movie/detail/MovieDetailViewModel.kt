@@ -38,6 +38,10 @@ class MovieDetailViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
+    fun clear() {
+        mutableSaveSuccess.postValue(false)
+    }
+
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()

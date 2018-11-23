@@ -2,9 +2,7 @@ package jp.hotdrop.moviememory.data.remote.response
 
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.ZoneId
 
 data class MovieResult(
         val id: Int,
@@ -15,7 +13,8 @@ data class MovieResult(
         val imageUrl: String?,
         val playingDate: String?,
         val filmDirector: String?,
-        val url: String?
+        val officialUrl: String?,
+        val trailerMovieUrl: String?
 )
 
 fun MovieResult.toMovieEntity(): MovieEntity {
@@ -30,7 +29,8 @@ fun MovieResult.toMovieEntity(): MovieEntity {
             this.imageUrl,
             playingDateEpoch,
             this.filmDirector,
-            this.url,
+            this.officialUrl,
+            this.trailerMovieUrl,
             createAtInstant
     )
 }
