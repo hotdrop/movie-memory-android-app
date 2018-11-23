@@ -81,7 +81,7 @@ class MovieDataRepository @Inject constructor(
     private fun refresh(fromMovieId: Int? = null): Completable =
     // TODO 開発中、APIがまともに動かないのでダミーAPI（ローカルでデータを生成する）を使う。この状態だとUnitTest通らないので注意
 //            api.getNowPlaying(fromMovieId)
-            dummyApi.getMovies(fromMovieId)
+            dummyApi.nowPlaying(fromMovieId)
                     .doOnSuccess { movieResults ->
                         Timber.d("  取得した件数=${movieResults.size}")
                         val movieEntities = movieResults.map { it.toMovieEntity() }

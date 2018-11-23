@@ -25,7 +25,7 @@ abstract class MovieFragmentWithEndlessRecyclerView: BaseFragment() {
 
     protected fun setupSwipeRefresh(swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout, runRefresh: () -> Unit) {
         swipeRefreshLayout.let {
-            it.setColorSchemeResources(R.color.colorAccent)
+            it.setColorSchemeResources(R.color.colorPrimary)
             it.setOnRefreshListener {
                 Timber.i("start Refresh")
                 scrollListener.reset()

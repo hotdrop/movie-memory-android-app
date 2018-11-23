@@ -9,6 +9,8 @@ import org.threeten.bp.ZoneId
 data class MovieResult(
         val id: Int,
         val title: String,
+        val categoryId: Int,
+        val categoryName: String,
         val overview: String?,
         val imageUrl: String?,
         val playingDate: String?,
@@ -22,6 +24,8 @@ fun MovieResult.toMovieEntity(): MovieEntity {
     return MovieEntity(
             this.id,
             this.title,
+            this.categoryId,
+            this.categoryName,
             this.overview,
             this.imageUrl,
             playingDateEpoch,
