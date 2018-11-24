@@ -20,8 +20,12 @@ class MovieUseCase @Inject constructor(
             repository.findNowPlayingMovies(index, offset)
                     .subscribeOn(Schedulers.io())
 
-    fun movie(id: Int): Flowable<Movie> =
-            repository.movie(id)
+    fun movieFlowable(id: Int): Flowable<Movie> =
+            repository.movieFlowable(id)
+                    .subscribeOn(Schedulers.io())
+
+    fun findMovie(id: Int): Single<Movie> =
+            repository.findMovie(id)
                     .subscribeOn(Schedulers.io())
 
     fun loadRecentMovies(): Completable =

@@ -67,13 +67,20 @@ class MovieDataRepository @Inject constructor(
                         refresh(it)
                     }
 
-    override fun movie(id: Int): Flowable<Movie> =
-        movieDatabase.findMovie(id)
-                .map { movieEntity ->
-                    Timber.d("映画情報詳細を取得。id=$id")
-                    val localMovieInfo = movieDatabase.findLocalMovieInfo(movieEntity.id)
-                    movieEntity.toMovie(localMovieInfo)
-                }
+    override fun movieFlowable(id: Int): Flowable<Movie> =
+            movieDatabase.movieFlowable(id)
+                    .map { movieEntity ->
+                        Timber.d("映画情報詳細を取得。id=$id")
+                        val localMovieInfo = movieDatabase.findLocalMovieInfo(movieEntity.id)
+                        movieEntity.toMovie(localMovieInfo)
+                    }
+
+    override fun findMovie(id: Int): Single<Movie> =
+            movieDatabase.findMovie(id)
+                    .map { movieEntity ->
+                        val localMovieInfo = movieDatabase.findLocalMovieInfo(movieEntity.id)
+                        movieEntity.toMovie(localMovieInfo)
+                    }
 
     /**
      * ネットワークから最新データを取得

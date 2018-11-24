@@ -4,7 +4,8 @@ import com.airbnb.lottie.LottieAnimationView
 
 class FavoriteStars constructor(
         private val lottieViews: List<LottieAnimationView>,
-        private var favoriteCount: Int = 0
+        private var favoriteCount: Int = 0,
+        private val changeStateListener: (Int) -> Unit
 ) {
 
     init {
@@ -12,10 +13,12 @@ class FavoriteStars constructor(
             lottieAnimationView.setOnClickListener {
                 // つけてる星の数と一致した場合は全部リセット。それ以外は基本play
                 if (lottieAnimationView.isActivated && index + 1 == favoriteCount) {
-                    clear()
                     favoriteCount = 0
+                    changeStateListener(0)
+                    clear()
                 } else {
                     favoriteCount = index + 1
+                    changeStateListener(favoriteCount)
                     playAnimations(favoriteCount)
                 }
             }
@@ -23,17 +26,13 @@ class FavoriteStars constructor(
         playAnimations(favoriteCount)
     }
 
-    fun count(): Int = favoriteCount
-
     private fun playAnimations(toNum: Int) {
         clear()
-        favoriteCount = toNum
         lottieViews.take(toNum)
                 .forEach { it.play() }
     }
 
     private fun clear() {
-        favoriteCount = 0
         lottieViews.forEach { it.reset() }
     }
 

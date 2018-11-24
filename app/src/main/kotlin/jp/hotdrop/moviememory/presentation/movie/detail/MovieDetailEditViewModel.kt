@@ -22,7 +22,7 @@ class MovieDetailEditViewModel @Inject constructor(
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
 
     fun setUp(id: Int) {
-        movie = LiveDataReactiveStreams.fromPublisher(useCase.movie(id))
+        movie = LiveDataReactiveStreams.fromPublisher(useCase.movieFlowable(id))
     }
 
     fun save(sawDateStr: String) {

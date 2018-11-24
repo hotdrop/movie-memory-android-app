@@ -18,17 +18,22 @@ class MovieDetailViewModel @Inject constructor(
 
     var movie: LiveData<Movie>? = null
 
+    private val mutableIsRefreshMovie = MutableLiveData<Boolean>()
+    val isRefreshMovie: LiveData<Boolean> = mutableIsRefreshMovie
+
     fun setUp(id: Int) {
-        movie = LiveDataReactiveStreams.fromPublisher(useCase.movie(id))
+        movie = LiveDataReactiveStreams.fromPublisher(useCase.movieFlowable(id))
     }
 
     fun saveFavorite(count: Int) {
-        movie?.value?.let {
-            it.favoriteCount = count
-            useCase.saveLocalEdit(it)
+        movie?.value?.let { movie ->
+            movie.favoriteCount = count
+            useCase.saveLocalEdit(movie)
                     .observeOn(Schedulers.io())
                     .subscribeBy(
-                            onComplete = { Timber.d("お気に入りスター数を保存") },
+                            onComplete = {
+                                mutableIsRefreshMovie.postValue(true)
+                            },
                             onError = { Timber.e(it) }
                     ).addTo(compositeDisposable)
         }

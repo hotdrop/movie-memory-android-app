@@ -17,7 +17,10 @@ class MovieDatabase @Inject constructor(
     fun findMovies(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
             dao.selectMovies(startAt.toEpochDay(), endAt.toEpochDay())
 
-    fun findMovie(id: Int): Flowable<MovieEntity> =
+    fun movieFlowable(id: Int): Flowable<MovieEntity> =
+            dao.selectMovieFlowable(id)
+
+    fun findMovie(id: Int): Single<MovieEntity> =
             dao.selectMovie(id)
 
     fun isExist(): Single<Boolean> =
