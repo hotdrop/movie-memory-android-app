@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.presentation
 
-import android.app.ActivityOptions
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -8,7 +7,6 @@ import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
-import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 
 class MainActivity: BaseActivity() {
 
@@ -46,10 +44,6 @@ class MainActivity: BaseActivity() {
 
     private fun navigationToMovies() {
         replaceFragment(MoviesFragment.newInstance())
-    }
-
-    fun navigationToMovieDetail(movieId: Int, options: ActivityOptions? = null) {
-        MovieDetailActivity.start(this, movieId, options)
     }
 
     private fun replaceFragment(fragment: Fragment) {

@@ -2,6 +2,11 @@ package jp.hotdrop.moviememory.presentation.parts
 
 import androidx.recyclerview.widget.DiffUtil
 
+/**
+ * 当初構成では一覧をFlowableでたれながそうと思っていたのでこれを実装したが
+ * 今となっては機能していない・・・
+ * いっそGroupieに載せ替えても良いかも。
+ */
 interface RecyclerDiffable {
     fun isItemTheSame(o: RecyclerDiffable): Boolean
     fun isContentsTheSame(o: RecyclerDiffable): Boolean

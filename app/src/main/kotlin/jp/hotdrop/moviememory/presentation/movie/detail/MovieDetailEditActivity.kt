@@ -35,26 +35,8 @@ class MovieDetailEditActivity: BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail_edit)
 
-        observe()
         initView()
-    }
-
-    private fun observe() {
-        viewModel.setUp(movieId)
-        viewModel.movie?.observe(this, Observer {
-            it?.run {
-                binding.movie = this
-            }
-        })
-        viewModel.saveSuccess.observe(this, Observer {
-            it?.let { success ->
-                if (success) {
-                    setResult(Activity.RESULT_OK)
-                    finish()
-                }
-            }
-        })
-        lifecycle.addObserver(viewModel)
+        observe()
     }
 
     private fun initView() {
@@ -76,6 +58,24 @@ class MovieDetailEditActivity: BaseActivity() {
         binding.fab.setOnClickListener {
             viewModel.save(binding.watchDateEditArea.text.toString())
         }
+    }
+
+    private fun observe() {
+        viewModel.setUp(movieId)
+        viewModel.movie?.observe(this, Observer {
+            it?.run {
+                binding.movie = this
+            }
+        })
+        viewModel.saveSuccess.observe(this, Observer {
+            it?.let { success ->
+                if (success) {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun showDatePickerDialog() {

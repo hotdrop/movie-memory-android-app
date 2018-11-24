@@ -36,6 +36,7 @@ fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
             this.officialUrl,
             this.trailerMovieUrl,
             createAt,
+            localMovieInfo?.favoriteCount ?: 0,
             watchDate,
             localMovieInfo?.watchPlace,
             localMovieInfo?.note
@@ -45,6 +46,7 @@ fun MovieEntity.toMovie(localMovieInfo: LocalMovieInfoEntity?): Movie {
 fun Movie.toLocal(): LocalMovieInfoEntity =
         LocalMovieInfoEntity(
                 this.id,
+                this.favoriteCount,
                 this.watchDate?.toEpochDay(),
                 this.watchPlace,
                 this.note

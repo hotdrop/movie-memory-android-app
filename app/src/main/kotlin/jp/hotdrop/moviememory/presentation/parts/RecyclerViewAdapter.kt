@@ -40,6 +40,11 @@ abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: RecyclerView.ViewHol
 
     fun getItem(index: Int) = list[index]
 
+    fun getItemPosition(item: T): Int? {
+        val index = list.indexOf(item)
+        return if (index == -1) null else index
+    }
+
     /**
      * ViewAdapterのBindingHolder
      */

@@ -1,10 +1,12 @@
 package jp.hotdrop.moviememory.presentation.movie.nowplaying
 
+import android.app.Activity
 import android.app.ActivityOptions
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import android.view.LayoutInflater
@@ -17,6 +19,7 @@ import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.MainActivity
 import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
+import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
 import javax.inject.Inject
@@ -34,12 +37,10 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
     }
 
-    // TODO もっといいやり方がないか模索する・・これモデルにしてステータス更新は全部そいつに任せたほうがいい
-    private var nowObserveState = ObserveState.Normal
+    private var nowObserveState = ObserveState.Add
     private enum class ObserveState {
-        Normal,  // 一覧に、取得したアイテムを追加していく
+        Add,     // 取得したアイテムを一覧に追加していく
         Refresh, // 一覧のアイテムを全部クリアして、取得したアイテムをセットする
-        OneStop  // 何もしない。onResumeでLiveDataがActiveになってしまうのでこれで止める
     }
 
     override fun onAttach(context: Context?) {
@@ -58,8 +59,8 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        observe()
         initView()
+        observe()
     }
 
     private fun observe() {
@@ -67,17 +68,23 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             it?.let { movies ->
                 binding.nowPlayingProgress.visibility = View.GONE
                 when (nowObserveState) {
-                    ObserveState.Normal -> adapter.addAll(movies)
+                    ObserveState.Add -> adapter.addAll(movies)
                     ObserveState.Refresh -> adapter.refresh(movies)
-                    ObserveState.OneStop -> Timber.i("画面更新しない")
                 }
-                nowObserveState = ObserveState.Normal
+                nowObserveState = ObserveState.Add
+            }
+        })
+        viewModel.refreshMovie.observe(this, Observer {
+            it?.let { movie ->
+                adapter.refresh(movie)
+                viewModel.clear()
             }
         })
         viewModel.error.observe(this, Observer {
             it?.let {
                 val message = getString(R.string.message_failure_load_data)
                 Snackbar.make(binding.nowPlayingMovieArea, message, Snackbar.LENGTH_LONG).show()
+                viewModel.clear()
             }
         })
         lifecycle.addObserver(viewModel)
@@ -96,7 +103,25 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            return
+        }
+
+        val refreshMovieId = data.getIntExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
+
+        when (requestCode) {
+            REQUEST_CODE_TO_DETAIL -> {
+                Timber.d("更新します。")
+                viewModel.onRefreshMovie(refreshMovieId)
+            }
+        }
+    }
+
     companion object {
+        private const val REQUEST_CODE_TO_DETAIL = 1001
         fun newInstance() = NowPlayingMoviesFragment()
     }
 
@@ -121,12 +146,25 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         private fun transitionWithSharedElements(binding: ItemMovieBinding ,movie: Movie) {
             activity?.let {  activity ->
+                // アホっぽいけどtransitionするため1〜5まで用意する
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                         activity,
-                        Pair.create(binding.imageView, activity.getString(R.string.transition_movie_image))
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star1)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star2)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star3)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star4)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star5)),
+                        Pair.create(binding.imageView as View, activity.getString(R.string.transition_movie_image))
                 )
-                activity.navigationToMovieDetail(movie.id, options)
+                MovieDetailActivity.startForResult(this@NowPlayingMoviesFragment, movie.id, REQUEST_CODE_TO_DETAIL, options)
             } ?: Timber.e("activityがnullです。")
+        }
+
+        fun refresh(movie: Movie) {
+            adapter.getItemPosition(movie)?.let { index ->
+                adapter.getItem(index).update(movie)
+                notifyItemChanged(index)
+            }
         }
     }
 }

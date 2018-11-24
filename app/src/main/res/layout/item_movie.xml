@@ -44,44 +44,96 @@
                 android:id="@+id/title"
                 style="@style/Title.Small"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@{movie.title}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView"
-                tools:text="The Coffee House" />
+                tools:text="アベンジャーズ" />
 
             <TextView
                 android:id="@+id/category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/ItemText.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@{movie.categoryName()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/favoritesStar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                app:layout_constraintVertical_bias="0.0" />
+                tools:text="SF・ファンタジー" />
 
-            <ImageView
-                android:id="@+id/star"
+            <TextView
+                android:id="@+id/playing_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                style="@style/ItemText.Small"
+                android:text="@{movie.toTextPlayingDate()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/category"
+                tools:text="2018-11-30"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar"
+                style="@style/FavoriteStar"
+                android:transitionName="@string/transition_favorite_star1"
+                android:contentDescription="@string/star_content_description"
+                app:imageFavoritesStar="@{movie.favoriteCount}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <!--アホっぽいけどtransitionするためダミーのViewを4つ用意する-->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy1"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy2"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy3"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy4"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <TextView
+                android:id="@+id/favoriteCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="@string/star_content_description"
+                style="@style/ItemText.FavoriteCount"
+                android:text="@{movie.toTextFavoriteCount()}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                app:srcCompat="@android:drawable/star_off" />
-
+                tools:text="5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

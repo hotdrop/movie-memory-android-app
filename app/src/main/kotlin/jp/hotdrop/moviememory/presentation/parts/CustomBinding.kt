@@ -4,6 +4,7 @@ import androidx.databinding.BindingAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.storage.FirebaseStorage
 import jp.hotdrop.moviememory.R
 
@@ -34,4 +35,13 @@ fun setWebLinkColor(view: TextView, url: String?) {
         ContextCompat.getColor(view.context, R.color.blue)
     }
     view.setTextColor(textColor)
+}
+
+@BindingAdapter("imageFavoritesStar")
+fun setImageFavoriteStar(view: LottieAnimationView, count: Int) {
+    if (count > 0) {
+        view.playAnimation()
+    } else {
+        view.progress = 0f
+    }
 }

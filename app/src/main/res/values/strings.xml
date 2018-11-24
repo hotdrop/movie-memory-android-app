@@ -32,5 +32,10 @@
 
     <!-- 画面遷移 -->
     <string name="transition_movie_image">movieImage</string>
+    <string name="transition_favorite_star1">favoriteStars1</string>
+    <string name="transition_favorite_star2">favoriteStars2</string>
+    <string name="transition_favorite_star3">favoriteStars3</string>
+    <string name="transition_favorite_star4">favoriteStars4</string>
+    <string name="transition_favorite_star5">favoriteStars5</string>
 
 </resources>
