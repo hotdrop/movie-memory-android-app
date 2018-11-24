@@ -4,7 +4,6 @@ import androidx.databinding.BindingAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import com.google.firebase.storage.FirebaseStorage
 import jp.hotdrop.moviememory.R
 

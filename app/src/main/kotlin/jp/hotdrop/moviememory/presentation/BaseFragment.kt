@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.presentation
 
-import androidx.fragment.app.Fragment
 import jp.hotdrop.moviememory.di.component.FragmentComponent
 import jp.hotdrop.moviememory.di.module.FragmentModule
 

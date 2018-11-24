@@ -3,7 +3,7 @@ package jp.hotdrop.moviememory
 import com.facebook.stetho.Stetho
 import timber.log.Timber
 
-class DebugApp: App() {
+class DebugMovieMemoryApp: MovieMemoryApp() {
 
     override fun onCreate() {
         super.onCreate()

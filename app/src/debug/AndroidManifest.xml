@@ -4,7 +4,7 @@
     package="jp.hotdrop.moviememory">
 
     <application
-        android:name=".DebugApp"
+        android:name=".DebugMovieMemoryApp"
         tools:replace="android:name">
 
     </application>

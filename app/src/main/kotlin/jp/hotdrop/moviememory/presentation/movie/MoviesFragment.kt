@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.presentation.BaseFragment
-import jp.hotdrop.moviememory.presentation.MainActivity
 import jp.hotdrop.moviememory.presentation.movie.comingsoon.ComingSoonMoviesFragment
 import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFragment
 
@@ -58,7 +57,7 @@ class MoviesFragment: BaseFragment() {
 
         private val tabFragments = mutableListOf<MovieTab>()
 
-        override fun getItem(position: Int): androidx.fragment.app.Fragment = tabFragments[position].fragment
+        override fun getItem(position: Int): Fragment = tabFragments[position].fragment
 
         override fun getPageTitle(position: Int): CharSequence? {
             val titleRes = tabFragments[position].titleRes

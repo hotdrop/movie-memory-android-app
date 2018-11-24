@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "jp.hotdrop.moviememory"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -48,6 +48,10 @@ android {
         release.java.srcDirs += 'src/release/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
     }
 }
 
