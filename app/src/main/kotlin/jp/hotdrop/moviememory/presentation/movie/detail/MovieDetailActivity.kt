@@ -43,11 +43,9 @@ class MovieDetailActivity: BaseActivity() {
         observe()
     }
 
-    override fun onResume() {
-        super.onResume()
-        favoriteStars?.run {
-            viewModel.saveFavorite(this.count())
-        }
+    override fun onStop() {
+        super.onStop()
+        saveFavorite()
     }
 
     private fun observe() {
@@ -128,6 +126,12 @@ class MovieDetailActivity: BaseActivity() {
             ).also { snackbar ->
                 snackbar.view.background = ContextCompat.getDrawable(this, R.drawable.shape_corner_circle)
             }.show()
+        }
+    }
+
+    private fun saveFavorite() {
+        favoriteStars?.run {
+            viewModel.saveFavorite(this.count())
         }
     }
 

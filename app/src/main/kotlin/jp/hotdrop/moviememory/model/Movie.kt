@@ -21,19 +21,20 @@ data class Movie(
         var note: String?
 ): RecyclerDiffable {
 
-    override fun isItemTheSame(o: RecyclerDiffable) =
-            (id == (o as? Movie)?.id)
-
-    override fun isContentsTheSame(o: RecyclerDiffable) =
-            (this == (o as? Movie ?: false))
-
     fun toTextPlayingDate() = playingDate.toString()
-
     fun toTextWatchDate() = watchDate?.toString() ?: ""
+    fun toTextFavoriteCount() = favoriteCount.toString()
 
     fun categoryName() = category.name
 
     fun setWatchDateFromText(strSawDate: String) {
         watchDate = LocalDate.parse(strSawDate)
     }
+
+    // 以下2つはRecyclerViewのDiff用
+    override fun isItemTheSame(o: RecyclerDiffable) =
+            (id == (o as? Movie)?.id)
+
+    override fun isContentsTheSame(o: RecyclerDiffable) =
+            (this == (o as? Movie ?: false))
 }
