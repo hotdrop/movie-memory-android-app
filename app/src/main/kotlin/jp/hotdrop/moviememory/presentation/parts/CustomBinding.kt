@@ -37,13 +37,9 @@ fun setWebLinkColor(view: TextView, url: String?) {
     view.setTextColor(textColor)
 }
 
-@BindingAdapter("imageFavoriteStar")
+@BindingAdapter("imageFavoritesStar")
 fun setImageFavoriteStar(view: LottieAnimationView, count: Int) {
-    val image = if (count > 0) {
-//        ContextCompat.getDrawable(view.context, android.R.drawable.btn_star_big_on)
+    if (count > 0) {
         view.playAnimation()
-    } else {
-//        ContextCompat.getDrawable(view.context, android.R.drawable.btn_star_big_off)
     }
-//    view.setImageDrawable(image)
 }

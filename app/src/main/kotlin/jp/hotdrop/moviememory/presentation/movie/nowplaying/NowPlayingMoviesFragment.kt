@@ -121,9 +121,15 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         private fun transitionWithSharedElements(binding: ItemMovieBinding ,movie: Movie) {
             activity?.let {  activity ->
+                // アホっぽいけどtransitionするため1〜5まで用意する
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                         activity,
-                        Pair.create(binding.imageView, activity.getString(R.string.transition_movie_image))
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star1)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star2)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star3)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star4)),
+                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star5)),
+                        Pair.create(binding.imageView as View, activity.getString(R.string.transition_movie_image))
                 )
                 activity.navigationToMovieDetail(movie.id, options)
             } ?: Timber.e("activityがnullです。")

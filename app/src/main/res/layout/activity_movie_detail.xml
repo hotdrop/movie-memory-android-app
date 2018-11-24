@@ -116,22 +116,28 @@
 
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_1"
-                      style="@style/FavoriteStar" />
+                      style="@style/FavoriteStar"
+                      android:transitionName="@string/transition_favorite_star1"/>
+
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_2"
                       style="@style/FavoriteStar"
+                      android:transitionName="@string/transition_favorite_star2"
                       app:layout_constraintStart_toEndOf="@+id/favorite_1"/>
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_3"
                       style="@style/FavoriteStar"
+                      android:transitionName="@string/transition_favorite_star3"
                       app:layout_constraintStart_toEndOf="@+id/favorite_2"/>
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_4"
                       style="@style/FavoriteStar"
+                      android:transitionName="@string/transition_favorite_star4"
                       app:layout_constraintStart_toEndOf="@+id/favorite_3"/>
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_5"
                       style="@style/FavoriteStar"
+                      android:transitionName="@string/transition_favorite_star5"
                       app:layout_constraintStart_toEndOf="@+id/favorite_4"/>
 
                </androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,7 +63,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@{movie.categoryName()}"
-                app:layout_constraintEnd_toStartOf="@+id/star"
+                app:layout_constraintEnd_toStartOf="@+id/favoritesStar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 tools:text="SF・ファンタジー" />
@@ -78,12 +78,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category"
                 tools:text="2018-11-30"/>
-            
+
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/star"
+                android:id="@+id/favoritesStar"
                 style="@style/FavoriteStar"
+                android:transitionName="@string/transition_favorite_star1"
                 android:contentDescription="@string/star_content_description"
-                app:imageFavoriteStar="@{movie.favoriteCount}"
+                app:imageFavoritesStar="@{movie.favoriteCount}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <!--アホっぽいけどtransitionするためダミーのViewを4つ用意する-->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy1"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy2"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy3"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoritesStar_dummy4"
+                style="@style/FavoriteStar"
+                android:visibility="invisible"
+                android:transitionName="@string/transition_favorite_star5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/favoriteCount"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
