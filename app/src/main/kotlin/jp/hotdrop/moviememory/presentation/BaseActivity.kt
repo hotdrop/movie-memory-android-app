@@ -2,14 +2,14 @@ package jp.hotdrop.moviememory.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
-import jp.hotdrop.moviememory.App
+import jp.hotdrop.moviememory.MovieMemoryApp
 import jp.hotdrop.moviememory.di.component.ActivityComponent
 import jp.hotdrop.moviememory.di.module.ActivityModule
 
 abstract class BaseActivity: AppCompatActivity() {
 
     private val activityComponent by lazy {
-        (application as App).getComponent().plus(ActivityModule(this))
+        (application as MovieMemoryApp).getComponent().plus(ActivityModule(this))
     }
 
     fun getComponent(): ActivityComponent = activityComponent

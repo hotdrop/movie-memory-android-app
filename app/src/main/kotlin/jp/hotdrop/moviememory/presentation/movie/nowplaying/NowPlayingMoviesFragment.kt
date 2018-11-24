@@ -5,13 +5,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
@@ -116,20 +114,11 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                 val movie = getItem(position)
                 it.movie = movie
                 it.imageView.setOnClickListener {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                        underKitkatApiLevelTransition(movie)
-                    } else {
-                        transitionWithSharedElements(binding, movie)
-                    }
+                    transitionWithSharedElements(binding, movie)
                 }
             }
         }
 
-        private fun underKitkatApiLevelTransition(movie: Movie) {
-            activity?.navigationToMovieDetail(movie.id) ?: Timber.e("activityがnullです。")
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         private fun transitionWithSharedElements(binding: ItemMovieBinding ,movie: Movie) {
             activity?.let {  activity ->
                 val options = ActivityOptions.makeSceneTransitionAnimation(
