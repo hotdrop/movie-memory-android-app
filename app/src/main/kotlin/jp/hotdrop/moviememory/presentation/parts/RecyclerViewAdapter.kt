@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import timber.log.Timber
 import kotlin.properties.Delegates
 
-abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: androidx.recyclerview.widget.RecyclerView.ViewHolder>: androidx.recyclerview.widget.RecyclerView.Adapter<VH>() {
+abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: RecyclerView.ViewHolder>: RecyclerView.Adapter<VH>() {
 
     private val list: MutableList<T> by Delegates.observable(mutableListOf()) { _, oldList, newList ->
         calculateDiff(oldList, newList).dispatchUpdatesTo(this)
@@ -39,13 +40,18 @@ abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: androidx.recyclervie
 
     fun getItem(index: Int) = list[index]
 
+    fun getItemPosition(item: T): Int? {
+        val index = list.indexOf(item)
+        return if (index == -1) null else index
+    }
+
     /**
      * ViewAdapterのBindingHolder
      */
     class BindingHolder<out T: ViewDataBinding>(
             parent: ViewGroup,
             @LayoutRes layoutResId: Int
-    ): androidx.recyclerview.widget.RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)) {
+    ): RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)) {
         val binding: T? = DataBindingUtil.bind(itemView)
     }
 }

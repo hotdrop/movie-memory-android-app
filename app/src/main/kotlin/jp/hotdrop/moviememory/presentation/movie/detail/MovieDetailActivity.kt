@@ -1,67 +1,153 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
-import android.content.Context
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.transaction
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
+import jp.hotdrop.moviememory.presentation.component.FavoriteStars
+import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityMovieDetailBinding>(this, R.layout.activity_movie_detail)
+    private lateinit var binding: ActivityMovieDetailBinding
 
-        getComponent().inject(this)
-
-        initView()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: MovieDetailViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
 
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount <= 1) {
-            finish()
-        } else {
-            super.onBackPressed()
-        }
+    private val movieId: Int by lazy {
+        intent.getIntExtra(EXTRA_MOVIE_TAG, -1)
+    }
+    private var favoriteStars: FavoriteStars? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getComponent().inject(this)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
+
+        initView()
+        observe()
     }
 
     private fun initView() {
-        val movieId = intent.getIntExtra(EXTRA_MOVIE_TAG, -1)
-        showDetailFragment(movieId)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
+
+        binding.trailerUrlLink.setOnClickListener {
+            binding.movie?.trailerMovieUrl?.run {
+                startToWebLink(this)
+            }
+        }
+
+        binding.officialUrlLink.setOnClickListener {
+            binding.movie?.officialUrl?.run {
+                startToWebLink(this)
+            }
+        }
+
+        binding.editFab.setOnClickListener {
+            navigationToEdit()
+        }
     }
 
-    private fun showDetailFragment(movieId: Int) {
-        val fragment = MovieDetailFragment.newInstance(movieId)
-        replaceFragment(fragment)
+    private fun observe() {
+        viewModel.setUp(movieId)
+        viewModel.movie?.observe(this, Observer {
+            it?.run {
+                binding.movie = this
+                initFavoriteStar(this.favoriteCount)
+            }
+        })
+        viewModel.isRefreshMovie.observe(this, Observer {
+            it?.run {
+                if (this) {
+                    // スター数が変更されたので呼び元に通知するためのIntentを準備する
+                    onResultRefreshMovie()
+                }
+            }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
-    fun showEditFragment(movieId: Int) {
-        val fragment = MovieDetailEditFragment.newInstance(movieId)
-        replaceFragment(fragment)
+    private fun startToWebLink(url: String) {
+        if (url.startsWith("http")) {
+            startBrowser(url)
+        }
     }
 
-    fun startBrowser(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
+    private fun navigationToEdit() {
+        MovieDetailEditActivity.startForResult(this, movieId, MOVIE_DETAIL_REQUEST_CODE)
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.transaction {
-            replace(R.id.content_view, fragment)
-            addToBackStack(null)
+    private fun startBrowser(url: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    private fun initFavoriteStar(favoriteCount: Int) {
+        // お気に入りの数を取得してから初期化すべきのため、LiveDataのObserverの中で初期化している
+        // そのため、一度初期化していた場合はスルーする。
+        if (favoriteStars != null) {
+            return
+        }
+        favoriteStars = FavoriteStars(
+                listOf(binding.favorite1,
+                        binding.favorite2,
+                        binding.favorite3,
+                        binding.favorite4,
+                        binding.favorite5
+                ), favoriteCount) { viewModel.saveFavorite(it) }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK) {
+            return
+        }
+        if (requestCode == MOVIE_DETAIL_REQUEST_CODE) {
+            Snackbar.make(
+                    binding.snackbarArea,
+                    R.string.message_save_success,
+                    Snackbar.LENGTH_SHORT
+            ).also { snackbar ->
+                snackbar.view.background = ContextCompat.getDrawable(this, R.drawable.shape_corner_circle)
+                onResultRefreshMovie()
+            }.show()
+        }
+    }
+
+    fun onResultRefreshMovie() {
+        binding.movie?.let { movie ->
+            setResult(RESULT_OK, Intent().apply {
+                putExtra(EXTRA_MOVIE_TAG, movie.id)
+            })
         }
     }
 
     companion object {
-        private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
-        fun start(context: Context, movieId: Int) =
-                context.startActivity(Intent(context, MovieDetailActivity::class.java).apply {
-                    putExtra(EXTRA_MOVIE_TAG, movieId)
-                })
+        const val MOVIE_DETAIL_REQUEST_CODE = 1002
+        const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
+        fun startForResult(fragment: Fragment, movieId: Int, requestCode: Int, options: ActivityOptions? = null) =
+                fragment.startActivityForResult(Intent(fragment.context, MovieDetailActivity::class.java)
+                        .apply {
+                            putExtra(EXTRA_MOVIE_TAG, movieId)
+                        }, requestCode, options?.toBundle())
     }
 }

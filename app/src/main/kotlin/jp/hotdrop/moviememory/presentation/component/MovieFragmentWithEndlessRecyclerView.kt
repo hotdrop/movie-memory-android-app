@@ -1,6 +1,9 @@
 package jp.hotdrop.moviememory.presentation.component
 
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import timber.log.Timber
@@ -12,18 +15,18 @@ abstract class MovieFragmentWithEndlessRecyclerView: BaseFragment() {
 
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
-    protected fun setupRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView, runLoadMore: (page: Int, totalItemsCount: Int) -> Unit) {
-        val gridLayoutManager = androidx.recyclerview.widget.GridLayoutManager(activity, 3)
+    protected fun setupRecyclerView(recyclerView: RecyclerView, runLoadMore: (page: Int, totalItemsCount: Int) -> Unit) {
+        val gridLayoutManager = GridLayoutManager(activity, 2)
         recyclerView.layoutManager = gridLayoutManager
         scrollListener = (object: EndlessRecyclerViewScrollListener(gridLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: androidx.recyclerview.widget.RecyclerView?) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 runLoadMore(page, totalItemsCount)
             }
         })
         recyclerView.addOnScrollListener(scrollListener)
     }
 
-    protected fun setupSwipeRefresh(swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout, runRefresh: () -> Unit) {
+    protected fun setupSwipeRefresh(swipeRefreshLayout: SwipeRefreshLayout, runRefresh: () -> Unit) {
         swipeRefreshLayout.let {
             it.setColorSchemeResources(R.color.colorAccent)
             it.setOnRefreshListener {
@@ -48,13 +51,13 @@ abstract class MovieFragmentWithEndlessRecyclerView: BaseFragment() {
         private var loading = true
         private val startPageIndex = 0
 
-        private var layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager
+        private var layoutManager: RecyclerView.LayoutManager
 
-        constructor(linearLayoutManager: androidx.recyclerview.widget.LinearLayoutManager) {
+        constructor(linearLayoutManager: LinearLayoutManager) {
             layoutManager = linearLayoutManager
         }
 
-        constructor(gridLayoutManager: androidx.recyclerview.widget.GridLayoutManager) {
+        constructor(gridLayoutManager: GridLayoutManager) {
             layoutManager = gridLayoutManager
         }
 
@@ -78,8 +81,12 @@ abstract class MovieFragmentWithEndlessRecyclerView: BaseFragment() {
             }
 
             val lastVisibleItemPosition = when (layoutManager) {
-                is androidx.recyclerview.widget.LinearLayoutManager -> { (layoutManager as androidx.recyclerview.widget.LinearLayoutManager).findLastVisibleItemPosition() }
-                is androidx.recyclerview.widget.GridLayoutManager -> { (layoutManager as androidx.recyclerview.widget.GridLayoutManager).findLastVisibleItemPosition() }
+                is LinearLayoutManager -> {
+                    (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                }
+                is GridLayoutManager -> {
+                    (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
+                }
                 else -> throw IllegalStateException("layoutManager is incorrect! ${layoutManager.javaClass}")
             }
 
@@ -102,6 +109,6 @@ abstract class MovieFragmentWithEndlessRecyclerView: BaseFragment() {
             loading = true
         }
 
-        abstract fun onLoadMore(page: Int, totalItemsCount: Int, view: androidx.recyclerview.widget.RecyclerView?)
+        abstract fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?)
     }
 }

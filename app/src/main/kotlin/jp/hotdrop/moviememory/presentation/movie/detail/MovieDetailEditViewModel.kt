@@ -1,13 +1,10 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
+import androidx.lifecycle.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.usecase.MovieUseCase
 import timber.log.Timber
@@ -19,32 +16,30 @@ class MovieDetailEditViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val mutableMovie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie> = mutableMovie
+    var movie: LiveData<Movie>? = null
 
     private val mutableSaveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
 
-    fun loadMovie(id: Int) {
-        useCase.movie(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onSuccess = { mutableMovie.postValue(it) },
-                        onError = { Timber.e(it) }
-                ).addTo(compositeDisposable)
+    fun setUp(id: Int) {
+        movie = LiveDataReactiveStreams.fromPublisher(useCase.movieFlowable(id))
     }
 
-    fun saveMovie(sawDateStr: String) {
-        val movie = movie.value ?: return
+    fun save(sawDateStr: String) {
+        val movie = movie?.value ?: return
         if (sawDateStr.isNotEmpty()) {
-            movie.setSawDateFromText(sawDateStr)
+            movie.setWatchDateFromText(sawDateStr)
         }
         useCase.saveLocalEdit(movie)
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = { mutableSaveSuccess.postValue(true) },
                         onError = { Timber.e(it) }
                 ).addTo(compositeDisposable)
+    }
+
+    fun clear() {
+        mutableSaveSuccess.postValue(false)
     }
 
     override fun onCleared() {

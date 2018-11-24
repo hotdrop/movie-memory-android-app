@@ -9,23 +9,33 @@
     <!--映画情報一覧-->
     <string name="tab_name_now_playing">公開中</string>
     <string name="tab_name_coming_soon">公開予定</string>
-    <string name="toast_message_failure_load_data">データの取得に失敗しました。</string>
+    <string name="message_failure_load_data">データの取得に失敗しました。</string>
+    <string name="image_view_content_description">この映画の画像です</string>
+    <string name="star_content_description">この映画をお気に入り登録しているかの星画像です</string>
 
-    <!--映画情報の詳細画面-->
-    <string name="movie_info_label">概要</string>
-    <string name="movie_playing_date_label">公開日</string>
-    <string name="movie_film_director_label">監督</string>
-    <string name="movie_url_link">予告動画</string>
-    <string name="movie_official_url_link">公式サイト</string>
-    <string name="movie_overview_title">あらすじ</string>
-    <string name="movie_saw_date">観た日</string>
-    <string name="movie_saw_place">観た映画館</string>
-    <string name="movie_memo_title">自分用メモ</string>
-    <string name="movie_link_tap_non_url">URLのリンクが未設定です。そしてアプリから設定はできません。</string>
+    <!--映画詳細-->
+    <string name="overview_label">概要</string>
+    <string name="playing_date_label">公開日</string>
+    <string name="film_director_label">監督</string>
+    <string name="trailer_movie_url_link_label">予告動画</string>
+    <string name="official_url_link_label">公式サイト</string>
+    <string name="watch_date_label">鑑賞日</string>
+    <string name="watch_place_label">鑑賞した映画館</string>
+    <string name="icon_playing_date_content_description">この映画の公開日を示すアイコンです</string>
+    <string name="icon_film_director_content_description">この映画の監督を示すアイコンです</string>
+    <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
+    <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
 
     <!--映画情報の編集画面-->
-    <string name="movie_date_select_button_label">日付を選択</string>
-    <string name="toast_message_save_success">登録が完了しました。</string>
+    <string name="movie_memo_hint">自分用ノート</string>
+    <string name="message_save_success">保存しました。</string>
 
+    <!-- 画面遷移 -->
+    <string name="transition_movie_image">movieImage</string>
+    <string name="transition_favorite_star1">favoriteStars1</string>
+    <string name="transition_favorite_star2">favoriteStars2</string>
+    <string name="transition_favorite_star3">favoriteStars3</string>
+    <string name="transition_favorite_star4">favoriteStars4</string>
+    <string name="transition_favorite_star5">favoriteStars5</string>
 
 </resources>

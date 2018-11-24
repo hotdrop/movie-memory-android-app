@@ -1,8 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -14,51 +12,53 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ProgressBarAccent" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
     <!--極力styleを少なくする -->
-    <style name="MovieTitleForDetail">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/moveDetailAppBarText</item>
+    <style name="Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textStyle">bold</item>
     </style>
-
-    <style name="MovieDetailSubTitle">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/movieDetailLabel</item>
-    </style>
-
-    <style name="ItemLabel">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/movieDetailLabel</item>
-    </style>
-
-    <style name="ItemWebLink" parent="ItemLabel">
-        <item name="android:textColor">@color/movieDetailLink</item>
+    <style name="Title.Small" parent="Title">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="ItemText">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/movieDetailText</item>
+        <item name="android:textColor">@color/darkGray</item>
     </style>
 
-    <style name="SingleLineEditText">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/movieDetailText</item>
-        <item name="android:inputType">text</item>
-        <item name="android:lines">1</item>
+    <style name="ItemText.Sub" parent="ItemText">
+        <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="MultiLineEditText">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/movieDetailText</item>
-        <item name="android:inputType">textMultiLine</item>
+    <style name="ItemText.Small" parent="ItemText">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="ItemText.FavoriteCount" parent="ItemText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/darkYellow</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="LabelBorder">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/darkGray</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+
+    <style name="FavoriteStar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingEnd">@dimen/favorite_star_padding_end</item>
+        <item name="lottie_fileName">FavoriteIcon.json</item>
     </style>
 
 </resources>

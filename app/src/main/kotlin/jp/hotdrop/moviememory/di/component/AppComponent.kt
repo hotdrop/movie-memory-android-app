@@ -6,7 +6,7 @@ import jp.hotdrop.moviememory.presentation.parts.MovieMemoryGlideModule
 import javax.inject.Singleton
 
 /**
- * TODO 近いうちにandroid.supportにする
+ * TODO いずれandroid.supportにする
  */
 @Singleton
 @Component(modules = [

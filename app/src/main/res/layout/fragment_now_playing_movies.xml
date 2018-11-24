@@ -13,11 +13,10 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/now_playing_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/nowplaying_movies_recycler_view"
+                android:id="@+id/now_playing_movies_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +27,7 @@
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ProgressBar
-            android:id="@+id/nowplaying_progress"
+            android:id="@+id/now_playing_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"

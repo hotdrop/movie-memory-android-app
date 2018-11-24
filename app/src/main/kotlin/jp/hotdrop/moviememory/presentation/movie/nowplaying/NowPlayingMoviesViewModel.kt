@@ -21,6 +21,9 @@ class NowPlayingMoviesViewModel @Inject constructor(
     private val mutableMovies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> = mutableMovies
 
+    private val mutableRefreshMovie = MutableLiveData<Movie>()
+    val refreshMovie: LiveData<Movie> = mutableRefreshMovie
+
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
 
@@ -55,7 +58,6 @@ class NowPlayingMoviesViewModel @Inject constructor(
                             mutableMovies.postValue(it)
                         },
                         onError = {
-                            Timber.d("公開中の映画をrefresh... onError!")
                             mutableError.postValue(AppError(it))
                         }
                 )
@@ -74,16 +76,32 @@ class NowPlayingMoviesViewModel @Inject constructor(
                             onLoad(0)
                         },
                         onError = {
-                            Timber.d("公開中の映画をrefresh... onError!")
                             mutableError.postValue(AppError(it))
                         }
                 )
                 .addTo(compositeDisposable)
     }
 
-    /**
-     * Activityが破棄された時に呼ばれる
-     */
+    fun onRefreshMovie(id: Int) {
+        useCase.findMovie(id)
+                .observeOn(Schedulers.io())
+                .subscribeBy(
+                        onSuccess = {
+                            Timber.d( "refresh対象のMovie情報を再取得")
+                            mutableRefreshMovie.postValue(it)
+                        },
+                        onError = {
+                            mutableError.postValue(AppError(it))
+                        }
+                )
+                .addTo(compositeDisposable)
+    }
+
+    fun clear() {
+        mutableRefreshMovie.postValue(null)
+        mutableError.postValue(null)
+    }
+
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()

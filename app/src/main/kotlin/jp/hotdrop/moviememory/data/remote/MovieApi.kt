@@ -11,11 +11,11 @@ interface MovieApi {
 
     @GET("/movies/now-playing")
     @CheckResult
-    fun getNowPlaying(@Query("index") index: Int, @Query("offset") offset: Int): Single<List<MovieResult>>
+    fun nowPlaying(@Query("fromId") fromId: Int?): Single<List<MovieResult>>
 
     @GET("/movies/coming-soon")
     @CheckResult
-    fun getComingSoon(@Query("index") index: Int, @Query("offset") offset: Int): Flowable<List<MovieResult>>
+    fun comingSoon(@Query("fromId") fromId: Int?): Flowable<List<MovieResult>>
 
     // TODO searchとか入れる
 }

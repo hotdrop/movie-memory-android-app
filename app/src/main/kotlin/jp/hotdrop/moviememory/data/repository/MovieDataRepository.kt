@@ -1,9 +1,10 @@
 package jp.hotdrop.moviememory.data.repository
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
+import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.DummyApi
 import jp.hotdrop.moviememory.data.remote.MovieApi
@@ -66,13 +67,20 @@ class MovieDataRepository @Inject constructor(
                         refresh(it)
                     }
 
-    override fun movie(id: Int): Single<Movie> =
-        movieDatabase.findMovie(id)
-                .map { movieEntity ->
-                    Timber.d("映画情報詳細を取得。id=$id")
-                    val localMovieInfo = movieDatabase.findLocalMovieInfo(movieEntity.id)
-                    movieEntity.toMovie(localMovieInfo)
-                }
+    override fun movieFlowable(id: Int): Flowable<Movie> =
+            movieDatabase.movieFlowable(id)
+                    .map { movieEntity ->
+                        Timber.d("映画情報詳細を取得。id=$id")
+                        val localMovieInfo = movieDatabase.findLocalMovieInfo(movieEntity.id)
+                        movieEntity.toMovie(localMovieInfo)
+                    }
+
+    override fun findMovie(id: Int): Single<Movie> =
+            movieDatabase.findMovie(id)
+                    .map { movieEntity ->
+                        val localMovieInfo = movieDatabase.findLocalMovieInfo(movieEntity.id)
+                        movieEntity.toMovie(localMovieInfo)
+                    }
 
     /**
      * ネットワークから最新データを取得
@@ -80,7 +88,7 @@ class MovieDataRepository @Inject constructor(
     private fun refresh(fromMovieId: Int? = null): Completable =
     // TODO 開発中、APIがまともに動かないのでダミーAPI（ローカルでデータを生成する）を使う。この状態だとUnitTest通らないので注意
 //            api.getNowPlaying(fromMovieId)
-            dummyApi.getMovies(fromMovieId)
+            dummyApi.nowPlaying(fromMovieId)
                     .doOnSuccess { movieResults ->
                         Timber.d("  取得した件数=${movieResults.size}")
                         val movieEntities = movieResults.map { it.toMovieEntity() }
@@ -89,18 +97,9 @@ class MovieDataRepository @Inject constructor(
                         Timber.e(it, "映画情報の読み込みに失敗")
                     }.toCompletable()
 
-    private fun Movie.toLocal(): LocalMovieInfoEntity =
-            LocalMovieInfoEntity(
-                    this.id,
-                    this.isSaw,
-                    this.sawDate?.toEpochDay(),
-                    this.sawPlace,
-                    this.memo
-            )
-
     override fun saveLocalMovieInfo(movie: Movie): Completable =
         Completable.create {
-            Timber.d("編集した値を保存します。isSaw = ${movie.isSaw}, sawDate=${movie.sawDate}, sawPlace=${movie.sawPlace}")
+            Timber.d("編集した値を保存します。watchDate=${movie.watchDate}, watchPlace=${movie.watchPlace}")
             movieDatabase.saveLocalInfo(movie.toLocal())
             it.onComplete()
         }

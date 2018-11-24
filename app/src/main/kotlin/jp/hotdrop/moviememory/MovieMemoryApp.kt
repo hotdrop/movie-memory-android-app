@@ -8,7 +8,7 @@ import jp.hotdrop.moviememory.di.component.AppComponent
 import jp.hotdrop.moviememory.di.component.DaggerAppComponent
 import jp.hotdrop.moviememory.di.module.AppModule
 
-open class App: Application() {
+open class MovieMemoryApp: Application() {
 
     private lateinit var appComponent: AppComponent
 

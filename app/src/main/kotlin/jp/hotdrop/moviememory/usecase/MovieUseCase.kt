@@ -1,6 +1,7 @@
 package jp.hotdrop.moviememory.usecase
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
@@ -19,8 +20,12 @@ class MovieUseCase @Inject constructor(
             repository.findNowPlayingMovies(index, offset)
                     .subscribeOn(Schedulers.io())
 
-    fun movie(id: Int): Single<Movie> =
-            repository.movie(id)
+    fun movieFlowable(id: Int): Flowable<Movie> =
+            repository.movieFlowable(id)
+                    .subscribeOn(Schedulers.io())
+
+    fun findMovie(id: Int): Single<Movie> =
+            repository.findMovie(id)
                     .subscribeOn(Schedulers.io())
 
     fun loadRecentMovies(): Completable =
