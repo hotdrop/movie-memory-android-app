@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.presentation.BaseActivity
+import jp.hotdrop.moviememory.presentation.component.FavoriteStars
 import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
@@ -30,6 +31,7 @@ class MovieDetailActivity: BaseActivity() {
     private val movieId: Int by lazy {
         intent.getIntExtra(EXTRA_MOVIE_TAG, -1)
     }
+    private var favoriteStars: FavoriteStars? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +39,15 @@ class MovieDetailActivity: BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
 
-        observe()
         initView()
+        observe()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        favoriteStars?.run {
+            viewModel.saveFavorite(this.count())
+        }
     }
 
     private fun observe() {
@@ -46,6 +55,7 @@ class MovieDetailActivity: BaseActivity() {
         viewModel.movie?.observe(this, Observer {
             it?.run {
                 binding.movie = this
+                initFavoriteStar(this.favoriteCount)
             }
         })
         lifecycle.addObserver(viewModel)
@@ -74,6 +84,21 @@ class MovieDetailActivity: BaseActivity() {
         binding.editFab.setOnClickListener {
             navigationToEdit()
         }
+    }
+
+    private fun initFavoriteStar(favoriteCount: Int) {
+        // お気に入りの数を取得してから初期化すべきのため、LiveDataのObserverの中で初期化している
+        // そのため、一度初期化していた場合はスルーする。
+        if (favoriteStars != null) {
+            return
+        }
+        favoriteStars = FavoriteStars(
+                listOf(binding.favorite1,
+                        binding.favorite2,
+                        binding.favorite3,
+                        binding.favorite4,
+                        binding.favorite5
+                ), favoriteCount)
     }
 
     private fun startToWebLink(url: String) {

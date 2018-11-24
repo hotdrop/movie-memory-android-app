@@ -105,17 +105,48 @@
                    app:layout_constraintTop_toBottomOf="@+id/title"
                    tools:text="SF・ファンタジー" />
 
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:id="@+id/favorite_area"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="8dp"
+                   app:layout_constraintStart_toStartOf="@id/left_guideline"
+                   app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/category">
+
+                  <com.airbnb.lottie.LottieAnimationView
+                      android:id="@+id/favorite_1"
+                      style="@style/FavoriteStar" />
+                  <com.airbnb.lottie.LottieAnimationView
+                      android:id="@+id/favorite_2"
+                      style="@style/FavoriteStar"
+                      app:layout_constraintStart_toEndOf="@+id/favorite_1"/>
+                  <com.airbnb.lottie.LottieAnimationView
+                      android:id="@+id/favorite_3"
+                      style="@style/FavoriteStar"
+                      app:layout_constraintStart_toEndOf="@+id/favorite_2"/>
+                  <com.airbnb.lottie.LottieAnimationView
+                      android:id="@+id/favorite_4"
+                      style="@style/FavoriteStar"
+                      app:layout_constraintStart_toEndOf="@+id/favorite_3"/>
+                  <com.airbnb.lottie.LottieAnimationView
+                      android:id="@+id/favorite_5"
+                      style="@style/FavoriteStar"
+                      app:layout_constraintStart_toEndOf="@+id/favorite_4"/>
+
+               </androidx.constraintlayout.widget.ConstraintLayout>
+
                <TextView
                    android:id="@+id/overview"
                    style="@style/ItemText"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="16dp"
+                   android:layout_marginTop="24dp"
                    android:text="@{movie.overview}"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/category"
+                   app:layout_constraintTop_toBottomOf="@+id/favorite_area"
                    tools:text="テスト" />
 
                <View

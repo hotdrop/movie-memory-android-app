@@ -1,10 +1,10 @@
 package jp.hotdrop.moviememory.presentation.movie.detail
 
 import androidx.lifecycle.*
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.usecase.MovieUseCase
 import timber.log.Timber
@@ -31,7 +31,7 @@ class MovieDetailEditViewModel @Inject constructor(
             movie.setWatchDateFromText(sawDateStr)
         }
         useCase.saveLocalEdit(movie)
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = { mutableSaveSuccess.postValue(true) },
                         onError = { Timber.e(it) }

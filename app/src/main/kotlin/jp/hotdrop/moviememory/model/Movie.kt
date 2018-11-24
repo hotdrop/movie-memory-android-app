@@ -15,6 +15,7 @@ data class Movie(
         val officialUrl: String?,
         val trailerMovieUrl: String?,
         val createAt: LocalDateTime?,
+        var favoriteCount: Int,
         var watchDate: LocalDate?,
         var watchPlace: String?,
         var note: String?
