@@ -34,12 +34,10 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
     }
 
-    // TODO もっといいやり方がないか模索する・・これモデルにしてステータス更新は全部そいつに任せたほうがいい
-    private var nowObserveState = ObserveState.Normal
+    private var nowObserveState = ObserveState.Add
     private enum class ObserveState {
-        Normal,  // 一覧に、取得したアイテムを追加していく
+        Add,     // 取得したアイテムを一覧に追加していく
         Refresh, // 一覧のアイテムを全部クリアして、取得したアイテムをセットする
-        OneStop  // 何もしない。onResumeでLiveDataがActiveになってしまうのでこれで止める
     }
 
     override fun onAttach(context: Context?) {
@@ -67,11 +65,10 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             it?.let { movies ->
                 binding.nowPlayingProgress.visibility = View.GONE
                 when (nowObserveState) {
-                    ObserveState.Normal -> adapter.addAll(movies)
+                    ObserveState.Add -> adapter.addAll(movies)
                     ObserveState.Refresh -> adapter.refresh(movies)
-                    ObserveState.OneStop -> Timber.i("画面更新しない")
                 }
-                nowObserveState = ObserveState.Normal
+                nowObserveState = ObserveState.Add
             }
         })
         viewModel.error.observe(this, Observer {
