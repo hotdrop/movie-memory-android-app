@@ -41,5 +41,7 @@ fun setWebLinkColor(view: TextView, url: String?) {
 fun setImageFavoriteStar(view: LottieAnimationView, count: Int) {
     if (count > 0) {
         view.playAnimation()
+    } else {
+        view.progress = 0f
     }
 }
