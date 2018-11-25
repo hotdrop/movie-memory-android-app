@@ -18,7 +18,11 @@ abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: RecyclerView.ViewHol
     override fun getItemCount() = list.size
 
     fun addAll(items: List<T>) {
-        val startIdx = if (list.size > 0) list.size - 1 else 0
+        val startIdx = if (list.size > 0) {
+            list.size - 1
+        } else {
+            0
+        }
 
         list.addAll(items)
         val endIdx = list.size - 1
@@ -42,7 +46,11 @@ abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: RecyclerView.ViewHol
 
     fun getItemPosition(item: T): Int? {
         val index = list.indexOf(item)
-        return if (index == -1) null else index
+        return if (index == -1) {
+            null
+        } else {
+            index
+        }
     }
 
     /**

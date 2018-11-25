@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
 import jp.hotdrop.moviememory.model.Movie
+import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(
@@ -16,9 +17,12 @@ class MovieUseCase @Inject constructor(
             repository.prepared()
                     .subscribeOn(Schedulers.io())
 
-    fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> =
-            repository.findNowPlayingMovies(index, offset)
-                    .subscribeOn(Schedulers.io())
+    fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
+        val endAt = LocalDate.now()
+        val startAt = endAt.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
+        return repository.findNowPlayingMovies(startAt, endAt, index, offset)
+                .subscribeOn(Schedulers.io())
+    }
 
     fun movieFlowable(id: Int): Flowable<Movie> =
             repository.movieFlowable(id)
@@ -35,4 +39,8 @@ class MovieUseCase @Inject constructor(
     fun saveLocalEdit(movie: Movie): Completable =
             repository.saveLocalMovieInfo(movie)
                     .subscribeOn(Schedulers.io())
+
+    companion object {
+        private const val NOW_PLAYING_BETWEEN_MONTH = 2L
+    }
 }

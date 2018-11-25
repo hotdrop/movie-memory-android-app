@@ -74,7 +74,7 @@ class MovieDatabaseTest {
         inDustMovieEntities.add(overEntity)
 
         movieDb.save(inDustMovieEntities)
-        movieDb.findMovies(startAt, nowDate)
+        movieDb.findMoviesByBetween(startAt, nowDate)
                 .test()
                 .assertValue { results ->
                     assertTrue(" Error resultのサイズ=${results.size} movieのサイズ=${movieEntities.size}",
@@ -116,7 +116,7 @@ class MovieDatabaseTest {
 
         movieDb.save(movieEntities)
 
-        movieDb.findMovies(nowDate.minusMonths(5L), nowDate)
+        movieDb.findMoviesByBetween(nowDate.minusMonths(5L), nowDate)
                 .test()
                 .assertValue { result ->
                     result[0].playingDate == latestReleaseEpoch &&
