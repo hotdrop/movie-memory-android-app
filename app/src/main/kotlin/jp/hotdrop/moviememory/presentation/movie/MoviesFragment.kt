@@ -27,7 +27,6 @@ class MoviesFragment: BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO 検索アイコン作る
         setHasOptionsMenu(true)
     }
 
@@ -44,10 +43,6 @@ class MoviesFragment: BaseFragment() {
         binding.moviesViewPager.adapter = viewPagerAdapter
 
         binding.tabLayout.setupWithViewPager(binding.moviesViewPager)
-    }
-
-    companion object {
-        fun newInstance(): MoviesFragment = MoviesFragment()
     }
 
     /**
@@ -69,12 +64,16 @@ class MoviesFragment: BaseFragment() {
         fun setMovieTab() {
             tabFragments.clear()
             tabFragments.add(MovieTab.NowPlaying)
-            //tabFragments.add(MovieTab.ComingSoon)
+            tabFragments.add(MovieTab.ComingSoon)
         }
     }
 
     enum class MovieTab(val fragment: Fragment, @StringRes val titleRes: Int) {
         NowPlaying(NowPlayingMoviesFragment.newInstance(), R.string.tab_name_now_playing),
         ComingSoon(ComingSoonMoviesFragment.newInstance(), R.string.tab_name_coming_soon)
+    }
+
+    companion object {
+        fun newInstance(): MoviesFragment = MoviesFragment()
     }
 }

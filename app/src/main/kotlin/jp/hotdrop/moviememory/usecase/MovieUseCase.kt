@@ -24,16 +24,28 @@ class MovieUseCase @Inject constructor(
                 .subscribeOn(Schedulers.io())
     }
 
+    fun findComingSoonMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
+        val startAt = LocalDate.now()
+        return repository.findComingSoonMovies(startAt, startIndex, offset)
+                .subscribeOn(Schedulers.io())
+    }
+
+    fun findPastMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
+        val startAt = LocalDate.now().minusMonths(NOW_PLAYING_BETWEEN_MONTH)
+        return repository.findPastMovies(startAt, startIndex, offset)
+                .subscribeOn(Schedulers.io())
+    }
+
+    fun loadRecentMovies(): Completable =
+            repository.loadRecentMovies()
+                    .subscribeOn(Schedulers.io())
+
     fun movieFlowable(id: Int): Flowable<Movie> =
             repository.movieFlowable(id)
                     .subscribeOn(Schedulers.io())
 
     fun findMovie(id: Int): Single<Movie> =
             repository.findMovie(id)
-                    .subscribeOn(Schedulers.io())
-
-    fun loadRecentMovies(): Completable =
-            repository.loadRecentMovies()
                     .subscribeOn(Schedulers.io())
 
     fun saveLocalEdit(movie: Movie): Completable =

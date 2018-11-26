@@ -42,6 +42,10 @@ data class Movie(
         return (other as Movie).id == id || super.equals(other)
     }
 
+    override fun hashCode(): Int {
+        return id
+    }
+
     // 以下2つはRecyclerViewのDiff用
     override fun isItemTheSame(o: RecyclerDiffable) =
             (id == (o as? Movie)?.id)

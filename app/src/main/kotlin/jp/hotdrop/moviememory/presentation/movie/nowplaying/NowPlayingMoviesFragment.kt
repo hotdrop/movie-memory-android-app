@@ -32,7 +32,6 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val viewModel: NowPlayingMoviesViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
     }
@@ -63,10 +62,23 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         observe()
     }
 
+    private fun initView() {
+        super.setupRecyclerView(binding.moviesRecyclerView) { page, _ ->
+            viewModel.onLoad(page)
+        }
+        adapter = NowPlayingMoviesAdapter()
+        binding.moviesRecyclerView.adapter = adapter
+
+        super.setupSwipeRefresh(binding.swipeRefresh) {
+            nowObserveState = ObserveState.Refresh
+            viewModel.onRefresh()
+        }
+    }
+
     private fun observe() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
-                binding.nowPlayingProgress.visibility = View.GONE
+                binding.progress.visibility = View.GONE
                 when (nowObserveState) {
                     ObserveState.Add -> adapter.addAll(movies)
                     ObserveState.Refresh -> adapter.refresh(movies)
@@ -83,24 +95,11 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         viewModel.error.observe(this, Observer {
             it?.let {
                 val message = getString(R.string.message_failure_load_data)
-                Snackbar.make(binding.nowPlayingMovieArea, message, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.moviesArea, message, Snackbar.LENGTH_LONG).show()
                 viewModel.clear()
             }
         })
         lifecycle.addObserver(viewModel)
-    }
-
-    private fun initView() {
-        super.setupRecyclerView(binding.nowPlayingMoviesRecyclerView) { page, _ ->
-            viewModel.onLoad(page)
-        }
-        adapter = NowPlayingMoviesAdapter()
-        binding.nowPlayingMoviesRecyclerView.adapter = adapter
-
-        super.setupSwipeRefresh(binding.nowPlayingSwipeRefresh) {
-            nowObserveState = ObserveState.Refresh
-            viewModel.onRefresh()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,19 +109,10 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             return
         }
 
-        val refreshMovieId = data.getIntExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
-
-        when (requestCode) {
-            REQUEST_CODE_TO_DETAIL -> {
-                Timber.d("更新します。")
-                viewModel.onRefreshMovie(refreshMovieId)
-            }
+        if (requestCode == REQUEST_CODE_TO_DETAIL) {
+            val refreshMovieId = data.getIntExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
+            viewModel.onRefreshMovie(refreshMovieId)
         }
-    }
-
-    companion object {
-        private const val REQUEST_CODE_TO_DETAIL = 1001
-        fun newInstance() = NowPlayingMoviesFragment()
     }
 
     /**
@@ -166,5 +156,10 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                 notifyItemChanged(index)
             }
         }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_TO_DETAIL = 1000
+        fun newInstance() = NowPlayingMoviesFragment()
     }
 }

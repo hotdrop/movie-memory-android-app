@@ -16,7 +16,7 @@ interface MovieRepository {
     fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>>
 
     @CheckResult
-    fun findUnReleasePlayingMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>>
+    fun findComingSoonMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>>
 
     @CheckResult
     fun findPastMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>>

@@ -38,20 +38,24 @@ class MovieDataRepository @Inject constructor(
 
     override fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByBetween(startAt, endAt)
+                    .map { takeTheRange(startIndex, offset, it) }
                     .map {
-                        takeTheRange(startIndex, offset, it)
-                    }.map {
-                        it.map { entity ->
-                            entityToMovieWithLocalInfo(entity)
-                        }
+                        it.map { entity -> entityToMovieWithLocalInfo(entity) }
                     }
 
-    override fun findUnReleasePlayingMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun findComingSoonMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
+            movieDatabase.findMoviesByAfter(startAt)
+                    .map { takeTheRange(startIndex, offset, it) }
+                    .map {
+                        it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                    }
 
-    override fun findPastMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun findPastMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
+            movieDatabase.findMoviesByBefore(startAt)
+                    .map { takeTheRange(startIndex, offset, it) }
+                    .map {
+                        it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                    }
 
     /**
      * 保持している映画情報の最新IDから、それ以降に登録された映画情報がないかリモートに問い合わせて取得する
