@@ -103,6 +103,7 @@ class NowPlayingMoviesViewModel @Inject constructor(
     }
 
     companion object {
+        // これ本当は各タブのViewModelが参照するので別の場所にうつしたい。
         const val OFFSET = 20
     }
 }
