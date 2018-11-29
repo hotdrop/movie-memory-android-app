@@ -127,6 +127,7 @@ class PastMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             val binding = holder.binding
             binding?.let {
                 val movie = getItem(position)
+                it.movie = movie
                 it.imageView.setOnClickListener {
                     transitionWithSharedElements(binding, movie)
                 }

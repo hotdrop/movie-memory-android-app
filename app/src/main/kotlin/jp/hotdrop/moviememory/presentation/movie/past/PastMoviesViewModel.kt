@@ -48,7 +48,7 @@ class PastMoviesViewModel @Inject constructor(
 
     fun onLoad(page: Int) {
         val index = page * NowPlayingMoviesViewModel.OFFSET
-        useCase.findComingSoonMovies(index, NowPlayingMoviesViewModel.OFFSET)
+        useCase.findPastMovies(index, NowPlayingMoviesViewModel.OFFSET)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
