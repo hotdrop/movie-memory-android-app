@@ -32,9 +32,9 @@ class DummyApi {
         data.add(createMovie(id = 5, title = "ファイブセンス", overview = "碁盤目なだけに光ると五番映画ができます。際がそろそろ消える気がします。6日前に公開", playDate = now.minusDays(6L).toString()))
         data.add(createMovie(id = 6, title = "シックスエレメンツ", overview = "色々混じったダミー映画であります。10日前に公開", playDate = now.minusDays(10L).toString()))
         data.add(createMovie(id = 7, title = "過去のセブン", overview = "正当姿勢やの宇宙が目覚めルカも知れません。1ヶ月に公開", playDate = now.minusMonths(1L).toString()))
-        data.add(createMovie(id = 8, title = "過去エイトヒーローズ", overview = "実写版のヒーロアカデミアがどうなるのか木になるところです。2ヶ月前に公開", playDate = now.minusMonths(2L).toString()))
-        data.add(createMovie(id = 9, title = "過去ナイン3K物語", overview = "ブラック企業の3Kを踏襲した名作ダミー映画です。2ヶ月前に公開", playDate = now.minusMonths(2L).toString()))
-        data.add(createMovie(id = 10, title = "過去ビガヂュヴと元気な冒険", overview = "ダークビガーが世界を1兆ボルトで消滅させるとぅるるる物語です。とぅるるるるはいつででくるのでしょうかどっぴ2ヶ月前に公開", playDate = now.minusYears(2L).toString()))
+        data.add(createMovie(id = 8, title = "過去エイトヒーローズ", overview = "実写版のヒーロアカデミアがどうなるのか木になるところです。2ヶ月前に公開", playDate = now.minusMonths(1L).toString()))
+        data.add(createMovie(id = 9, title = "過去ナイン3K物語", overview = "ブラック企業の3Kを踏襲した名作ダミー映画です。2ヶ月前に公開", playDate = now.minusDays(50L).toString()))
+        data.add(createMovie(id = 10, title = "過去ビガヂュヴと元気な冒険", overview = "ダークビガーが世界を1兆ボルトで消滅させるとぅるるる物語です。とぅるるるるはいつででくるのでしょうかどっぴ2ヶ月前に公開", playDate = now.minusMonths(2L).toString()))
         (11..100).forEach {
             data.add(createMovie(id = it, title = "映画その$it", playDate = now.minusDays(20L).toString()))
         }
@@ -92,8 +92,20 @@ class DummyApi {
             data.add(createMovie(id = it, title = "ゲームその$it", playDate = now.plusDays(20L).toString()))
         }
 
-        // past data ゲームと映画と・・最後は何だろうか
-        
+        // past data
+        data.add(createMovie(id = 201, title = "ファイナルファンタジー5", overview = "オメガ・しんりゅう", playDate = now.minusMonths(2L).toString()))
+        data.add(createMovie(id = 202, title = "スーパーロボット大戦αDC", overview = "ネオグランゾン", playDate = now.minusMonths(3L).toString()))
+        data.add(createMovie(id = 203, title = "聖剣伝説3", category = Category(2, "SF・ファンタジー"), overview = "ブラックラビ", playDate = now.toString()))
+        data.add(createMovie(id = 204, title = "スーパーマリオRPG", overview = "クリスタラー", playDate = now.minusMonths(5L).toString()))
+        data.add(createMovie(id = 205, title = "テイルズオブファンタジア", overview = "リリス", playDate = now.minusMonths(6L).toString()))
+        data.add(createMovie(id = 206, title = "IZUMO", overview = "タマモ", playDate = now.minusMonths(10L).toString()))
+        data.add(createMovie(id = 207, title = "リッジレーサー", overview = "黒の13", playDate = now.minusYears(1L).toString()))
+        data.add(createMovie(id = 208, title = "サモンナイト2", overview = "サプレスの魔王", playDate = now.minusYears(2L).toString()))
+        data.add(createMovie(id = 209, title = "モンスターファーム2", overview = "モスト・ポリトカ", playDate = now.minusYears(5L).toString()))
+        data.add(createMovie(id = 210, title = "幻影異聞録＃FE", overview = "M-DEUS", playDate = now.minusYears(10L).toString()))
+        (211..300).forEach {
+            data.add(createMovie(id = it, title = "映画その$it", playDate = now.minusDays(20L).toString()))
+        }
 
         dummyData = data
     }

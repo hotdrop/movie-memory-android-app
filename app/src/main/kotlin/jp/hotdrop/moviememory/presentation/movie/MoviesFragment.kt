@@ -14,6 +14,7 @@ import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.movie.comingsoon.ComingSoonMoviesFragment
 import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFragment
+import jp.hotdrop.moviememory.presentation.movie.past.PastMoviesFragment
 
 class MoviesFragment: BaseFragment() {
 
@@ -65,12 +66,14 @@ class MoviesFragment: BaseFragment() {
             tabFragments.clear()
             tabFragments.add(MovieTab.NowPlaying)
             tabFragments.add(MovieTab.ComingSoon)
+            tabFragments.add(MovieTab.Past)
         }
     }
 
     enum class MovieTab(val fragment: Fragment, @StringRes val titleRes: Int) {
         NowPlaying(NowPlayingMoviesFragment.newInstance(), R.string.tab_name_now_playing),
-        ComingSoon(ComingSoonMoviesFragment.newInstance(), R.string.tab_name_coming_soon)
+        ComingSoon(ComingSoonMoviesFragment.newInstance(), R.string.tab_name_coming_soon),
+        Past(PastMoviesFragment.newInstance(), R.string.tab_name_past)
     }
 
     companion object {

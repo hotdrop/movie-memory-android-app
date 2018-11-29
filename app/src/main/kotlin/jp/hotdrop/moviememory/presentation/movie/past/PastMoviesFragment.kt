@@ -1,20 +1,20 @@
-package jp.hotdrop.moviememory.presentation.movie.comingsoon
+package jp.hotdrop.moviememory.presentation.movie.past
 
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Pair
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.util.Pair
+import android.view.LayoutInflater
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentComingSoonMoviesBinding
+import jp.hotdrop.moviememory.databinding.FragmentPastMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.MainActivity
@@ -24,18 +24,19 @@ import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
 import javax.inject.Inject
 
-class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
+class PastMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
-    private lateinit var binding: FragmentComingSoonMoviesBinding
-    private lateinit var adapter: ComingSoonMoviesAdapter
+    private lateinit var binding: FragmentPastMoviesBinding
+    private lateinit var adapter: PastMoviesAdapter
     private var activity: MainActivity? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: ComingSoonMoviesViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(ComingSoonMoviesViewModel::class.java)
+    private val viewModel: PastMoviesViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(PastMoviesViewModel::class.java)
     }
 
+    // TODO nowObserveStateはSealedClassにしてステートはそいつに持たせた方がいい
     private var nowObserveState = ObserveState.Add
     private enum class ObserveState {
         Add,     // 取得したアイテムを一覧に追加していく
@@ -51,7 +52,7 @@ class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentComingSoonMoviesBinding.inflate(inflater, container, false)
+        binding = FragmentPastMoviesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -66,7 +67,7 @@ class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         super.setupRecyclerView(binding.moviesRecyclerView) { page, _ ->
             viewModel.onLoad(page)
         }
-        adapter = ComingSoonMoviesAdapter()
+        adapter = PastMoviesAdapter()
         binding.moviesRecyclerView.adapter = adapter
 
         super.setupSwipeRefresh(binding.swipeRefresh) {
@@ -86,7 +87,7 @@ class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                 nowObserveState = ObserveState.Add
             }
         })
-        viewModel.refreshMovie.observe(this, Observer {
+        viewModel.movie.observe(this, Observer {
             it?.let { movie ->
                 adapter.refresh(movie)
                 viewModel.clear()
@@ -118,7 +119,7 @@ class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     /**
      * アダプター
      */
-    inner class ComingSoonMoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
+    inner class PastMoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemMovieBinding> =
                 BindingHolder(parent, R.layout.item_movie)
 
@@ -126,7 +127,6 @@ class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             val binding = holder.binding
             binding?.let {
                 val movie = getItem(position)
-                it.movie = movie
                 it.imageView.setOnClickListener {
                     transitionWithSharedElements(binding, movie)
                 }
@@ -145,7 +145,7 @@ class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                         Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star5)),
                         Pair.create(binding.imageView as View, activity.getString(R.string.transition_movie_image))
                 )
-                MovieDetailActivity.startForResult(this@ComingSoonMoviesFragment, movie.id, REQUEST_CODE_TO_DETAIL, options)
+                MovieDetailActivity.startForResult(this@PastMoviesFragment, movie.id, REQUEST_CODE_TO_DETAIL, options)
             } ?: Timber.e("activityがnullです。")
         }
 
@@ -158,7 +158,7 @@ class ComingSoonMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     companion object {
-        private const val REQUEST_CODE_TO_DETAIL = 2000
-        fun newInstance() = ComingSoonMoviesFragment()
+        private const val REQUEST_CODE_TO_DETAIL = 3000
+        fun newInstance() = PastMoviesFragment()
     }
 }

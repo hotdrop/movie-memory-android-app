@@ -36,6 +36,15 @@ class MovieDataRepository @Inject constructor(
                         }
                     }
 
+    /**
+     * 保持している映画情報の最新IDから、それ以降に登録された映画情報がないかリモートに問い合わせて取得する
+     */
+    override fun loadRecentMovies(): Completable =
+            movieDatabase.findRecentMovieId()
+                    .flatMapCompletable {
+                        refresh(it)
+                    }
+
     override fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByBetween(startAt, endAt)
                     .map { takeTheRange(startIndex, offset, it) }
@@ -55,15 +64,6 @@ class MovieDataRepository @Inject constructor(
                     .map { takeTheRange(startIndex, offset, it) }
                     .map {
                         it.map { entity -> entityToMovieWithLocalInfo(entity) }
-                    }
-
-    /**
-     * 保持している映画情報の最新IDから、それ以降に登録された映画情報がないかリモートに問い合わせて取得する
-     */
-    override fun loadRecentMovies(): Completable =
-            movieDatabase.findRecentMovieId()
-                    .flatMapCompletable {
-                        refresh(it)
                     }
 
     /**
@@ -95,7 +95,7 @@ class MovieDataRepository @Inject constructor(
      * ネットワークから最新データを取得
      */
     private fun refresh(fromMovieId: Int? = null): Completable =
-    // TODO 開発中、APIがまともに動かないのでダミーAPI（ローカルでデータを生成する）を使う。この状態だとUnitTest通らないので注意
+    // TODO 開発中、APIがまともに動かないのでダミーAPIにする（ローカルでデータを生成する）。この状態だとUnitTest通らないので注意
 //            api.getMovies(fromMovieId)
             dummyApi.getMovies(fromMovieId)
                     .doOnSuccess {

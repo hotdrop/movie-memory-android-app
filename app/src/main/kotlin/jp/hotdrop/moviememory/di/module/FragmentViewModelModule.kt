@@ -7,6 +7,7 @@ import dagger.multibindings.IntoMap
 import jp.hotdrop.moviememory.di.ViewModelKey
 import jp.hotdrop.moviememory.presentation.movie.comingsoon.ComingSoonMoviesViewModel
 import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesViewModel
+import jp.hotdrop.moviememory.presentation.movie.past.PastMoviesViewModel
 
 @Module
 abstract class FragmentViewModelModule {
@@ -20,4 +21,9 @@ abstract class FragmentViewModelModule {
     @IntoMap
     @ViewModelKey(ComingSoonMoviesViewModel::class)
     abstract fun bindComingSoonMoviesViewModel(viewModel: ComingSoonMoviesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PastMoviesViewModel::class)
+    abstract fun bindPastMoviesViewModel(viewModel: PastMoviesViewModel): ViewModel
 }
