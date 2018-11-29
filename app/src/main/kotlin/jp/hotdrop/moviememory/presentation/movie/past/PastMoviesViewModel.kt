@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.movie.nowplaying
+package jp.hotdrop.moviememory.presentation.movie.past
 
 import androidx.lifecycle.*
 import io.reactivex.disposables.CompositeDisposable
@@ -7,11 +7,12 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesViewModel
 import jp.hotdrop.moviememory.usecase.MovieUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
-class NowPlayingMoviesViewModel @Inject constructor(
+class PastMoviesViewModel @Inject constructor(
         private val useCase: MovieUseCase
 ): ViewModel(), LifecycleObserver {
 
@@ -20,16 +21,16 @@ class NowPlayingMoviesViewModel @Inject constructor(
     private val mutableMovies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> = mutableMovies
 
-    private val mutableRefreshMovie = MutableLiveData<Movie>()
-    val refreshMovie: LiveData<Movie> = mutableRefreshMovie
+    private val mutableMovie = MutableLiveData<Movie>()
+    val movie: LiveData<Movie> = mutableMovie
 
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
 
     /**
-     * 初回起動時は全データを持ってきてDBに入れる
-     * 2回目以降は差分データだけあれば取得する。refreshはなし
-     * 設定画面にキャッシュ削除を設けてそれをやった場合だけ全データクリアする
+     * 最初に表示するNowPlayingMoviesでこれをやっているので以降は不要だが
+     * この画面を初期に持ってくる可能性もあるので呼んでおく。
+     * 作り的に別にどこで何回呼んでも大丈夫。Completableが返ってくるだけ。
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
@@ -46,12 +47,12 @@ class NowPlayingMoviesViewModel @Inject constructor(
     }
 
     fun onLoad(page: Int) {
-        val index = page * OFFSET
-        useCase.findNowPlayingMovies(index, OFFSET)
+        val index = page * NowPlayingMoviesViewModel.OFFSET
+        useCase.findComingSoonMovies(index, NowPlayingMoviesViewModel.OFFSET)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
-                            Timber.d( "公開中の映画をrefresh... onComplete")
+                            Timber.d( "過去の映画をrefresh... onComplete")
                             mutableMovies.postValue(it)
                         },
                         onError = {
@@ -68,7 +69,7 @@ class NowPlayingMoviesViewModel @Inject constructor(
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
-                            Timber.d( "公開中の映画をrefresh... onComplete")
+                            Timber.d( "過去の映画をrefresh... onComplete")
                             onLoad(0)
                         },
                         onError = {
@@ -83,7 +84,7 @@ class NowPlayingMoviesViewModel @Inject constructor(
                 .subscribeBy(
                         onSuccess = {
                             Timber.d( "refresh対象のMovie情報を再取得")
-                            mutableRefreshMovie.postValue(it)
+                            mutableMovie.postValue(it)
                         },
                         onError = {
                             mutableError.postValue(AppError(it))
@@ -93,17 +94,12 @@ class NowPlayingMoviesViewModel @Inject constructor(
     }
 
     fun clear() {
-        mutableRefreshMovie.postValue(null)
+        mutableMovie.postValue(null)
         mutableError.postValue(null)
     }
 
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
-    }
-
-    companion object {
-        // これ本当は各タブのViewModelが参照するので別の場所にうつしたい。
-        const val OFFSET = 20
     }
 }

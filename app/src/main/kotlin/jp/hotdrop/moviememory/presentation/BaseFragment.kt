@@ -5,7 +5,7 @@ import jp.hotdrop.moviememory.di.module.FragmentModule
 
 abstract class BaseFragment: androidx.fragment.app.Fragment() {
 
-    private val fragmentComponent by lazy {
+    private val fragmentComponent: FragmentComponent by lazy {
         (activity as BaseActivity).getComponent().plus(FragmentModule())
     }
 

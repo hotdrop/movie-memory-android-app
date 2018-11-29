@@ -9,6 +9,7 @@
     <!--映画情報一覧-->
     <string name="tab_name_now_playing">公開中</string>
     <string name="tab_name_coming_soon">公開予定</string>
+    <string name="tab_name_past">公開終了</string>
     <string name="message_failure_load_data">データの取得に失敗しました。</string>
     <string name="image_view_content_description">この映画の画像です</string>
     <string name="star_content_description">この映画をお気に入り登録しているかの星画像です</string>

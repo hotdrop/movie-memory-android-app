@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.movie.nowplaying
+package jp.hotdrop.moviememory.presentation.movie.comingsoon
 
 import androidx.lifecycle.*
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +11,9 @@ import jp.hotdrop.moviememory.usecase.MovieUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
-class NowPlayingMoviesViewModel @Inject constructor(
+import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesViewModel.Companion.OFFSET
+
+class ComingSoonMoviesViewModel @Inject constructor(
         private val useCase: MovieUseCase
 ): ViewModel(), LifecycleObserver {
 
@@ -27,9 +29,9 @@ class NowPlayingMoviesViewModel @Inject constructor(
     val error: LiveData<AppError> = mutableError
 
     /**
-     * 初回起動時は全データを持ってきてDBに入れる
-     * 2回目以降は差分データだけあれば取得する。refreshはなし
-     * 設定画面にキャッシュ削除を設けてそれをやった場合だけ全データクリアする
+     * 最初に表示するNowPlayingMoviesでこれをやっているので以降は不要だが
+     * この画面を初期に持ってくる可能性もあるので呼んでおく。
+     * 作り的に別にどこで何回呼んでも大丈夫。Completableが返ってくるだけ。
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
@@ -47,11 +49,11 @@ class NowPlayingMoviesViewModel @Inject constructor(
 
     fun onLoad(page: Int) {
         val index = page * OFFSET
-        useCase.findNowPlayingMovies(index, OFFSET)
+        useCase.findComingSoonMovies(index, OFFSET)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
-                            Timber.d( "公開中の映画をrefresh... onComplete")
+                            Timber.d( "未公開の映画をrefresh... onComplete")
                             mutableMovies.postValue(it)
                         },
                         onError = {
@@ -68,7 +70,7 @@ class NowPlayingMoviesViewModel @Inject constructor(
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
-                            Timber.d( "公開中の映画をrefresh... onComplete")
+                            Timber.d( "未公開の映画をrefresh... onComplete")
                             onLoad(0)
                         },
                         onError = {
@@ -100,10 +102,5 @@ class NowPlayingMoviesViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
-    }
-
-    companion object {
-        // これ本当は各タブのViewModelが参照するので別の場所にうつしたい。
-        const val OFFSET = 20
     }
 }
