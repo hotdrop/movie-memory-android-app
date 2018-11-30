@@ -104,7 +104,7 @@ class DummyApi {
         data.add(createMovie(id = 209, title = "モンスターファーム2", overview = "モスト・ポリトカ", playDate = now.minusYears(5L).toString()))
         data.add(createMovie(id = 210, title = "幻影異聞録＃FE", overview = "M-DEUS", playDate = now.minusYears(10L).toString()))
         (211..300).forEach {
-            data.add(createMovie(id = it, title = "映画その$it", playDate = now.minusDays(20L).toString()))
+            data.add(createMovie(id = it, title = "映画その$it", playDate = now.minusMonths(20L).toString()))
         }
 
         dummyData = data
