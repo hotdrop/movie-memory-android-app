@@ -8,7 +8,7 @@ import jp.hotdrop.moviememory.di.module.ActivityModule
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    private val activityComponent by lazy {
+    private val activityComponent: ActivityComponent by lazy {
         (application as MovieMemoryApp).getComponent().plus(ActivityModule(this))
     }
 

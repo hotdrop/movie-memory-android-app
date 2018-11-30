@@ -14,8 +14,14 @@ class MovieDatabase @Inject constructor(
         private val dao: MovieDao
 ) {
 
-    fun findMovies(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
-            dao.selectMovies(startAt.toEpochDay(), endAt.toEpochDay())
+    fun findMoviesByBetween(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
+            dao.selectMoviesByBetween(startAt.toEpochDay(), endAt.toEpochDay())
+
+    fun findMoviesByAfter(startAt: LocalDate): Single<List<MovieEntity>> =
+            dao.selectMoviesByAfter(startAt.toEpochDay())
+
+    fun findMoviesByBefore(startAt: LocalDate): Single<List<MovieEntity>> =
+            dao.selectMoviesByBefore(startAt.toEpochDay())
 
     fun movieFlowable(id: Int): Flowable<MovieEntity> =
             dao.selectMovieFlowable(id)

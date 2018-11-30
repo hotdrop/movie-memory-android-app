@@ -142,7 +142,7 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     companion object {
-        const val MOVIE_DETAIL_REQUEST_CODE = 1002
+        const val MOVIE_DETAIL_REQUEST_CODE = 9000
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
         fun startForResult(fragment: Fragment, movieId: Int, requestCode: Int, options: ActivityOptions? = null) =
                 fragment.startActivityForResult(Intent(fragment.context, MovieDetailActivity::class.java)

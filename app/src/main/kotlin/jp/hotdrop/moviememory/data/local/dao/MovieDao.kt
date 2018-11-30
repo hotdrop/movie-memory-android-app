@@ -10,7 +10,13 @@ import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 interface MovieDao {
 
     @Query("SELECT * FROM movie WHERE playingDate BETWEEN :startAt AND :endAt ORDER BY playingDate DESC")
-    fun selectMovies(startAt: Long, endAt: Long): Single<List<MovieEntity>>
+    fun selectMoviesByBetween(startAt: Long, endAt: Long): Single<List<MovieEntity>>
+
+    @Query("SELECT * FROM movie WHERE playingDate > :startAt ORDER BY playingDate ASC")
+    fun selectMoviesByAfter(startAt: Long): Single<List<MovieEntity>>
+
+    @Query("SELECT * FROM movie WHERE playingDate < :startAt ORDER BY playingDate DESC")
+    fun selectMoviesByBefore(startAt: Long): Single<List<MovieEntity>>
 
     @Query("SELECT COUNT(*) FROM movie")
     fun count(): Single<Long>

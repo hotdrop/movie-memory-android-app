@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.movie.nowplaying
+package jp.hotdrop.moviememory.presentation.movie.tab
 
 import android.app.Activity
 import android.app.ActivityOptions
@@ -14,9 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentNowPlayingMoviesBinding
+import jp.hotdrop.moviememory.databinding.FragmentTabMoviesBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.model.MovieType
 import jp.hotdrop.moviememory.presentation.MainActivity
 import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
@@ -24,23 +25,22 @@ import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
 import javax.inject.Inject
 
-class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
+class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
-    private lateinit var binding: FragmentNowPlayingMoviesBinding
-    private lateinit var adapter: NowPlayingMoviesAdapter
+    private lateinit var binding: FragmentTabMoviesBinding
+    private lateinit var adapter: TabMoviesAdapter
     private var activity: MainActivity? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val viewModel: NowPlayingMoviesViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(NowPlayingMoviesViewModel::class.java)
+    private val viewModel: TabMoviesViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(TabMoviesViewModel::class.java)
     }
 
-    private var nowObserveState = ObserveState.Add
-    private enum class ObserveState {
-        Add,     // 取得したアイテムを一覧に追加していく
-        Refresh, // 一覧のアイテムを全部クリアして、取得したアイテムをセットする
+    private var loadMode = LoadMode.Add
+    private enum class LoadMode {
+        Add,     // 取得したアイテムを一覧に追加していく。add済みのデータには触らない
+        Refresh, // 一覧のアイテムを全部クリアし、取得したアイテムをセットする
     }
 
     override fun onAttach(context: Context?) {
@@ -52,26 +52,41 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentNowPlayingMoviesBinding.inflate(inflater, container, false)
+        binding = FragmentTabMoviesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        viewModel.type = arguments?.getSerializable(MovieType.ARGUMENT_TAG) as MovieType
+
         initView()
         observe()
+    }
+
+    private fun initView() {
+        super.setupRecyclerView(binding.moviesRecyclerView) { page, _ ->
+            viewModel.onLoad(page)
+        }
+        adapter = TabMoviesAdapter()
+        binding.moviesRecyclerView.adapter = adapter
+
+        super.setupSwipeRefresh(binding.swipeRefresh) {
+            loadMode = LoadMode.Refresh
+            viewModel.onRefresh()
+        }
     }
 
     private fun observe() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
-                binding.nowPlayingProgress.visibility = View.GONE
-                when (nowObserveState) {
-                    ObserveState.Add -> adapter.addAll(movies)
-                    ObserveState.Refresh -> adapter.refresh(movies)
+                binding.progress.visibility = View.GONE
+                when (loadMode) {
+                    LoadMode.Add -> adapter.addAll(movies)
+                    LoadMode.Refresh -> adapter.refresh(movies)
                 }
-                nowObserveState = ObserveState.Add
+                loadMode = LoadMode.Add
             }
         })
         viewModel.refreshMovie.observe(this, Observer {
@@ -83,24 +98,11 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         viewModel.error.observe(this, Observer {
             it?.let {
                 val message = getString(R.string.message_failure_load_data)
-                Snackbar.make(binding.nowPlayingMovieArea, message, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.moviesArea, message, Snackbar.LENGTH_LONG).show()
                 viewModel.clear()
             }
         })
         lifecycle.addObserver(viewModel)
-    }
-
-    private fun initView() {
-        super.setupRecyclerView(binding.nowPlayingMoviesRecyclerView) { page, _ ->
-            viewModel.onLoad(page)
-        }
-        adapter = NowPlayingMoviesAdapter()
-        binding.nowPlayingMoviesRecyclerView.adapter = adapter
-
-        super.setupSwipeRefresh(binding.nowPlayingSwipeRefresh) {
-            nowObserveState = ObserveState.Refresh
-            viewModel.onRefresh()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,25 +112,16 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             return
         }
 
-        val refreshMovieId = data.getIntExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
-
-        when (requestCode) {
-            REQUEST_CODE_TO_DETAIL -> {
-                Timber.d("更新します。")
-                viewModel.onRefreshMovie(refreshMovieId)
-            }
+        if (requestCode == REQUEST_CODE_TO_DETAIL) {
+            val refreshMovieId = data.getIntExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
+            viewModel.onRefreshMovie(refreshMovieId)
         }
-    }
-
-    companion object {
-        private const val REQUEST_CODE_TO_DETAIL = 1001
-        fun newInstance() = NowPlayingMoviesFragment()
     }
 
     /**
      * アダプター
      */
-    inner class NowPlayingMoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
+    inner class TabMoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemMovieBinding> =
                 BindingHolder(parent, R.layout.item_movie)
@@ -156,7 +149,7 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                         Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star5)),
                         Pair.create(binding.imageView as View, activity.getString(R.string.transition_movie_image))
                 )
-                MovieDetailActivity.startForResult(this@NowPlayingMoviesFragment, movie.id, REQUEST_CODE_TO_DETAIL, options)
+                MovieDetailActivity.startForResult(this@TabMoviesFragment, movie.id, REQUEST_CODE_TO_DETAIL, options)
             } ?: Timber.e("activityがnullです。")
         }
 
@@ -166,5 +159,10 @@ class NowPlayingMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                 notifyItemChanged(index)
             }
         }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_TO_DETAIL = 1000
+        fun newInstance() = TabMoviesFragment()
     }
 }
