@@ -10,16 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
+import jp.hotdrop.moviememory.databinding.FragmentTabRootBinding
+import jp.hotdrop.moviememory.model.MovieType
 import jp.hotdrop.moviememory.presentation.BaseFragment
-import jp.hotdrop.moviememory.presentation.movie.comingsoon.ComingSoonMoviesFragment
-import jp.hotdrop.moviememory.presentation.movie.nowplaying.NowPlayingMoviesFragment
-import jp.hotdrop.moviememory.presentation.movie.past.PastMoviesFragment
+import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesFragment
 
 class MoviesFragment: BaseFragment() {
 
-    private lateinit var binding: FragmentMoviesBinding
-    private lateinit var viewPagerAdapter: MoviesViewPagerAdapter
+    private lateinit var binding: FragmentTabRootBinding
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -32,16 +30,16 @@ class MoviesFragment: BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
+        binding = FragmentTabRootBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewPagerAdapter = MoviesViewPagerAdapter(childFragmentManager)
-        viewPagerAdapter.setMovieTab()
-        binding.moviesViewPager.adapter = viewPagerAdapter
+        binding.moviesViewPager.adapter = MoviesViewPagerAdapter(childFragmentManager).apply {
+            setMovieTab()
+        }
 
         binding.tabLayout.setupWithViewPager(binding.moviesViewPager)
     }
@@ -53,7 +51,15 @@ class MoviesFragment: BaseFragment() {
 
         private val tabFragments = mutableListOf<MovieTab>()
 
-        override fun getItem(position: Int): Fragment = tabFragments[position].fragment
+        override fun getItem(position: Int): Fragment {
+            tabFragments[position].let { tab ->
+                return tab.fragment.also { fragment ->
+                    fragment.arguments = Bundle().apply {
+                        putSerializable(MovieType.ARGUMENT_TAG, tab.type)
+                    }
+                }
+            }
+        }
 
         override fun getPageTitle(position: Int): CharSequence? {
             val titleRes = tabFragments[position].titleRes
@@ -70,10 +76,10 @@ class MoviesFragment: BaseFragment() {
         }
     }
 
-    enum class MovieTab(val fragment: Fragment, @StringRes val titleRes: Int) {
-        NowPlaying(NowPlayingMoviesFragment.newInstance(), R.string.tab_name_now_playing),
-        ComingSoon(ComingSoonMoviesFragment.newInstance(), R.string.tab_name_coming_soon),
-        Past(PastMoviesFragment.newInstance(), R.string.tab_name_past)
+    enum class MovieTab(val fragment: Fragment, @StringRes val titleRes: Int, val type: MovieType) {
+        NowPlaying(TabMoviesFragment.newInstance(), R.string.tab_name_now_playing, MovieType.NowPlaying),
+        ComingSoon(TabMoviesFragment.newInstance(), R.string.tab_name_coming_soon, MovieType.ComingSoon),
+        Past(TabMoviesFragment.newInstance(), R.string.tab_name_past, MovieType.Past)
     }
 
     companion object {

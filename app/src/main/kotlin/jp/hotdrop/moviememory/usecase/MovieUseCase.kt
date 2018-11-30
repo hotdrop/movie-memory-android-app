@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.model.MovieType
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
@@ -17,20 +18,28 @@ class MovieUseCase @Inject constructor(
             repository.prepared()
                     .subscribeOn(Schedulers.io())
 
-    fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
+    fun findMovies(type: MovieType, index: Int, offset: Int): Single<List<Movie>> {
+        return when (type) {
+            MovieType.NowPlaying -> findNowPlayingMovies(index, offset)
+            MovieType.ComingSoon -> findComingSoonMovies(index, offset)
+            MovieType.Past -> findPastMovies(index, offset)
+        }
+    }
+
+    private fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
         val endAt = LocalDate.now()
         val startAt = endAt.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
         return repository.findNowPlayingMovies(startAt, endAt, index, offset)
                 .subscribeOn(Schedulers.io())
     }
 
-    fun findComingSoonMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
+    private fun findComingSoonMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
         val startAt = LocalDate.now()
         return repository.findComingSoonMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
 
-    fun findPastMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
+    private fun findPastMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
         val startAt = LocalDate.now().minusMonths(NOW_PLAYING_BETWEEN_MONTH)
         return repository.findPastMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
