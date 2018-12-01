@@ -2,9 +2,9 @@
     <string name="app_name">MovieMemory</string>
 
     <!--Bottomメニュー-->
-    <string name="title_movies">Movie</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_movies">映画一覧</string>
+    <string name="title_search">検索</string>
+    <string name="title_my_page">マイページ</string>
 
     <!--映画情報一覧-->
     <string name="tab_name_now_playing">公開中</string>

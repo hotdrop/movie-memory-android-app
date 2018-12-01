@@ -36,6 +36,7 @@ class MainActivity: BaseActivity() {
                 R.id.navigation_notifications -> { }
             }
         }
+
         // Tabとの間に線が入ってかっこ悪いのでトップ画面はelevationをoffにする
         supportActionBar?.let {
             it.elevation = 0f
