@@ -7,6 +7,8 @@ import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
+import jp.hotdrop.moviememory.presentation.setting.SettingFragment
+import timber.log.Timber
 
 class MainActivity: BaseActivity() {
 
@@ -28,23 +30,20 @@ class MainActivity: BaseActivity() {
     }
 
     private fun initView() {
-        binding.navigation.setOnNavigationItemReselectedListener { item ->
+        binding.navigation.setOnNavigationItemSelectedListener { item ->
             item.isChecked = true
             when (item.itemId) {
-                R.id.navigation_movie -> navigationToMovies()
-                R.id.navigation_dashboard -> { }
-                R.id.navigation_notifications -> { }
+                R.id.navigation_movie -> replaceFragment(MoviesFragment.newInstance())
+                R.id.navigation_search -> { }
+                R.id.navigation_setting -> replaceFragment(SettingFragment.newInstance())
             }
+            false
         }
 
         // Tabとの間に線が入ってかっこ悪いのでトップ画面はelevationをoffにする
         supportActionBar?.let {
             it.elevation = 0f
         }
-    }
-
-    private fun navigationToMovies() {
-        replaceFragment(MoviesFragment.newInstance())
     }
 
     private fun replaceFragment(fragment: Fragment) {
