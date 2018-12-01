@@ -36,7 +36,7 @@
     <string name="setting_label_language">言語設定</string>
     <string name="setting_label_language_desc">使用する言語を切り替えます。</string>
     <string name="setting_label_data_clear">データクリア</string>
-    <string name="setting_label_data_clear_desc">取得した映画情報をクリアします。\n（自身で入力したデータは削除されません。）</string>
+    <string name="setting_label_data_clear_desc">保持している映画情報をクリアします。\n（自身で入力したデータはクリアしません。）</string>
     <string name="setting_label_app_info">アプリ情報</string>
     <string name="setting_label_app_version">アプリのバージョン</string>
     <string name="setting_label_license">オープンソースライセンス</string>
@@ -52,8 +52,8 @@
     <string name="dialog_data_clear_message">
         取得した映画情報をクリアします。よろしいですか？\n
         \n
-        データは一覧に戻った際にネットワークから再取得します。\n
-        また、自身が編集した鑑賞情報やメモなどはクリアされません。</string>
+        データは映画一覧を表示した際、ネットワーク経由で再取得します。\n
+        また、自身が編集した鑑賞情報やメモ、お気に入りスターなどはクリアされません。</string>
 
     <!-- 画面遷移 -->
     <string name="transition_movie_image">movieImage</string>

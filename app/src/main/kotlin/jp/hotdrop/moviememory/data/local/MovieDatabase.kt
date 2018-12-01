@@ -23,6 +23,10 @@ class MovieDatabase @Inject constructor(
     fun findMoviesByBefore(startAt: LocalDate): Single<List<MovieEntity>> =
             dao.selectMoviesByBefore(startAt.toEpochDay())
 
+    fun deleteMovies() {
+        dao.deleteAll()
+    }
+
     fun movieFlowable(id: Int): Flowable<MovieEntity> =
             dao.selectMovieFlowable(id)
 
