@@ -19,7 +19,7 @@ class MoviesFragment: BaseFragment() {
 
     private lateinit var binding: FragmentTabRootBinding
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         getComponent().inject(this)
     }

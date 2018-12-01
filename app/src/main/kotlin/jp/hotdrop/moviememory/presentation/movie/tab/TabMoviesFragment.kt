@@ -43,7 +43,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         Refresh, // 一覧のアイテムを全部クリアし、取得したアイテムをセットする
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         getComponent().inject(this)
         (getActivity() as? MainActivity)?.let {
