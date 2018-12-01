@@ -46,6 +46,15 @@
     <string name="icon_app_version_content_description">このアプリのバージョンを表示している領域を示すアイコンです</string>
     <string name="icon_license_content_description">このアプリで利用しているオープンソースソフトウェアのライセンス表示メニューのアイコンです</string>
 
+    <string name="menu_language_japanese">日本語</string>
+    <string name="menu_language_english">English</string>
+
+    <string name="dialog_data_clear_message">
+        取得した映画情報をクリアします。よろしいですか？\n
+        \n
+        データは一覧に戻った際にネットワークから再取得します。\n
+        また、自身が編集した鑑賞情報やメモなどはクリアされません。</string>
+
     <!-- 画面遷移 -->
     <string name="transition_movie_image">movieImage</string>
     <string name="transition_favorite_star1">favoriteStars1</string>

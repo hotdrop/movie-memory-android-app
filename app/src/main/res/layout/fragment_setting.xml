@@ -22,6 +22,7 @@
             android:id="@+id/lang_card_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +30,7 @@
             app:layout_constraintTop_toBottomOf="@+id/general_label">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/lang_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground"
@@ -39,7 +41,7 @@
                     android:id="@+id/lang_image_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:contentDescription="@string/icon_language_content_description"
@@ -74,7 +76,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/data_clear_card_view"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,6 +84,7 @@
             app:layout_constraintTop_toBottomOf="@+id/lang_card_view">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/data_clear_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground"
@@ -92,7 +95,7 @@
                     android:id="@+id/data_clear_image_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:contentDescription="@string/icon_data_clear_content_description"
@@ -148,7 +151,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/app_version_card_view"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:cardElevation="0dp"
@@ -157,6 +160,7 @@
             app:layout_constraintTop_toBottomOf="@+id/app_info_label">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/app_version_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground"
@@ -167,7 +171,7 @@
                     android:id="@+id/app_version_image_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:contentDescription="@string/icon_app_version_content_description"
@@ -202,15 +206,15 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/license_card_view"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_version_card_view">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/license_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground"
@@ -221,7 +225,7 @@
                     android:id="@+id/license_image_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:contentDescription="@string/icon_license_content_description"
@@ -252,7 +256,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/license_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </com.google.android.material.card.MaterialCardView>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/snackbar_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_corner_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
