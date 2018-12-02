@@ -45,6 +45,10 @@ class MovieUseCase @Inject constructor(
                 .subscribeOn(Schedulers.io())
     }
 
+    fun clearMovies(): Completable =
+            repository.clearMovies()
+                    .subscribeOn(Schedulers.io())
+
     fun loadRecentMovies(): Completable =
             repository.loadRecentMovies()
                     .subscribeOn(Schedulers.io())

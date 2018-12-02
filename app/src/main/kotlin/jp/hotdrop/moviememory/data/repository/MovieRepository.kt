@@ -13,6 +13,9 @@ interface MovieRepository {
     fun prepared(): Completable
 
     @CheckResult
+    fun loadRecentMovies(): Completable
+
+    @CheckResult
     fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>>
 
     @CheckResult
@@ -22,7 +25,7 @@ interface MovieRepository {
     fun findPastMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>>
 
     @CheckResult
-    fun loadRecentMovies(): Completable
+    fun clearMovies(): Completable
 
     @CheckResult
     fun movieFlowable(id: Int): Flowable<Movie>

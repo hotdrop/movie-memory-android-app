@@ -122,18 +122,12 @@ class MovieDetailActivity: BaseActivity() {
             return
         }
         if (requestCode == MOVIE_DETAIL_REQUEST_CODE) {
-            Snackbar.make(
-                    binding.snackbarArea,
-                    R.string.message_save_success,
-                    Snackbar.LENGTH_SHORT
-            ).also { snackbar ->
-                snackbar.view.background = ContextCompat.getDrawable(this, R.drawable.shape_corner_circle)
-                onResultRefreshMovie()
-            }.show()
+            Snackbar.make(binding.snackbarArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
+            onResultRefreshMovie()
         }
     }
 
-    fun onResultRefreshMovie() {
+    private fun onResultRefreshMovie() {
         binding.movie?.let { movie ->
             setResult(RESULT_OK, Intent().apply {
                 putExtra(EXTRA_MOVIE_TAG, movie.id)

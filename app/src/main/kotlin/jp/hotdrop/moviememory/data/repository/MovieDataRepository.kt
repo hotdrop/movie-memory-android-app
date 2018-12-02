@@ -66,6 +66,13 @@ class MovieDataRepository @Inject constructor(
                         it.map { entity -> entityToMovieWithLocalInfo(entity) }
                     }
 
+    override fun clearMovies(): Completable =
+            Completable.create {
+                Timber.d("映画情報をクリアします。")
+                movieDatabase.deleteMovies()
+                it.onComplete()
+            }
+
     /**
      * 1つの映画情報を取得する。（Flowable）
      */

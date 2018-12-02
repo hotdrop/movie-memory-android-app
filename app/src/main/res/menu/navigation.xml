@@ -7,13 +7,13 @@
         android:title="@string/title_movies" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_search"
         android:icon="@drawable/ic_search"
         android:title="@string/title_search" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_sentiment_satisfied"
-        android:title="@string/title_my_page" />
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/title_setting" />
 
 </menu>
