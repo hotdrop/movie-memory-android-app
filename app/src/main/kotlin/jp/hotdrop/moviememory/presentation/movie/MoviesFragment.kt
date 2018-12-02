@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentTabRootBinding
+import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.model.MovieType
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesFragment
 
 class MoviesFragment: BaseFragment() {
 
-    private lateinit var binding: FragmentTabRootBinding
+    private lateinit var binding: FragmentMoviesBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,7 +30,7 @@ class MoviesFragment: BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentTabRootBinding.inflate(layoutInflater, container, false)
+        binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
