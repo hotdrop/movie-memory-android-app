@@ -8,12 +8,7 @@ class DebugMovieMemoryApp: MovieMemoryApp() {
     override fun onCreate() {
         super.onCreate()
 
-        initTimber()
         initStetho()
-    }
-
-    private fun initTimber() {
-        Timber.plant(Timber.DebugTree())
     }
 
     private fun initStetho() {
