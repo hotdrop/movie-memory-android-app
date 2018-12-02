@@ -45,10 +45,6 @@ class SettingFragment: BaseFragment() {
     }
 
     private fun initView() {
-
-        // TODO これ違う
-        activity?.actionBar?.setTitle(R.string.title_setting)
-
         binding.langArea.setOnClickListener { view ->
             PopupMenu(context, view).run {
                 menuInflater.inflate(R.menu.popup_language, this.menu)

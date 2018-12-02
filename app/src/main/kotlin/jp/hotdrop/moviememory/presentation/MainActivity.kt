@@ -33,9 +33,17 @@ class MainActivity: BaseActivity() {
         binding.navigation.setOnNavigationItemSelectedListener { item ->
             item.isChecked = true
             when (item.itemId) {
-                R.id.navigation_movie -> replaceFragment(MoviesFragment.newInstance())
-                R.id.navigation_search -> { }
-                R.id.navigation_setting -> replaceFragment(SettingFragment.newInstance())
+                R.id.navigation_movie -> {
+                    setTitle(R.string.title_movies)
+                    replaceFragment(MoviesFragment.newInstance())
+                }
+                R.id.navigation_search -> {
+                    setTitle(R.string.title_search)
+                }
+                R.id.navigation_setting -> {
+                    setTitle(R.string.title_setting)
+                    replaceFragment(SettingFragment.newInstance())
+                }
             }
             false
         }
