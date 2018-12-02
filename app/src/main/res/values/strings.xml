@@ -33,7 +33,7 @@
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>
-    <string name="search_label_keyword_desc">映画名、概要、自分用メモからキーワード検索します。</string>
+    <string name="search_label_keyword_desc">映画名、あらすじ、自分用メモからキーワード検索します。</string>
     <string name="search_label_category">カテゴリーで検索する</string>
     <string name="search_label_category_desc">検索したいカテゴリーをタップしてください。</string>
     <string name="search_label_favorite">お気に入りで検索する</string>
