@@ -7,6 +7,7 @@ import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
+import jp.hotdrop.moviememory.presentation.search.SearchFragment
 import jp.hotdrop.moviememory.presentation.setting.SettingFragment
 import timber.log.Timber
 
@@ -39,6 +40,7 @@ class MainActivity: BaseActivity() {
                 }
                 R.id.navigation_search -> {
                     setTitle(R.string.title_search)
+                    replaceFragment(SearchFragment.newInstance())
                 }
                 R.id.navigation_setting -> {
                     setTitle(R.string.title_setting)

@@ -8,7 +8,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.usecase.MovieUseCase
 import timber.log.Timber
 import javax.inject.Inject

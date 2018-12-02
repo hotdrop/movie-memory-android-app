@@ -27,7 +27,7 @@ class SettingFragment: BaseFragment() {
         ViewModelProviders.of(this, viewModelFactory).get(SettingViewModel::class.java)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         getComponent().inject(this)
     }

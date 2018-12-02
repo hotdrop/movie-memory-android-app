@@ -3,6 +3,7 @@ package jp.hotdrop.moviememory.data.local.dao
 import androidx.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
+import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 
@@ -47,4 +48,7 @@ interface MovieDao {
         deleteAll()
         insert(movies)
     }
+
+    @Query("SELECT DISTINCT categoryId, categoryName FROM movie")
+    fun selectCategories(): Single<List<CategoryEntity>>
 }

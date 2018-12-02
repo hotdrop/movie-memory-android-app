@@ -18,8 +18,12 @@ class DummyApi {
         val now = LocalDate.now()
 
         // now playing data
-        data.add(createMovie(id = 1, title = "ファーストコンタクト", overview = "映画その1の情報です。1日前に公開", playDate = now.minusDays(1L).toString()))
-        data.add(createMovie(id = 2, title = "セカンドダガシ", overview = "駄菓子のダミー映画です。2日前に公開", playDate = now.minusDays(2L).toString()))
+        data.add(createMovie(id = 1, title = "ファーストコンタクト",
+                category = Category(3, "コメディー"),
+                overview = "映画その1の情報です。1日前に公開", playDate = now.minusDays(1L).toString()))
+        data.add(createMovie(id = 2, title = "セカンドダガシ",
+                category = Category(1, "アクション"),
+                overview = "駄菓子のダミー映画です。2日前に公開", playDate = now.minusDays(2L).toString()))
         data.add(createMovie(id = 3, title = "アベンジャーズ・インフィニティーウォー",
                 category = Category(2, "SF・ファンタジー"),
                 overview = "6つ全てを手に入れると、全宇宙の生命の半分を滅ぼす力を得る「インフィニティーストーン」その無限のエネルギーを持つ石を手にせんと迫り来るサノス。\n" +
@@ -28,13 +32,27 @@ class DummyApi {
                 imageUrl = "https://firebasestorage.googleapis.com/v0/b/movie-memory.appspot.com/o/infini.jpg?alt=media&token=484ef333-a0bb-498b-b9cd-25a4205b00d3",
                 officialUrl = "https://www.google.co.jp",
                 trailerMovieUrl = "https://www.youtube.com/watch?v=6ZfuNTqbHE8"))
-        data.add(createMovie(id = 4, title = "シャークフォース", overview = "ダミーサメが出てくる映画です。5日前に公開", playDate = now.minusDays(5L).toString()))
-        data.add(createMovie(id = 5, title = "ファイブセンス", overview = "碁盤目なだけに光ると五番映画ができます。際がそろそろ消える気がします。6日前に公開", playDate = now.minusDays(6L).toString()))
-        data.add(createMovie(id = 6, title = "シックスエレメンツ", overview = "色々混じったダミー映画であります。10日前に公開", playDate = now.minusDays(10L).toString()))
-        data.add(createMovie(id = 7, title = "過去のセブン", overview = "正当姿勢やの宇宙が目覚めルカも知れません。1ヶ月に公開", playDate = now.minusMonths(1L).toString()))
-        data.add(createMovie(id = 8, title = "過去エイトヒーローズ", overview = "実写版のヒーロアカデミアがどうなるのか木になるところです。2ヶ月前に公開", playDate = now.minusMonths(1L).toString()))
-        data.add(createMovie(id = 9, title = "過去ナイン3K物語", overview = "ブラック企業の3Kを踏襲した名作ダミー映画です。2ヶ月前に公開", playDate = now.minusDays(50L).toString()))
-        data.add(createMovie(id = 10, title = "過去ビガヂュヴと元気な冒険", overview = "ダークビガーが世界を1兆ボルトで消滅させるとぅるるる物語です。とぅるるるるはいつででくるのでしょうかどっぴ2ヶ月前に公開", playDate = now.minusMonths(2L).toString()))
+        data.add(createMovie(id = 4, title = "シャークフォース",
+                category = Category(1, "アクション"),
+                overview = "ダミーサメが出てくる映画です。5日前に公開", playDate = now.minusDays(5L).toString()))
+        data.add(createMovie(id = 5, title = "ファイブセンス",
+                category = Category(2, "SF・ファンタジー"),
+                overview = "碁盤目なだけに光ると五番映画ができます。際がそろそろ消える気がします。6日前に公開", playDate = now.minusDays(6L).toString()))
+        data.add(createMovie(id = 6, title = "シックスエレメンツ",
+                category = Category(4, "サスペンス"),
+                overview = "色々混じったダミー映画であります。10日前に公開", playDate = now.minusDays(10L).toString()))
+        data.add(createMovie(id = 7, title = "過去のセブン",
+                category = Category(4, "サスペンス"),
+                overview = "正当姿勢やの宇宙が目覚めルカも知れません。1ヶ月に公開", playDate = now.minusMonths(1L).toString()))
+        data.add(createMovie(id = 8, title = "過去エイトヒーローズ",
+                category = Category(2, "SF・ファンタジー"),
+                overview = "実写版のヒーロアカデミアがどうなるのか木になるところです。2ヶ月前に公開", playDate = now.minusMonths(1L).toString()))
+        data.add(createMovie(id = 9, title = "過去ナイン3K物語",
+                category = Category(4, "サスペンス"),
+                overview = "ブラック企業の3Kを踏襲した名作ダミー映画です。2ヶ月前に公開", playDate = now.minusDays(50L).toString()))
+        data.add(createMovie(id = 10, title = "過去ビガヂュヴと元気な冒険",
+                category = Category(5, "ダーク"),
+                overview = "ダークビガーが世界を1兆ボルトで消滅させるとぅるるる物語です。とぅるるるるはいつででくるのでしょうかどっぴ2ヶ月前に公開", playDate = now.minusMonths(2L).toString()))
         (11..100).forEach {
             data.add(createMovie(id = it, title = "映画その$it", playDate = now.minusDays(20L).toString()))
         }
