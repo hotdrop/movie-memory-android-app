@@ -5,7 +5,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.usecase.SearchUseCase
 import timber.log.Timber
@@ -20,9 +19,6 @@ class SearchViewModel @Inject constructor(
     private val mutableCategories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = mutableCategories
 
-    private val mutableError = MutableLiveData<AppError>()
-    val error: LiveData<AppError> = mutableError
-
     fun findCategories() {
         Timber.d("カテゴリーを検索しにいきます。")
         useCase.findCategories()
@@ -30,9 +26,6 @@ class SearchViewModel @Inject constructor(
                 .subscribeBy(
                         onSuccess = {
                             mutableCategories.postValue(it)
-                        },
-                        onError = {
-                            mutableError.postValue(AppError(it))
                         }
                 ).addTo(compositeDisposable)
     }
