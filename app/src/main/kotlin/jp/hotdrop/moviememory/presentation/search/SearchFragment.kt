@@ -45,7 +45,7 @@ class SearchFragment: BaseFragment() {
     }
 
     private fun initView() {
-
+        binding.favoriteImageIcon.progress = 1f
     }
 
     private fun observe() {
@@ -54,6 +54,7 @@ class SearchFragment: BaseFragment() {
                 initChipCategories(it)
             }
         })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun initChipCategories(categories: List<Category>) {
