@@ -46,6 +46,14 @@ class SearchFragment: BaseFragment() {
 
     private fun initView() {
         binding.favoriteImageIcon.progress = 1f
+
+        binding.keywordArea.setOnClickListener {
+            // TODO
+        }
+
+        binding.favoriteArea.setOnClickListener {
+            // TODO
+        }
     }
 
     private fun observe() {
@@ -62,6 +70,9 @@ class SearchFragment: BaseFragment() {
         categories.forEach { category ->
             val chip = (layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategories, false) as Chip).apply {
                 text = category.name
+                setOnClickListener {
+                    // TODO
+                }
             }
             binding.chipGroupCategories.addView(chip)
         }
