@@ -31,29 +31,31 @@ class MainActivity: BaseActivity() {
     }
 
     private fun initView() {
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.let {
+            it.setDisplayShowTitleEnabled(false)
+        }
+
         binding.navigation.setOnNavigationItemSelectedListener { item ->
             item.isChecked = true
             when (item.itemId) {
                 R.id.navigation_movie -> {
-                    setTitle(R.string.title_movies)
+                    binding.toolbar.title = getString(R.string.title_movies)
                     replaceFragment(MoviesFragment.newInstance())
                 }
                 R.id.navigation_search -> {
-                    setTitle(R.string.title_search)
+                    binding.toolbar.title = getString(R.string.title_search)
                     replaceFragment(SearchFragment.newInstance())
                 }
                 R.id.navigation_setting -> {
-                    setTitle(R.string.title_setting)
+                    binding.toolbar.title = getString(R.string.title_setting)
                     replaceFragment(SettingFragment.newInstance())
                 }
             }
             false
         }
 
-        // Tabとの間に線が入ってかっこ悪いのでトップ画面はelevationをoffにする
-        supportActionBar?.let {
-            it.elevation = 0f
-        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
