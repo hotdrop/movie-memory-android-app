@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 // TODO ローカルで保存できるものもっと増やす。URLやカテゴリー
 @Entity(tableName = "movie_note")
-class MovieNoteEntity (
+data class MovieNoteEntity (
         @PrimaryKey var id: Int,
         var favoriteCount: Int,
         var watchDate: Long?,

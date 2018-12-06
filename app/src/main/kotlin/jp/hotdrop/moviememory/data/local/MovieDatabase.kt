@@ -5,7 +5,6 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
-import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.model.SearchKeyword
 import org.threeten.bp.LocalDate
@@ -25,7 +24,7 @@ class MovieDatabase @Inject constructor(
             dao.selectMoviesByBefore(startAt.toEpochDay())
 
     fun findMovies(searchKeyword: SearchKeyword): Single<List<MovieEntity>> =
-            dao.selectMovies(searchKeyword)
+            dao.selectMovies(searchKeyword.value)
 
     fun movieWithFlowable(id: Int): Flowable<MovieEntity> =
             dao.selectWithFlowable(id)

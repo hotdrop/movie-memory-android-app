@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.util.Pair
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -21,6 +22,7 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivitySearchResultBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.model.SearchKeyword
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
@@ -73,15 +75,15 @@ class SearchResultActivity: BaseActivity() {
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+                // 入力するたびに検索をするのはうざいだけなので一旦実装しない。
                 return true
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.run {
-                    // TODO フォーカスクリアした方がいいかも
                     binding.searchView.clearFocus()
-                    Snackbar.make(binding.snackbarArea, "キーワード $query で検索します。", Snackbar.LENGTH_SHORT).show()
-                    // TODO viewModelに検索依頼する
+                    // ワードをsuggestion登録する
+                    viewModel.findByKeyword(SearchKeyword(query))
                     return true
                 }
             }
@@ -113,13 +115,14 @@ class SearchResultActivity: BaseActivity() {
 
     private fun onLoadMovies(movies: List<Movie>) {
 
-        adapter?.clear()
+        adapter?.clearWithRefresh()
 
         if (movies.isEmpty()) {
             binding.emptyMessage.isVisible = true
             return
         }
 
+        binding.emptyMessage.isGone = true
         adapter?.run {
             this.addAll(movies)
         }
@@ -164,6 +167,11 @@ class SearchResultActivity: BaseActivity() {
                     notifyItemChanged(index)
                 }
             }
+        }
+
+        fun clearWithRefresh() {
+            clear()
+            notifyDataSetChanged()
         }
     }
 

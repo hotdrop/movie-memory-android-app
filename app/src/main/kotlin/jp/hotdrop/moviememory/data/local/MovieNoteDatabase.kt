@@ -16,7 +16,7 @@ class MovieNoteDatabase @Inject constructor(
             dao.select(id)
 
     fun find(searchKeyword: SearchKeyword): Single<List<MovieNoteEntity>> =
-            dao.select(searchKeyword)
+            dao.select(searchKeyword.value)
 
     fun save(entity: MovieNoteEntity) {
         database.runInTransaction {
