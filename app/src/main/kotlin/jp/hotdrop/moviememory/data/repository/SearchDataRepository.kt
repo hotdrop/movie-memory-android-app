@@ -1,13 +1,13 @@
 package jp.hotdrop.moviememory.data.repository
 
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
-import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
-import jp.hotdrop.moviememory.data.local.entity.MovieEntity
-import jp.hotdrop.moviememory.data.local.entity.toCategory
-import jp.hotdrop.moviememory.data.local.entity.toMovie
+import jp.hotdrop.moviememory.data.local.SuggestionDatabase
+import jp.hotdrop.moviememory.data.local.entity.*
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.SearchKeyword
 import jp.hotdrop.moviememory.model.Movie
@@ -16,8 +16,11 @@ import javax.inject.Inject
 
 class SearchDataRepository @Inject constructor(
         private val movieDatabase: MovieDatabase,
-        private val movieNoteDatabase: MovieNoteDatabase
+        private val movieNoteDatabase: MovieNoteDatabase,
+        private val suggestionDatabase: SuggestionDatabase
 ): SearchRepository {
+
+
 
     override fun findCategories(): Single<List<Category>> {
         return movieDatabase.findCategories()
@@ -29,6 +32,25 @@ class SearchDataRepository @Inject constructor(
                     }
                 }
     }
+
+    override fun suggestion(): Flowable<List<SearchKeyword>> =
+            suggestionDatabase.suggestion()
+                    .map {
+                        it.map { entity -> entity.toSearchKeyword() }
+                    }
+
+    // TODO 同じキーワードはIDを振り直して先頭に持っていきたいが、autogenerateしてるから無理か・・
+    override fun saveSuggestion(keyword: SearchKeyword): Completable =
+            Completable.create { emitter ->
+                suggestionDatabase.save(keyword.toEntity())
+                emitter.onComplete()
+            }
+
+    override fun deleteSuggestion(): Completable =
+            Completable.create { emitter ->
+                suggestionDatabase.delete()
+                emitter.onComplete()
+            }
 
     /**
      * movieを全て取得しinfoをくっつけた状態でkeywordのフィルターをかける方が楽だったが

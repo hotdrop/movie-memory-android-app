@@ -5,6 +5,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.model.SearchKeyword
 
 @Dao
 interface MovieDao {
@@ -18,7 +19,7 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE playingDate < :startAt ORDER BY playingDate DESC")
     fun selectMoviesByBefore(startAt: Long): Single<List<MovieEntity>>
 
-    @Query("SELECT * FROM movie WHERE title LIKE '%' || :keyword || '%' OR overview  LIKE '%' || :keyword || '%'")
+    @Query("SELECT * FROM movie WHERE title LIKE ${SearchKeyword.QUERY}")
     fun selectMovies(keyword: String): Single<List<MovieEntity>>
 
     @Query("SELECT COUNT(*) FROM movie")
@@ -41,12 +42,6 @@ interface MovieDao {
 
     @Query("DELETE FROM movie")
     fun deleteAll()
-
-    @Transaction
-    fun clearAndInsert(movies: List<MovieEntity>) {
-        deleteAll()
-        insert(movies)
-    }
 
     @Query("SELECT DISTINCT categoryId, categoryName FROM movie")
     fun selectCategories(): Single<List<CategoryEntity>>

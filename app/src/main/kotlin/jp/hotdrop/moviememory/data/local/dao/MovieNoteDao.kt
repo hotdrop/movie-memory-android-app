@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
+import jp.hotdrop.moviememory.model.SearchKeyword
 
 @Dao
 interface MovieNoteDao {
@@ -13,7 +14,7 @@ interface MovieNoteDao {
     @Query("SELECT * FROM movie_note WHERE id = :id")
     fun select(id: Int): MovieNoteEntity
 
-    @Query("SELECT * FROM movie_note WHERE note LIKE '%' || :keyword || '%'")
+    @Query("SELECT * FROM movie_note WHERE ${SearchKeyword.LOCAL_INFO_QUERY}")
     fun select(keyword: String): Single<List<MovieNoteEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
