@@ -13,11 +13,13 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentSearchBinding
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.presentation.MainActivity
 import javax.inject.Inject
 
 class SearchFragment: BaseFragment() {
 
     private lateinit var binding: FragmentSearchBinding
+    private lateinit var activity: MainActivity
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -28,6 +30,9 @@ class SearchFragment: BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         getComponent().inject(this)
+        (context as MainActivity).let {
+            activity = it
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,7 +53,7 @@ class SearchFragment: BaseFragment() {
         binding.favoriteImageIcon.progress = 1f
 
         binding.keywordArea.setOnClickListener {
-            // TODO
+            SearchResultActivity.start(activity)
         }
 
         binding.favoriteArea.setOnClickListener {

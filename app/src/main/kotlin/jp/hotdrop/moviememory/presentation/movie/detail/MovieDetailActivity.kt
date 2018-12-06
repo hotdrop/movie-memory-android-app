@@ -143,5 +143,10 @@ class MovieDetailActivity: BaseActivity() {
                         .apply {
                             putExtra(EXTRA_MOVIE_TAG, movieId)
                         }, requestCode, options?.toBundle())
+        fun startForResult(activity: Activity, movieId: Int, requestCode: Int, options: ActivityOptions? = null) =
+                activity.startActivityForResult(Intent(activity, MovieDetailActivity::class.java)
+                        .apply {
+                            putExtra(EXTRA_MOVIE_TAG, movieId)
+                        }, requestCode, options?.toBundle())
     }
 }

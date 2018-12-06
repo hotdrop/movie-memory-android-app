@@ -33,11 +33,15 @@
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>
-    <string name="search_label_keyword_desc">映画名、あらすじ、自分用メモからキーワード検索します。</string>
+    <string name="search_label_keyword_desc">映画名やあらすじ、自分用メモからキーワード検索します。</string>
     <string name="search_label_category">カテゴリーで検索する</string>
     <string name="search_label_category_desc">検索したいカテゴリーをタップしてください。</string>
     <string name="search_label_favorite">お気に入りで検索する</string>
     <string name="search_label_favorite_desc">お気に入りスターを1つでも入れた映画を検索します。</string>
+
+    <string name="search_result_menu_suggestion_clear">履歴クリア</string>
+    <string name="search_result_query_hint">キーワード検索</string>
+    <string name="search_result_not_found">キーワードに該当する映画情報は見つかりませんでした。</string>
 
     <!--設定-->
     <string name="setting_label_general">全般</string>

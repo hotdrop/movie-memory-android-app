@@ -7,6 +7,7 @@ import jp.hotdrop.moviememory.data.local.dao.MovieDao
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.model.SearchKeyword
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
@@ -28,6 +29,12 @@ class MovieDatabase @Inject constructor(
             dao.selectMoviesByBefore(startAt.toEpochDay())
 
     /**
+     * 映画情報の検索
+     */
+    fun findMovies(searchKeyword: SearchKeyword): Single<List<MovieEntity>> =
+            dao.selectMovies(searchKeyword)
+
+    /**
      * 1つの映画情報に関するメソッド
      */
     fun movieFlowable(id: Int): Flowable<MovieEntity> =
@@ -35,6 +42,9 @@ class MovieDatabase @Inject constructor(
 
     fun findMovie(id: Int): Single<MovieEntity> =
             dao.selectMovie(id)
+
+    fun findMovieWithDirect(id: Int): MovieEntity =
+            dao.selectMovieWithDirect(id)
 
     fun isExist(): Single<Boolean> =
             dao.count().map { it > 0 }
@@ -60,6 +70,9 @@ class MovieDatabase @Inject constructor(
      */
     fun findLocalMovieInfo(id: Int): LocalMovieInfoEntity =
             dao.selectLocalMovieInfo(id)
+
+    fun findLocalMoviesInfo(searchKeyword: SearchKeyword): Single<List<LocalMovieInfoEntity>> =
+            dao.selectLocalMovieInfo(searchKeyword)
 
     fun saveLocalInfo(entity: LocalMovieInfoEntity) {
         database.runInTransaction {
