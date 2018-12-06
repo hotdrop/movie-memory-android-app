@@ -4,7 +4,6 @@ import androidx.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
-import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.model.SearchKeyword
 
@@ -27,33 +26,22 @@ interface MovieDao {
     fun count(): Single<Long>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectMovieFlowable(id: Int): Flowable<MovieEntity>
+    fun selectWithFlowable(id: Int): Flowable<MovieEntity>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectMovie(id: Int): Single<MovieEntity>
+    fun select(id: Int): Single<MovieEntity>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectMovieWithDirect(id: Int): MovieEntity
+    fun selectWithDirect(id: Int): MovieEntity
 
     @Query("SELECT max(id) FROM movie")
-    fun selectRecentMovieId(): Single<Int>
+    fun selectRecentId(): Single<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<MovieEntity>)
 
     @Query("DELETE FROM movie")
     fun deleteAll()
-
-    // ここからMovieInfo
-
-    @Query("SELECT * FROM movie_local_info WHERE id = :id")
-    fun selectLocalMovieInfo(id: Int): LocalMovieInfoEntity
-
-    @Query("SELECT * FROM movie_local_info WHERE ${SearchKeyword.LOCAL_INFO_QUERY}")
-    fun selectLocalMovieInfo(keyword: SearchKeyword): Single<List<LocalMovieInfoEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertLocalMovieInfo(entities: LocalMovieInfoEntity)
 
     @Transaction
     fun clearAndInsert(movies: List<MovieEntity>) {

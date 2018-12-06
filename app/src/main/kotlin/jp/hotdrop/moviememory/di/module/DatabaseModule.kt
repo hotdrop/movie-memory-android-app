@@ -6,7 +6,9 @@ import dagger.Module
 import dagger.Provides
 import jp.hotdrop.moviememory.data.local.AppDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
+import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
+import jp.hotdrop.moviememory.data.local.dao.MovieNoteDao
 import javax.inject.Singleton
 
 @Module
@@ -19,6 +21,10 @@ open class DatabaseModule {
                     .fallbackToDestructiveMigration()
                     .build()
 
+    @Provides
+    @Singleton
+    fun provideMovieDao(db: AppDatabase): MovieDao = db.movieDao()
+
     @Singleton
     @Provides
     fun provideMovieDatabase(db: AppDatabase, dao: MovieDao): MovieDatabase =
@@ -26,6 +32,15 @@ open class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideMovieDao(db: AppDatabase): MovieDao = db.movieDao()
+    fun provideMovieNoteDao(db: AppDatabase): MovieNoteDao = db.movieNoteDao()
+
+    @Singleton
+    @Provides
+    fun provideMovieNoteDatabase(db: AppDatabase, dao: MovieNoteDao): MovieNoteDatabase =
+            MovieNoteDatabase(db, dao)
+
+
+
+
 
 }

@@ -3,7 +3,8 @@ package jp.hotdrop.moviememory.data.repository
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
+import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
+import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.data.local.entity.toCategory
 import jp.hotdrop.moviememory.data.local.entity.toMovie
@@ -14,7 +15,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SearchDataRepository @Inject constructor(
-        private val movieDatabase: MovieDatabase
+        private val movieDatabase: MovieDatabase,
+        private val movieNoteDatabase: MovieNoteDatabase
 ): SearchRepository {
 
     override fun findCategories(): Single<List<Category>> {
@@ -52,19 +54,19 @@ class SearchDataRepository @Inject constructor(
     }
 
     private fun findMoviesFirstSearchFromLocalInfo(searchKeyword: SearchKeyword): Single<List<Movie>> {
-        return movieDatabase.findLocalMoviesInfo(searchKeyword)
+        return movieNoteDatabase.find(searchKeyword)
                 .map {
                     it.map { entity -> entityToMovieWithLocalInfo(entity)}
                 }
     }
 
-    private fun entityToMovieWithLocalInfo(localMovieInfoEntity: LocalMovieInfoEntity): Movie {
-        val entity = movieDatabase.findMovieWithDirect(localMovieInfoEntity.id)
-        return entity.toMovie(localMovieInfoEntity)
+    private fun entityToMovieWithLocalInfo(movieNoteEntity: MovieNoteEntity): Movie {
+        val entity = movieDatabase.findWithDirect(movieNoteEntity.id)
+        return entity.toMovie(movieNoteEntity)
     }
 
     private fun entityToMovieWithLocalInfo(entity: MovieEntity): Movie {
-        val localMovieInfo = movieDatabase.findLocalMovieInfo(entity.id)
+        val localMovieInfo = movieNoteDatabase.find(entity.id)
         return entity.toMovie(localMovieInfo)
     }
 }

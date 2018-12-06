@@ -7,7 +7,7 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import jp.hotdrop.moviememory.data.local.AppDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
+import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -146,7 +146,7 @@ class MovieDatabaseTest {
                     LocalDateTime.now().toInstant(ZoneOffset.UTC))
 
     private fun createLocalMovieInfoEntity(id: Int) =
-            LocalMovieInfoEntity(id,
+            MovieNoteEntity(id,
                     false,
                     LocalDate.parse("2018-05-20").toEpochDay(),
                     "Dummy Place",
