@@ -167,7 +167,7 @@ class SearchResultActivity: BaseActivity() {
                 }
             }
         })
-        
+
         binding.moviesRecyclerView.isVisible = true
         binding.progress.isGone = true
     }
