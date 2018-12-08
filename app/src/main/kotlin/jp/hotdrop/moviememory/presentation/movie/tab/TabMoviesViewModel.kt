@@ -7,7 +7,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.model.MovieType
+import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.usecase.MovieUseCase
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class TabMoviesViewModel @Inject constructor(
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
 
-    var type: MovieType? = null
+    var condition: MovieCondition? = null
 
     /**
      * 初回起動時は全データを持ってきてDBに入れる
@@ -49,7 +49,7 @@ class TabMoviesViewModel @Inject constructor(
     }
 
     fun onLoad(page: Int) {
-        type?.let { type ->
+        condition?.let { type ->
             val index = page * OFFSET
             useCase.findMovies(type, index, OFFSET)
                     .observeOn(Schedulers.io())

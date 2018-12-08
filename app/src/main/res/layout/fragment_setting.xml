@@ -52,7 +52,7 @@
 
                 <TextView
                     android:id="@+id/lang_label"
-                    style="@style/ItemText"
+                    style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -63,7 +63,7 @@
 
                 <TextView
                     android:id="@+id/lang_label_description"
-                    style="@style/ItemText.Small"
+                    style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -106,7 +106,7 @@
 
                 <TextView
                     android:id="@+id/data_clear_label"
-                    style="@style/ItemText"
+                    style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -118,7 +118,7 @@
 
                 <TextView
                     android:id="@+id/data_clear_label_description"
-                    style="@style/ItemText.Small"
+                    style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -132,7 +132,7 @@
 
         <View
             android:id="@+id/view"
-            style="@style/LabelBorder"
+            style="@style/BorderLine"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +140,7 @@
 
         <TextView
             android:id="@+id/app_info_label"
-            style="@style/ItemText.Sub"
+            style="@style/TextNormal.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -182,7 +182,7 @@
 
                 <TextView
                     android:id="@+id/app_version_label"
-                    style="@style/ItemText"
+                    style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -236,7 +236,7 @@
 
                 <TextView
                     android:id="@+id/license_label"
-                    style="@style/ItemText"
+                    style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -247,7 +247,7 @@
 
                 <TextView
                     android:id="@+id/license_label_description"
-                    style="@style/ItemText.Small"
+                    style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

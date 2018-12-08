@@ -6,7 +6,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.model.MovieType
+import jp.hotdrop.moviememory.model.MovieCondition
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,11 +19,11 @@ class MovieUseCase @Inject constructor(
             repository.prepared()
                     .subscribeOn(Schedulers.io())
 
-    fun findMovies(type: MovieType, index: Int, offset: Int): Single<List<Movie>> {
-        return when (type) {
-            MovieType.NowPlaying -> findNowPlayingMovies(index, offset)
-            MovieType.ComingSoon -> findComingSoonMovies(index, offset)
-            MovieType.Past -> findPastMovies(index, offset)
+    fun findMovies(condition: MovieCondition, index: Int, offset: Int): Single<List<Movie>> {
+        return when (condition) {
+            MovieCondition.NowPlaying -> findNowPlayingMovies(index, offset)
+            MovieCondition.ComingSoon -> findComingSoonMovies(index, offset)
+            MovieCondition.Past -> findPastMovies(index, offset)
         }
     }
 
