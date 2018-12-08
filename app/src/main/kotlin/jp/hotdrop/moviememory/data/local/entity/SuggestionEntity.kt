@@ -2,7 +2,7 @@ package jp.hotdrop.moviememory.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import jp.hotdrop.moviememory.model.SearchKeyword
+import jp.hotdrop.moviememory.model.Suggestion
 
 @Entity(tableName = "suggestion")
 data class SuggestionEntity (
@@ -10,14 +10,14 @@ data class SuggestionEntity (
         val keyword: String
 )
 
-fun SuggestionEntity.toSearchKeyword(): SearchKeyword =
-        SearchKeyword (
+fun SuggestionEntity.toSuggestion(): Suggestion =
+        Suggestion (
                 id = this.id,
-                value = this.keyword
+                keyword = this.keyword
         )
 
-fun SearchKeyword.toEntity(): SuggestionEntity =
+fun Suggestion.toEntity(): SuggestionEntity =
         SuggestionEntity (
                 id = this.id,
-                keyword = this.value
+                keyword = this.keyword
         )

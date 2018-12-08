@@ -17,7 +17,7 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesTabBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.model.MovieType
+import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.presentation.MainActivity
 import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
@@ -59,7 +59,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.type = arguments?.getSerializable(MovieType.ARGUMENT_TAG) as MovieType
+        viewModel.condition = arguments?.getSerializable(MovieCondition.ARGUMENT_TAG) as MovieCondition
 
         initView()
         observe()

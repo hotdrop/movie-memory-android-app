@@ -40,6 +40,9 @@
     <string name="search_label_favorite_desc">お気に入りスターを1つでも入れた映画を検索します。</string>
 
     <string name="search_result_menu_suggestion_clear">履歴クリア</string>
+    <string name="search_result_suggestion_clear_message">
+        検索キーワードの履歴を全てクリアします。よろしいですか？
+    </string>
     <string name="search_result_query_hint">キーワード検索</string>
     <string name="search_result_not_found">キーワードに該当する映画情報は見つかりませんでした。</string>
 

@@ -62,10 +62,10 @@ class SettingFragment: BaseFragment() {
                 AlertDialog.Builder(context)
                         .setTitle(R.string.setting_label_data_clear)
                         .setMessage(R.string.dialog_data_clear_message)
-                        .setPositiveButton(resources.getString(android.R.string.ok)) { _, which ->
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
                             viewModel.clearMovies()
                         }
-                        .setNegativeButton(resources.getString(android.R.string.cancel), null)
+                        .setNegativeButton(android.R.string.cancel, null)
                         .show()
             }
         }

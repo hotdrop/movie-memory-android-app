@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
-import jp.hotdrop.moviememory.model.MovieType
+import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesFragment
 
@@ -55,7 +55,7 @@ class MoviesFragment: BaseFragment() {
             tabFragments[position].let { tab ->
                 return tab.fragment.also { fragment ->
                     fragment.arguments = Bundle().apply {
-                        putSerializable(MovieType.ARGUMENT_TAG, tab.type)
+                        putSerializable(MovieCondition.ARGUMENT_TAG, tab.condition)
                     }
                 }
             }
@@ -76,10 +76,10 @@ class MoviesFragment: BaseFragment() {
         }
     }
 
-    enum class MovieTab(val fragment: Fragment, @StringRes val titleRes: Int, val type: MovieType) {
-        NowPlaying(TabMoviesFragment.newInstance(), R.string.tab_name_now_playing, MovieType.NowPlaying),
-        ComingSoon(TabMoviesFragment.newInstance(), R.string.tab_name_coming_soon, MovieType.ComingSoon),
-        Past(TabMoviesFragment.newInstance(), R.string.tab_name_past, MovieType.Past)
+    enum class MovieTab(val fragment: Fragment, @StringRes val titleRes: Int, val condition: MovieCondition) {
+        NowPlaying(TabMoviesFragment.newInstance(), R.string.tab_name_now_playing, MovieCondition.NowPlaying),
+        ComingSoon(TabMoviesFragment.newInstance(), R.string.tab_name_coming_soon, MovieCondition.ComingSoon),
+        Past(TabMoviesFragment.newInstance(), R.string.tab_name_past, MovieCondition.Past)
     }
 
     companion object {

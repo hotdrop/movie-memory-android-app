@@ -9,7 +9,7 @@ import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.SuggestionDatabase
 import jp.hotdrop.moviememory.data.local.entity.*
 import jp.hotdrop.moviememory.model.Category
-import jp.hotdrop.moviememory.model.SearchKeyword
+import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.model.Movie
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,8 +19,6 @@ class SearchDataRepository @Inject constructor(
         private val movieNoteDatabase: MovieNoteDatabase,
         private val suggestionDatabase: SuggestionDatabase
 ): SearchRepository {
-
-
 
     override fun findCategories(): Single<List<Category>> {
         return movieDatabase.findCategories()
@@ -33,16 +31,16 @@ class SearchDataRepository @Inject constructor(
                 }
     }
 
-    override fun suggestion(): Flowable<List<SearchKeyword>> =
+    override fun suggestion(): Flowable<List<Suggestion>> =
             suggestionDatabase.suggestion()
                     .map {
-                        it.map { entity -> entity.toSearchKeyword() }
+                        it.map { entity -> entity.toSuggestion() }
                     }
 
     // TODO 同じキーワードはIDを振り直して先頭に持っていきたいが、autogenerateしてるから無理か・・
-    override fun saveSuggestion(keyword: SearchKeyword): Completable =
+    override fun save(suggestion: Suggestion): Completable =
             Completable.create { emitter ->
-                suggestionDatabase.save(keyword.toEntity())
+                suggestionDatabase.save(suggestion.toEntity())
                 emitter.onComplete()
             }
 
@@ -58,25 +56,25 @@ class SearchDataRepository @Inject constructor(
      * movieから検索＋infoから逆引き検索 で得られた2つの結果をマージした方がメモリ効率は良いと判断した。
      * 最初の頃はmovieがたかだか数百件で誤差の範囲なるだろうが多分この仮定は正しい。
      */
-    override fun findMovies(searchKeyword: SearchKeyword): Single<List<Movie>> {
+    override fun findMovies(suggestion: Suggestion): Single<List<Movie>> {
         return Single.zip<List<Movie>, List<Movie>, List<Movie>>(
-                findMoviesFirstSearchFromMain(searchKeyword),
-                findMoviesFirstSearchFromLocalInfo(searchKeyword),
+                findMoviesFirstSearchFromMain(suggestion),
+                findMoviesFirstSearchFromLocalInfo(suggestion),
                 BiFunction { t1, t2 ->
                     t1.plus(t2).distinctBy { it.id }
                 }
         )
     }
 
-    private fun findMoviesFirstSearchFromMain(searchKeyword: SearchKeyword): Single<List<Movie>> {
-        return movieDatabase.findMovies(searchKeyword)
+    private fun findMoviesFirstSearchFromMain(suggestion: Suggestion): Single<List<Movie>> {
+        return movieDatabase.findMovies(suggestion)
                 .map {
                     it.map { entity -> entityToMovieWithLocalInfo(entity) }
                 }
     }
 
-    private fun findMoviesFirstSearchFromLocalInfo(searchKeyword: SearchKeyword): Single<List<Movie>> {
-        return movieNoteDatabase.find(searchKeyword)
+    private fun findMoviesFirstSearchFromLocalInfo(suggestion: Suggestion): Single<List<Movie>> {
+        return movieNoteDatabase.find(suggestion)
                 .map {
                     it.map { entity -> entityToMovieWithLocalInfo(entity)}
                 }

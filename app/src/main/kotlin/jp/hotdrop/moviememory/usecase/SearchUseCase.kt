@@ -6,7 +6,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.SearchRepository
 import jp.hotdrop.moviememory.model.Category
-import jp.hotdrop.moviememory.model.SearchKeyword
+import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.model.Movie
 import javax.inject.Inject
 
@@ -17,19 +17,19 @@ class SearchUseCase @Inject constructor(
             repository.findCategories()
                     .subscribeOn(Schedulers.io())
 
-    fun suggestion(): Flowable<List<SearchKeyword>> =
+    fun suggestion(): Flowable<List<Suggestion>> =
             repository.suggestion()
                     .subscribeOn(Schedulers.io())
 
-    fun saveSuggestion(searchKeyword: SearchKeyword): Completable =
-            repository.saveSuggestion(searchKeyword)
+    fun save(suggestion: Suggestion): Completable =
+            repository.save(suggestion)
                     .subscribeOn(Schedulers.io())
 
-    fun deleteSuggestion(): Completable =
+    fun deleteSuggestions(): Completable =
             repository.deleteSuggestion()
                     .subscribeOn(Schedulers.io())
 
-    fun findByKeyword(searchKeyword: SearchKeyword): Single<List<Movie>> =
-            repository.findMovies(searchKeyword)
+    fun findByKeyword(suggestion: Suggestion): Single<List<Movie>> =
+            repository.findMovies(suggestion)
                     .subscribeOn(Schedulers.io())
 }
