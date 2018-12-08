@@ -69,6 +69,11 @@ class SearchResultViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
+    fun clear() {
+        mutableClearedSuggestions.postValue(null)
+        mutableError.postValue(null)
+    }
+
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()

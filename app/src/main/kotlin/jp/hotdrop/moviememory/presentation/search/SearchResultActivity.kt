@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.util.Pair
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -17,21 +18,25 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivitySearchResultBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
+import jp.hotdrop.moviememory.databinding.RowSuggestionBinding
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.model.SearchKeyword
+import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchResultActivity: BaseActivity() {
 
     private lateinit var binding: ActivitySearchResultBinding
     private var adapter: MoviesAdapter? = null
+    private var suggestionAdapter: SuggestionAdapter? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -55,11 +60,15 @@ class SearchResultActivity: BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_suggestions_clear -> {
-                    // TODO 履歴クリア処理
-                    Snackbar.make(binding.snackbarArea, "履歴クリアは未実装です", Snackbar.LENGTH_LONG).show()
-                }
+            if (menuItem.itemId == R.id.action_suggestions_clear) {
+                AlertDialog.Builder(this)
+                        .setTitle(R.string.search_result_menu_suggestion_clear)
+                        .setMessage(R.string.search_result_suggestion_clear_message)
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                            viewModel.clearSuggestions()
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -73,33 +82,67 @@ class SearchResultActivity: BaseActivity() {
             it.setDisplayShowTitleEnabled(false)
         }
 
+        binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                Timber.d("フォーカス当たった")
+                binding.suggestionsRecyclerView.run {
+                    isVisible = true
+                    scrollToPosition(0)
+                }
+            } else {
+                binding.suggestionsRecyclerView.isGone = true
+            }
+        }
+
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                // 入力するたびに検索をするのはうざいだけなので一旦実装しない。
+                filterSuggestion(newText)
                 return true
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.run {
                     binding.searchView.clearFocus()
-                    // ワードをsuggestion登録する
-                    viewModel.findByKeyword(SearchKeyword(query))
+                    Suggestion(keyword = query).run {
+                        viewModel.find(this)
+                        viewModel.save(this)
+                    }
                     return true
                 }
             }
         })
 
+        // 検索キーワード履歴一覧の初期化
+        binding.suggestionsRecyclerView.let {
+            it.bringToFront()
+            it.setHasFixedSize(true)
+            it.layoutManager = LinearLayoutManager(this)
+            suggestionAdapter = SuggestionAdapter()
+            it.adapter = suggestionAdapter
+        }
+
         // 検索結果一覧の初期化
         binding.moviesRecyclerView.let {
-            val gridLayoutManager = GridLayoutManager(this, 2)
-            it.layoutManager = gridLayoutManager
+            it.layoutManager = GridLayoutManager(this, 2)
             adapter = MoviesAdapter()
             it.adapter = adapter
         }
     }
 
     private fun observe() {
-        // TODO suggestionを取得する
+        viewModel.suggestion.observe(this, Observer {
+            it?.let { searchKeywords ->
+                onLoadSearchKeywordHistory(searchKeywords)
+            }
+        })
+        viewModel.clearedSuggestions.observe(this, Observer {
+            it?.let { success ->
+                if (success) {
+                    Snackbar.make(binding.snackbarArea, "履歴をクリアしました。", Snackbar.LENGTH_SHORT).show()
+                    viewModel.clear()
+                }
+            }
+        })
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
                 onLoadMovies(movies)
@@ -107,39 +150,69 @@ class SearchResultActivity: BaseActivity() {
         })
         viewModel.error.observe(this, Observer {
             it?.let { error ->
-                Snackbar.make(binding.snackbarArea, error.getMessage() ?: "もう一度実行してください。", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.snackbarArea, error.getMessage() ?: "もう一度実行してください。", Snackbar.LENGTH_LONG).show()
+                viewModel.clear()
             }
         })
         lifecycle.addObserver(viewModel)
     }
 
-    private fun onLoadMovies(movies: List<Movie>) {
-
-        adapter?.clearWithRefresh()
-
-        if (movies.isEmpty()) {
-            binding.emptyMessage.isVisible = true
-            return
-        }
-
-        binding.emptyMessage.isGone = true
-        adapter?.run {
-            this.addAll(movies)
+    private fun filterSuggestion(query: String?) {
+        viewModel.suggestion.value?.let { suggestions ->
+            if (query.isNullOrEmpty()) {
+                onLoadSearchKeywordHistory(suggestions)
+            } else {
+                suggestions.filter {
+                    it.keyword.startsWith(query)
+                }.run {
+                    onLoadSearchKeywordHistory(this)
+                }
+            }
         }
     }
 
+    private fun onLoadSearchKeywordHistory(suggestions: List<Suggestion>) {
+        suggestionAdapter?.refresh(suggestions)
+    }
+
+    private fun onLoadMovies(movies: List<Movie>) {
+        adapter?.refresh(movies)
+        binding.emptyMessage.isVisible = movies.isEmpty()
+    }
+
+    /**
+     * キーワード履歴のアダプター
+     */
+    inner class SuggestionAdapter: RecyclerViewAdapter<Suggestion, RecyclerViewAdapter.BindingHolder<RowSuggestionBinding>>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<RowSuggestionBinding> =
+                BindingHolder(parent, R.layout.row_suggestion)
+
+        override fun onBindViewHolder(holder: BindingHolder<RowSuggestionBinding>, position: Int) {
+            holder.binding?.let { rowBinding ->
+                val keyword = getItem(position)
+                rowBinding.keyword.text = keyword.keyword
+                rowBinding.contentLayout.setOnClickListener {
+                    binding.searchView.setQuery(keyword.keyword, true)
+                }
+            }
+        }
+    }
+
+    /**
+     * 検索結果の映画アダプター
+     */
     inner class MoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemMovieBinding> =
                 BindingHolder(parent, R.layout.item_movie)
 
         override fun onBindViewHolder(holder: BindingHolder<ItemMovieBinding>, position: Int) {
-            val binding = holder.binding
-            binding?.let {
+            holder.binding?.let { itemBinding ->
                 val movie = getItem(position)
-                it.movie = movie
-                it.imageView.setOnClickListener {
-                    transitionWithSharedElements(binding, movie)
+                itemBinding.movie = movie
+                itemBinding.imageView.setOnClickListener {
+                    transitionWithSharedElements(itemBinding, movie)
                 }
             }
         }
@@ -167,11 +240,6 @@ class SearchResultActivity: BaseActivity() {
                     notifyItemChanged(index)
                 }
             }
-        }
-
-        fun clearWithRefresh() {
-            clear()
-            notifyDataSetChanged()
         }
     }
 

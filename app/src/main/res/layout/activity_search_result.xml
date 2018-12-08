@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
+                app:contentInsetStartWithNavigation="0dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay" >
 
                 <androidx.appcompat.widget.SearchView
@@ -28,6 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:showAsAction="always"
+                    android:paddingStart="-4dp"
                     app:defaultQueryHint="@string/search_result_query_hint"
                     app:iconifiedByDefault="false" />
 
@@ -38,9 +40,9 @@
             android:id="@+id/suggestions_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:background="@color/white"
+            android:layout_marginEnd="48dp"
+            android:layout_marginStart="56dp"
+            android:background="@drawable/shape_corner_radius"
             android:elevation="@dimen/toolbar_elevation"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"

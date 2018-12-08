@@ -38,7 +38,7 @@
 
                 <TextView
                     android:id="@+id/keyword_label"
-                    style="@style/ItemText"
+                    style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -49,7 +49,7 @@
 
                 <TextView
                     android:id="@+id/keyword_label_description"
-                    style="@style/ItemText.Small"
+                    style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -62,7 +62,7 @@
 
         <View
             android:id="@+id/border_keyword"
-            style="@style/LabelBorder"
+            style="@style/BorderLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyword_card_view" />
@@ -79,7 +79,7 @@
 
         <TextView
             android:id="@+id/category_search_label_description"
-            style="@style/ItemText.Small"
+            style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -100,7 +100,7 @@
 
         <View
             android:id="@+id/border_categories"
-            style="@style/LabelBorder"
+            style="@style/BorderLine"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +135,7 @@
 
                 <TextView
                     android:id="@+id/favorite_label"
-                    style="@style/ItemText"
+                    style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -146,7 +146,7 @@
 
                 <TextView
                     android:id="@+id/favorite_label_description"
-                    style="@style/ItemText.Small"
+                    style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -158,7 +158,7 @@
 
         <View
             android:id="@+id/border_favorite"
-            style="@style/LabelBorder"
+            style="@style/BorderLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/favorite_card_view" />

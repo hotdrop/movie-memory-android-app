@@ -37,7 +37,7 @@ class SearchDataRepository @Inject constructor(
                         it.map { entity -> entity.toSuggestion() }
                     }
 
-    // TODO 同じキーワードはIDを振り直して先頭に持っていきたいが、autogenerateしてるから無理か・・
+    // TODO 同じキーワードはIDを振り直して先頭に持っていきたいが、autogenerateしてると無理。考える
     override fun save(suggestion: Suggestion): Completable =
             Completable.create { emitter ->
                 suggestionDatabase.save(suggestion.toEntity())
