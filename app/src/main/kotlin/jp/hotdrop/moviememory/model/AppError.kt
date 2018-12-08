@@ -2,13 +2,21 @@ package jp.hotdrop.moviememory.model
 
 import timber.log.Timber
 
-// TODO 見直す
 class AppError constructor(
-        private val throwable: Throwable
+        private val throwable: Throwable? = null,
+        private val message: String? = null
 ) {
     init {
-        Timber.e(throwable)
+        if (message.isNullOrEmpty()) {
+            throwable?.let {
+                Timber.e(it)
+            } ?: throw IllegalArgumentException("AppErrorを生成したにも関わらずthrowableもmessageもnullです。プログラムを見直してください")
+        } else {
+            throwable?.let {
+                Timber.e(it, message)
+            } ?: Timber.e(message)
+        }
     }
-    fun getMessage() = throwable.message
-    fun getStackTrace() = throwable.stackTrace
+
+    fun getMessage(): String? = message ?: throwable?.message
 }

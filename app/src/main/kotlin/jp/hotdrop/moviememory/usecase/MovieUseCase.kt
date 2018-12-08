@@ -6,8 +6,9 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.MovieRepository
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.model.MovieType
+import jp.hotdrop.moviememory.model.MovieCondition
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(
@@ -18,15 +19,16 @@ class MovieUseCase @Inject constructor(
             repository.prepared()
                     .subscribeOn(Schedulers.io())
 
-    fun findMovies(type: MovieType, index: Int, offset: Int): Single<List<Movie>> {
-        return when (type) {
-            MovieType.NowPlaying -> findNowPlayingMovies(index, offset)
-            MovieType.ComingSoon -> findComingSoonMovies(index, offset)
-            MovieType.Past -> findPastMovies(index, offset)
+    fun findMovies(condition: MovieCondition, index: Int, offset: Int): Single<List<Movie>> {
+        return when (condition) {
+            MovieCondition.NowPlaying -> findNowPlayingMovies(index, offset)
+            MovieCondition.ComingSoon -> findComingSoonMovies(index, offset)
+            MovieCondition.Past -> findPastMovies(index, offset)
         }
     }
 
     private fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
+        Timber.d("公開中のデータを取得します。")
         val endAt = LocalDate.now()
         val startAt = endAt.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
         return repository.findNowPlayingMovies(startAt, endAt, index, offset)
@@ -34,16 +36,22 @@ class MovieUseCase @Inject constructor(
     }
 
     private fun findComingSoonMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
+        Timber.d("公開予定のデータを取得します。")
         val startAt = LocalDate.now()
         return repository.findComingSoonMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
 
     private fun findPastMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
+        Timber.d("公開終了のデータを取得します。")
         val startAt = LocalDate.now().minusMonths(NOW_PLAYING_BETWEEN_MONTH)
         return repository.findPastMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
+
+    fun clearMovies(): Completable =
+            repository.clearMovies()
+                    .subscribeOn(Schedulers.io())
 
     fun loadRecentMovies(): Completable =
             repository.loadRecentMovies()

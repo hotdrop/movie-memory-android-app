@@ -4,8 +4,9 @@ import androidx.room.RoomDatabase
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
-import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
+import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.model.Suggestion
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
@@ -13,7 +14,6 @@ class MovieDatabase @Inject constructor(
         private val database: RoomDatabase,
         private val dao: MovieDao
 ) {
-
     fun findMoviesByBetween(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
             dao.selectMoviesByBetween(startAt.toEpochDay(), endAt.toEpochDay())
 
@@ -23,30 +23,45 @@ class MovieDatabase @Inject constructor(
     fun findMoviesByBefore(startAt: LocalDate): Single<List<MovieEntity>> =
             dao.selectMoviesByBefore(startAt.toEpochDay())
 
-    fun movieFlowable(id: Int): Flowable<MovieEntity> =
-            dao.selectMovieFlowable(id)
+    fun findMovies(keyword: String): Single<List<MovieEntity>> =
+            dao.selectMovies(keyword)
 
-    fun findMovie(id: Int): Single<MovieEntity> =
-            dao.selectMovie(id)
+    fun findMovies(categoryId: Int): Single<List<MovieEntity>> =
+            dao.selectMovies(categoryId)
+
+    fun movieWithFlowable(id: Int): Flowable<MovieEntity> =
+            dao.selectWithFlowable(id)
+
+    fun find(id: Int): Single<MovieEntity> =
+            dao.select(id)
+
+    fun findWithDirect(id: Int): MovieEntity =
+            dao.selectWithDirect(id)
+
+    fun findRecentId(): Single<Int> =
+            dao.selectRecentId()
 
     fun isExist(): Single<Boolean> =
             dao.count().map { it > 0 }
 
-    fun findRecentMovieId(): Single<Int> =
-            dao.selectRecentMovieId()
+    /**
+     * 映画情報の保存や削除
+     */
+    fun refresh(entities: List<MovieEntity>) {
+        database.runInTransaction {
+            deleteAll()
+            save(entities)
+        }
+    }
 
     fun save(entities: List<MovieEntity>) {
-        database.runInTransaction {
-            dao.insert(entities)
-        }
+        dao.insert(entities)
     }
 
-    fun findLocalMovieInfo(id: Int): LocalMovieInfoEntity =
-            dao.selectLocalMovieInfo(id)
-
-    fun saveLocalInfo(entity: LocalMovieInfoEntity) {
-        database.runInTransaction {
-            dao.insertLocalMovieInfo(entity)
-        }
+    fun deleteAll() {
+        dao.deleteAll()
     }
+
+    fun findCategories(): Single<List<CategoryEntity>> =
+            dao.selectCategories()
 }

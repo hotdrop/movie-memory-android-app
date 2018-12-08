@@ -46,7 +46,6 @@ data class Movie(
         return id
     }
 
-    // 以下2つはRecyclerViewのDiff用
     override fun isItemTheSame(o: RecyclerDiffable) =
             (id == (o as? Movie)?.id)
 

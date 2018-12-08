@@ -7,6 +7,9 @@ import androidx.fragment.app.transaction
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
+import jp.hotdrop.moviememory.presentation.search.SearchFragment
+import jp.hotdrop.moviememory.presentation.setting.SettingFragment
+import timber.log.Timber
 
 class MainActivity: BaseActivity() {
 
@@ -28,23 +31,31 @@ class MainActivity: BaseActivity() {
     }
 
     private fun initView() {
-        binding.navigation.setOnNavigationItemReselectedListener { item ->
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.let {
+            it.setDisplayShowTitleEnabled(false)
+        }
+
+        binding.navigation.setOnNavigationItemSelectedListener { item ->
             item.isChecked = true
             when (item.itemId) {
-                R.id.navigation_movie -> navigationToMovies()
-                R.id.navigation_dashboard -> { }
-                R.id.navigation_notifications -> { }
+                R.id.navigation_movie -> {
+                    binding.toolbar.title = getString(R.string.title_movies)
+                    replaceFragment(MoviesFragment.newInstance())
+                }
+                R.id.navigation_search -> {
+                    binding.toolbar.title = getString(R.string.title_search)
+                    replaceFragment(SearchFragment.newInstance())
+                }
+                R.id.navigation_setting -> {
+                    binding.toolbar.title = getString(R.string.title_setting)
+                    replaceFragment(SettingFragment.newInstance())
+                }
             }
+            false
         }
 
-        // Tabとの間に線が入ってかっこ悪いのでトップ画面はelevationをoffにする
-        supportActionBar?.let {
-            it.elevation = 0f
-        }
-    }
-
-    private fun navigationToMovies() {
-        replaceFragment(MoviesFragment.newInstance())
     }
 
     private fun replaceFragment(fragment: Fragment) {

@@ -57,7 +57,7 @@
 
             <TextView
                 android:id="@+id/category"
-                style="@style/ItemText.Small"
+                style="@style/TextSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                style="@style/ItemText.Small"
+                style="@style/TextSmall"
                 android:text="@{movie.toTextPlayingDate()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category"
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                style="@style/ItemText.FavoriteCount"
+                style="@style/FavoriteCountLabel"
                 android:text="@{movie.toTextFavoriteCount()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

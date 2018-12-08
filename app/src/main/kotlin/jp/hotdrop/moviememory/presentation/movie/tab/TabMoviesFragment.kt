@@ -14,10 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentTabMoviesBinding
+import jp.hotdrop.moviememory.databinding.FragmentMoviesTabBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.model.MovieType
+import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.presentation.MainActivity
 import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
-    private lateinit var binding: FragmentTabMoviesBinding
+    private lateinit var binding: FragmentMoviesTabBinding
     private lateinit var adapter: TabMoviesAdapter
     private var activity: MainActivity? = null
 
@@ -52,14 +52,14 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentTabMoviesBinding.inflate(inflater, container, false)
+        binding = FragmentMoviesTabBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.type = arguments?.getSerializable(MovieType.ARGUMENT_TAG) as MovieType
+        viewModel.condition = arguments?.getSerializable(MovieCondition.ARGUMENT_TAG) as MovieCondition
 
         initView()
         observe()

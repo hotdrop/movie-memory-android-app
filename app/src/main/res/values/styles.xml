@@ -28,30 +28,34 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="ItemText">
+    <style name="TextNormal">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/darkGray</item>
     </style>
 
-    <style name="ItemText.Sub" parent="ItemText">
+    <style name="TextNormal.Gray" parent="TextNormal">
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="ItemText.Small" parent="ItemText">
+    <style name="TextNormal.White" parent="TextNormal">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextSmall">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="ItemText.FavoriteCount" parent="ItemText">
+    <style name="FavoriteCountLabel">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/darkYellow</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="LabelBorder">
+    <style name="BorderLine">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/gray</item>
+        <item name="android:background">?android:attr/listDivider</item>
     </style>
 
     <style name="FavoriteStar">

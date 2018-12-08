@@ -144,7 +144,7 @@
 
                <TextView
                    android:id="@+id/overview"
-                   style="@style/ItemText"
+                   style="@style/TextNormal"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="24dp"
@@ -157,7 +157,7 @@
 
                <View
                    android:id="@+id/line_film_director_label"
-                   style="@style/LabelBorder"
+                   style="@style/BorderLine"
                    android:layout_marginTop="16dp"
                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
@@ -175,7 +175,7 @@
 
                <TextView
                    android:id="@+id/playing_date_label"
-                   style="@style/ItemText.Sub"
+                   style="@style/TextNormal.Gray"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -186,7 +186,7 @@
 
                <TextView
                    android:id="@+id/playing_date_text"
-                   style="@style/ItemText"
+                   style="@style/TextNormal"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -207,7 +207,7 @@
 
                <TextView
                    android:id="@+id/film_director_label"
-                   style="@style/ItemText.Sub"
+                   style="@style/TextNormal.Gray"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -218,7 +218,7 @@
 
                <TextView
                    android:id="@+id/film_director"
-                   style="@style/ItemText"
+                   style="@style/TextNormal"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -229,7 +229,7 @@
 
                <TextView
                    android:id="@+id/official_url_link"
-                   style="@style/ItemText"
+                   style="@style/TextNormal"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -243,7 +243,7 @@
 
                <TextView
                    android:id="@+id/trailer_url_link"
-                   style="@style/ItemText"
+                   style="@style/TextNormal"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="24dp"
@@ -256,7 +256,7 @@
 
                <View
                    android:id="@+id/line_memo_border"
-                   style="@style/LabelBorder"
+                   style="@style/BorderLine"
                    android:layout_marginTop="16dp"
                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
@@ -274,7 +274,7 @@
 
                <TextView
                    android:id="@+id/watch_date_label"
-                   style="@style/ItemText.Sub"
+                   style="@style/TextNormal.Gray"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -285,7 +285,7 @@
 
                <TextView
                    android:id="@+id/watch_date_text"
-                   style="@style/ItemText"
+                   style="@style/TextNormal"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -306,7 +306,7 @@
 
                <TextView
                    android:id="@+id/watch_place_label"
-                   style="@style/ItemText.Sub"
+                   style="@style/TextNormal.Gray"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -317,7 +317,7 @@
 
                <TextView
                    android:id="@+id/watch_place_text"
-                   style="@style/ItemText"
+                   style="@style/TextNormal"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
@@ -329,7 +329,7 @@
 
                 <TextView
                     android:id="@+id/movie_local_memo_text"
-                    style="@style/ItemText"
+                    style="@style/TextNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -355,7 +355,6 @@
           android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
           android:layout_marginBottom="8dp"
-          android:background="@drawable/shape_corner_circle"
           app:layout_constraintBottom_toTopOf="@+id/edit_fab"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent" />

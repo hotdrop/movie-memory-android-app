@@ -4,6 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.MovieDatabase
+import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 class MovieDataRepository @Inject constructor(
         private val api: MovieApi,
-        private val movieDatabase: MovieDatabase
+        private val movieDatabase: MovieDatabase,
+        private val movieNoteDatabase: MovieNoteDatabase
 ): MovieRepository {
 
     // TODO ダミー！
@@ -40,7 +42,7 @@ class MovieDataRepository @Inject constructor(
      * 保持している映画情報の最新IDから、それ以降に登録された映画情報がないかリモートに問い合わせて取得する
      */
     override fun loadRecentMovies(): Completable =
-            movieDatabase.findRecentMovieId()
+            movieDatabase.findRecentId()
                     .flatMapCompletable {
                         refresh(it)
                     }
@@ -66,11 +68,18 @@ class MovieDataRepository @Inject constructor(
                         it.map { entity -> entityToMovieWithLocalInfo(entity) }
                     }
 
+    override fun clearMovies(): Completable =
+            Completable.create {
+                Timber.d("映画情報をクリアします。")
+                movieDatabase.deleteAll()
+                it.onComplete()
+            }
+
     /**
      * 1つの映画情報を取得する。（Flowable）
      */
     override fun movieFlowable(id: Int): Flowable<Movie> =
-            movieDatabase.movieFlowable(id)
+            movieDatabase.movieWithFlowable(id)
                     .map {
                         entityToMovieWithLocalInfo(it)
                     }
@@ -79,7 +88,7 @@ class MovieDataRepository @Inject constructor(
      * 1つの映画情報を取得する。（Single）
      */
     override fun findMovie(id: Int): Single<Movie> =
-            movieDatabase.findMovie(id)
+            movieDatabase.find(id)
                     .map {
                         entityToMovieWithLocalInfo(it)
                     }
@@ -87,7 +96,7 @@ class MovieDataRepository @Inject constructor(
     override fun saveLocalMovieInfo(movie: Movie): Completable =
             Completable.create {
                 Timber.d("編集した値を保存します。watchDate=${movie.watchDate}, watchPlace=${movie.watchPlace}")
-                movieDatabase.saveLocalInfo(movie.toLocal())
+                movieNoteDatabase.save(movie.toLocal())
                 it.onComplete()
             }
 
@@ -128,7 +137,7 @@ class MovieDataRepository @Inject constructor(
     }
 
     private fun entityToMovieWithLocalInfo(entity: MovieEntity): Movie {
-        val localMovieInfo = movieDatabase.findLocalMovieInfo(entity.id)
+        val localMovieInfo = movieNoteDatabase.find(entity.id)
         return entity.toMovie(localMovieInfo)
     }
 }

@@ -3,8 +3,9 @@ package jp.hotdrop.moviememory.data.local.dao
 import androidx.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
-import jp.hotdrop.moviememory.data.local.entity.LocalMovieInfoEntity
+import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.model.SearchCondition
 
 @Dao
 interface MovieDao {
@@ -18,17 +19,26 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE playingDate < :startAt ORDER BY playingDate DESC")
     fun selectMoviesByBefore(startAt: Long): Single<List<MovieEntity>>
 
+    @Query("SELECT * FROM movie WHERE ${SearchCondition.LIKE_KEYWORD}")
+    fun selectMovies(keyword: String): Single<List<MovieEntity>>
+
+    @Query("SELECT * FROM movie WHERE categoryId = :categoryId")
+    fun selectMovies(categoryId: Int): Single<List<MovieEntity>>
+
     @Query("SELECT COUNT(*) FROM movie")
     fun count(): Single<Long>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectMovieFlowable(id: Int): Flowable<MovieEntity>
+    fun selectWithFlowable(id: Int): Flowable<MovieEntity>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectMovie(id: Int): Single<MovieEntity>
+    fun select(id: Int): Single<MovieEntity>
+
+    @Query("SELECT * FROM movie WHERE id = :id")
+    fun selectWithDirect(id: Int): MovieEntity
 
     @Query("SELECT max(id) FROM movie")
-    fun selectRecentMovieId(): Single<Int>
+    fun selectRecentId(): Single<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<MovieEntity>)
@@ -36,15 +46,6 @@ interface MovieDao {
     @Query("DELETE FROM movie")
     fun deleteAll()
 
-    @Query("SELECT * FROM movie_local_info WHERE id = :id")
-    fun selectLocalMovieInfo(id: Int): LocalMovieInfoEntity
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertLocalMovieInfo(entities: LocalMovieInfoEntity)
-
-    @Transaction
-    fun clearAndInsert(movies: List<MovieEntity>) {
-        deleteAll()
-        insert(movies)
-    }
+    @Query("SELECT DISTINCT categoryId, categoryName FROM movie")
+    fun selectCategories(): Single<List<CategoryEntity>>
 }
