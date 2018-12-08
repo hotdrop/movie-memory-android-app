@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.data.local
 
-import androidx.room.RoomDatabase
 import io.reactivex.Flowable
 import jp.hotdrop.moviememory.data.local.dao.SuggestionDao
 import jp.hotdrop.moviememory.data.local.entity.SuggestionEntity

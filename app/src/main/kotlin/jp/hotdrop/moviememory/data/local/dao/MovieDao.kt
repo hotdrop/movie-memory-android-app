@@ -19,7 +19,7 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE playingDate < :startAt ORDER BY playingDate DESC")
     fun selectMoviesByBefore(startAt: Long): Single<List<MovieEntity>>
 
-    @Query("SELECT * FROM movie WHERE title LIKE ${Suggestion.QUERY}")
+    @Query("SELECT * FROM movie WHERE ${Suggestion.QUERY}")
     fun selectMovies(keyword: String): Single<List<MovieEntity>>
 
     @Query("SELECT COUNT(*) FROM movie")

@@ -84,7 +84,6 @@ class SearchResultActivity: BaseActivity() {
 
         binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                Timber.d("フォーカス当たった")
                 binding.suggestionsRecyclerView.run {
                     isVisible = true
                     scrollToPosition(0)
@@ -103,10 +102,8 @@ class SearchResultActivity: BaseActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.run {
                     binding.searchView.clearFocus()
-                    Suggestion(keyword = query).run {
-                        viewModel.find(this)
-                        viewModel.save(this)
-                    }
+                    viewModel.find(query)
+                    viewModel.save(query)
                     return true
                 }
             }

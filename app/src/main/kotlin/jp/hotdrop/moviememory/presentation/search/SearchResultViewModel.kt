@@ -30,8 +30,8 @@ class SearchResultViewModel @Inject constructor(
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
 
-    fun find(suggestion: Suggestion) {
-        useCase.findByKeyword(suggestion)
+    fun find(query: String) {
+        useCase.findByKeyword(Suggestion(keyword = query))
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
@@ -43,15 +43,18 @@ class SearchResultViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun save(suggestion: Suggestion) {
+    fun save(query: String) {
+        val suggestion = suggestion.value?.find {
+            it.keyword == query.trim()
+        } ?: Suggestion(keyword = query)
         useCase.save(suggestion)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
-                            Timber.d("${suggestion.keyword} の保存に成功しました")
+                            Timber.d("$query の保存に成功しました")
                         },
                         onError = {
-                            Timber.d("${suggestion.keyword} の保存に失敗しました。。")
+                            Timber.d("$query の保存に失敗しました。。")
                         }
                 )
     }

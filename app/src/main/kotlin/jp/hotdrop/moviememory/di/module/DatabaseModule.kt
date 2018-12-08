@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory.di.module
 
 import androidx.room.Room
 import android.content.Context
+import androidx.room.RoomDatabase
 import dagger.Module
 import dagger.Provides
 import jp.hotdrop.moviememory.data.local.AppDatabase
@@ -29,8 +30,8 @@ open class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideMovieDatabase(dao: MovieDao): MovieDatabase =
-            MovieDatabase(dao)
+    fun provideMovieDatabase(db: AppDatabase, dao: MovieDao): MovieDatabase =
+            MovieDatabase(db, dao)
 
     @Provides
     @Singleton

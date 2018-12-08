@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.data.local
 
+import androidx.room.RoomDatabase
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
@@ -10,6 +11,7 @@ import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class MovieDatabase @Inject constructor(
+        private val database: RoomDatabase,
         private val dao: MovieDao
 ) {
     fun findMoviesByBetween(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
@@ -42,6 +44,13 @@ class MovieDatabase @Inject constructor(
     /**
      * 映画情報の保存や削除
      */
+    fun refresh(entities: List<MovieEntity>) {
+        database.runInTransaction {
+            deleteAll()
+            save(entities)
+        }
+    }
+
     fun save(entities: List<MovieEntity>) {
         dao.insert(entities)
     }
