@@ -12,6 +12,7 @@ import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentSearchBinding
 import jp.hotdrop.moviememory.model.Category
+import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.MainActivity
 import javax.inject.Inject
@@ -53,11 +54,11 @@ class SearchFragment: BaseFragment() {
         binding.favoriteImageIcon.progress = 1f
 
         binding.keywordArea.setOnClickListener {
-            SearchResultActivity.start(activity)
+            navigationToSearchResult(SearchCondition.Keyword())
         }
 
         binding.favoriteArea.setOnClickListener {
-            // TODO
+            navigationToSearchResult(SearchCondition.Favorite(1))
         }
     }
 
@@ -76,11 +77,15 @@ class SearchFragment: BaseFragment() {
             val chip = (layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategories, false) as Chip).apply {
                 text = category.name
                 setOnClickListener {
-                    // TODO
+                    navigationToSearchResult(SearchCondition.Category(category))
                 }
             }
             binding.chipGroupCategories.addView(chip)
         }
+    }
+
+    private fun navigationToSearchResult(condition: SearchCondition) {
+        SearchResultActivity.start(activity, condition)
     }
 
     companion object {

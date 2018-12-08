@@ -13,9 +13,4 @@ data class Suggestion(
 
     override fun isContentsTheSame(o: RecyclerDiffable) =
             (this == (o as? Suggestion ?: false))
-
-    companion object {
-        const val QUERY = "title LIKE '%' || :keyword || '%' OR overview  LIKE '%' || :keyword || '%'"
-        const val LOCAL_INFO_QUERY = "note LIKE '%' || :keyword || '%'"
-    }
 }

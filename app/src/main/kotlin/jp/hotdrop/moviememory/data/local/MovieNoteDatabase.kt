@@ -13,8 +13,11 @@ class MovieNoteDatabase @Inject constructor(
     fun find(id: Int): MovieNoteEntity =
             dao.select(id)
 
-    fun find(suggestion: Suggestion): Single<List<MovieNoteEntity>> =
-            dao.select(suggestion.keyword)
+    fun find(keyword: String): Single<List<MovieNoteEntity>> =
+            dao.select(keyword)
+
+    fun findMoreThan(favoriteNum: Int): Single<List<MovieNoteEntity>> =
+            dao.selectMoreThan(favoriteNum)
 
     fun save(entity: MovieNoteEntity) {
         dao.insert(entity)

@@ -8,6 +8,8 @@ import jp.hotdrop.moviememory.data.repository.SearchRepository
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.model.SearchCondition
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchUseCase @Inject constructor(
@@ -29,7 +31,24 @@ class SearchUseCase @Inject constructor(
             repository.deleteSuggestion()
                     .subscribeOn(Schedulers.io())
 
-    fun findByKeyword(suggestion: Suggestion): Single<List<Movie>> =
-            repository.findMovies(suggestion)
-                    .subscribeOn(Schedulers.io())
+    fun find(searchCondition: SearchCondition): Single<List<Movie>> {
+        return when (searchCondition) {
+            is SearchCondition.Keyword -> {
+                Timber.d("キーワード検索をRepository経由で行う。")
+                repository.findMovies(searchCondition.keyword)
+                        .subscribeOn(Schedulers.io())
+            }
+            is SearchCondition.Category -> {
+                Timber.d("カテゴリー検索をRepository経由で行う。")
+                repository.findMovies(searchCondition.category)
+                        .subscribeOn(Schedulers.io())
+            }
+            is SearchCondition.Favorite -> {
+                Timber.d("お気に入り検索をRepository経由で行う。")
+                repository.findMoviesMoreThan(searchCondition.moreThanNum)
+                        .subscribeOn(Schedulers.io())
+            }
+        }
+    }
+
 }

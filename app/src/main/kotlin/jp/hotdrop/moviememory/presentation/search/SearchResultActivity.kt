@@ -25,11 +25,11 @@ import jp.hotdrop.moviememory.databinding.ActivitySearchResultBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.databinding.RowSuggestionBinding
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
-import timber.log.Timber
 import javax.inject.Inject
 
 class SearchResultActivity: BaseActivity() {
@@ -51,6 +51,9 @@ class SearchResultActivity: BaseActivity() {
 
         initView()
         observe()
+
+        val searchCondition = intent.getSerializableExtra(EXTRA_SEARCH_CONDITION) as SearchCondition
+        viewModel.prepared(searchCondition)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,6 +85,62 @@ class SearchResultActivity: BaseActivity() {
             it.setDisplayShowTitleEnabled(false)
         }
 
+        // 検索キーワード履歴一覧の初期化
+        binding.suggestionsRecyclerView.let {
+            it.bringToFront()
+            it.setHasFixedSize(true)
+            it.layoutManager = LinearLayoutManager(this)
+            suggestionAdapter = SuggestionAdapter()
+            it.adapter = suggestionAdapter
+        }
+
+        // 検索結果一覧の初期化
+        binding.moviesRecyclerView.let {
+            it.layoutManager = GridLayoutManager(this, 2)
+            adapter = MoviesAdapter()
+            it.adapter = adapter
+        }
+    }
+
+    private fun observe() {
+        viewModel.prepared.observe(this, Observer {
+            it?.let { prepared ->
+                if (prepared) {
+                    onSuccessPrepared()
+                } else {
+                    onFailurePrepared()
+                }
+            }
+        })
+        viewModel.suggestion.observe(this, Observer {
+            it?.let { searchKeywords ->
+                onLoadSearchKeywordHistory(searchKeywords)
+            }
+        })
+        viewModel.clearedSuggestions.observe(this, Observer {
+            it?.let { success ->
+                if (success) {
+                    Snackbar.make(binding.snackbarArea, "履歴をクリアしました。", Snackbar.LENGTH_SHORT).show()
+                    viewModel.clear()
+                }
+            }
+        })
+        viewModel.movies.observe(this, Observer {
+            it?.let { movies ->
+                onLoadMovies(movies)
+            }
+        })
+        viewModel.error.observe(this, Observer {
+            it?.let { error ->
+                Snackbar.make(binding.snackbarArea, error.getMessage() ?: "もう一度実行してください。", Snackbar.LENGTH_LONG).show()
+                viewModel.clear()
+            }
+        })
+        lifecycle.addObserver(viewModel)
+    }
+
+    private fun onSuccessPrepared() {
+
         binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding.suggestionsRecyclerView.run {
@@ -108,50 +167,14 @@ class SearchResultActivity: BaseActivity() {
                 }
             }
         })
-
-        // 検索キーワード履歴一覧の初期化
-        binding.suggestionsRecyclerView.let {
-            it.bringToFront()
-            it.setHasFixedSize(true)
-            it.layoutManager = LinearLayoutManager(this)
-            suggestionAdapter = SuggestionAdapter()
-            it.adapter = suggestionAdapter
-        }
-
-        // 検索結果一覧の初期化
-        binding.moviesRecyclerView.let {
-            it.layoutManager = GridLayoutManager(this, 2)
-            adapter = MoviesAdapter()
-            it.adapter = adapter
-        }
+        
+        binding.moviesRecyclerView.isVisible = true
+        binding.progress.isGone = true
     }
 
-    private fun observe() {
-        viewModel.suggestion.observe(this, Observer {
-            it?.let { searchKeywords ->
-                onLoadSearchKeywordHistory(searchKeywords)
-            }
-        })
-        viewModel.clearedSuggestions.observe(this, Observer {
-            it?.let { success ->
-                if (success) {
-                    Snackbar.make(binding.snackbarArea, "履歴をクリアしました。", Snackbar.LENGTH_SHORT).show()
-                    viewModel.clear()
-                }
-            }
-        })
-        viewModel.movies.observe(this, Observer {
-            it?.let { movies ->
-                onLoadMovies(movies)
-            }
-        })
-        viewModel.error.observe(this, Observer {
-            it?.let { error ->
-                Snackbar.make(binding.snackbarArea, error.getMessage() ?: "もう一度実行してください。", Snackbar.LENGTH_LONG).show()
-                viewModel.clear()
-            }
-        })
-        lifecycle.addObserver(viewModel)
+    private fun onFailurePrepared() {
+        binding.emptyMessage.isVisible = true
+        binding.progress.isGone = true
     }
 
     private fun filterSuggestion(query: String?) {
@@ -241,8 +264,11 @@ class SearchResultActivity: BaseActivity() {
     }
 
     companion object {
+        private const val EXTRA_SEARCH_CONDITION = "EXTRA_SEARCH_CONDITION"
         private const val REQUEST_CODE_TO_DETAIL = 2000
-        fun start(context: Context) =
-                context.startActivity(Intent(context, SearchResultActivity::class.java))
+        fun start(context: Context, condition: SearchCondition) =
+                context.startActivity(Intent(context, SearchResultActivity::class.java).apply {
+                    putExtra(EXTRA_SEARCH_CONDITION, condition)
+                })
     }
 }

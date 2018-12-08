@@ -23,5 +23,11 @@ interface SearchRepository {
     fun findCategories(): Single<List<Category>>
 
     @CheckResult
-    fun findMovies(suggestion: Suggestion): Single<List<Movie>>
+    fun findMovies(keyword: String): Single<List<Movie>>
+
+    @CheckResult
+    fun findMovies(category: Category): Single<List<Movie>>
+
+    @CheckResult
+    fun findMoviesMoreThan(favoriteNum: Int): Single<List<Movie>>
 }

@@ -55,25 +55,41 @@ class SearchDataRepository @Inject constructor(
      * movieから検索＋infoから逆引き検索 で得られた2つの結果をマージした方がメモリ効率は良いと判断した。
      * 最初の頃はmovieがたかだか数百件で誤差の範囲なるだろうが多分この仮定は正しい。
      */
-    override fun findMovies(suggestion: Suggestion): Single<List<Movie>> {
+    override fun findMovies(keyword: String): Single<List<Movie>> {
         return Single.zip<List<Movie>, List<Movie>, List<Movie>>(
-                findMoviesFirstSearchFromMain(suggestion),
-                findMoviesFirstSearchFromLocalInfo(suggestion),
+                findMoviesFirstSearchFromMain(keyword),
+                findMoviesFirstSearchFromLocalInfo(keyword),
                 BiFunction { t1, t2 ->
                     t1.plus(t2).distinctBy { it.id }
                 }
         )
     }
 
-    private fun findMoviesFirstSearchFromMain(suggestion: Suggestion): Single<List<Movie>> {
-        return movieDatabase.findMovies(suggestion)
+    override fun findMovies(category: Category): Single<List<Movie>> {
+        return movieDatabase.findMovies(category.id)
+                .map {
+                    Timber.d("検索結果は ${it.size} ")
+                    it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                }
+    }
+
+    override fun findMoviesMoreThan(favoriteNum: Int): Single<List<Movie>> {
+        return movieNoteDatabase.findMoreThan(favoriteNum)
+                .map {
+                    Timber.d("検索結果は ${it.size} ")
+                    it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                }
+    }
+
+    private fun findMoviesFirstSearchFromMain(keyword: String): Single<List<Movie>> {
+        return movieDatabase.findMovies(keyword)
                 .map {
                     it.map { entity -> entityToMovieWithLocalInfo(entity) }
                 }
     }
 
-    private fun findMoviesFirstSearchFromLocalInfo(suggestion: Suggestion): Single<List<Movie>> {
-        return movieNoteDatabase.find(suggestion)
+    private fun findMoviesFirstSearchFromLocalInfo(keyword: String): Single<List<Movie>> {
+        return movieNoteDatabase.find(keyword)
                 .map {
                     it.map { entity -> entityToMovieWithLocalInfo(entity)}
                 }
