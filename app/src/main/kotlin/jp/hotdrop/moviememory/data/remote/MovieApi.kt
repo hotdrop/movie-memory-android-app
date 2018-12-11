@@ -9,6 +9,7 @@ import retrofit2.http.Query
 
 interface MovieApi {
 
+    // ここは1つだけになるかも・・
     @GET("/movies/now-playing")
     @CheckResult
     fun nowPlaying(@Query("fromId") fromId: Int?): Single<List<MovieResult>>
@@ -16,6 +17,4 @@ interface MovieApi {
     @GET("/movies/coming-soon")
     @CheckResult
     fun comingSoon(@Query("fromId") fromId: Int?): Flowable<List<MovieResult>>
-
-    // TODO searchとか入れる
 }

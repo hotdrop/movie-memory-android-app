@@ -7,7 +7,6 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import jp.hotdrop.moviememory.data.local.AppDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -84,23 +83,6 @@ class MovieDatabaseTest {
     }
 
     @Test
-    fun getLocalMovieInfoTest() {
-        val firstDataId = 1200
-        val firstData = createLocalMovieInfoEntity(firstDataId)
-        movieDb.saveLocalInfo(firstData)
-
-        val secondDataId = 1300
-        val secondData = createLocalMovieInfoEntity(secondDataId)
-        movieDb.saveLocalInfo(secondData)
-
-        val resultOne = movieDb.findLocalMovieInfo(firstDataId)
-        assert(resultOne == firstData)
-
-        val resultTwo = movieDb.findLocalMovieInfo(secondDataId)
-        assert(resultTwo == secondData)
-    }
-
-    @Test
     fun orderByTest() {
         val movieEntities = mutableListOf<MovieEntity>()
 
@@ -138,18 +120,13 @@ class MovieDatabaseTest {
     private fun createTestMovieEntity(id: Int, nowEpoch: Long) =
             MovieEntity(id,
                     "テスト$id",
+                    1,
+                    "カテゴリー1",
                     "概要",
                     "https://test.test",
                     nowEpoch,
                     "監督です。",
                     "https://www.google.co.jp",
+                    "https://www.google.co.jp",
                     LocalDateTime.now().toInstant(ZoneOffset.UTC))
-
-    private fun createLocalMovieInfoEntity(id: Int) =
-            MovieNoteEntity(id,
-                    false,
-                    LocalDate.parse("2018-05-20").toEpochDay(),
-                    "Dummy Place",
-                    "Memo dummy"
-            )
 }

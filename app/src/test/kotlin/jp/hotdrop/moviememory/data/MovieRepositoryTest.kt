@@ -23,6 +23,8 @@ import java.io.InputStreamReader
 /**
  * sdk=23にしない場合はNetworkSecurityPolicyを自前で実装する必要がある。
  * それが面倒だったのでsdk=23で済ませる。
+ *
+ * TODO そもそもAPIをテストする必要があるのかかなり疑問。。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [23], manifest = Config.NONE)
