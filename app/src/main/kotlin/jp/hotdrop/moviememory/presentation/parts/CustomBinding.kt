@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
-import com.google.firebase.storage.FirebaseStorage
 import jp.hotdrop.moviememory.R
 
 @BindingAdapter("imageUrl")
@@ -18,9 +17,8 @@ fun setImageUrl(view: ImageView, url: String?) {
                     .into(view)
         }
         else -> {
-            val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url)
             GlideApp.with(view.context)
-                    .load(storageRef)
+                    .load(url)
                     .placeholder(R.drawable.image_default)
                     .into(view)
         }
