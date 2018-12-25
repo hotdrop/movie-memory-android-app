@@ -4,14 +4,19 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
+import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
 import jp.hotdrop.moviememory.presentation.search.SearchFragment
 import jp.hotdrop.moviememory.presentation.setting.SettingFragment
-import timber.log.Timber
+import jp.hotdrop.moviememory.service.Firebase
+import javax.inject.Inject
 
 class MainActivity: BaseActivity() {
+
+    @Inject
+    lateinit var firebase: Firebase
 
     private val binding: ActivityMainBinding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -19,8 +24,11 @@ class MainActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         getComponent().inject(this)
+
+        firebase.login {
+            Snackbar.make(binding.snackbarArea, "Firebaseにログインしました", Snackbar.LENGTH_LONG).show()
+        }
 
         initView()
 
