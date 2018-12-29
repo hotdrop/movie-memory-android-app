@@ -4,6 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
+import jp.hotdrop.moviememory.data.local.CategoryDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.SuggestionDatabase
@@ -17,11 +18,12 @@ import javax.inject.Inject
 class SearchDataRepository @Inject constructor(
         private val movieDatabase: MovieDatabase,
         private val movieNoteDatabase: MovieNoteDatabase,
+        private val categoryDatabase: CategoryDatabase,
         private val suggestionDatabase: SuggestionDatabase
 ): SearchRepository {
 
     override fun findCategories(): Single<List<Category>> {
-        return movieDatabase.findCategories()
+        return categoryDatabase.findAll()
                 .map { entities ->
                     Timber.d("取得したカテゴリー数 ${entities.size}")
                     entities.map {
@@ -97,11 +99,11 @@ class SearchDataRepository @Inject constructor(
 
     private fun entityToMovieWithLocalInfo(movieNoteEntity: MovieNoteEntity): Movie {
         val entity = movieDatabase.findWithDirect(movieNoteEntity.id)
-        return entity.toMovie(movieNoteEntity)
+        return entity.toMovie(movieNoteEntity, categoryDatabase)
     }
 
     private fun entityToMovieWithLocalInfo(entity: MovieEntity): Movie {
         val localMovieInfo = movieNoteDatabase.find(entity.id)
-        return entity.toMovie(localMovieInfo)
+        return entity.toMovie(localMovieInfo, categoryDatabase)
     }
 }

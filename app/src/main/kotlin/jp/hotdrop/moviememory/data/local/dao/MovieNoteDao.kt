@@ -12,7 +12,7 @@ import jp.hotdrop.moviememory.model.SearchCondition
 interface MovieNoteDao {
 
     @Query("SELECT * FROM movie_note WHERE id = :id")
-    fun select(id: Int): MovieNoteEntity
+    fun select(id: Long): MovieNoteEntity
 
     @Query("SELECT * FROM movie_note WHERE ${SearchCondition.LIKE_KEYWORD_BY_LOCAL}")
     fun select(keyword: String): Single<List<MovieNoteEntity>>

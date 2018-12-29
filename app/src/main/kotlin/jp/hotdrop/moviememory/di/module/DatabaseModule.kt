@@ -5,10 +5,8 @@ import android.content.Context
 import androidx.room.RoomDatabase
 import dagger.Module
 import dagger.Provides
-import jp.hotdrop.moviememory.data.local.AppDatabase
-import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
-import jp.hotdrop.moviememory.data.local.SuggestionDatabase
+import jp.hotdrop.moviememory.data.local.*
+import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
 import jp.hotdrop.moviememory.data.local.dao.MovieNoteDao
 import jp.hotdrop.moviememory.data.local.dao.SuggestionDao
@@ -30,8 +28,8 @@ open class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideMovieDatabase(db: AppDatabase, dao: MovieDao): MovieDatabase =
-            MovieDatabase(db, dao)
+    fun provideMovieDatabase(dao: MovieDao): MovieDatabase =
+            MovieDatabase(dao)
 
     @Provides
     @Singleton
@@ -41,6 +39,15 @@ open class DatabaseModule {
     @Provides
     fun provideMovieNoteDatabase(dao: MovieNoteDao): MovieNoteDatabase =
             MovieNoteDatabase(dao)
+
+    @Singleton
+    @Provides
+    fun provideCategoryDao(db: AppDatabase): CategoryDao = db.categoryDao()
+
+    @Singleton
+    @Provides
+    fun provideCategoryDatabase(db: AppDatabase, dao: CategoryDao): CategoryDatabase =
+            CategoryDatabase(db, dao)
 
     @Provides
     @Singleton

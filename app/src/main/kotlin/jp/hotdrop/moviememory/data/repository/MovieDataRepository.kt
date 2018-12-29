@@ -3,27 +3,26 @@ package jp.hotdrop.moviememory.data.repository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.moviememory.data.local.CategoryDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
-import jp.hotdrop.moviememory.data.remote.DummyApi
 import jp.hotdrop.moviememory.data.remote.MovieApi
-import jp.hotdrop.moviememory.data.remote.response.toMovieEntity
+import jp.hotdrop.moviememory.data.remote.response.toEntity
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
 class MovieDataRepository @Inject constructor(
-        private val api: MovieApi,
+        private val movieApi: MovieApi,
         private val movieDatabase: MovieDatabase,
-        private val movieNoteDatabase: MovieNoteDatabase
+        private val movieNoteDatabase: MovieNoteDatabase,
+        private val categoryDatabase: CategoryDatabase
 ): MovieRepository {
-
-    // TODO ダミー！
-    private val dummyApi = DummyApi()
 
     /**
      * ローカルに1件もデータがない場合に限り、リモートから全データを取得してDBに保持する
@@ -39,13 +38,11 @@ class MovieDataRepository @Inject constructor(
                     }
 
     /**
-     * 保持している映画情報の最新IDから、それ以降に登録された映画情報がないかリモートに問い合わせて取得する
+     * TODO 最新データを取得する。最新をどうするか考える必要が出たのでここ保留
      */
-    override fun loadRecentMovies(): Completable =
-            movieDatabase.findRecentId()
-                    .flatMapCompletable {
-                        refresh(it)
-                    }
+    override fun loadRecentMovies(): Completable {
+        return Completable.complete()
+    }
 
     override fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByBetween(startAt, endAt)
@@ -78,7 +75,7 @@ class MovieDataRepository @Inject constructor(
     /**
      * 1つの映画情報を取得する。（Flowable）
      */
-    override fun movieFlowable(id: Int): Flowable<Movie> =
+    override fun movieFlowable(id: Long): Flowable<Movie> =
             movieDatabase.movieWithFlowable(id)
                     .map {
                         entityToMovieWithLocalInfo(it)
@@ -87,11 +84,16 @@ class MovieDataRepository @Inject constructor(
     /**
      * 1つの映画情報を取得する。（Single）
      */
-    override fun findMovie(id: Int): Single<Movie> =
+    override fun findMovie(id: Long): Single<Movie> =
             movieDatabase.find(id)
                     .map {
                         entityToMovieWithLocalInfo(it)
                     }
+
+    private fun entityToMovieWithLocalInfo(entity: MovieEntity): Movie {
+        val localMovieInfo = movieNoteDatabase.find(entity.id)
+        return entity.toMovie(localMovieInfo, categoryDatabase)
+    }
 
     override fun saveLocalMovieInfo(movie: Movie): Completable =
             Completable.create {
@@ -103,18 +105,22 @@ class MovieDataRepository @Inject constructor(
     /**
      * ネットワークから最新データを取得
      */
-    private fun refresh(fromMovieId: Int? = null): Completable =
-    // TODO 開発中、APIがまともに動かないのでダミーAPIにする（ローカルでデータを生成する）。この状態だとUnitTest通らないので注意
-//            api.getMovies(fromMovieId)
-            dummyApi.getMovies(fromMovieId)
-                    .doOnSuccess {
-                        Timber.d("  取得した件数=${it.size}")
-                        val movieEntities = it.map { movieResult ->
-                            movieResult.toMovieEntity()
+    private fun refresh(): Completable =
+            movieApi.findAll()
+                    .map { responses ->
+                        Timber.d("  取得した件数=${responses.size}")
+
+                        val categoryMap = mutableMapOf<String, Long>()
+                        responses.map { it.categoryName }
+                                .forEach { categoryName ->
+                                    categoryMap[categoryName] = categoryDatabase.register(categoryName)
+                                }
+
+                        val movieEntities = responses.map { movieResponse ->
+                            movieResponse.toEntity(categoryMap)
                         }
                         movieDatabase.save(movieEntities)
-                    }.doOnError {
-                        Timber.e(it, "映画情報の読み込みに失敗")
+
                     }.toCompletable()
 
     private fun takeTheRange(fromIndex: Int, offset: Int, movieEntities: List<MovieEntity>): List<MovieEntity> {
@@ -134,10 +140,5 @@ class MovieDataRepository @Inject constructor(
                 movieEntities.subList(fromIndex, toIndex)
             }
         }
-    }
-
-    private fun entityToMovieWithLocalInfo(entity: MovieEntity): Movie {
-        val localMovieInfo = movieNoteDatabase.find(entity.id)
-        return entity.toMovie(localMovieInfo)
     }
 }

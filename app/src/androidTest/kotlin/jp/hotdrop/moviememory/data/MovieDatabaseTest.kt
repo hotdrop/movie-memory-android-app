@@ -36,7 +36,7 @@ class MovieDatabaseTest {
         appDb = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
-        movieDb = MovieDatabase(appDb, appDb.movieDao())
+        movieDb = MovieDatabase(appDb.movieDao())
     }
 
     @After
@@ -50,7 +50,7 @@ class MovieDatabaseTest {
         val movieEntities = mutableListOf<MovieEntity>()
         (1..9).forEach {
             val nowEpoch = LocalDate.now().toEpochDay()
-            val entity = createTestMovieEntity(it, nowEpoch)
+            val entity = createTestMovieEntity(it.toLong(), nowEpoch)
             movieEntities.add(entity)
         }
 
@@ -107,6 +107,25 @@ class MovieDatabaseTest {
                 }
     }
 
+    @Test
+    fun saveTest() {
+        val nowDate = LocalDate.now().toEpochDay()
+        val movies = (0..2).map { it.toLong() }
+                .map { createTestMovieEntity(it, nowDate) }
+        movieDb.save(movies)
+
+        movieDb.findMovies("テスト")
+                .test()
+                .assertValue { moviesFromDB ->
+                    val casts = moviesFromDB[0].casts
+                    assertEquals("値がおかしいです。casts[0] = ${casts!![0]}", casts[0], "a")
+                    assertEquals("値がおかしいです。casts[1] = ${casts[1]}", casts[1], "b")
+                    assertEquals("値がおかしいです。casts[2] = ${casts[2]}", casts[2], "c")
+                    true
+                }
+
+    }
+
     private fun assertMovieEntity(o1: List<MovieEntity>, o2: List<MovieEntity>): Boolean {
         o1.zip(o2) { entity1, entity2 ->
             assertEquals(entity1.id, entity2.id)
@@ -117,15 +136,15 @@ class MovieDatabaseTest {
         return true
     }
 
-    private fun createTestMovieEntity(id: Int, nowEpoch: Long) =
+    private fun createTestMovieEntity(id: Long, nowEpoch: Long) =
             MovieEntity(id,
                     "テスト$id",
                     1,
-                    "カテゴリー1",
                     "概要",
                     "https://test.test",
                     nowEpoch,
                     "監督です。",
+                    arrayListOf("a", "b", "c"),
                     "https://www.google.co.jp",
                     "https://www.google.co.jp",
                     LocalDateTime.now().toInstant(ZoneOffset.UTC))

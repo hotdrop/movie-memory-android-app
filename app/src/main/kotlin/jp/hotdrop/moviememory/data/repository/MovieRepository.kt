@@ -28,10 +28,10 @@ interface MovieRepository {
     fun clearMovies(): Completable
 
     @CheckResult
-    fun movieFlowable(id: Int): Flowable<Movie>
+    fun movieFlowable(id: Long): Flowable<Movie>
 
     @CheckResult
-    fun findMovie(id: Int): Single<Movie>
+    fun findMovie(id: Long): Single<Movie>
 
     @CheckResult
     fun saveLocalMovieInfo(movie: Movie): Completable

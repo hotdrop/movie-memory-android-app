@@ -63,6 +63,8 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         initView()
         observe()
+
+        viewModel.onLoad(0)
     }
 
     private fun initView() {
@@ -113,7 +115,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         }
 
         if (requestCode == REQUEST_CODE_TO_DETAIL) {
-            val refreshMovieId = data.getIntExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
+            val refreshMovieId = data.getLongExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
             viewModel.onRefreshMovie(refreshMovieId)
         }
     }
