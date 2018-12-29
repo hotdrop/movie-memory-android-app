@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -80,7 +81,6 @@ class MovieDetailActivity: BaseActivity() {
         viewModel.setUp(movieId)
         viewModel.movie?.observe(this, Observer {
             it?.run {
-                binding.movie = this
                 initViewAfterGetMovie(this)
             }
         })
@@ -111,9 +111,13 @@ class MovieDetailActivity: BaseActivity() {
 
     private fun initViewAfterGetMovie(movie: Movie) {
 
+        binding.movie = movie
+
+        // お気に入りスター
+        initFavoriteStar(movie.favoriteCount)
+
+        // キャスト
         movie.casts?.let { casts ->
-            binding.castsIcon.isVisible = true
-            binding.castsLabel.isVisible = true
             binding.castsRecyclerView.let { recyclerView ->
                 recyclerView.layoutManager = FlexboxLayoutManager(this).apply {
                     flexDirection = FlexDirection.ROW
@@ -122,9 +126,9 @@ class MovieDetailActivity: BaseActivity() {
                 recyclerView.adapter = CastsAdapter().apply { addAll(casts) }
                 recyclerView.isVisible = true
             }
+        } ?: kotlin.run {
+            binding.castsNoDataText.isVisible = true
         }
-
-        initFavoriteStar(movie.favoriteCount)
     }
 
     private fun initFavoriteStar(favoriteCount: Int) {

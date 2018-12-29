@@ -21,9 +21,11 @@ data class Movie(
         var note: String?
 ) {
 
-    fun toTextPlayingDate() = playingDate.toString()
-    fun toTextWatchDate() = watchDate?.toString() ?: ""
+    fun toTextPlayingDate() = playingDate?.toString() ?: "ー"
+    fun toTextWatchDate() = watchDate?.toString() ?: "ー"
     fun toTextFavoriteCount() = favoriteCount.toString()
+    fun toTextFilmDirector() = filmDirector ?: "ー"
+    fun toTectWatchPlace() = watchPlace ?: "ー"
 
     fun categoryName() = category.name
 

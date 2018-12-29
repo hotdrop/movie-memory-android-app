@@ -23,6 +23,7 @@
     <string name="official_url_link_label">公式サイト</string>
     <string name="watch_date_label">鑑賞日</string>
     <string name="watch_place_label">鑑賞した映画館</string>
+    <string name="no_data_text">ー</string>
     <string name="icon_playing_date_content_description">この映画の公開日を示すアイコンです</string>
     <string name="icon_film_director_content_description">この映画の監督を示すアイコンです</string>
     <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
