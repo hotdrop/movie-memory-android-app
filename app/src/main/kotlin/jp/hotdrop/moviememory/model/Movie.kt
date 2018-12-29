@@ -5,13 +5,14 @@ import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 
 data class Movie(
-        val id: Int,
+        val id: Long,
         val title: String,
         val category: Category,
         val overview: String?,
         val imageUrl: String?,
         val playingDate: LocalDate?,
         val filmDirector: String?,
+        val casts: List<String>?,
         val officialUrl: String?,
         val trailerMovieUrl: String?,
         val createAt: LocalDateTime?,
@@ -38,13 +39,9 @@ data class Movie(
         note = newInfo.note
     }
 
-    override fun equals(other: Any?): Boolean {
-        return (other as Movie).id == id || super.equals(other)
-    }
+    override fun equals(other: Any?): Boolean = (other as Movie).id == id || super.equals(other)
 
-    override fun hashCode(): Int {
-        return id
-    }
+    override fun hashCode(): Int = id.toInt()
 
     override fun isItemTheSame(o: RecyclerDiffable) =
             (id == (o as? Movie)?.id)

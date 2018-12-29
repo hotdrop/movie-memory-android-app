@@ -27,7 +27,7 @@ class MainActivity: BaseActivity() {
         getComponent().inject(this)
 
         firebase.login {
-            Snackbar.make(binding.snackbarArea, "Firebaseにログインしました", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.snackbarArea, "Firebaseのログインに失敗しました。", Snackbar.LENGTH_LONG).show()
         }
 
         initView()
@@ -41,9 +41,7 @@ class MainActivity: BaseActivity() {
     private fun initView() {
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.let {
-            it.setDisplayShowTitleEnabled(false)
-        }
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.navigation.setOnNavigationItemSelectedListener { item ->
             item.isChecked = true

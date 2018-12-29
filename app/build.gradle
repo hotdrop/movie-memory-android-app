@@ -81,6 +81,7 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-firestore:17.1.5'
 
     // android architecture components
     implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
@@ -109,6 +110,7 @@ dependencies {
     // kotshi
     implementation 'se.ansman.kotshi:api:1.0.4'
     kapt 'se.ansman.kotshi:compiler:1.0.4'
+    implementation 'com.google.code.gson:gson:2.8.4'
 
     // log
     implementation 'com.jakewharton.timber:timber:4.6.0'

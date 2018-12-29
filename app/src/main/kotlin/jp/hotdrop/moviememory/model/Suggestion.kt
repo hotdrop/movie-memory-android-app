@@ -4,7 +4,7 @@ import jp.hotdrop.moviememory.presentation.parts.RecyclerDiffable
 
 
 data class Suggestion(
-        val id: Int? = null,
+        val id: Long? = null,
         val keyword: String
 ): RecyclerDiffable {
 

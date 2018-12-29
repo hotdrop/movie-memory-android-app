@@ -10,7 +10,7 @@ class MovieNoteDatabase @Inject constructor(
         private val dao: MovieNoteDao
 ) {
 
-    fun find(id: Int): MovieNoteEntity =
+    fun find(id: Long): MovieNoteEntity =
             dao.select(id)
 
     fun find(keyword: String): Single<List<MovieNoteEntity>> =

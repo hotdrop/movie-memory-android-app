@@ -41,11 +41,11 @@ class MovieNoteDatabaseTest {
 
     @Test
     fun getMovieNoteTest() {
-        val firstDataId = 1200
+        val firstDataId = 1200L
         val firstData = createLocalMovieInfoEntity(firstDataId)
         movieNoteDb.save(firstData)
 
-        val secondDataId = 1300
+        val secondDataId = 1300L
         val secondData = createLocalMovieInfoEntity(secondDataId)
         movieNoteDb.save(secondData)
 
@@ -56,7 +56,7 @@ class MovieNoteDatabaseTest {
         assert(resultTwo == secondData)
     }
 
-    private fun createLocalMovieInfoEntity(id: Int) =
+    private fun createLocalMovieInfoEntity(id: Long) =
             MovieNoteEntity(id,
                     1,
                     LocalDate.parse("2018-05-20").toEpochDay(),

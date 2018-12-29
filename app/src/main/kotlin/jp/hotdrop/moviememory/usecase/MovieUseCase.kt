@@ -57,11 +57,11 @@ class MovieUseCase @Inject constructor(
             repository.loadRecentMovies()
                     .subscribeOn(Schedulers.io())
 
-    fun movieFlowable(id: Int): Flowable<Movie> =
+    fun movieFlowable(id: Long): Flowable<Movie> =
             repository.movieFlowable(id)
                     .subscribeOn(Schedulers.io())
 
-    fun findMovie(id: Int): Single<Movie> =
+    fun findMovie(id: Long): Single<Movie> =
             repository.findMovie(id)
                     .subscribeOn(Schedulers.io())
 

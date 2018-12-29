@@ -1,14 +1,13 @@
 package jp.hotdrop.moviememory.data.local.entity
 
-import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import jp.hotdrop.moviememory.model.Category
 
+@Entity(tableName = "category")
 data class CategoryEntity (
-        @ColumnInfo(name = "categoryId")
-        var id: Int,
-
-        @ColumnInfo(name = "categoryName")
-        var name: String
+        @PrimaryKey(autoGenerate = true) val id: Long = 0,
+        val name: String
 )
 
 fun CategoryEntity.toCategory(): Category =

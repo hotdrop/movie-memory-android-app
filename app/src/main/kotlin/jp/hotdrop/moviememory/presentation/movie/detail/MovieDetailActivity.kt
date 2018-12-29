@@ -28,8 +28,8 @@ class MovieDetailActivity: BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
 
-    private val movieId: Int by lazy {
-        intent.getIntExtra(EXTRA_MOVIE_TAG, -1)
+    private val movieId: Long by lazy {
+        intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
     }
     private var favoriteStars: FavoriteStars? = null
 
@@ -138,12 +138,12 @@ class MovieDetailActivity: BaseActivity() {
     companion object {
         const val MOVIE_DETAIL_REQUEST_CODE = 9000
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
-        fun startForResult(fragment: Fragment, movieId: Int, requestCode: Int, options: ActivityOptions? = null) =
+        fun startForResult(fragment: Fragment, movieId: Long, requestCode: Int, options: ActivityOptions? = null) =
                 fragment.startActivityForResult(Intent(fragment.context, MovieDetailActivity::class.java)
                         .apply {
                             putExtra(EXTRA_MOVIE_TAG, movieId)
                         }, requestCode, options?.toBundle())
-        fun startForResult(activity: Activity, movieId: Int, requestCode: Int, options: ActivityOptions? = null) =
+        fun startForResult(activity: Activity, movieId: Long, requestCode: Int, options: ActivityOptions? = null) =
                 activity.startActivityForResult(Intent(activity, MovieDetailActivity::class.java)
                         .apply {
                             putExtra(EXTRA_MOVIE_TAG, movieId)

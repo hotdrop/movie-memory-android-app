@@ -25,8 +25,8 @@ class MovieDetailEditActivity: BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(MovieDetailEditViewModel::class.java)
     }
 
-    private val movieId: Int by lazy {
-        intent.getIntExtra(EXTRA_MOVIE_TAG, -1)
+    private val movieId: Long by lazy {
+        intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +107,7 @@ class MovieDetailEditActivity: BaseActivity() {
 
     companion object {
         private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
-        fun startForResult(activity: Activity, movieId: Int, requestCode: Int) =
+        fun startForResult(activity: Activity, movieId: Long, requestCode: Int) =
                 activity.startActivityForResult(Intent(activity, MovieDetailEditActivity::class.java)
                         .apply {
                             putExtra(EXTRA_MOVIE_TAG, movieId)

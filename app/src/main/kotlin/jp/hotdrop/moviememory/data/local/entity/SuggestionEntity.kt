@@ -8,7 +8,7 @@ import org.threeten.bp.OffsetDateTime
 
 @Entity(tableName = "suggestion")
 data class SuggestionEntity (
-        @PrimaryKey(autoGenerate = true) var id: Int? = null,
+        @PrimaryKey(autoGenerate = true) var id: Long? = null,
         val keyword: String,
         val createAt: Instant
 )

@@ -15,7 +15,6 @@ class Firebase @Inject constructor() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Timber.d("Firebaseのログインに成功しました。")
-                            loginFailureListener()
                         } else {
                             Timber.d("Firebaseのログインに失敗しました。")
                             loginFailureListener()

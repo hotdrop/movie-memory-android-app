@@ -21,7 +21,7 @@ class MovieDetailEditViewModel @Inject constructor(
     private val mutableSaveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
 
-    fun setUp(id: Int) {
+    fun setUp(id: Long) {
         movie = LiveDataReactiveStreams.fromPublisher(useCase.movieFlowable(id))
     }
 

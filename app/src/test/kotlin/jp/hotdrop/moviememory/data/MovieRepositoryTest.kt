@@ -10,8 +10,6 @@ import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.data.remote.AppJsonAdapterFactory
 import jp.hotdrop.moviememory.data.remote.MockHttpClient
 import jp.hotdrop.moviememory.data.remote.MockServer
-import jp.hotdrop.moviememory.data.remote.response.MovieResult
-import jp.hotdrop.moviememory.data.remote.response.toMovieEntity
 import jp.hotdrop.moviememory.data.repository.MovieDataRepository
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +30,7 @@ class MovieRepositoryTest {
 
     private val movieDatabase: MovieDatabase = mock()
     private val moshi = Moshi.Builder().add(AppJsonAdapterFactory.INSTANCE).build()
-    private val listOfMovieEntityType = Types.newParameterizedType(List::class.java, MovieResult::class.java)
+//    private val listOfMovieEntityType = Types.newParameterizedType(List::class.java, MovieResult::class.java)
 
 
     // TODO テストは全部見直す
@@ -58,17 +56,17 @@ class MovieRepositoryTest {
     fun loadRecentMoviesTest() {
     }
 
-    private fun createMoviesForReadJson(jsonFileName: String): List<MovieEntity> {
-        val movieEntities = mutableListOf<MovieEntity>()
-        val jsonAdapter: JsonAdapter<List<MovieResult>> = moshi.adapter(listOfMovieEntityType)
-        val inputStream = javaClass.classLoader.getResourceAsStream(jsonFileName)
-        BufferedReader(InputStreamReader(inputStream)).use {
-            val sb = StringBuilder()
-            it.lines().forEach { sb.append(it) }
-            jsonAdapter.fromJson(sb.toString())?.map { it.toMovieEntity() }?.run {
-                movieEntities.addAll(this)
-            }
-        }
-        return movieEntities
-    }
+//    private fun createMoviesForReadJson(jsonFileName: String): List<MovieEntity> {
+//        val movieEntities = mutableListOf<MovieEntity>()
+//        val jsonAdapter: JsonAdapter<List<MovieResult>> = moshi.adapter(listOfMovieEntityType)
+//        val inputStream = javaClass.classLoader.getResourceAsStream(jsonFileName)
+//        BufferedReader(InputStreamReader(inputStream)).use {
+//            val sb = StringBuilder()
+//            it.lines().forEach { sb.append(it) }
+//            jsonAdapter.fromJson(sb.toString())?.map { it.toMovieEntity() }?.run {
+//                movieEntities.addAll(this)
+//            }
+//        }
+//        return movieEntities
+//    }
 }

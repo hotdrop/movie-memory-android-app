@@ -9,15 +9,26 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesFragment
+import javax.inject.Inject
 
 class MoviesFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMoviesBinding
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: MoviesViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,12 +47,28 @@ class MoviesFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observe()
+    }
 
-        binding.moviesViewPager.adapter = MoviesViewPagerAdapter(childFragmentManager).apply {
-            setMovieTab()
-        }
-
-        binding.tabLayout.setupWithViewPager(binding.moviesViewPager)
+    private fun observe() {
+        viewModel.prepared.observe(this, Observer {
+            it?.run {
+                if (this) {
+                    binding.moviesViewPager.adapter = MoviesViewPagerAdapter(childFragmentManager).apply {
+                        setMovieTab()
+                    }
+                    binding.tabLayout.setupWithViewPager(binding.moviesViewPager)
+                }
+            }
+        })
+        viewModel.error.observe(this, Observer {
+            it?.run {
+                val message = getString(R.string.message_failure_load_data)
+                Snackbar.make(binding.moviesArea, message, Snackbar.LENGTH_LONG).show()
+                viewModel.clear()
+            }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
     /**

@@ -59,6 +59,7 @@ class SettingFragment: BaseFragment() {
 
         binding.dataClearArea.setOnClickListener {
             context?.let { context ->
+                // TODO このデータクリア、意味なさそうな感じになってきたので見直す必要がある
                 AlertDialog.Builder(context)
                         .setTitle(R.string.setting_label_data_clear)
                         .setMessage(R.string.dialog_data_clear_message)

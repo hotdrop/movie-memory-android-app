@@ -23,29 +23,23 @@ interface MovieDao {
     fun selectMovies(keyword: String): Single<List<MovieEntity>>
 
     @Query("SELECT * FROM movie WHERE categoryId = :categoryId")
-    fun selectMovies(categoryId: Int): Single<List<MovieEntity>>
+    fun selectMovies(categoryId: Long): Single<List<MovieEntity>>
 
     @Query("SELECT COUNT(*) FROM movie")
     fun count(): Single<Long>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectWithFlowable(id: Int): Flowable<MovieEntity>
+    fun selectWithFlowable(id: Long): Flowable<MovieEntity>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun select(id: Int): Single<MovieEntity>
+    fun select(id: Long): Single<MovieEntity>
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun selectWithDirect(id: Int): MovieEntity
-
-    @Query("SELECT max(id) FROM movie")
-    fun selectRecentId(): Single<Int>
+    fun selectWithDirect(id: Long): MovieEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<MovieEntity>)
 
     @Query("DELETE FROM movie")
     fun deleteAll()
-
-    @Query("SELECT DISTINCT categoryId, categoryName FROM movie")
-    fun selectCategories(): Single<List<CategoryEntity>>
 }

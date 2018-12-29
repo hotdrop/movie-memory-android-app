@@ -1,17 +1,13 @@
 package jp.hotdrop.moviememory.data.local
 
-import androidx.room.RoomDatabase
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
-import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
-import jp.hotdrop.moviememory.model.Suggestion
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class MovieDatabase @Inject constructor(
-        private val database: RoomDatabase,
         private val dao: MovieDao
 ) {
     fun findMoviesByBetween(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
@@ -26,33 +22,20 @@ class MovieDatabase @Inject constructor(
     fun findMovies(keyword: String): Single<List<MovieEntity>> =
             dao.selectMovies(keyword)
 
-    fun findMovies(categoryId: Int): Single<List<MovieEntity>> =
+    fun findMovies(categoryId: Long): Single<List<MovieEntity>> =
             dao.selectMovies(categoryId)
 
-    fun movieWithFlowable(id: Int): Flowable<MovieEntity> =
+    fun movieWithFlowable(id: Long): Flowable<MovieEntity> =
             dao.selectWithFlowable(id)
 
-    fun find(id: Int): Single<MovieEntity> =
+    fun find(id: Long): Single<MovieEntity> =
             dao.select(id)
 
-    fun findWithDirect(id: Int): MovieEntity =
+    fun findWithDirect(id: Long): MovieEntity =
             dao.selectWithDirect(id)
-
-    fun findRecentId(): Single<Int> =
-            dao.selectRecentId()
 
     fun isExist(): Single<Boolean> =
             dao.count().map { it > 0 }
-
-    /**
-     * 映画情報の保存や削除
-     */
-    fun refresh(entities: List<MovieEntity>) {
-        database.runInTransaction {
-            deleteAll()
-            save(entities)
-        }
-    }
 
     fun save(entities: List<MovieEntity>) {
         dao.insert(entities)
@@ -61,7 +44,4 @@ class MovieDatabase @Inject constructor(
     fun deleteAll() {
         dao.deleteAll()
     }
-
-    fun findCategories(): Single<List<CategoryEntity>> =
-            dao.selectCategories()
 }
