@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.model
 
-import jp.hotdrop.moviememory.presentation.parts.RecyclerDiffable
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 
@@ -20,7 +19,7 @@ data class Movie(
         var watchDate: LocalDate?,
         var watchPlace: String?,
         var note: String?
-): RecyclerDiffable {
+) {
 
     fun toTextPlayingDate() = playingDate.toString()
     fun toTextWatchDate() = watchDate?.toString() ?: ""
@@ -42,10 +41,4 @@ data class Movie(
     override fun equals(other: Any?): Boolean = (other as Movie).id == id || super.equals(other)
 
     override fun hashCode(): Int = id.toInt()
-
-    override fun isItemTheSame(o: RecyclerDiffable) =
-            (id == (o as? Movie)?.id)
-
-    override fun isContentsTheSame(o: RecyclerDiffable) =
-            (this == (o as? Movie ?: false))
 }

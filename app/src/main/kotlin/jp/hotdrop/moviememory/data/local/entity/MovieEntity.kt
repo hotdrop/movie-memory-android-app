@@ -35,7 +35,7 @@ fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabas
             this.imageUrl,
             playingDate,
             this.filmDirector,
-            this.casts, //this.casts.split(MovieEntity.CAST_SEPARATOR)?.toList(),
+            this.casts,
             this.officialUrl,
             this.trailerMovieUrl,
             createAt,

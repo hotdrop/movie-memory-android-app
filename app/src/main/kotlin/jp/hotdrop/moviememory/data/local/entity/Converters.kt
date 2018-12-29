@@ -20,8 +20,13 @@ object Converters {
             instant?.epochSecond
 
     @TypeConverter
-    @JvmStatic fun fromArrayString(value: String?): List<String>? =
-            value?.split(ARRAY_SEPARATOR)?.toList()
+    @JvmStatic fun fromArrayString(value: String?): List<String>? {
+        return if (value.isNullOrEmpty()) {
+            null
+        } else {
+            value.split(ARRAY_SEPARATOR)
+        }
+    }
 
     @TypeConverter
     @JvmStatic fun arrayStringToLongString(arr: List<String>?): String? =

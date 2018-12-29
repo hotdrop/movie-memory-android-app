@@ -18,6 +18,7 @@
     <string name="overview_label">概要</string>
     <string name="playing_date_label">公開日</string>
     <string name="film_director_label">監督</string>
+    <string name="casts_label">キャスト</string>
     <string name="trailer_movie_url_link_label">予告動画</string>
     <string name="official_url_link_label">公式サイト</string>
     <string name="watch_date_label">鑑賞日</string>

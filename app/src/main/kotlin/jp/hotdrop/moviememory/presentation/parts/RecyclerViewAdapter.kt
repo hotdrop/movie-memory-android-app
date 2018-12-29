@@ -7,13 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import timber.log.Timber
-import kotlin.properties.Delegates
 
-abstract class RecyclerViewAdapter<T: RecyclerDiffable, VH: RecyclerView.ViewHolder>: RecyclerView.Adapter<VH>() {
+abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView.Adapter<VH>() {
 
-    private val list: MutableList<T> by Delegates.observable(mutableListOf()) { _, oldList, newList ->
-        calculateDiff(oldList, newList).dispatchUpdatesTo(this)
-    }
+    private val list: MutableList<T> = mutableListOf()
 
     override fun getItemCount() = list.size
 

@@ -202,9 +202,9 @@
                    android:id="@+id/film_director_icon"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="24dp"
-                   android:src="@drawable/ic_person"
+                   android:layout_marginTop="16dp"
                    android:contentDescription="@string/icon_film_director_content_description"
+                   android:src="@drawable/ic_person"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
 
@@ -214,7 +214,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
-                   android:layout_marginTop="16dp"
+                   android:layout_marginTop="8dp"
                    android:text="@string/film_director_label"
                    app:layout_constraintStart_toEndOf="@+id/film_director_icon"
                    app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
@@ -230,18 +230,50 @@
                    app:layout_constraintTop_toBottomOf="@+id/film_director_label"
                    tools:text="アンソニー・ルッソ、ジョー・ルッソ" />
 
+               <ImageView
+                   android:id="@+id/casts_icon"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="16dp"
+                   android:layout_marginTop="8dp"
+                   android:visibility="gone"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/film_director"
+                   app:srcCompat="@drawable/ic_people" />
+
+               <TextView
+                   android:id="@+id/casts_label"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@string/casts_label"
+                   android:visibility="gone"
+                   app:layout_constraintBottom_toBottomOf="@+id/casts_icon"
+                   app:layout_constraintStart_toEndOf="@+id/casts_icon"
+                   app:layout_constraintTop_toTopOf="@+id/casts_icon" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/casts_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/casts_label"
+                    app:layout_constraintTop_toBottomOf="@+id/casts_label" />
+
                <TextView
                    android:id="@+id/official_url_link"
                    style="@style/TextNormal"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
-                   android:layout_marginTop="16dp"
+                   android:layout_marginTop="8dp"
                    android:drawableStart="@drawable/ic_open_in_browser"
                    android:gravity="center_vertical"
                    android:text="@string/official_url_link_label"
                    app:layout_constraintStart_toEndOf="@+id/film_director_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/film_director"
+                   app:layout_constraintTop_toBottomOf="@+id/casts_recycler_view"
                    app:webLinkColor="@{movie.officialUrl}" />
 
                <TextView
