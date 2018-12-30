@@ -6,7 +6,7 @@ import jp.hotdrop.moviememory.di.module.ActivityViewModelModule
 import jp.hotdrop.moviememory.di.module.FragmentModule
 import jp.hotdrop.moviememory.presentation.MainActivity
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
-import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailEditActivity
+import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.search.SearchResultActivity
 
 @Subcomponent(modules = [
@@ -17,7 +17,7 @@ interface ActivityComponent {
 
     fun inject(activity: MainActivity)
     fun inject(activity: MovieDetailActivity)
-    fun inject(activity: MovieDetailEditActivity)
+    fun inject(activity: MovieEditActivity)
     fun inject(activity: SearchResultActivity)
 
     fun plus(module: FragmentModule): FragmentComponent

@@ -4,6 +4,7 @@ import dagger.Subcomponent
 import jp.hotdrop.moviememory.di.module.FragmentModule
 import jp.hotdrop.moviememory.di.module.FragmentViewModelModule
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
+import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditMyNoteFragment
 import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesFragment
 import jp.hotdrop.moviememory.presentation.search.SearchFragment
 import jp.hotdrop.moviememory.presentation.setting.SettingFragment
@@ -13,8 +14,11 @@ import jp.hotdrop.moviememory.presentation.setting.SettingFragment
     FragmentViewModelModule::class
 ])
 interface FragmentComponent {
+
     fun inject(fragment: MoviesFragment)
     fun inject(fragment: TabMoviesFragment)
+    fun inject(fragment: MovieEditMyNoteFragment)
+
     fun inject(fragment: SearchFragment)
     fun inject(fragment: SettingFragment)
 }

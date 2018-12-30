@@ -7,8 +7,6 @@ import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,6 +22,7 @@ import jp.hotdrop.moviememory.databinding.ItemCastBinding
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.component.FavoriteStars
+import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import javax.inject.Inject
 
@@ -102,7 +101,7 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     private fun navigationToEdit() {
-        MovieDetailEditActivity.startForResult(this, movieId, MOVIE_DETAIL_REQUEST_CODE)
+        MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.MYNOTE, MOVIE_EDIT_REQUEST_CODE)
     }
 
     private fun startBrowser(url: String) {
@@ -151,7 +150,7 @@ class MovieDetailActivity: BaseActivity() {
         if (resultCode != Activity.RESULT_OK) {
             return
         }
-        if (requestCode == MOVIE_DETAIL_REQUEST_CODE) {
+        if (requestCode == MOVIE_EDIT_REQUEST_CODE) {
             Snackbar.make(binding.snackbarArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
             onResultRefreshMovie()
         }
@@ -179,8 +178,9 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     companion object {
-        const val MOVIE_DETAIL_REQUEST_CODE = 9000
+        const val MOVIE_EDIT_REQUEST_CODE = 900
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
+
         fun startForResult(fragment: Fragment, movieId: Long, requestCode: Int, options: ActivityOptions? = null) =
                 fragment.startActivityForResult(Intent(fragment.context, MovieDetailActivity::class.java)
                         .apply {

@@ -30,6 +30,9 @@
     <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
 
     <!--映画情報の編集画面-->
+    <string name="movie_edit_overview_title">概要の編集</string>
+    <string name="movie_edit_detail_title">詳細情報の編集</string>
+    <string name="movie_edit_my_note_title">自分用メモの編集</string>
     <string name="movie_memo_hint">自分用ノート</string>
     <string name="message_save_success">保存しました。</string>
 
@@ -79,5 +82,8 @@
     <string name="transition_favorite_star3">favoriteStars3</string>
     <string name="transition_favorite_star4">favoriteStars4</string>
     <string name="transition_favorite_star5">favoriteStars5</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

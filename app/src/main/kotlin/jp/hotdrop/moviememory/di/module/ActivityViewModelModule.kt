@@ -5,7 +5,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import jp.hotdrop.moviememory.di.ViewModelKey
-import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailEditViewModel
+import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditViewModel
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailViewModel
 import jp.hotdrop.moviememory.presentation.search.SearchResultViewModel
 
@@ -18,6 +18,6 @@ abstract class ActivityViewModelModule {
     @Binds @IntoMap @ViewModelKey(MovieDetailViewModel::class)
     abstract fun bindMovieDetailViewModel(viewModel: MovieDetailViewModel): ViewModel
 
-    @Binds @IntoMap @ViewModelKey(MovieDetailEditViewModel::class)
-    abstract fun bindMovieDetailEditViewModel(viewModel: MovieDetailEditViewModel): ViewModel
+    @Binds @IntoMap @ViewModelKey(MovieEditViewModel::class)
+    abstract fun bindMovieDetailEditViewModel(viewModel: MovieEditViewModel): ViewModel
 }

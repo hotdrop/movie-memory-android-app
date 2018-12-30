@@ -416,7 +416,7 @@
           android:scaleType="center"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          app:srcCompat="@android:drawable/ic_menu_edit" />
+          app:srcCompat="@drawable/ic_edit" />
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
