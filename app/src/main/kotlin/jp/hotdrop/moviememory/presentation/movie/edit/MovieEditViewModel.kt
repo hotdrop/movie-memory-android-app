@@ -30,6 +30,8 @@ class MovieEditViewModel @Inject constructor(
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
 
+    private var category: Category? = null
+
     fun find(id: Long) {
         useCase.findMovie(id)
                 .subscribeBy(
@@ -55,12 +57,19 @@ class MovieEditViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun findCategory(name: String): Category {
-        return categories.value?.find { it.name == name } ?: throw IllegalStateException("カテゴリーが取得されない状態でfindCategoryが呼ばれました。")
+    fun stockCategory(name: String) {
+        Timber.d("$name カテゴリーをストックします。")
+        category = categories.value?.find {
+            it.name == name
+        }
     }
 
     fun save(movie: Movie) {
-        useCase.saveLocalEdit(movie)
+        category?.run {
+            Timber.d("${this.name} カテゴリーに変更します。")
+            movie.category = this
+        }
+        useCase.save(movie)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
@@ -68,6 +77,19 @@ class MovieEditViewModel @Inject constructor(
                         },
                         onError = {
                             mutableError.postValue(AppError(it, "映画情報の編集画面 保存"))
+                        }
+                ).addTo(compositeDisposable)
+    }
+
+    fun saveMyNote(movie: Movie) {
+        useCase.saveLocalEdit(movie)
+                .observeOn(Schedulers.io())
+                .subscribeBy(
+                        onComplete = {
+                            mutableSaveSuccess.postValue(true)
+                        },
+                        onError = {
+                            mutableError.postValue(AppError(it, "映画情報の自分用メモ編集画面 保存"))
                         }
                 ).addTo(compositeDisposable)
     }

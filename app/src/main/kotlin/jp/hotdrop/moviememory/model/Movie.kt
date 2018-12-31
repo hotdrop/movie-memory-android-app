@@ -1,7 +1,7 @@
 package jp.hotdrop.moviememory.model
 
+import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
 
 data class Movie(
         val id: Long,
@@ -14,7 +14,7 @@ data class Movie(
         val casts: List<String>?,
         var officialUrl: String?,
         var trailerMovieUrl: String?,
-        val createAt: LocalDateTime?,
+        val createAt: Instant,
         var favoriteCount: Int,
         var watchDate: LocalDate?,
         var watchPlace: String?,

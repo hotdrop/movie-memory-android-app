@@ -8,6 +8,7 @@ import jp.hotdrop.moviememory.data.local.CategoryDatabase
 import jp.hotdrop.moviememory.data.local.MovieDatabase
 import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.data.local.entity.toEntity
 import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.MovieApi
@@ -89,6 +90,12 @@ class MovieDataRepository @Inject constructor(
                     .map {
                         entityToMovieWithLocalInfo(it)
                     }
+
+    override fun save(movie: Movie): Completable =
+            Completable.create {
+                movieDatabase.saveMovie(movie.toEntity())
+                it.onComplete()
+            }
 
     private fun entityToMovieWithLocalInfo(entity: MovieEntity): Movie {
         val localMovieInfo = movieNoteDatabase.find(entity.id)

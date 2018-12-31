@@ -72,6 +72,10 @@ class MovieUseCase @Inject constructor(
             categoryRepository.findAll()
                     .subscribeOn(Schedulers.io())
 
+    fun save(movie: Movie): Completable =
+            repository.save(movie)
+                    .subscribeOn(Schedulers.io())
+
     fun saveLocalEdit(movie: Movie): Completable =
             repository.saveLocalMovieInfo(movie)
                     .subscribeOn(Schedulers.io())

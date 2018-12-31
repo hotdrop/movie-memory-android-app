@@ -84,13 +84,16 @@ class MovieDetailActivity: BaseActivity() {
         }
 
         binding.fabOverview.setOnClickListener {
-            Snackbar.make(binding.snackbarArea, "概要をタップしました。", Snackbar.LENGTH_LONG).show()
+            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.OVERVIEW, MOVIE_EDIT_REQUEST_CODE)
+            collapseFabMenu()
         }
         binding.fabDetail.setOnClickListener {
-            Snackbar.make(binding.snackbarArea, "詳細をタップしました。", Snackbar.LENGTH_LONG).show()
+            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.DETAIL, MOVIE_EDIT_REQUEST_CODE)
+            collapseFabMenu()
         }
         binding.fabMyNote.setOnClickListener {
             MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.MYNOTE, MOVIE_EDIT_REQUEST_CODE)
+            collapseFabMenu()
         }
     }
 

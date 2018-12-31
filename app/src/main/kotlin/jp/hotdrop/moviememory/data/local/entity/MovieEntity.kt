@@ -25,7 +25,6 @@ data class MovieEntity(
 fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabase): Movie {
     val category = categoryDb.find(this.categoryId).toCategory()
     val playingDate = this.playingDate?.let { LocalDate.ofEpochDay(it) }
-    val createAt = LocalDateTime.ofInstant(this.createdAt, ZoneId.systemDefault())
     val watchDate = movieNote?.watchDate?.let { LocalDate.ofEpochDay(it) }
     return Movie(
             this.id,
@@ -38,11 +37,27 @@ fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabas
             this.casts,
             this.officialUrl,
             this.trailerMovieUrl,
-            createAt,
+            this.createdAt,
             movieNote?.favoriteCount ?: 0,
             watchDate,
             movieNote?.watchPlace,
             movieNote?.note
+    )
+}
+
+fun Movie.toEntity(): MovieEntity {
+    return MovieEntity(
+            id = this.id,
+            title = this.title,
+            categoryId = this.category.id,
+            overview = this.overview,
+            imageUrl = this.imageUrl,
+            playingDate = this.playingDate?.toEpochDay(),
+            filmDirector = this.filmDirector,
+            casts = this.casts,
+            officialUrl = this.officialUrl,
+            trailerMovieUrl = this.trailerMovieUrl,
+            createdAt = this.createAt
     )
 }
 

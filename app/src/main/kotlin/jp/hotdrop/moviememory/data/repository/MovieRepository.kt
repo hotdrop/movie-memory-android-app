@@ -34,5 +34,8 @@ interface MovieRepository {
     fun findMovie(id: Long): Single<Movie>
 
     @CheckResult
+    fun save(movie: Movie): Completable
+
+    @CheckResult
     fun saveLocalMovieInfo(movie: Movie): Completable
 }

@@ -41,6 +41,10 @@ class MovieDatabase @Inject constructor(
         dao.insert(entities)
     }
 
+    fun saveMovie(entity: MovieEntity) {
+        dao.insert(entity)
+    }
+
     fun deleteAll() {
         dao.deleteAll()
     }

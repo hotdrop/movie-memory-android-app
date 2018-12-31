@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditOverviewBinding
 import jp.hotdrop.moviememory.model.Category
@@ -73,17 +75,23 @@ class MovieEditOverviewFragment: BaseFragment() {
         binding.chipGroupCategories.removeAllViews()
 
         categories.forEach { category ->
-            val chip = (layoutInflater.inflate(R.layout.chip_category_choice, binding.chipGroupCategories, false) as Chip).apply {
-                val categoryName = category.name
-                text = categoryName
-                setOnClickListener {
-                    Timber.d("$categoryName を設定しました。")
-                    binding.movie?.category = viewModel.findCategory(categoryName)
-                }
-                if (categoryName == binding.movie?.categoryName()) {
-                    this.isChecked = true
-                }
-            }
+            val chip = (layoutInflater.inflate(R.layout.chip_category_choice, binding.chipGroupCategories, false) as Chip)
+                    .apply {
+                        val categoryName = category.name
+                        text = categoryName
+                        setOnClickListener {
+                            viewModel.stockCategory(categoryName)
+                            (0 until binding.chipGroupCategories.childCount).forEach { idx ->
+                                val chip = binding.chipGroupCategories[idx] as Chip
+                                if (chip.text != categoryName) {
+                                    chip.isChecked = false
+                                }
+                            }
+                        }
+                        if (categoryName == binding.movie?.categoryName()) {
+                            this.isChecked = true
+                        }
+                    }
             binding.chipGroupCategories.addView(chip)
         }
     }

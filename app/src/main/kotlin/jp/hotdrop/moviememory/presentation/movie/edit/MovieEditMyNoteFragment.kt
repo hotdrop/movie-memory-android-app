@@ -61,7 +61,7 @@ class MovieEditMyNoteFragment: BaseFragment() {
                 if (editWatchDateString.isNotEmpty()) {
                     movie.setWatchDateFromText(editWatchDateString)
                 }
-                viewModel.save(movie)
+                viewModel.saveMyNote(movie)
             }
         }
     }

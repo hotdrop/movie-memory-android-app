@@ -14,11 +14,7 @@ class CategoryDataRepository @Inject constructor(
     override fun findAll(): Single<List<Category>> {
         return categoryDatabase.findAll()
                 .map { entities ->
-                    Timber.d("取得したカテゴリー数 ${entities.size}")
-                    entities.map {
-                        Timber.d( "  id=${it.id} name=${it.name}")
-                        it.toCategory()
-                    }
+                    entities.map { it.toCategory() }
                 }
     }
 }
