@@ -5,15 +5,15 @@ import org.threeten.bp.LocalDateTime
 
 data class Movie(
         val id: Long,
-        val title: String,
-        val category: Category,
-        val overview: String?,
-        val imageUrl: String?,
+        var title: String,
+        var category: Category,
+        var overview: String?,
+        var imageUrl: String?,
         val playingDate: LocalDate?,
-        val filmDirector: String?,
+        var filmDirector: String?,
         val casts: List<String>?,
-        val officialUrl: String?,
-        val trailerMovieUrl: String?,
+        var officialUrl: String?,
+        var trailerMovieUrl: String?,
         val createAt: LocalDateTime?,
         var favoriteCount: Int,
         var watchDate: LocalDate?,
@@ -25,7 +25,7 @@ data class Movie(
     fun toTextWatchDate() = watchDate?.toString() ?: "ー"
     fun toTextFavoriteCount() = favoriteCount.toString()
     fun toTextFilmDirector() = filmDirector ?: "ー"
-    fun toTectWatchPlace() = watchPlace ?: "ー"
+    fun toTextWatchPlace() = watchPlace ?: "ー"
 
     fun categoryName() = category.name
 

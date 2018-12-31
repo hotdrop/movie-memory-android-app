@@ -4,7 +4,9 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.moviememory.data.repository.CategoryRepository
 import jp.hotdrop.moviememory.data.repository.MovieRepository
+import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.MovieCondition
 import org.threeten.bp.LocalDate
@@ -12,8 +14,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(
-        private val repository: MovieRepository
-) {
+        private val repository: MovieRepository,
+        private val categoryRepository: CategoryRepository
+): UseCase {
 
     fun prepared(): Completable =
             repository.prepared()
@@ -63,6 +66,10 @@ class MovieUseCase @Inject constructor(
 
     fun findMovie(id: Long): Single<Movie> =
             repository.findMovie(id)
+                    .subscribeOn(Schedulers.io())
+
+    fun findCategories(): Single<List<Category>> =
+            categoryRepository.findAll()
                     .subscribeOn(Schedulers.io())
 
     fun saveLocalEdit(movie: Movie): Completable =

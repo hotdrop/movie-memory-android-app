@@ -4,6 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.moviememory.data.repository.CategoryRepository
 import jp.hotdrop.moviememory.data.repository.SearchRepository
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Suggestion
@@ -13,10 +14,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SearchUseCase @Inject constructor(
-        private val repository: SearchRepository
-) {
+        private val repository: SearchRepository,
+        private val categoryRepository: CategoryRepository
+): UseCase {
     fun findCategories(): Single<List<Category>> =
-            repository.findCategories()
+            categoryRepository.findAll()
                     .subscribeOn(Schedulers.io())
 
     fun suggestion(): Flowable<List<Suggestion>> =

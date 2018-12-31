@@ -20,9 +20,6 @@ interface SearchRepository {
     fun deleteSuggestion(): Completable
 
     @CheckResult
-    fun findCategories(): Single<List<Category>>
-
-    @CheckResult
     fun findMovies(keyword: String): Single<List<Movie>>
 
     @CheckResult

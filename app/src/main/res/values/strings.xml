@@ -33,6 +33,9 @@
     <string name="movie_edit_overview_title">概要の編集</string>
     <string name="movie_edit_detail_title">詳細情報の編集</string>
     <string name="movie_edit_my_note_title">自分用メモの編集</string>
+    <string name="movie_edit_title_hint">映画名</string>
+    <string name="movie_edit_category_label">カテゴリー</string>
+    <string name="movie_edit_overview_hint">あらすじ</string>
     <string name="movie_memo_hint">自分用ノート</string>
     <string name="message_save_success">保存しました。</string>
 

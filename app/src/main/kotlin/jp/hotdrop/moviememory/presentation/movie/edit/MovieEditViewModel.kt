@@ -6,8 +6,10 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.AppError
+import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.usecase.MovieUseCase
+import timber.log.Timber
 import javax.inject.Inject
 
 class MovieEditViewModel @Inject constructor(
@@ -18,6 +20,9 @@ class MovieEditViewModel @Inject constructor(
 
     private val mutableMovie = MutableLiveData<Movie>()
     var movie: LiveData<Movie> = mutableMovie
+
+    private val mutableCategories = MutableLiveData<List<Category>>()
+    val categories: LiveData<List<Category>> = mutableCategories
 
     private val mutableSaveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
@@ -34,7 +39,24 @@ class MovieEditViewModel @Inject constructor(
                         onError = {
                             mutableError.postValue(AppError(it, "映画情報の編集画面 取得"))
                         }
-                )
+                ).addTo(compositeDisposable)
+    }
+
+    fun findCategories() {
+        useCase.findCategories()
+                .observeOn(Schedulers.io())
+                .subscribeBy(
+                        onSuccess = {
+                            mutableCategories.postValue(it)
+                        },
+                        onError = {
+                            mutableError.postValue(AppError(it, "映画情報のカテゴリー 取得"))
+                        }
+                ).addTo(compositeDisposable)
+    }
+
+    fun findCategory(name: String): Category {
+        return categories.value?.find { it.name == name } ?: throw IllegalStateException("カテゴリーが取得されない状態でfindCategoryが呼ばれました。")
     }
 
     fun save(movie: Movie) {

@@ -7,6 +7,10 @@ import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -36,10 +40,10 @@ class MovieDetailActivity: BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
 
-    private val movieId: Long by lazy {
-        intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
-    }
     private var favoriteStars: FavoriteStars? = null
+    private val movieId: Long by lazy { intent.getLongExtra(EXTRA_MOVIE_TAG, -1) }
+    private val fabCloseAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_close) }
+    private val fabOpenAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_open) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,9 +75,55 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
 
-        binding.editFab.setOnClickListener {
-            navigationToEdit()
+        binding.menuFab.setOnClickListener {
+            if (isOpenFabMenu()) {
+                collapseFabMenu()
+            } else {
+                expandFabMenu()
+            }
         }
+
+        binding.fabOverview.setOnClickListener {
+            Snackbar.make(binding.snackbarArea, "概要をタップしました。", Snackbar.LENGTH_LONG).show()
+        }
+        binding.fabDetail.setOnClickListener {
+            Snackbar.make(binding.snackbarArea, "詳細をタップしました。", Snackbar.LENGTH_LONG).show()
+        }
+        binding.fabMyNote.setOnClickListener {
+            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.MYNOTE, MOVIE_EDIT_REQUEST_CODE)
+        }
+    }
+
+    private fun isOpenFabMenu(): Boolean = binding.menuFab.rotation == FAB_MENU_OPEN_ROTATION
+
+    private fun collapseFabMenu() {
+        ViewCompat.animate(binding.menuFab)
+                .rotation(FAB_MENU_CLOSE_ROTATION)
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10f))
+                .start()
+        binding.fabOverviewLayout.startAnimation(fabCloseAnimation)
+        binding.fabDetailLayout.startAnimation(fabCloseAnimation)
+        binding.fabMyNoteLayout.startAnimation(fabCloseAnimation)
+        binding.fabOverview.isClickable = false
+        binding.fabDetail.isClickable = false
+        binding.fabMyNote.isClickable = false
+    }
+
+    private fun expandFabMenu() {
+        ViewCompat.animate(binding.menuFab)
+                .rotation(FAB_MENU_OPEN_ROTATION)
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10f))
+                .start()
+        binding.fabOverviewLayout.startAnimation(fabOpenAnimation)
+        binding.fabDetailLayout.startAnimation(fabOpenAnimation)
+        binding.fabMyNoteLayout.startAnimation(fabOpenAnimation)
+        binding.fabOverview.isClickable = true
+        binding.fabDetail.isClickable = true
+        binding.fabMyNote.isClickable = true
     }
 
     private fun observe() {
@@ -98,10 +148,6 @@ class MovieDetailActivity: BaseActivity() {
         if (url.startsWith("http")) {
             startBrowser(url)
         }
-    }
-
-    private fun navigationToEdit() {
-        MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.MYNOTE, MOVIE_EDIT_REQUEST_CODE)
     }
 
     private fun startBrowser(url: String) {
@@ -178,6 +224,10 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     companion object {
+
+        const val FAB_MENU_OPEN_ROTATION = 90f
+        const val FAB_MENU_CLOSE_ROTATION = 0f
+
         const val MOVIE_EDIT_REQUEST_CODE = 900
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
 

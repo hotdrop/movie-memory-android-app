@@ -50,11 +50,6 @@ class MovieEditActivity: BaseActivity() {
     private fun initView() {
 
         val movieId = intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
-        if (movieId == -1L) {
-            finishByIllegalState("movie ID is null from Intent getExtra..")
-            return
-        }
-
         val editType = intent.getSerializableExtra(EXTRA_EDIT_TYPE) as EditType
 
         setSupportActionBar(binding.toolbar)
@@ -69,7 +64,7 @@ class MovieEditActivity: BaseActivity() {
         }
 
         when (editType) {
-            EditType.OVERVIEW -> TODO()
+            EditType.OVERVIEW -> replaceFragment(MovieEditOverviewFragment.newInstance(movieId))
             EditType.DETAIL -> TODO()
             EditType.MYNOTE -> replaceFragment(MovieEditMyNoteFragment.newInstance(movieId))
         }
@@ -79,11 +74,6 @@ class MovieEditActivity: BaseActivity() {
         supportFragmentManager.transaction {
             replace(R.id.content_view, fragment)
         }
-    }
-
-    fun finishByIllegalState(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        finish()
     }
 
     companion object {

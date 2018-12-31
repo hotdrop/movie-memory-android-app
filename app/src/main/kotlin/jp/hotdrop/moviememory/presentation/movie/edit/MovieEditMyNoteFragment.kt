@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditMyNoteBinding
@@ -20,7 +21,9 @@ class MovieEditMyNoteFragment: BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private var viewModel: MovieEditViewModel? = null
+    private val viewModel: MovieEditViewModel by lazy {
+        ViewModelProviders.of(activity!!, viewModelFactory).get(MovieEditViewModel::class.java)
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -35,21 +38,15 @@ class MovieEditMyNoteFragment: BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        activity?.let {
-            viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: endProcessBecauseIllegalState("activity is null on onActivityCreated")
+        initView()
+        observe()
 
-        arguments?.getLong(EXTRA_MOVIE_ID)?.let { movieId ->
-
-            initView()
-            observe()
-
-            viewModel?.find(movieId) ?: endProcessBecauseIllegalState("viewModel is null on onActivityCreated")
+        arguments?.getLong(EXTRA_MOVIE_ID)?.let {
+            viewModel.find(it)
         }
     }
 
     private fun initView() {
-
         binding.watchDateEditArea.run {
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
@@ -64,13 +61,17 @@ class MovieEditMyNoteFragment: BaseFragment() {
                 if (editWatchDateString.isNotEmpty()) {
                     movie.setWatchDateFromText(editWatchDateString)
                 }
-                viewModel?.save(movie) ?: endProcessBecauseIllegalState("viewModel is null on fabClickListener")
-            } ?: endProcessBecauseIllegalState("bind movie is null on fabClickListener")
+                viewModel.save(movie)
+            }
         }
     }
 
     private fun observe() {
-
+        viewModel.movie.observe(this, Observer {
+            it?.let { movie ->
+                binding.movie = movie
+            }
+        })
     }
 
     private fun showDatePickerDialog() {
@@ -99,13 +100,6 @@ class MovieEditMyNoteFragment: BaseFragment() {
                 }
                 datePickerDialog.show()
             }
-        }
-    }
-
-    private fun endProcessBecauseIllegalState(message: String) {
-        Timber.e(message)
-        (activity as? MovieEditActivity)?.run {
-            this.finishByIllegalState(message)
         }
     }
 

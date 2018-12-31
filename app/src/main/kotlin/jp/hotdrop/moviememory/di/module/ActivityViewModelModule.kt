@@ -19,5 +19,5 @@ abstract class ActivityViewModelModule {
     abstract fun bindMovieDetailViewModel(viewModel: MovieDetailViewModel): ViewModel
 
     @Binds @IntoMap @ViewModelKey(MovieEditViewModel::class)
-    abstract fun bindMovieDetailEditViewModel(viewModel: MovieEditViewModel): ViewModel
+    abstract fun bindMovieEditViewModel(viewModel: MovieEditViewModel): ViewModel
 }

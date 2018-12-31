@@ -64,8 +64,8 @@ class SearchFragment: BaseFragment() {
 
     private fun observe() {
         viewModel.categories.observe(this, Observer {
-            it?.let {
-                initChipCategories(it)
+            it?.let { categories ->
+                initChipCategories(categories)
             }
         })
         lifecycle.addObserver(viewModel)
@@ -74,7 +74,7 @@ class SearchFragment: BaseFragment() {
     private fun initChipCategories(categories: List<Category>) {
         binding.chipGroupCategories.removeAllViews()
         categories.forEach { category ->
-            val chip = (layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategories, false) as Chip).apply {
+            val chip = (layoutInflater.inflate(R.layout.chip_category_action, binding.chipGroupCategories, false) as Chip).apply {
                 text = category.name
                 setOnClickListener {
                     navigationToSearchResult(SearchCondition.Category(category))
