@@ -41,7 +41,7 @@
     <string name="movie_edit_detail_title">詳細情報の編集</string>
     <string name="movie_edit_my_note_title">自分用メモの編集</string>
     <string name="message_save_success">保存しました。</string>
-    <string name="attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。ご注意ください。</string>
+    <string name="attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。</string>
     <string name="empty_casts">※キャストは未登録です。</string>
 
     <!--検索-->

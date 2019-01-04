@@ -96,8 +96,10 @@ class MovieEditDetailFragment: BaseFragment() {
     }
 
     private fun initViewForCastsEdit(casts: List<String>?) {
+
+        binding.progressbar.isGone = true
+
         if (casts == null || casts.isEmpty()) {
-            binding.progressbar.isGone = true
             binding.castsEmptyMessage.isVisible = true
             return
         }
