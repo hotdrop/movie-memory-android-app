@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
@@ -15,15 +14,12 @@ import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.MainActivity
-import javax.inject.Inject
 
 class SearchFragment: BaseFragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var activity: MainActivity
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
     }

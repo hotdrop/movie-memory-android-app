@@ -3,7 +3,6 @@ package jp.hotdrop.moviememory.presentation.movie.tab
 import android.app.Activity
 import android.app.ActivityOptions
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -23,7 +22,6 @@ import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRec
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
-import javax.inject.Inject
 
 class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
@@ -31,8 +29,6 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private lateinit var adapter: TabMoviesAdapter
     private var activity: MainActivity? = null
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: TabMoviesViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(TabMoviesViewModel::class.java)
     }

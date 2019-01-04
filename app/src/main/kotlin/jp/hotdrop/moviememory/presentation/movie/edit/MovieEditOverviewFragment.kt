@@ -7,30 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.get
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditOverviewBinding
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.presentation.BaseFragment
-import timber.log.Timber
-import javax.inject.Inject
+import java.lang.IllegalStateException
 
 class MovieEditOverviewFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMovieEditOverviewBinding
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieEditViewModel by lazy {
-        ViewModelProviders.of(activity!!, viewModelFactory).get(MovieEditViewModel::class.java)
-    }
+    private var viewModel: MovieEditViewModel? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
+        activity?.run {
+            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: throw IllegalStateException("viewModel is null!!")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,30 +41,30 @@ class MovieEditOverviewFragment: BaseFragment() {
         observe()
 
         arguments?.getLong(EXTRA_MOVIE_ID)?.let {
-            viewModel.find(it)
+            viewModel?.find(it) ?: throw IllegalStateException("viewModel is null!!")
         }
     }
 
     private fun initView() {
         binding.fab.setOnClickListener {
             binding.movie?.let { movie ->
-                viewModel.save(movie)
+                viewModel?.save(movie) ?: throw IllegalStateException("viewModel is null!!")
             }
         }
     }
 
     private fun observe() {
-        viewModel.movie.observe(this, Observer {
+        viewModel?.movie?.observe(this, Observer {
             it?.let { movie ->
                 binding.movie = movie
-                viewModel.findCategories()
+                viewModel?.findCategories() ?: throw IllegalStateException("viewModel is null!!")
             }
-        })
-        viewModel.categories.observe(this, Observer {
+        }) ?: throw IllegalStateException("viewModel is null!!")
+        viewModel?.categories?.observe(this, Observer {
             it?.let { categories ->
                 initChipCategories(categories)
             }
-        })
+        }) ?: throw IllegalStateException("viewModel is null!!")
     }
 
     private fun initChipCategories(categories: List<Category>) {
@@ -80,7 +76,7 @@ class MovieEditOverviewFragment: BaseFragment() {
                         val categoryName = category.name
                         text = categoryName
                         setOnClickListener {
-                            viewModel.stockCategory(categoryName)
+                            viewModel?.stockCategory(categoryName) ?: throw IllegalStateException("viewModel is null!!")
                             (0 until binding.chipGroupCategories.childCount).forEach { idx ->
                                 val chip = binding.chipGroupCategories[idx] as Chip
                                 if (chip.text != categoryName) {

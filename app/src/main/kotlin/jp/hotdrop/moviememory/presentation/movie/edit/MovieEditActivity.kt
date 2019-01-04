@@ -17,10 +17,10 @@ import javax.inject.Inject
 
 class MovieEditActivity: BaseActivity() {
 
-    private lateinit var binding: ActivityMovieEditBinding
+    private val binding: ActivityMovieEditBinding by lazy {
+        DataBindingUtil.setContentView<ActivityMovieEditBinding>(this, R.layout.activity_movie_edit)
+    }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MovieEditViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
     }
@@ -28,8 +28,6 @@ class MovieEditActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getComponent().inject(this)
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_edit)
 
         observe()
         initView()

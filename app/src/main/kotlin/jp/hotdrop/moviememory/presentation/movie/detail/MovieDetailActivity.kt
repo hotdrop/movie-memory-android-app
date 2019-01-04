@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -28,28 +27,26 @@ import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.component.FavoriteStars
 import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
-import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
 
-    private lateinit var binding: ActivityMovieDetailBinding
+    private val binding: ActivityMovieDetailBinding by lazy {
+        DataBindingUtil.setContentView<ActivityMovieDetailBinding>(this, R.layout.activity_movie_detail)
+    }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MovieDetailViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
 
+    private val movieId: Long by lazy {
+        intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
+    }
+
     private var favoriteStars: FavoriteStars? = null
-    private val movieId: Long by lazy { intent.getLongExtra(EXTRA_MOVIE_TAG, -1) }
-    private val fabCloseAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_close) }
-    private val fabOpenAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_open) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getComponent().inject(this)
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
 
         initView()
         observe()
@@ -97,6 +94,8 @@ class MovieDetailActivity: BaseActivity() {
         }
     }
 
+    private val fabCloseAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_close) }
+    private val fabOpenAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_open) }
     private fun isOpenFabMenu(): Boolean = binding.menuFab.rotation == FAB_MENU_OPEN_ROTATION
 
     private fun collapseFabMenu() {

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -20,22 +19,20 @@ import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import org.threeten.bp.LocalDate
-import javax.inject.Inject
+import java.lang.IllegalStateException
 
 class MovieEditDetailFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMovieEditDetailBinding
     private var adapter: CastsAdapter? = null
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MovieEditViewModel by lazy {
-        ViewModelProviders.of(activity!!, viewModelFactory).get(MovieEditViewModel::class.java)
-    }
+    private var viewModel: MovieEditViewModel? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
+        activity?.run {
+            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: throw IllegalStateException("viewModel is null!!")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,7 +47,7 @@ class MovieEditDetailFragment: BaseFragment() {
         observe()
 
         arguments?.getLong(EXTRA_MOVIE_ID)?.let {
-            viewModel.find(it)
+            viewModel?.find(it) ?: throw IllegalStateException("viewModel is null!!")
         }
     }
 
@@ -81,18 +78,18 @@ class MovieEditDetailFragment: BaseFragment() {
                 val newCasts = adapter?.getAll() ?: movie.casts
                 val newMovie = movie.copy(playingDate = newPlayingDate, casts = newCasts)
 
-                viewModel.save(newMovie)
+                viewModel?.save(newMovie) ?: throw IllegalStateException("viewModel is null!!")
             }
         }
     }
 
     private fun observe() {
-        viewModel.movie.observe(this, Observer {
+        viewModel?.movie?.observe(this, Observer {
             it?.let { movie ->
                 binding.movie = movie
                 initViewForCastsEdit(movie.casts)
             }
-        })
+        }) ?: throw IllegalStateException("viewModel is null!!")
     }
 
     private fun initViewForCastsEdit(casts: List<String>?) {

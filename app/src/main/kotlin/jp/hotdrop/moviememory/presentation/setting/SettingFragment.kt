@@ -21,8 +21,6 @@ class SettingFragment: BaseFragment() {
 
     private lateinit var binding: FragmentSettingBinding
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SettingViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SettingViewModel::class.java)
     }

@@ -24,8 +24,6 @@ class MoviesFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMoviesBinding
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MoviesViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
     }
