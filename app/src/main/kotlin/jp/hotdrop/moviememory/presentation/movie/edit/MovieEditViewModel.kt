@@ -65,11 +65,11 @@ class MovieEditViewModel @Inject constructor(
     }
 
     fun save(movie: Movie) {
-        category?.run {
-            Timber.d("${this.name} カテゴリーに変更します。")
-            movie.category = this
-        }
-        useCase.save(movie)
+        val newMovie = category?.let {
+            Timber.d("${it.name} カテゴリーに変更します。")
+            movie.copy(category = it)
+        } ?: movie
+        useCase.save(newMovie)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {

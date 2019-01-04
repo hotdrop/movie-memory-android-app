@@ -14,6 +14,19 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
 
     override fun getItemCount() = list.size
 
+    fun getAll(): List<T> = list
+
+    fun getItem(index: Int) = list[index]
+
+    fun getItemPosition(item: T): Int? {
+        val index = list.indexOf(item)
+        return if (index == -1) {
+            null
+        } else {
+            index
+        }
+    }
+
     fun addAll(items: List<T>) {
         val startIdx = if (list.size > 0) {
             list.size - 1
@@ -35,19 +48,16 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
         notifyDataSetChanged()
     }
 
-    fun clear() {
-        list.clear()
+    fun replace(index: Int, item: T) {
+        list.forEachIndexed { i, _ ->
+            if(i == index) {
+                list[index] = item
+            }
+        }
     }
 
-    fun getItem(index: Int) = list[index]
-
-    fun getItemPosition(item: T): Int? {
-        val index = list.indexOf(item)
-        return if (index == -1) {
-            null
-        } else {
-            index
-        }
+    fun clear() {
+        list.clear()
     }
 
     /**

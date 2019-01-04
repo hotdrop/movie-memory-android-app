@@ -65,7 +65,7 @@ class MovieEditActivity: BaseActivity() {
 
         when (editType) {
             EditType.OVERVIEW -> replaceFragment(MovieEditOverviewFragment.newInstance(movieId))
-            EditType.DETAIL -> TODO()
+            EditType.DETAIL -> replaceFragment(MovieEditDetailFragment.newInstance(movieId))
             EditType.MYNOTE -> replaceFragment(MovieEditMyNoteFragment.newInstance(movieId))
         }
     }

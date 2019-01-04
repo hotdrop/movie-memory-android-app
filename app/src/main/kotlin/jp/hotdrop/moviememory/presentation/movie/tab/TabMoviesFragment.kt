@@ -157,7 +157,9 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         fun refresh(movie: Movie) {
             adapter.getItemPosition(movie)?.let { index ->
-                adapter.getItem(index).update(movie)
+                val oldMovie = adapter.getItem(index)
+                val newMovie = Movie.copyAll(oldMovie)
+                adapter.replace(index, newMovie)
                 notifyItemChanged(index)
             }
         }

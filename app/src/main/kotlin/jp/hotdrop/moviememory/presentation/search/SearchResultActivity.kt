@@ -252,15 +252,6 @@ class SearchResultActivity: BaseActivity() {
                 MovieDetailActivity.startForResult(this@SearchResultActivity, movie.id, REQUEST_CODE_TO_DETAIL, options)
             }
         }
-
-        fun refresh(movie: Movie) {
-            adapter?.let { adapter ->
-                adapter.getItemPosition(movie)?.let { index ->
-                    adapter.getItem(index).update(movie)
-                    notifyItemChanged(index)
-                }
-            }
-        }
     }
 
     companion object {

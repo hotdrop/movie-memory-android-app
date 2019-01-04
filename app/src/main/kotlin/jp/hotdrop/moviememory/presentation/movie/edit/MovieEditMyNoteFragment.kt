@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditMyNoteBinding
+import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
@@ -49,19 +51,24 @@ class MovieEditMyNoteFragment: BaseFragment() {
     private fun initView() {
         binding.watchDateEditArea.run {
             setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    showDatePickerDialog()
+                if (hasFocus && context != null) {
+                    TextInputDatePickerDialog.show(context, binding.watchDateEditArea)
                 }
             }
         }
 
         binding.fab.setOnClickListener {
             binding.movie?.let { movie ->
-                val editWatchDateString = binding.watchDateEditArea.text.toString()
-                if (editWatchDateString.isNotEmpty()) {
-                    movie.setWatchDateFromText(editWatchDateString)
+
+                val newWatchDateText = binding.watchDateEditArea.text.toString()
+                val newWatchDate = if (newWatchDateText.isNotEmpty()) {
+                    LocalDate.parse(newWatchDateText)
+                } else {
+                    movie.watchDate
                 }
-                viewModel.saveMyNote(movie)
+
+                val newMovie = movie.copy(watchDate = newWatchDate)
+                viewModel.saveMyNote(newMovie)
             }
         }
     }
@@ -72,35 +79,6 @@ class MovieEditMyNoteFragment: BaseFragment() {
                 binding.movie = movie
             }
         })
-    }
-
-    private fun showDatePickerDialog() {
-
-        val sawDate = if (binding.watchDateEditArea.text.isNullOrEmpty()) {
-            LocalDate.now()
-        } else {
-            LocalDate.parse(binding.watchDateEditArea.text)
-        }
-
-        // sawDateEditAreaはユーザーに編集させたくないので操作の後は必ずclearFocusする。
-        // もしまたDatePickerを使う場面が出てきたらComponentとして切り出したい
-        context?.run {
-            DatePickerDialog(this,
-                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                        val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                        Timber.d("選択した日付 = $selectedDate")
-                        binding.watchDateEditArea.let {
-                            it.setText(selectedDate.toString())
-                            it.clearFocus()
-                        }
-                    }, sawDate.year, sawDate.monthValue - 1 ,sawDate.dayOfMonth
-            ).let { datePickerDialog ->
-                datePickerDialog.setOnCancelListener {
-                    binding.watchDateEditArea.clearFocus()
-                }
-                datePickerDialog.show()
-            }
-        }
     }
 
     companion object {

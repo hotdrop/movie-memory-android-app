@@ -52,7 +52,7 @@
                         style="@style/TextNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/movie_edit_title_hint"
+                        android:hint="@string/title_label"
                         android:maxLength="100"
                         android:maxLines="3"
                         android:text="@={movie.title}" />
@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/movie_edit_category_label"
+                    android:text="@string/category_label"
                     app:layout_constraintStart_toStartOf="@+id/chip_group_categories"
                     app:layout_constraintTop_toBottomOf="@+id/text_input_title" />
 
@@ -97,7 +97,7 @@
                         style="@style/TextNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/movie_edit_overview_hint"
+                        android:hint="@string/overview_label"
                         android:maxLength="1000"
                         android:maxLines="10"
                         android:text="@={movie.overview}" />

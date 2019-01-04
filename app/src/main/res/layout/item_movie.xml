@@ -9,7 +9,6 @@
             type="jp.hotdrop.moviememory.model.Movie" />
     </data>
 
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view"
         style="@style/Widget.MaterialComponents.CardView"
