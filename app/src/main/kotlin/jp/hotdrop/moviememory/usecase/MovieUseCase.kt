@@ -1,22 +1,27 @@
 package jp.hotdrop.moviememory.usecase
 
+import dagger.Reusable
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.moviememory.data.repository.CategoryRepository
 import jp.hotdrop.moviememory.data.repository.MovieRepository
+import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.MovieCondition
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
+@Reusable
 class MovieUseCase @Inject constructor(
-        private val repository: MovieRepository
+        private val movieRepository: MovieRepository,
+        private val categoryRepository: CategoryRepository
 ) {
 
     fun prepared(): Completable =
-            repository.prepared()
+            movieRepository.prepared()
                     .subscribeOn(Schedulers.io())
 
     fun findMovies(condition: MovieCondition, index: Int, offset: Int): Single<List<Movie>> {
@@ -31,42 +36,50 @@ class MovieUseCase @Inject constructor(
         Timber.d("公開中のデータを取得します。")
         val endAt = LocalDate.now()
         val startAt = endAt.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
-        return repository.findNowPlayingMovies(startAt, endAt, index, offset)
+        return movieRepository.findNowPlayingMovies(startAt, endAt, index, offset)
                 .subscribeOn(Schedulers.io())
     }
 
     private fun findComingSoonMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
         Timber.d("公開予定のデータを取得します。")
         val startAt = LocalDate.now()
-        return repository.findComingSoonMovies(startAt, startIndex, offset)
+        return movieRepository.findComingSoonMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
 
     private fun findPastMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
         Timber.d("公開終了のデータを取得します。")
         val startAt = LocalDate.now().minusMonths(NOW_PLAYING_BETWEEN_MONTH)
-        return repository.findPastMovies(startAt, startIndex, offset)
+        return movieRepository.findPastMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
 
     fun clearMovies(): Completable =
-            repository.clearMovies()
+            movieRepository.clearMovies()
                     .subscribeOn(Schedulers.io())
 
     fun loadRecentMovies(): Completable =
-            repository.loadRecentMovies()
+            movieRepository.loadRecentMovies()
                     .subscribeOn(Schedulers.io())
 
     fun movieFlowable(id: Long): Flowable<Movie> =
-            repository.movieFlowable(id)
+            movieRepository.movieFlowable(id)
                     .subscribeOn(Schedulers.io())
 
     fun findMovie(id: Long): Single<Movie> =
-            repository.findMovie(id)
+            movieRepository.findMovie(id)
+                    .subscribeOn(Schedulers.io())
+
+    fun findCategories(): Single<List<Category>> =
+            categoryRepository.findAll()
+                    .subscribeOn(Schedulers.io())
+
+    fun save(movie: Movie): Completable =
+            movieRepository.save(movie)
                     .subscribeOn(Schedulers.io())
 
     fun saveLocalEdit(movie: Movie): Completable =
-            repository.saveLocalMovieInfo(movie)
+            movieRepository.saveLocalMovieInfo(movie)
                     .subscribeOn(Schedulers.io())
 
     companion object {

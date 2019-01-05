@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
@@ -15,15 +14,12 @@ import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.MainActivity
-import javax.inject.Inject
 
 class SearchFragment: BaseFragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var activity: MainActivity
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
     }
@@ -64,8 +60,8 @@ class SearchFragment: BaseFragment() {
 
     private fun observe() {
         viewModel.categories.observe(this, Observer {
-            it?.let {
-                initChipCategories(it)
+            it?.let { categories ->
+                initChipCategories(categories)
             }
         })
         lifecycle.addObserver(viewModel)
@@ -74,7 +70,7 @@ class SearchFragment: BaseFragment() {
     private fun initChipCategories(categories: List<Category>) {
         binding.chipGroupCategories.removeAllViews()
         categories.forEach { category ->
-            val chip = (layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategories, false) as Chip).apply {
+            val chip = (layoutInflater.inflate(R.layout.chip_category_action, binding.chipGroupCategories, false) as Chip).apply {
                 text = category.name
                 setOnClickListener {
                     navigationToSearchResult(SearchCondition.Category(category))

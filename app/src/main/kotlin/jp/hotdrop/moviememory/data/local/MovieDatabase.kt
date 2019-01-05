@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.data.local
 
+import dagger.Reusable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
@@ -7,6 +8,7 @@ import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
+@Reusable
 class MovieDatabase @Inject constructor(
         private val dao: MovieDao
 ) {
@@ -39,6 +41,10 @@ class MovieDatabase @Inject constructor(
 
     fun save(entities: List<MovieEntity>) {
         dao.insert(entities)
+    }
+
+    fun saveMovie(entity: MovieEntity) {
+        dao.insert(entity)
     }
 
     fun deleteAll() {

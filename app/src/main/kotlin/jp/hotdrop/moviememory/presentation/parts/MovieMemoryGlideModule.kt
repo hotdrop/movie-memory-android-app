@@ -19,7 +19,8 @@ class MovieMemoryGlideModule: AppGlideModule() {
     lateinit var okHttpClient: OkHttpClient
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        (context.applicationContext as MovieMemoryApp).getComponent().plus(this)
+        (context.applicationContext as MovieMemoryApp).getComponent()
+                .plus(this)
         glide.registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(okHttpClient))
     }
 }

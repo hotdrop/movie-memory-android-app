@@ -15,6 +15,7 @@
        android:layout_height="match_parent">
 
       <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/coordinatorLayout"
           android:layout_width="match_parent"
           android:layout_height="match_parent">
 
@@ -43,11 +44,11 @@
                       android:id="@+id/image_cover"
                       android:layout_width="match_parent"
                       android:layout_height="@dimen/image_width_for_detail"
+                      android:contentDescription="@string/image_view_content_description"
                       android:fitsSystemWindows="true"
                       android:scaleType="fitXY"
                       android:src="@drawable/image_default"
                       android:transitionName="@string/transition_movie_image"
-                      android:contentDescription="@string/image_view_content_description"
                       app:imageUrl="@{movie.imageUrl}" />
 
                </RelativeLayout>
@@ -113,35 +114,38 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="8dp"
-                   app:layout_constraintStart_toStartOf="@id/left_guideline"
                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                   app:layout_constraintStart_toStartOf="@id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/category">
 
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_1"
                       style="@style/FavoriteStar"
-                      android:transitionName="@string/transition_favorite_star1"/>
+                      android:transitionName="@string/transition_favorite_star1" />
 
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_2"
                       style="@style/FavoriteStar"
                       android:transitionName="@string/transition_favorite_star2"
-                      app:layout_constraintStart_toEndOf="@+id/favorite_1"/>
+                      app:layout_constraintStart_toEndOf="@+id/favorite_1" />
+
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_3"
                       style="@style/FavoriteStar"
                       android:transitionName="@string/transition_favorite_star3"
-                      app:layout_constraintStart_toEndOf="@+id/favorite_2"/>
+                      app:layout_constraintStart_toEndOf="@+id/favorite_2" />
+
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_4"
                       style="@style/FavoriteStar"
                       android:transitionName="@string/transition_favorite_star4"
-                      app:layout_constraintStart_toEndOf="@+id/favorite_3"/>
+                      app:layout_constraintStart_toEndOf="@+id/favorite_3" />
+
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_5"
                       style="@style/FavoriteStar"
                       android:transitionName="@string/transition_favorite_star5"
-                      app:layout_constraintStart_toEndOf="@+id/favorite_4"/>
+                      app:layout_constraintStart_toEndOf="@+id/favorite_4" />
 
                </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -158,23 +162,52 @@
                    app:layout_constraintTop_toBottomOf="@+id/favorite_area"
                    tools:text="テスト" />
 
+               <TextView
+                   android:id="@+id/official_url_link"
+                   style="@style/TextNormal"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="16dp"
+                   android:drawableStart="@drawable/ic_open_in_browser"
+                   android:gravity="center_vertical"
+                   android:text="@string/official_url_link_label"
+                   app:layout_constraintEnd_toStartOf="@+id/trailer_url_link"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/overview"
+                   app:webLinkColor="@{movie.officialUrl}" />
+
+               <TextView
+                   android:id="@+id/trailer_url_link"
+                   style="@style/TextNormal"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="24dp"
+                   android:drawableStart="@drawable/ic_local_movies"
+                   android:gravity="center_vertical"
+                   android:text="@string/trailer_movie_url_link_label"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.5"
+                   app:layout_constraintStart_toEndOf="@+id/official_url_link"
+                   app:layout_constraintTop_toTopOf="@+id/official_url_link"
+                   app:webLinkColor="@{movie.trailerMovieUrl}" />
+
                <View
-                   android:id="@+id/line_film_director_label"
+                   android:id="@+id/line_overview"
                    style="@style/BorderLine"
                    android:layout_marginTop="16dp"
                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/overview" />
+                   app:layout_constraintTop_toBottomOf="@+id/official_url_link" />
 
                <ImageView
                    android:id="@+id/playing_date_icon"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="24dp"
-                   android:src="@drawable/ic_event"
                    android:contentDescription="@string/icon_playing_date_content_description"
+                   android:src="@drawable/ic_event"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/line_film_director_label" />
+                   app:layout_constraintTop_toBottomOf="@+id/line_overview" />
 
                <TextView
                    android:id="@+id/playing_date_label"
@@ -185,7 +218,7 @@
                    android:layout_marginTop="16dp"
                    android:text="@string/playing_date_label"
                    app:layout_constraintStart_toEndOf="@+id/playing_date_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/line_film_director_label" />
+                   app:layout_constraintTop_toBottomOf="@+id/line_overview" />
 
                <TextView
                    android:id="@+id/playing_date_text"
@@ -203,8 +236,8 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="24dp"
-                   android:src="@drawable/ic_person"
                    android:contentDescription="@string/icon_film_director_content_description"
+                   android:src="@drawable/ic_person"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
 
@@ -225,53 +258,67 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
-                   android:text="@{movie.filmDirector}"
+                   android:text="@{movie.toTextFilmDirector()}"
                    app:layout_constraintStart_toEndOf="@+id/film_director_icon"
                    app:layout_constraintTop_toBottomOf="@+id/film_director_label"
                    tools:text="アンソニー・ルッソ、ジョー・ルッソ" />
 
+               <ImageView
+                   android:id="@+id/casts_icon"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="16dp"
+                   android:layout_marginTop="24dp"
+                   android:contentDescription="@string/icon_casts_content_description"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/film_director"
+                   app:srcCompat="@drawable/ic_people" />
+
                <TextView
-                   android:id="@+id/official_url_link"
-                   style="@style/TextNormal"
+                   android:id="@+id/casts_label"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
                    android:layout_marginTop="16dp"
-                   android:drawableStart="@drawable/ic_open_in_browser"
-                   android:gravity="center_vertical"
-                   android:text="@string/official_url_link_label"
-                   app:layout_constraintStart_toEndOf="@+id/film_director_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/film_director"
-                   app:webLinkColor="@{movie.officialUrl}" />
+                   android:text="@string/casts_label"
+                   app:layout_constraintStart_toEndOf="@+id/casts_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/film_director" />
 
                <TextView
-                   android:id="@+id/trailer_url_link"
+                   android:id="@+id/casts_no_data_text"
                    style="@style/TextNormal"
-                   android:layout_width="wrap_content"
+                   android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginStart="24dp"
-                   android:drawableStart="@drawable/ic_local_movies"
-                   android:gravity="center_vertical"
-                   android:text="@string/trailer_movie_url_link_label"
-                   app:layout_constraintStart_toEndOf="@+id/official_url_link"
-                   app:layout_constraintTop_toTopOf="@+id/official_url_link"
-                   app:webLinkColor="@{movie.trailerMovieUrl}" />
+                   android:layout_marginStart="8dp"
+                   android:text="@string/no_data_text"
+                   android:visibility="gone"
+                   app:layout_constraintStart_toEndOf="@+id/casts_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/casts_label" />
+
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/casts_recycler_view"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:visibility="gone"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="@+id/casts_label"
+                   app:layout_constraintTop_toBottomOf="@+id/casts_label" />
 
                <View
                    android:id="@+id/line_memo_border"
                    style="@style/BorderLine"
-                   android:layout_marginTop="16dp"
+                   android:layout_marginTop="24dp"
                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/trailer_url_link" />
+                   app:layout_constraintTop_toBottomOf="@+id/casts_recycler_view" />
 
                <ImageView
                    android:id="@+id/watch_date_icon"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="24dp"
-                   android:src="@drawable/ic_event"
                    android:contentDescription="@string/icon_watch_date_content_description"
+                   android:src="@drawable/ic_event"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/line_memo_border" />
 
@@ -302,8 +349,8 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="24dp"
-                   android:src="@drawable/ic_place"
                    android:contentDescription="@string/icon_watch_place_content_description"
+                   android:src="@drawable/ic_place"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/watch_date_text" />
 
@@ -324,28 +371,28 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
-                   android:text="@{movie.watchPlace}"
+                   android:text="@{movie.toTextWatchPlace()}"
                    app:layout_constraintEnd_toEndOf="@+id/right_guideline"
                    app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
                    app:layout_constraintTop_toBottomOf="@+id/watch_place_label"
                    tools:text="TOHOシネマズ日本橋" />
 
-                <TextView
-                    android:id="@+id/movie_local_memo_text"
-                    style="@style/TextNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="80dp"
-                    android:text="@{movie.note}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-                    app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/watch_place_text"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:text="ここに自分が書いたメモが表示されます。インフィニティーウォーのラストでキャプテンマーベルにヘルプを求めていましたが、フューリーはなぜ今までハルクやソー並の強さを持つキャプテンマーベルを呼ばなかったのでしょうか？" />
+               <TextView
+                   android:id="@+id/movie_local_memo_text"
+                   style="@style/TextNormal"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:layout_marginTop="24dp"
+                   android:layout_marginEnd="16dp"
+                   android:layout_marginBottom="80dp"
+                   android:text="@{movie.note}"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                   app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/watch_place_text"
+                   app:layout_constraintVertical_bias="0.0"
+                   tools:text="ここに自分が書いたメモが表示されます。インフィニティーウォーのラストでキャプテンマーベルにヘルプを求めていましたが、フューリーはなぜ今までハルクやソー並の強さを持つキャプテンマーベルを呼ばなかったのでしょうか？" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
          </androidx.core.widget.NestedScrollView>
@@ -358,20 +405,164 @@
           android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
           android:layout_marginBottom="8dp"
-          app:layout_constraintBottom_toTopOf="@+id/edit_fab"
+          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent" />
 
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/fab_overview_layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:visibility="invisible"
+          app:layout_constraintBottom_toTopOf="@+id/fab_detail_layout"
+          app:layout_constraintEnd_toEndOf="parent">
+
+         <com.google.android.material.card.MaterialCardView
+             style="@style/Widget.MaterialComponents.CardView"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginEnd="8dp"
+             android:backgroundTint="@color/lightGreen"
+             app:cardCornerRadius="@dimen/corner_radius"
+             app:cardElevation="@dimen/fab_elevation"
+             app:layout_constraintBottom_toBottomOf="@+id/fab_overview"
+             app:layout_constraintEnd_toStartOf="@+id/fab_overview"
+             app:layout_constraintTop_toTopOf="@+id/fab_overview">
+
+            <TextView
+                android:id="@+id/fab_overview_label"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="@string/movie_edit_overview_title" />
+
+         </com.google.android.material.card.MaterialCardView>
+
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:id="@+id/fab_overview"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="bottom|end"
+             android:layout_marginTop="8dp"
+             android:layout_marginEnd="8dp"
+             android:layout_marginBottom="8dp"
+             app:backgroundTint="@color/lightGreen"
+             app:elevation="@dimen/fab_elevation"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             app:srcCompat="@drawable/ic_edit" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/fab_detail_layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:visibility="invisible"
+          app:layout_constraintBottom_toTopOf="@+id/fab_my_note_layout"
+          app:layout_constraintEnd_toEndOf="parent">
+
+         <com.google.android.material.card.MaterialCardView
+             style="@style/Widget.MaterialComponents.CardView"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginEnd="8dp"
+             android:backgroundTint="@color/lightPink"
+             app:cardCornerRadius="@dimen/corner_radius"
+             app:cardElevation="@dimen/fab_elevation"
+             app:layout_constraintBottom_toBottomOf="@+id/fab_detail"
+             app:layout_constraintEnd_toStartOf="@+id/fab_detail"
+             app:layout_constraintTop_toTopOf="@+id/fab_detail">
+
+            <TextView
+                android:id="@+id/fab_detail_label"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="@string/movie_edit_detail_title" />
+
+         </com.google.android.material.card.MaterialCardView>
+
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:id="@+id/fab_detail"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="bottom|end"
+             android:layout_marginTop="8dp"
+             android:layout_marginEnd="8dp"
+             android:layout_marginBottom="8dp"
+             app:backgroundTint="@color/lightPink"
+             app:elevation="@dimen/fab_elevation"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             app:srcCompat="@drawable/ic_edit" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/fab_my_note_layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:visibility="invisible"
+          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
+          app:layout_constraintEnd_toEndOf="parent">
+
+         <com.google.android.material.card.MaterialCardView
+             style="@style/Widget.MaterialComponents.CardView"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginEnd="8dp"
+             android:backgroundTint="@color/lightOrange"
+             app:cardCornerRadius="@dimen/corner_radius"
+             app:cardElevation="@dimen/fab_elevation"
+             app:layout_constraintBottom_toBottomOf="@+id/fab_my_note"
+             app:layout_constraintEnd_toStartOf="@+id/fab_my_note"
+             app:layout_constraintTop_toTopOf="@+id/fab_my_note">
+
+            <TextView
+                android:id="@+id/fab_my_note_label"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="@string/movie_edit_my_note_title" />
+
+         </com.google.android.material.card.MaterialCardView>
+
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:id="@+id/fab_my_note"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="bottom|end"
+             android:layout_marginTop="8dp"
+             android:layout_marginEnd="8dp"
+             android:layout_marginBottom="8dp"
+             app:backgroundTint="@color/lightOrange"
+             app:elevation="@dimen/fab_elevation"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             app:srcCompat="@drawable/ic_edit" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
       <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/edit_fab"
+          android:id="@+id/menu_fab"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="bottom|end"
           android:layout_margin="@dimen/fab_margin"
-          android:scaleType="center"
+          app:elevation="@dimen/fab_elevation"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          app:srcCompat="@android:drawable/ic_menu_edit" />
+          app:srcCompat="@drawable/ic_menu" />
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

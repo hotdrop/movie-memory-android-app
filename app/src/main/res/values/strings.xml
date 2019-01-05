@@ -15,21 +15,38 @@
     <string name="star_content_description">この映画をお気に入り登録しているかの星画像です</string>
 
     <!--映画詳細-->
-    <string name="overview_label">概要</string>
+    <string name="title_label">映画名</string>
+    <string name="category_label">カテゴリー</string>
+    <string name="overview_label">あらすじ</string>
     <string name="playing_date_label">公開日</string>
     <string name="film_director_label">監督</string>
+    <string name="casts_label">キャスト</string>
     <string name="trailer_movie_url_link_label">予告動画</string>
     <string name="official_url_link_label">公式サイト</string>
     <string name="watch_date_label">鑑賞日</string>
     <string name="watch_place_label">鑑賞した映画館</string>
+    <string name="movie_memo_hint">自分用メモ</string>
+    <string name="add_cast_button">追加</string>
+
+    <string name="no_data_text">ー</string>
     <string name="icon_playing_date_content_description">この映画の公開日を示すアイコンです</string>
     <string name="icon_film_director_content_description">この映画の監督を示すアイコンです</string>
+    <string name="icon_casts_content_description">この映画の主要キャスト一覧を示すアイコンです</string>
     <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
     <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
+    <string name="icon_cast_delete_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
 
     <!--映画情報の編集画面-->
-    <string name="movie_memo_hint">自分用ノート</string>
+    <string name="movie_edit_overview_title">概要の編集</string>
+    <string name="movie_edit_detail_title">詳細情報の編集</string>
+    <string name="movie_edit_my_note_title">自分用メモの編集</string>
     <string name="message_save_success">保存しました。</string>
+    <string name="attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。</string>
+    <string name="cast_delete_text">キャストから\n「%s」\nを削除します。よろしいですか？</string>
+    <string name="empty_casts">※キャストは未登録です。</string>
+    <string name="dialog_title_cast_update">キャスト名編集</string>
+    <string name="dialog_title_cast_add">キャスト追加</string>
+    <string name="cast_text_hint">キャスト名を入力してください</string>
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>
@@ -45,13 +62,15 @@
     </string>
     <string name="search_result_query_hint">キーワード検索</string>
     <string name="search_result_not_found">該当する映画情報は見つかりませんでした。</string>
+    <string name="icon_search_content_description">このアプリに保存されている映画情報のキーワード検索アイコンです</string>
+    <string name="icon_suggestion_content_description">キーワード検索の履歴を示すアイコンです</string>
 
     <!--設定-->
     <string name="setting_label_general">全般</string>
     <string name="setting_label_language">言語設定</string>
     <string name="setting_label_language_desc">使用する言語を切り替えます。</string>
     <string name="setting_label_data_clear">データクリア</string>
-    <string name="setting_label_data_clear_desc">保持している映画情報をクリアします。\n（自身で入力したデータはクリアしません。）</string>
+    <string name="setting_label_data_clear_desc">保持している映画情報をクリアします。\n（自分用メモはクリアされません。）</string>
     <string name="setting_label_app_info">アプリ情報</string>
     <string name="setting_label_app_version">アプリのバージョン</string>
     <string name="setting_label_license">オープンソースライセンス</string>

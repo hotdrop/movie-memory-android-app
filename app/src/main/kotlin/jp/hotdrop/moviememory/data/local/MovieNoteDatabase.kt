@@ -1,11 +1,12 @@
 package jp.hotdrop.moviememory.data.local
 
+import dagger.Reusable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.MovieNoteDao
 import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
-import jp.hotdrop.moviememory.model.Suggestion
 import javax.inject.Inject
 
+@Reusable
 class MovieNoteDatabase @Inject constructor(
         private val dao: MovieNoteDao
 ) {

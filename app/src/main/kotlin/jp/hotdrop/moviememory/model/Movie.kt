@@ -1,51 +1,40 @@
 package jp.hotdrop.moviememory.model
 
-import jp.hotdrop.moviememory.presentation.parts.RecyclerDiffable
+import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
 
 data class Movie(
         val id: Long,
-        val title: String,
+        var title: String,
         val category: Category,
-        val overview: String?,
-        val imageUrl: String?,
+        var overview: String?,
+        var imageUrl: String?,
         val playingDate: LocalDate?,
-        val filmDirector: String?,
+        var filmDirector: String?,
         val casts: List<String>?,
-        val officialUrl: String?,
-        val trailerMovieUrl: String?,
-        val createAt: LocalDateTime?,
+        var officialUrl: String?,
+        var trailerMovieUrl: String?,
+        val createAt: Instant,
         var favoriteCount: Int,
-        var watchDate: LocalDate?,
+        val watchDate: LocalDate?,
         var watchPlace: String?,
         var note: String?
-): RecyclerDiffable {
+) {
 
-    fun toTextPlayingDate() = playingDate.toString()
-    fun toTextWatchDate() = watchDate?.toString() ?: ""
+    fun toTextPlayingDate() = playingDate?.toString() ?: DEFAULT_TEXT_VALUE
+    fun toTextWatchDate() = watchDate?.toString() ?: DEFAULT_TEXT_VALUE
     fun toTextFavoriteCount() = favoriteCount.toString()
+    fun toTextFilmDirector() = filmDirector ?: DEFAULT_TEXT_VALUE
+    fun toTextWatchPlace() = watchPlace ?: DEFAULT_TEXT_VALUE
 
     fun categoryName() = category.name
 
-    fun setWatchDateFromText(strSawDate: String) {
-        watchDate = LocalDate.parse(strSawDate)
+    companion object {
+        const val DEFAULT_TEXT_VALUE = "ー"
+        fun copyAll(m: Movie) =
+                Movie(m.id, m.title, m.category, m.overview, m.imageUrl,
+                        m.playingDate, m.filmDirector, m.casts, m.officialUrl,
+                        m.trailerMovieUrl, m.createAt, m.favoriteCount, m.watchDate,
+                        m.watchPlace,m.note)
     }
-
-    fun update(newInfo: Movie) {
-        favoriteCount = newInfo.favoriteCount
-        watchDate = newInfo.watchDate
-        watchPlace = newInfo.watchPlace
-        note = newInfo.note
-    }
-
-    override fun equals(other: Any?): Boolean = (other as Movie).id == id || super.equals(other)
-
-    override fun hashCode(): Int = id.toInt()
-
-    override fun isItemTheSame(o: RecyclerDiffable) =
-            (id == (o as? Movie)?.id)
-
-    override fun isContentsTheSame(o: RecyclerDiffable) =
-            (this == (o as? Movie ?: false))
 }

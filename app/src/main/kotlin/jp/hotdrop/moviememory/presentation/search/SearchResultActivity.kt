@@ -15,7 +15,6 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,16 +29,16 @@ import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
-import javax.inject.Inject
 
 class SearchResultActivity: BaseActivity() {
 
-    private lateinit var binding: ActivitySearchResultBinding
+    private val binding: ActivitySearchResultBinding by lazy {
+        DataBindingUtil.setContentView<ActivitySearchResultBinding>(this, R.layout.activity_search_result)
+    }
+
     private var adapter: MoviesAdapter? = null
     private var suggestionAdapter: SuggestionAdapter? = null
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchResultViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SearchResultViewModel::class.java)
     }
@@ -47,7 +46,6 @@ class SearchResultActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getComponent().inject(this)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_result)
 
         initView()
         observe()
@@ -250,15 +248,6 @@ class SearchResultActivity: BaseActivity() {
                         Pair.create(binding.imageView as View, activity.getString(R.string.transition_movie_image))
                 )
                 MovieDetailActivity.startForResult(this@SearchResultActivity, movie.id, REQUEST_CODE_TO_DETAIL, options)
-            }
-        }
-
-        fun refresh(movie: Movie) {
-            adapter?.let { adapter ->
-                adapter.getItemPosition(movie)?.let { index ->
-                    adapter.getItem(index).update(movie)
-                    notifyItemChanged(index)
-                }
             }
         }
     }

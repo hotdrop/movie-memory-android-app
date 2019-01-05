@@ -6,24 +6,34 @@ import android.content.Intent
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import androidx.core.content.ContextCompat
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
+import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
+import jp.hotdrop.moviememory.databinding.ItemCastBinding
+import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.component.FavoriteStars
-import javax.inject.Inject
+import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
+import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 
 class MovieDetailActivity: BaseActivity() {
 
-    private lateinit var binding: ActivityMovieDetailBinding
+    private val binding: ActivityMovieDetailBinding by lazy {
+        DataBindingUtil.setContentView<ActivityMovieDetailBinding>(this, R.layout.activity_movie_detail)
+    }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MovieDetailViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
@@ -31,13 +41,12 @@ class MovieDetailActivity: BaseActivity() {
     private val movieId: Long by lazy {
         intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
     }
+
     private var favoriteStars: FavoriteStars? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getComponent().inject(this)
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
 
         initView()
         observe()
@@ -63,17 +72,67 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
 
-        binding.editFab.setOnClickListener {
-            navigationToEdit()
+        binding.menuFab.setOnClickListener {
+            if (isOpenFabMenu()) {
+                collapseFabMenu()
+            } else {
+                expandFabMenu()
+            }
         }
+
+        binding.fabOverview.setOnClickListener {
+            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.OVERVIEW, MOVIE_EDIT_REQUEST_CODE)
+            collapseFabMenu()
+        }
+        binding.fabDetail.setOnClickListener {
+            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.DETAIL, MOVIE_EDIT_REQUEST_CODE)
+            collapseFabMenu()
+        }
+        binding.fabMyNote.setOnClickListener {
+            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.MYNOTE, MOVIE_EDIT_REQUEST_CODE)
+            collapseFabMenu()
+        }
+    }
+
+    private val fabCloseAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_close) }
+    private val fabOpenAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_open) }
+    private fun isOpenFabMenu(): Boolean = binding.menuFab.rotation == FAB_MENU_OPEN_ROTATION
+
+    private fun collapseFabMenu() {
+        ViewCompat.animate(binding.menuFab)
+                .rotation(FAB_MENU_CLOSE_ROTATION)
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10f))
+                .start()
+        binding.fabOverviewLayout.startAnimation(fabCloseAnimation)
+        binding.fabDetailLayout.startAnimation(fabCloseAnimation)
+        binding.fabMyNoteLayout.startAnimation(fabCloseAnimation)
+        binding.fabOverview.isClickable = false
+        binding.fabDetail.isClickable = false
+        binding.fabMyNote.isClickable = false
+    }
+
+    private fun expandFabMenu() {
+        ViewCompat.animate(binding.menuFab)
+                .rotation(FAB_MENU_OPEN_ROTATION)
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10f))
+                .start()
+        binding.fabOverviewLayout.startAnimation(fabOpenAnimation)
+        binding.fabDetailLayout.startAnimation(fabOpenAnimation)
+        binding.fabMyNoteLayout.startAnimation(fabOpenAnimation)
+        binding.fabOverview.isClickable = true
+        binding.fabDetail.isClickable = true
+        binding.fabMyNote.isClickable = true
     }
 
     private fun observe() {
         viewModel.setUp(movieId)
         viewModel.movie?.observe(this, Observer {
             it?.run {
-                binding.movie = this
-                initFavoriteStar(this.favoriteCount)
+                initViewAfterGetMovie(this)
             }
         })
         viewModel.isRefreshMovie.observe(this, Observer {
@@ -93,12 +152,30 @@ class MovieDetailActivity: BaseActivity() {
         }
     }
 
-    private fun navigationToEdit() {
-        MovieDetailEditActivity.startForResult(this, movieId, MOVIE_DETAIL_REQUEST_CODE)
-    }
-
     private fun startBrowser(url: String) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    private fun initViewAfterGetMovie(movie: Movie) {
+
+        binding.movie = movie
+
+        // お気に入りスター
+        initFavoriteStar(movie.favoriteCount)
+
+        // キャスト
+        movie.casts?.let { casts ->
+            binding.castsRecyclerView.let { recyclerView ->
+                recyclerView.layoutManager = FlexboxLayoutManager(this).apply {
+                    flexDirection = FlexDirection.ROW
+                    flexWrap = FlexWrap.WRAP
+                }
+                recyclerView.adapter = CastsAdapter().apply { addAll(casts) }
+                recyclerView.isVisible = true
+            }
+        } ?: kotlin.run {
+            binding.castsNoDataText.isVisible = true
+        }
     }
 
     private fun initFavoriteStar(favoriteCount: Int) {
@@ -121,7 +198,7 @@ class MovieDetailActivity: BaseActivity() {
         if (resultCode != Activity.RESULT_OK) {
             return
         }
-        if (requestCode == MOVIE_DETAIL_REQUEST_CODE) {
+        if (requestCode == MOVIE_EDIT_REQUEST_CODE) {
             Snackbar.make(binding.snackbarArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
             onResultRefreshMovie()
         }
@@ -135,9 +212,27 @@ class MovieDetailActivity: BaseActivity() {
         }
     }
 
+    inner class CastsAdapter: RecyclerViewAdapter<String, RecyclerViewAdapter.BindingHolder<ItemCastBinding>>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemCastBinding> =
+                BindingHolder(parent, R.layout.item_cast)
+
+        override fun onBindViewHolder(holder: BindingHolder<ItemCastBinding>, position: Int) {
+            val holderBinding = holder.binding
+            holderBinding?.let { binding ->
+                val cast = getItem(position)
+                binding.castName.text = cast
+            }
+        }
+    }
+
     companion object {
-        const val MOVIE_DETAIL_REQUEST_CODE = 9000
+
+        const val FAB_MENU_OPEN_ROTATION = 90f
+        const val FAB_MENU_CLOSE_ROTATION = 0f
+
+        const val MOVIE_EDIT_REQUEST_CODE = 900
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
+
         fun startForResult(fragment: Fragment, movieId: Long, requestCode: Int, options: ActivityOptions? = null) =
                 fragment.startActivityForResult(Intent(fragment.context, MovieDetailActivity::class.java)
                         .apply {

@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.data.local
 
+import dagger.Reusable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
@@ -7,6 +8,7 @@ import jp.hotdrop.moviememory.model.Category
 import timber.log.Timber
 import javax.inject.Inject
 
+@Reusable
 class CategoryDatabase @Inject constructor(
         private val database: AppDatabase,
         private val dao: CategoryDao
