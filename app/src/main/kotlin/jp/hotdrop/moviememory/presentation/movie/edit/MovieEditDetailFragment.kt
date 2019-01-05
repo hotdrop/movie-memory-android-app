@@ -1,10 +1,12 @@
 package jp.hotdrop.moviememory.presentation.movie.edit
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -17,6 +19,7 @@ import jp.hotdrop.moviememory.databinding.FragmentMovieEditDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
+import jp.hotdrop.moviememory.presentation.component.TextInputDialog
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import org.threeten.bp.LocalDate
 import java.lang.IllegalStateException
@@ -62,7 +65,14 @@ class MovieEditDetailFragment: BaseFragment() {
         }
 
         binding.addCastButton.setOnClickListener {
-            // TODO キャスト追加
+            if (context != null && adapter != null) {
+                TextInputDialog.Builder(context!!)
+                        .setTitle(R.string.dialog_title_cast_add)
+                        .setTextHint(R.string.cast_text_hint)
+                        .setOnPositiveListener { castName ->
+                            adapter!!.add(castName)
+                        }.show()
+            }
         }
 
         binding.fab.setOnClickListener {
@@ -119,16 +129,35 @@ class MovieEditDetailFragment: BaseFragment() {
         override fun onBindViewHolder(holder: BindingHolder<ItemCastBinding>, position: Int) {
             val holderBinding = holder.binding
             holderBinding?.let { binding ->
-                val cast = getItem(position)
-                binding.castName.text = cast
-                binding.iconCastClear.isVisible = true
+                val castName = getItem(position)
+                binding.castName.text = castName
+                binding.iconCastDelete.isVisible = true
 
-                binding.iconCastClear.setOnClickListener {
-                    // TODO 削除
+                binding.iconCastDelete.setOnClickListener {
+                    context?.let { context ->
+                        val message = context.getString(R.string.cast_delete_text, castName)
+                        AlertDialog.Builder(context)
+                                .setMessage(message)
+                                .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                                    super.remove(castName)
+                                    dialogInterface.dismiss()
+                                }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
+                                    dialogInterface.dismiss()
+                                }.setCancelable(true)
+                                .show()
+                    }
                 }
 
-                binding.castCardView.setOnClickListener {
-                    // TODO 更新
+                binding.castLayout.setOnClickListener {
+                    context?.let { context ->
+                        TextInputDialog.Builder(context)
+                                .setTitle(R.string.dialog_title_cast_update)
+                                .setTextHint(R.string.cast_text_hint)
+                                .setText(castName)
+                                .setOnPositiveListener { updatedCastName ->
+                                    super.update(castName, updatedCastName)
+                                }.show()
+                    }
                 }
             }
         }

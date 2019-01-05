@@ -34,7 +34,7 @@
     <string name="icon_casts_content_description">この映画の主要キャスト一覧を示すアイコンです</string>
     <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
     <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
-    <string name="icon_cast_clear_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
+    <string name="icon_cast_delete_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
 
     <!--映画情報の編集画面-->
     <string name="movie_edit_overview_title">概要の編集</string>
@@ -42,7 +42,11 @@
     <string name="movie_edit_my_note_title">自分用メモの編集</string>
     <string name="message_save_success">保存しました。</string>
     <string name="attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。</string>
+    <string name="cast_delete_text">キャストから\n「%s」\nを削除します。よろしいですか？</string>
     <string name="empty_casts">※キャストは未登録です。</string>
+    <string name="dialog_title_cast_update">キャスト名編集</string>
+    <string name="dialog_title_cast_add">キャスト追加</string>
+    <string name="cast_text_hint">キャスト名を入力してください</string>
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>
@@ -92,8 +96,5 @@
     <string name="transition_favorite_star3">favoriteStars3</string>
     <string name="transition_favorite_star4">favoriteStars4</string>
     <string name="transition_favorite_star5">favoriteStars5</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

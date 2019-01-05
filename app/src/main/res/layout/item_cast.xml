@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cast_card_view"
-        style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
         app:cardCornerRadius="@dimen/corner_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cast_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <TextView
                 android:id="@+id/cast_name"
@@ -29,12 +31,13 @@
                 tools:text="キャスト名" />
 
             <ImageView
-                android:id="@+id/icon_cast_clear"
+                android:id="@+id/icon_cast_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="@string/icon_cast_clear_description"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/icon_cast_delete_description"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -43,6 +46,5 @@
                 app:srcCompat="@drawable/ic_clear" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.card.MaterialCardView>
 </layout>

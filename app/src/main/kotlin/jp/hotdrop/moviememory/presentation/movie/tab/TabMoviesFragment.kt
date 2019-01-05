@@ -129,9 +129,16 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             binding?.let {
                 val movie = getItem(position)
                 it.movie = movie
-                it.imageView.setOnClickListener {
-                    transitionWithSharedElements(binding, movie)
-                }
+                onTapNavigationDetail(binding, movie)
+            }
+        }
+
+        private fun onTapNavigationDetail(binding: ItemMovieBinding ,movie: Movie) {
+            binding.movieLayout.setOnClickListener {
+                transitionWithSharedElements(binding, movie)
+            }
+            binding.imageView.setOnClickListener {
+                transitionWithSharedElements(binding, movie)
             }
         }
 

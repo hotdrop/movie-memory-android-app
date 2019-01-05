@@ -27,6 +27,13 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
         }
     }
 
+    fun add(item: T) {
+        list.add(item)
+        getItemPosition(item)?.let {
+            notifyItemInserted(it)
+        }
+    }
+
     fun addAll(items: List<T>) {
         val startIdx = if (list.size > 0) {
             list.size - 1
@@ -43,21 +50,36 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
 
     fun refresh(items: List<T>) {
         Timber.d("Adapter refresh.")
-        clear()
+        list.clear()
         list.addAll(items)
         notifyDataSetChanged()
+    }
+
+    fun update(oldItem: T, newItem: T) {
+        list.forEachIndexed { i, element ->
+            if (element == oldItem) {
+                list[i] = newItem
+                notifyItemChanged(i)
+                return@forEachIndexed
+            }
+        }
     }
 
     fun replace(index: Int, item: T) {
         list.forEachIndexed { i, _ ->
             if(i == index) {
                 list[index] = item
+                notifyItemChanged(i)
+                return@forEachIndexed
             }
         }
     }
 
-    fun clear() {
-        list.clear()
+    fun remove(item: T) {
+        getItemPosition(item)?.let {
+            list.remove(item)
+            notifyItemRemoved(it)
+        }
     }
 
     /**
