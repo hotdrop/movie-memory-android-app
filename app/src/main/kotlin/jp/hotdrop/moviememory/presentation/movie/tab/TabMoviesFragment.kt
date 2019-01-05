@@ -3,7 +3,6 @@ package jp.hotdrop.moviememory.presentation.movie.tab
 import android.app.Activity
 import android.app.ActivityOptions
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -23,7 +22,6 @@ import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRec
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
 import timber.log.Timber
-import javax.inject.Inject
 
 class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
@@ -31,8 +29,6 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private lateinit var adapter: TabMoviesAdapter
     private var activity: MainActivity? = null
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: TabMoviesViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(TabMoviesViewModel::class.java)
     }
@@ -63,6 +59,8 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         initView()
         observe()
+
+        viewModel.onLoad(0)
     }
 
     private fun initView() {
@@ -113,7 +111,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         }
 
         if (requestCode == REQUEST_CODE_TO_DETAIL) {
-            val refreshMovieId = data.getIntExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
+            val refreshMovieId = data.getLongExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
             viewModel.onRefreshMovie(refreshMovieId)
         }
     }
@@ -131,9 +129,16 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             binding?.let {
                 val movie = getItem(position)
                 it.movie = movie
-                it.imageView.setOnClickListener {
-                    transitionWithSharedElements(binding, movie)
-                }
+                onTapNavigationDetail(binding, movie)
+            }
+        }
+
+        private fun onTapNavigationDetail(binding: ItemMovieBinding ,movie: Movie) {
+            binding.movieLayout.setOnClickListener {
+                transitionWithSharedElements(binding, movie)
+            }
+            binding.imageView.setOnClickListener {
+                transitionWithSharedElements(binding, movie)
             }
         }
 
@@ -155,7 +160,9 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         fun refresh(movie: Movie) {
             adapter.getItemPosition(movie)?.let { index ->
-                adapter.getItem(index).update(movie)
+                val oldMovie = adapter.getItem(index)
+                val newMovie = Movie.copyAll(oldMovie)
+                adapter.replace(index, newMovie)
                 notifyItemChanged(index)
             }
         }

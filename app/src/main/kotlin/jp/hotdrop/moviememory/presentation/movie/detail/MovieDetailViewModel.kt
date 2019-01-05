@@ -21,7 +21,7 @@ class MovieDetailViewModel @Inject constructor(
     private val mutableIsRefreshMovie = MutableLiveData<Boolean>()
     val isRefreshMovie: LiveData<Boolean> = mutableIsRefreshMovie
 
-    fun setUp(id: Int) {
+    fun setUp(id: Long) {
         movie = LiveDataReactiveStreams.fromPublisher(useCase.movieFlowable(id))
     }
 

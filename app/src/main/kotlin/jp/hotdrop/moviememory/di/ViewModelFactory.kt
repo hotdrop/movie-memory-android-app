@@ -2,9 +2,11 @@ package jp.hotdrop.moviememory.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import dagger.Reusable
 import javax.inject.Inject
 import javax.inject.Provider
 
+@Reusable
 class ViewModelFactory @Inject constructor(
         private val creatorMap: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ): ViewModelProvider.Factory {

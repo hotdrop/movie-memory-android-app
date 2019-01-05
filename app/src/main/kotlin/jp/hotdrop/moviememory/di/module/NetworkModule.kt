@@ -41,8 +41,4 @@ class NetworkModule {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
     }
-
-    @Provides
-    @Singleton
-    fun provideMovieApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
 }

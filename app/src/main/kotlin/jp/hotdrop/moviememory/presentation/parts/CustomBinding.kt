@@ -5,8 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
-import com.google.firebase.storage.FirebaseStorage
 import jp.hotdrop.moviememory.R
+import timber.log.Timber
 
 @BindingAdapter("imageUrl")
 fun setImageUrl(view: ImageView, url: String?) {
@@ -18,9 +18,14 @@ fun setImageUrl(view: ImageView, url: String?) {
                     .into(view)
         }
         else -> {
-            val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url)
+            val imageUrl = if (url.endsWith("jpg") || url.endsWith("png")) {
+                url
+            } else {
+                Timber.d("ImageURLがおかしい. url=$url")
+                ""
+            }
             GlideApp.with(view.context)
-                    .load(storageRef)
+                    .load(imageUrl)
                     .placeholder(R.drawable.image_default)
                     .into(view)
         }

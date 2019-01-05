@@ -29,25 +29,6 @@ class TabMoviesViewModel @Inject constructor(
 
     var condition: MovieCondition? = null
 
-    /**
-     * 初回起動時は全データを持ってきてDBに入れる
-     * 2回目以降は差分データだけあれば取得する。refreshはなし
-     * 設定画面にキャッシュ削除を設けてそれをやった場合だけ全データクリアする
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
-        useCase.prepared()
-                .observeOn(Schedulers.io())
-                .subscribeBy(
-                        onComplete = {
-                            onLoad(0)
-                        },
-                        onError = {
-                            mutableError.postValue(AppError(it))
-                        }
-                )
-    }
-
     fun onLoad(page: Int) {
         condition?.let { type ->
             val index = page * OFFSET
@@ -63,7 +44,6 @@ class TabMoviesViewModel @Inject constructor(
                             }
                     ).addTo(compositeDisposable)
         } ?: IllegalStateException("typeがnullです。プログラムを見直してください。")
-
     }
 
     /**
@@ -83,7 +63,7 @@ class TabMoviesViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun onRefreshMovie(id: Int) {
+    fun onRefreshMovie(id: Long) {
         useCase.findMovie(id)
                 .observeOn(Schedulers.io())
                 .subscribeBy(

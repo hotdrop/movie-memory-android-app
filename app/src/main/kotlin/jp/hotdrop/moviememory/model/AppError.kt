@@ -10,7 +10,7 @@ class AppError constructor(
         if (message.isNullOrEmpty()) {
             throwable?.let {
                 Timber.e(it)
-            } ?: throw IllegalArgumentException("AppErrorを生成したにも関わらずthrowableもmessageもnullです。プログラムを見直してください")
+            } ?: throw Throwable("AppErrorを生成したにも関わらずthrowableもmessageもnullです。プログラムを見直してください")
         } else {
             throwable?.let {
                 Timber.e(it, message)
