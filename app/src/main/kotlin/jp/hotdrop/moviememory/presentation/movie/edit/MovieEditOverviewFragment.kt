@@ -46,6 +46,7 @@ class MovieEditOverviewFragment: BaseFragment() {
     }
 
     private fun initView() {
+        // TODO ImageUrlもこの画面で修正したい。でもどうやるか考える
         binding.fab.setOnClickListener {
             binding.movie?.let { movie ->
                 viewModel?.save(movie) ?: throw IllegalStateException("viewModel is null!!")

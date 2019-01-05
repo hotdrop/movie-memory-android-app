@@ -40,7 +40,9 @@ class MovieRepository @Inject constructor(
                     }
 
     /**
-     * TODO 最新データを取得する。最新をどうするか考える必要が出たのでここ保留
+     * 最新データを取得
+     * TODO 最初はIDが昇順前提で最新を持って来ればいいと考えていたが、データ取得側（node）でそれが厳しそうなのでどうするか考える。。
+     * TODO 本当は公開日で取得すればいいのだが、それで行く場合は公開日が2月とか2019年夏とか曖昧な奴をパースしてやる必要があるのでちょっとどうするか・・
      */
     fun loadRecentMovies(): Completable {
         return Completable.complete()
