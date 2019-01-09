@@ -6,13 +6,6 @@ import jp.hotdrop.moviememory.di.component.FragmentComponent
 import javax.inject.Inject
 
 abstract class BaseFragment: Fragment() {
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val fragmentComponent: FragmentComponent by lazy {
-        (activity as BaseActivity).getComponent().plus()
-    }
-
-    fun getComponent(): FragmentComponent = fragmentComponent
 }

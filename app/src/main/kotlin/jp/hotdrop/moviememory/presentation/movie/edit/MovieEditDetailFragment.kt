@@ -17,25 +17,32 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
-import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import java.lang.IllegalStateException
 
 class MovieEditDetailFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMovieEditDetailBinding
     private var adapter: CastsAdapter? = null
+
     private var viewModel: MovieEditViewModel? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: throw IllegalStateException("viewModel is null!!")
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

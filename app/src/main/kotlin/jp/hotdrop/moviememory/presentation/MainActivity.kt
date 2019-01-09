@@ -7,6 +7,7 @@ import androidx.fragment.app.transaction
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
 import jp.hotdrop.moviememory.presentation.search.SearchFragment
 import jp.hotdrop.moviememory.presentation.setting.SettingFragment
@@ -24,7 +25,7 @@ class MainActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getComponent().inject(this)
+        component.inject(this)
 
         firebase.login {
             Snackbar.make(binding.snackbarArea, "Firebaseのログインに失敗しました。", Snackbar.LENGTH_LONG).show()

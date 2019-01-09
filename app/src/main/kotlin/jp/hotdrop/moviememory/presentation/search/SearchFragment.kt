@@ -10,15 +10,16 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentSearchBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.presentation.BaseFragment
-import jp.hotdrop.moviememory.presentation.MainActivity
+import timber.log.Timber
 
 class SearchFragment: BaseFragment() {
 
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var activity: MainActivity
+    private lateinit var parentActivity: Context
 
     private val viewModel: SearchViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
@@ -26,9 +27,13 @@ class SearchFragment: BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        (context as MainActivity).let {
-            activity = it
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            parentActivity = it
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
         }
     }
 
@@ -81,7 +86,7 @@ class SearchFragment: BaseFragment() {
     }
 
     private fun navigationToSearchResult(condition: SearchCondition) {
-        SearchResultActivity.start(activity, condition)
+        SearchResultActivity.start(parentActivity, condition)
     }
 
     companion object {

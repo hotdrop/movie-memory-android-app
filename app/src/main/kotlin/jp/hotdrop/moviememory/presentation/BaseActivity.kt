@@ -9,14 +9,7 @@ import javax.inject.Inject
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val activityComponent: ActivityComponent by lazy {
-        (application as MovieMemoryApp).getComponent().plus()
-    }
-
-    fun getComponent(): ActivityComponent = activityComponent
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == android.R.id.home) {

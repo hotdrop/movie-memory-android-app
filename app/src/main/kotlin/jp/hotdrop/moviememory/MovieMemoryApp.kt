@@ -7,30 +7,28 @@ import androidx.multidex.MultiDex
 import com.jakewharton.threetenabp.AndroidThreeTen
 import jp.hotdrop.moviememory.di.component.AppComponent
 import jp.hotdrop.moviememory.di.component.DaggerAppComponent
-import jp.hotdrop.moviememory.di.module.AppModule
+import jp.hotdrop.moviememory.di.component.DaggerComponentProvider
 import timber.log.Timber
 
-open class MovieMemoryApp: Application() {
+open class MovieMemoryApp: Application(), DaggerComponentProvider {
 
-    private lateinit var appComponent: AppComponent
+    override val component: AppComponent by lazy {
+        DaggerAppComponent.builder()
+                .appContext(applicationContext)
+                .build()
+    }
 
     override fun onCreate() {
         super.onCreate()
 
         initTimber()
         initTreeTenABP()
-
-        appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
-
-    fun getComponent(): AppComponent = appComponent
 
     private fun initTimber() {
         if (BuildConfig.DEBUG) {

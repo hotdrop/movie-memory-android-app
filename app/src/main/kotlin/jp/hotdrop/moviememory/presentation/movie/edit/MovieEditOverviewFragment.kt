@@ -11,8 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditOverviewBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.presentation.BaseFragment
+import timber.log.Timber
 import java.lang.IllegalStateException
 
 class MovieEditOverviewFragment: BaseFragment() {
@@ -21,12 +23,16 @@ class MovieEditOverviewFragment: BaseFragment() {
 
     private var viewModel: MovieEditViewModel? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: throw IllegalStateException("viewModel is null!!")
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

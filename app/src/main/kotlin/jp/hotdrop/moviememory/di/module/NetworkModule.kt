@@ -16,10 +16,9 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module(includes = [InterceptorModule::class])
-class NetworkModule {
+object NetworkModule {
 
-    @Provides
-    @Singleton
+    @JvmStatic @Provides @Singleton
     fun provideOkHttpClient(interceptors: Set<@JvmSuppressWildcards Interceptor>): OkHttpClient =
             OkHttpClient.Builder()
                     .readTimeout(10, TimeUnit.SECONDS)
@@ -29,8 +28,7 @@ class NetworkModule {
                     }
                     .build()
 
-    @Provides
-    @Singleton
+    @JvmStatic @Provides @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .client(okHttpClient)

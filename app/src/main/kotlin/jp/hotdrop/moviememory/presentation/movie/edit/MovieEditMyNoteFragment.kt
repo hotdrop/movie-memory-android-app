@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditMyNoteBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import java.lang.IllegalStateException
 
 class MovieEditMyNoteFragment: BaseFragment() {
@@ -18,12 +20,16 @@ class MovieEditMyNoteFragment: BaseFragment() {
     private lateinit var binding: FragmentMovieEditMyNoteBinding
     private var viewModel: MovieEditViewModel? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: throw IllegalStateException("viewModel is null!!")
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

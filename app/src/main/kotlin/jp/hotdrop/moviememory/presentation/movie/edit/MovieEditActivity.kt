@@ -3,17 +3,15 @@ package jp.hotdrop.moviememory.presentation.movie.edit
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieEditBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.BaseActivity
-import javax.inject.Inject
 
 class MovieEditActivity: BaseActivity() {
 
@@ -27,7 +25,7 @@ class MovieEditActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getComponent().inject(this)
+        component.inject(this)
 
         observe()
         initView()

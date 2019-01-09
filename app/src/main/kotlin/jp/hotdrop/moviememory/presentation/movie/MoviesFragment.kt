@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.presentation.movie
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,9 +16,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class MoviesFragment: BaseFragment() {
@@ -30,7 +33,11 @@ class MoviesFragment: BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
+
+        activity?.component?.fragment()?.inject(this) ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

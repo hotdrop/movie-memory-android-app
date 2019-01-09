@@ -22,11 +22,12 @@ import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.component.FavoriteStars
 import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
-import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 
 class MovieDetailActivity: BaseActivity() {
 
@@ -46,7 +47,7 @@ class MovieDetailActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getComponent().inject(this)
+        component.inject(this)
 
         initView()
         observe()

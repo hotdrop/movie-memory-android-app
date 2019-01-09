@@ -17,18 +17,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivitySearchResultBinding
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.databinding.RowSuggestionBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
-import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
+import timber.log.Timber
 
 class SearchResultActivity: BaseActivity() {
 
@@ -45,7 +46,7 @@ class SearchResultActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getComponent().inject(this)
+        component.inject(this)
 
         initView()
         observe()
@@ -87,7 +88,6 @@ class SearchResultActivity: BaseActivity() {
         binding.suggestionsRecyclerView.let {
             it.bringToFront()
             it.setHasFixedSize(true)
-            it.layoutManager = LinearLayoutManager(this)
             suggestionAdapter = SuggestionAdapter()
             it.adapter = suggestionAdapter
         }
@@ -229,7 +229,7 @@ class SearchResultActivity: BaseActivity() {
             holder.binding?.let { itemBinding ->
                 val movie = getItem(position)
                 itemBinding.movie = movie
-                itemBinding.imageView.setOnClickListener {
+                itemBinding.movieLayout.setOnClickListener {
                     transitionWithSharedElements(itemBinding, movie)
                 }
             }
