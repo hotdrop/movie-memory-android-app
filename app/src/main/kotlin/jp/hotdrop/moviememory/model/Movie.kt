@@ -29,12 +29,15 @@ data class Movie(
 
     fun categoryName() = category.name
 
+    override fun equals(other: Any?): Boolean {
+        return (other as? Movie)?.id == this.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
     companion object {
         const val DEFAULT_TEXT_VALUE = "ー"
-        fun copyAll(m: Movie) =
-                Movie(m.id, m.title, m.category, m.overview, m.imageUrl,
-                        m.playingDate, m.filmDirector, m.casts, m.officialUrl,
-                        m.trailerMovieUrl, m.createAt, m.favoriteCount, m.watchDate,
-                        m.watchPlace,m.note)
     }
 }

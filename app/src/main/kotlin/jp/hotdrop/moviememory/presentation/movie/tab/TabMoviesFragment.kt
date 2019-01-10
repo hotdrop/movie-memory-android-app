@@ -92,6 +92,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         })
         viewModel.refreshMovie.observe(this, Observer {
             it?.let { movie ->
+                Timber.d("observe")
                 adapter?.refresh(movie)
                 viewModel.clear()
             }
@@ -115,6 +116,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
         if (requestCode == REQUEST_CODE_TO_DETAIL) {
             val refreshMovieId = data.getLongExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
+            Timber.d("  更新する映画ID: $refreshMovieId")
             viewModel.onRefreshMovie(refreshMovieId)
         }
     }
@@ -162,10 +164,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
         fun refresh(movie: Movie) {
             adapter?.let { adapter ->
                 adapter.getItemPosition(movie)?.let { index ->
-                    val oldMovie = adapter.getItem(index)
-                    val newMovie = Movie.copyAll(oldMovie)
-                    adapter.replace(index, newMovie)
-                    notifyItemChanged(index)
+                    adapter.replace(index, movie)
                 }
             }
         }

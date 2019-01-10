@@ -28,6 +28,7 @@ import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.component.FavoriteStars
 import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
+import timber.log.Timber
 
 class MovieDetailActivity: BaseActivity() {
 

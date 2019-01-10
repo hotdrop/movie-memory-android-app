@@ -91,6 +91,7 @@ class MovieRepository @Inject constructor(
     fun findMovie(id: Long): Single<Movie> =
             movieDatabase.find(id)
                     .map {
+                        Timber.d("映画情報取得 id=$id")
                         entityToMovieWithLocalInfo(it)
                     }
 
