@@ -32,6 +32,10 @@ fun setImageUrl(view: ImageView, url: String?) {
     }
 }
 
+fun ImageView.setImageURL(url: String) {
+    setImageUrl(this, url)
+}
+
 @BindingAdapter("webLinkColor")
 fun setWebLinkColor(view: TextView, url: String?) {
     val textColor = if (url.isNullOrEmpty() || !url.startsWith("http")) {

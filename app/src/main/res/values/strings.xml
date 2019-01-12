@@ -47,6 +47,13 @@
     <string name="dialog_title_cast_update">キャスト名編集</string>
     <string name="dialog_title_cast_add">キャスト追加</string>
     <string name="cast_text_hint">キャスト名を入力してください</string>
+    <string name="image_url_label">画像イメージURL</string>
+    <string name="image_url_search_browser_desc">ブラウザを起動して画像イメージを取得します。設定したい画像イメージをタップしてください。</string>
+    <string name="image_preview_description">この映画のイメージ画像です。</string>
+
+    <!-- 画像検索ダイアログ -->
+    <string name="image_search_dialog_url">https://google.co.jp</string>
+    <string name="image_search_dialog_close_label">閉じる</string>
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>
