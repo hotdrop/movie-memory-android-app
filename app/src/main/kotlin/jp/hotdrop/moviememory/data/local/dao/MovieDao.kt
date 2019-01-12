@@ -37,6 +37,9 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE id = :id")
     fun selectWithDirect(id: Long): MovieEntity
 
+    @Query("SELECT MAX(createdAt) FROM movie")
+    fun selectMaxCreatedAt(): Single<Long>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<MovieEntity>)
 

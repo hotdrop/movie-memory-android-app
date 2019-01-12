@@ -17,17 +17,15 @@ data class MovieResponse(
         val filmDirector: String?,
         val casts: List<String>?,
         val officialUrl: String?,
-        val trailerMovieUrl: String?
+        val trailerMovieUrl: String?,
+        val createdAt: Long
 )
 
 fun QueryDocumentSnapshot.toResponse(): MovieResponse {
+
     fun getFieldToString(key: String): String = this.getString(key) ?: ""
-    val originalPlayDate = this.getString("playingDate")
-    val playingDate = if (originalPlayDate != null && originalPlayDate.length == 8) {
-        originalPlayDate.substring(0, 4) + "-" + originalPlayDate.substring(4, 6) + "-" + originalPlayDate.substring(6, 8)
-    } else {
-        null
-    }
+    fun getFieldToLong(key: String): Long = this.getLong(key) ?: 0
+
     val casts = this.get("casts") as? List<String>
     return MovieResponse(
             this.id.toLong(),
@@ -35,11 +33,12 @@ fun QueryDocumentSnapshot.toResponse(): MovieResponse {
             getFieldToString("category"),
             getFieldToString("overview"),
             getFieldToString("imageUrl"),
-            playingDate,
+            getFieldToString("playingDate"),
             getFieldToString("director"),
             casts,
             getFieldToString("officialUrl"),
-            getFieldToString("pvUrl")
+            getFieldToString("pvUrl"),
+            getFieldToLong("createdAt")
     )
 }
 
@@ -55,8 +54,6 @@ fun MovieResponse.toEntity(categoryMap: Map<String, Long>): MovieEntity {
         this.categoryName
     }
 
-    val createAtInstant = OffsetDateTime.now().toInstant()
-
     return MovieEntity(
             this.id,
             this.title,
@@ -68,6 +65,6 @@ fun MovieResponse.toEntity(categoryMap: Map<String, Long>): MovieEntity {
             casts,
             this.officialUrl,
             this.trailerMovieUrl,
-            createAtInstant
+            this.createdAt
     )
 }

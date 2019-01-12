@@ -12,6 +12,7 @@ import javax.inject.Inject
 class MovieDatabase @Inject constructor(
         private val dao: MovieDao
 ) {
+
     fun findMoviesByBetween(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
             dao.selectMoviesByBetween(startAt.toEpochDay(), endAt.toEpochDay())
 
@@ -27,6 +28,7 @@ class MovieDatabase @Inject constructor(
     fun findMovies(categoryId: Long): Single<List<MovieEntity>> =
             dao.selectMovies(categoryId)
 
+
     fun movieWithFlowable(id: Long): Flowable<MovieEntity> =
             dao.selectWithFlowable(id)
 
@@ -38,6 +40,9 @@ class MovieDatabase @Inject constructor(
 
     fun isExist(): Single<Boolean> =
             dao.count().map { it > 0 }
+
+    fun findMaxCreatedAt(): Single<Long> =
+            dao.selectMaxCreatedAt()
 
     fun save(entities: List<MovieEntity>) {
         dao.insert(entities)
