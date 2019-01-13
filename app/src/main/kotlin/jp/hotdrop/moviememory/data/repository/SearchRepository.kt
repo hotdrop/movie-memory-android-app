@@ -5,10 +5,10 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import jp.hotdrop.moviememory.data.local.CategoryDatabase
-import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
-import jp.hotdrop.moviememory.data.local.SuggestionDatabase
+import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieNoteDatabase
+import jp.hotdrop.moviememory.data.local.database.SuggestionDatabase
 import jp.hotdrop.moviememory.data.local.entity.*
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Suggestion

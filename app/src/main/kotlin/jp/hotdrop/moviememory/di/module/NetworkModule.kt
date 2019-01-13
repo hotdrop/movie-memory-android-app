@@ -5,7 +5,8 @@ import dagger.Module
 import dagger.Provides
 import jp.hotdrop.moviememory.BuildConfig
 import jp.hotdrop.moviememory.data.remote.AppJsonAdapterFactory
-import jp.hotdrop.moviememory.data.remote.MovieApi
+import jp.hotdrop.moviememory.data.remote.api.FirestoreApi
+import jp.hotdrop.moviememory.data.remote.api.MovieApi
 import jp.hotdrop.moviememory.di.InterceptorModule
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -39,4 +40,7 @@ object NetworkModule {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
     }
+
+    @JvmStatic @Provides @Singleton
+    fun provideMovieApi(): MovieApi = FirestoreApi()
 }

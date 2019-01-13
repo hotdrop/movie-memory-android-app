@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import jp.hotdrop.moviememory.data.local.AppDatabase
-import jp.hotdrop.moviememory.data.local.CategoryDatabase
+import jp.hotdrop.moviememory.data.local.database.AppDatabase
+import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,7 +29,7 @@ class CategoryDatabaseTest {
         appDb = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
-        db = CategoryDatabase(appDb.categoryDao())
+        db = CategoryDatabase(appDb, appDb.categoryDao())
     }
 
     @After

@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.presentation.movie
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,15 +17,16 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.MovieCondition
-import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-class MoviesFragment: BaseFragment() {
+class MoviesFragment: Fragment() {
 
     private lateinit var binding: FragmentMoviesBinding
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MoviesViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
     }

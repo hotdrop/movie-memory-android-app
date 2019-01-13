@@ -6,18 +6,20 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.*
+import jp.hotdrop.moviememory.usecase.MovieUseCase
 import jp.hotdrop.moviememory.usecase.SearchUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
 class SearchResultViewModel @Inject constructor(
-        private val useCase: SearchUseCase
+        private val searchUseCase: SearchUseCase,
+        private val movieUseCase: MovieUseCase
 ): ViewModel(), LifecycleObserver {
 
     private val compositeDisposable = CompositeDisposable()
 
     val suggestion: LiveData<List<Suggestion>> =
-        LiveDataReactiveStreams.fromPublisher(useCase.suggestion())
+        LiveDataReactiveStreams.fromPublisher(searchUseCase.suggestion())
 
     private val mutablePrepared = MutableLiveData<Boolean>()
     val prepared: LiveData<Boolean> = mutablePrepared
@@ -27,6 +29,9 @@ class SearchResultViewModel @Inject constructor(
 
     private val mutableMovies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> = mutableMovies
+
+    private val mutableRefreshMovie = MutableLiveData<Movie>()
+    val refreshMovie: LiveData<Movie> = mutableRefreshMovie
 
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
@@ -39,7 +44,7 @@ class SearchResultViewModel @Inject constructor(
                 mutablePrepared.postValue(true)
             }
             else -> {
-                useCase.find(condition)
+                searchUseCase.find(condition)
                         .observeOn(Schedulers.io())
                         .subscribeBy(
                                 onSuccess = {
@@ -74,7 +79,7 @@ class SearchResultViewModel @Inject constructor(
     }
 
     private fun findFromUseCase(keyword: SearchCondition.Keyword) {
-        useCase.find(keyword)
+        searchUseCase.find(keyword)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
@@ -97,7 +102,7 @@ class SearchResultViewModel @Inject constructor(
         val suggestion = suggestion.value?.find {
             it.keyword == query.trim()
         } ?: Suggestion(keyword = query)
-        useCase.save(suggestion)
+        searchUseCase.save(suggestion)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
@@ -110,7 +115,7 @@ class SearchResultViewModel @Inject constructor(
     }
 
     fun clearSuggestions() {
-        useCase.deleteSuggestions()
+        searchUseCase.deleteSuggestions()
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
@@ -120,6 +125,20 @@ class SearchResultViewModel @Inject constructor(
                             mutableClearedSuggestions.postValue(false)
                         }
                 ).addTo(compositeDisposable)
+    }
+
+    fun onRefreshMovie(id: Long) {
+        movieUseCase.findMovie(id)
+                .observeOn(Schedulers.io())
+                .subscribeBy(
+                        onSuccess = {
+                            mutableRefreshMovie.postValue(it)
+                        },
+                        onError = {
+                            mutableError.postValue(AppError(it))
+                        }
+                )
+                .addTo(compositeDisposable)
     }
 
     fun clear() {

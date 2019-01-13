@@ -2,7 +2,7 @@ package jp.hotdrop.moviememory.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import jp.hotdrop.moviememory.data.local.CategoryDatabase
+import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.*
 

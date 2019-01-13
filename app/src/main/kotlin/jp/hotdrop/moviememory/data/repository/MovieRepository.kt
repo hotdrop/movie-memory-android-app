@@ -4,14 +4,14 @@ import dagger.Reusable
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import jp.hotdrop.moviememory.data.local.CategoryDatabase
-import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
+import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.data.local.entity.toEntity
 import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
-import jp.hotdrop.moviememory.data.remote.MovieApi
+import jp.hotdrop.moviememory.data.remote.api.MovieApi
 import jp.hotdrop.moviememory.data.remote.response.toEntity
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.LocalDate
@@ -155,7 +155,7 @@ class MovieRepository @Inject constructor(
             }
             else -> {
                 val toIndex = if (fromIndex + offset < listSize) {
-                    fromIndex + offset - 1
+                    fromIndex + offset
                 } else {
                     listSize
                 }

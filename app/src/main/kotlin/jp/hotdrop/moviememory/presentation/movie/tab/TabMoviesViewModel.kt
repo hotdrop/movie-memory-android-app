@@ -100,6 +100,6 @@ class TabMoviesViewModel @Inject constructor(
     }
 
     companion object {
-        const val OFFSET = 20
+        const val OFFSET = 100
     }
 }

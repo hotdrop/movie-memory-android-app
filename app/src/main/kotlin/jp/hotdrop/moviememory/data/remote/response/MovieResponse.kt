@@ -1,11 +1,9 @@
 package jp.hotdrop.moviememory.data.remote.response
 
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import jp.hotdrop.moviememory.data.local.CategoryDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.model.Category
 import org.threeten.bp.LocalDate
-import org.threeten.bp.OffsetDateTime
 
 data class MovieResponse(
         val id: Long,

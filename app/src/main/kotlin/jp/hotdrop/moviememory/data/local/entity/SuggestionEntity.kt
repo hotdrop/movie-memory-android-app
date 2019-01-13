@@ -10,7 +10,7 @@ import org.threeten.bp.OffsetDateTime
 data class SuggestionEntity (
         @PrimaryKey(autoGenerate = true) var id: Long? = null,
         val keyword: String,
-        val createAt: Instant
+        val createdAt: Instant
 )
 
 fun SuggestionEntity.toSuggestion(): Suggestion =
@@ -23,5 +23,5 @@ fun Suggestion.toEntity(): SuggestionEntity =
         SuggestionEntity (
                 id = this.id,
                 keyword = this.keyword,
-                createAt = OffsetDateTime.now().toInstant()
+                createdAt = OffsetDateTime.now().toInstant()
         )

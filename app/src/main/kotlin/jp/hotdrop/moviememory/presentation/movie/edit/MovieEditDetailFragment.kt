@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -18,19 +20,21 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
 import jp.hotdrop.moviememory.di.component.component
-import jp.hotdrop.moviememory.presentation.BaseFragment
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import java.lang.IllegalStateException
+import javax.inject.Inject
 
-class MovieEditDetailFragment: BaseFragment() {
+class MovieEditDetailFragment: Fragment() {
 
     private lateinit var binding: FragmentMovieEditDetailBinding
     private var adapter: CastsAdapter? = null
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var viewModel: MovieEditViewModel? = null
 
     override fun onAttach(context: Context) {

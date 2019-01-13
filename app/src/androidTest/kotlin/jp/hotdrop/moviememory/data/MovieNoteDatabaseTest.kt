@@ -5,8 +5,8 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import jp.hotdrop.moviememory.data.local.AppDatabase
-import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
+import jp.hotdrop.moviememory.data.local.database.AppDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieNoteEntity
 import org.junit.After
 import org.junit.Before

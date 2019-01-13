@@ -2,14 +2,13 @@ package jp.hotdrop.moviememory.di.module
 
 import androidx.room.Room
 import android.content.Context
-import androidx.room.RoomDatabase
 import dagger.Module
 import dagger.Provides
-import jp.hotdrop.moviememory.data.local.*
 import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
 import jp.hotdrop.moviememory.data.local.dao.MovieNoteDao
 import jp.hotdrop.moviememory.data.local.dao.SuggestionDao
+import jp.hotdrop.moviememory.data.local.database.AppDatabase
 import javax.inject.Singleton
 
 @Module
