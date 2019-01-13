@@ -67,7 +67,7 @@
     <string name="search_result_suggestion_clear_message">
         検索キーワードの履歴を全てクリアします。よろしいですか？
     </string>
-    <string name="search_result_query_hint">キーワード検索</string>
+    <string name="search_result_query_hint">キーワードを入力</string>
     <string name="search_result_not_found">該当する映画情報は見つかりませんでした。</string>
     <string name="icon_search_content_description">このアプリに保存されている映画情報のキーワード検索アイコンです</string>
     <string name="icon_suggestion_content_description">キーワード検索の履歴を示すアイコンです</string>

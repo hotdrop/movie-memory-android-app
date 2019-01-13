@@ -3,8 +3,6 @@ package jp.hotdrop.moviememory.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
-import jp.hotdrop.moviememory.MovieMemoryApp
-import jp.hotdrop.moviememory.di.component.ActivityComponent
 import javax.inject.Inject
 
 abstract class BaseActivity: AppCompatActivity() {

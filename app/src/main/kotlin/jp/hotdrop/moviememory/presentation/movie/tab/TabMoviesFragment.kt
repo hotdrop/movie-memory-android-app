@@ -11,6 +11,7 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
@@ -69,6 +70,8 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     private fun initView() {
+
+        binding.progress.isVisible = true
 
         super.setupRecyclerView(binding.moviesRecyclerView) { page, _ ->
             viewModel.onLoad(page)

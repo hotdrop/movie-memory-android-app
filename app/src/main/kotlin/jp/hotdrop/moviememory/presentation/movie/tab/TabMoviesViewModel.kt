@@ -9,7 +9,6 @@ import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.usecase.MovieUseCase
-import timber.log.Timber
 import javax.inject.Inject
 
 class TabMoviesViewModel @Inject constructor(

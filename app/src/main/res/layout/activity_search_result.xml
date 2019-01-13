@@ -31,7 +31,10 @@
                     android:showAsAction="always"
                     android:paddingStart="-4dp"
                     app:defaultQueryHint="@string/search_result_query_hint"
-                    app:iconifiedByDefault="false" />
+                    app:iconifiedByDefault="false" >
+                    <requestFocus />
+                    
+                </androidx.appcompat.widget.SearchView>
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>

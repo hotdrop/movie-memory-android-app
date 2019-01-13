@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivitySearchResultBinding
-import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.databinding.RowSuggestionBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Movie
@@ -245,41 +244,6 @@ class SearchResultActivity: BaseActivity() {
                 rowBinding.contentLayout.setOnClickListener {
                     binding.searchView.setQuery(keyword.keyword, true)
                 }
-            }
-        }
-    }
-
-    /**
-     * 検索結果の映画アダプター
-     */
-    inner class SuperMoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemMovieBinding> =
-                BindingHolder(parent, R.layout.item_movie)
-
-        override fun onBindViewHolder(holder: BindingHolder<ItemMovieBinding>, position: Int) {
-            holder.binding?.let { itemBinding ->
-                val movie = getItem(position)
-                itemBinding.movie = movie
-                itemBinding.movieLayout.setOnClickListener {
-                    transitionWithSharedElements(itemBinding, movie)
-                }
-            }
-        }
-
-        private fun transitionWithSharedElements(binding: ItemMovieBinding ,movie: Movie) {
-            this@SearchResultActivity.let {  activity ->
-                // アホっぽいけどtransitionするため1〜5まで用意する
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                        activity,
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star1)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star2)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star3)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star4)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star5)),
-                        Pair.create(binding.imageView as View, activity.getString(R.string.transition_movie_image))
-                )
-                MovieDetailActivity.startForResult(this@SearchResultActivity, movie.id, REQUEST_CODE_TO_DETAIL, options)
             }
         }
     }
