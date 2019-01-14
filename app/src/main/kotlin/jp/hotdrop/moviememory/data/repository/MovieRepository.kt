@@ -137,7 +137,6 @@ class MovieRepository @Inject constructor(
                     .forEach { categoryName ->
                         categoryMap[categoryName] = categoryDatabase.register(categoryName)
                     }
-
             val movieEntities = responses.map { movieResponse ->
                 movieResponse.toEntity(categoryMap)
             }

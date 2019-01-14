@@ -40,7 +40,8 @@ interface MovieDao {
     @Query("SELECT MAX(createdAt) FROM movie")
     fun selectMaxCreatedAt(): Single<Long>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // アプリ側でデータを上書きできるので、サーバーから同じデータが飛んできたらスルーする
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(movies: List<MovieEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
