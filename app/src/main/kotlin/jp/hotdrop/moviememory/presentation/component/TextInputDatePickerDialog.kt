@@ -8,6 +8,23 @@ import org.threeten.bp.LocalDate
 
 object TextInputDatePickerDialog {
 
+    fun show(context: Context, settingDateStr: String, onPositiveListener: (selectedDate: LocalDate) -> Unit) {
+        val date = if (settingDateStr.isEmpty() || settingDateStr == Movie.DEFAULT_TEXT_VALUE) {
+            LocalDate.now()
+        } else {
+            LocalDate.parse(settingDateStr)
+        }
+
+        context.run {
+            DatePickerDialog(this,
+                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                        val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                        onPositiveListener(selectedDate)
+                    }, date.year, date.monthValue - 1, date.dayOfMonth)
+                    .show()
+        }
+    }
+
     fun show(context: Context, textInputView: TextInputEditText) {
         val dateStr = textInputView.text.toString()
         val date = if (dateStr.isEmpty() || dateStr == Movie.DEFAULT_TEXT_VALUE) {
@@ -24,7 +41,7 @@ object TextInputDatePickerDialog {
                             it.setText(selectedDate.toString())
                             it.clearFocus()
                         }
-                    }, date.year, date.monthValue - 1 ,date.dayOfMonth)
+                    }, date.year, date.monthValue - 1, date.dayOfMonth)
                     .let { dialog ->
                         dialog.setOnCancelListener {
                             textInputView.clearFocus()

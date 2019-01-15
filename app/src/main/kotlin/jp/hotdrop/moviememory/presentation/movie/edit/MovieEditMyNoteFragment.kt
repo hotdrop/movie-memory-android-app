@@ -57,7 +57,7 @@ class MovieEditMyNoteFragment: Fragment() {
         binding.watchDateEditArea.run {
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && context != null) {
-                    TextInputDatePickerDialog.show(context, binding.watchDateEditArea)
+//                    TextInputDatePickerDialog.show(context, binding.watchDateEditArea)
                 }
             }
         }

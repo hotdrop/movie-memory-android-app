@@ -55,14 +55,12 @@ class MovieEditActivity: BaseActivity() {
             title = when (editType) {
                 EditType.OVERVIEW -> getString(R.string.movie_edit_overview_title)
                 EditType.DETAIL -> getString(R.string.movie_edit_detail_title)
-                EditType.MYNOTE -> getString(R.string.movie_edit_my_note_title)
             }
         }
 
         when (editType) {
             EditType.OVERVIEW -> replaceFragment(MovieEditOverviewFragment.newInstance(movieId))
             EditType.DETAIL -> replaceFragment(MovieEditDetailFragment.newInstance(movieId))
-            EditType.MYNOTE -> replaceFragment(MovieEditMyNoteFragment.newInstance(movieId))
         }
     }
 
@@ -73,7 +71,7 @@ class MovieEditActivity: BaseActivity() {
     }
 
     companion object {
-        enum class EditType { OVERVIEW, DETAIL, MYNOTE }
+        enum class EditType { OVERVIEW, DETAIL }
         private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
         private const val EXTRA_EDIT_TYPE = "EXTRA_EDIT_TYPE"
         fun startForResult(activity: Activity, movieId: Long, editType: EditType, requestCode: Int) =

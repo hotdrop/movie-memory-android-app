@@ -100,7 +100,7 @@
                         style="@style/TextNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/movie_memo_hint"
+                        android:hint="@string/watch_note_label"
                         android:maxLength="600"
                         android:maxLines="10"
                         android:text="@={movie.note}" />
