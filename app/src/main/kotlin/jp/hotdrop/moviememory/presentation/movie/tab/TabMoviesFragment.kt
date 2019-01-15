@@ -71,8 +71,6 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
 
     private fun initView() {
 
-        binding.progress.isVisible = true
-
         super.setupRecyclerView(binding.moviesRecyclerView) { page, _ ->
             viewModel.onLoad(page)
         }
@@ -102,6 +100,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private fun observe() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
+                // TODO 0件だったらSnackbarにだす
                 binding.progress.visibility = View.GONE
                 when (loadMode) {
                     LoadMode.Add -> adapter?.addAll(movies)

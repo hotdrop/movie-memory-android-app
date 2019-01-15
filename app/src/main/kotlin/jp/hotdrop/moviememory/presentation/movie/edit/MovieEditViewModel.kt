@@ -81,19 +81,6 @@ class MovieEditViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun saveMyNote(movie: Movie) {
-        useCase.saveLocalEdit(movie)
-                .observeOn(Schedulers.io())
-                .subscribeBy(
-                        onComplete = {
-                            mutableSaveSuccess.postValue(true)
-                        },
-                        onError = {
-                            mutableError.postValue(AppError(it, "映画情報の自分用メモ編集画面 保存"))
-                        }
-                ).addTo(compositeDisposable)
-    }
-
     fun clear() {
         mutableSaveSuccess.postValue(false)
         mutableError.postValue(null)

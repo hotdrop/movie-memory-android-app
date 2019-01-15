@@ -42,8 +42,10 @@ fun QueryDocumentSnapshot.toResponse(): MovieResponse {
 
 fun MovieResponse.toEntity(categoryMap: Map<String, Long>): MovieEntity {
 
-    val playingDateEpoch = this.playingDate?.let {
-        LocalDate.parse(it).toEpochDay()
+    val playingDateEpoch = if (this.playingDate != null && this.playingDate.length == 10) {
+        LocalDate.parse(this.playingDate).toEpochDay()
+    } else {
+        null
     }
 
     val categoryName = if (this.categoryName.isEmpty()) {

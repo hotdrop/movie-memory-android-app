@@ -33,7 +33,7 @@ class TabMoviesViewModel @Inject constructor(
      * LiveDataにデータが溜まっている場合は何もしない
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onLoadFirstTime() {
+    fun onCreate() {
         movies.value?.size?.let {
             if (it > 0) {
                 return
