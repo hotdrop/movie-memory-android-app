@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -52,12 +54,19 @@ class MoviesFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initView()
         observe()
+    }
+
+    private fun initView() {
+        binding.progress.isVisible = true
     }
 
     private fun observe() {
         viewModel.prepared.observe(this, Observer {
             it?.run {
+                binding.progress.isGone = true
                 if (this) {
                     binding.moviesViewPager.adapter = MoviesViewPagerAdapter(childFragmentManager).apply {
                         setMovieTab()
@@ -68,6 +77,7 @@ class MoviesFragment: Fragment() {
         })
         viewModel.error.observe(this, Observer {
             it?.run {
+                binding.progress.isGone = true
                 val message = getString(R.string.message_failure_load_data)
                 Snackbar.make(binding.moviesArea, message, Snackbar.LENGTH_LONG).show()
                 viewModel.clear()
