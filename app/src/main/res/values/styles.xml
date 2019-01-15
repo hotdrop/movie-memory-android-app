@@ -28,6 +28,11 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TextLarge">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/darkGray</item>
+    </style>
+
     <style name="TextNormal">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/darkGray</item>

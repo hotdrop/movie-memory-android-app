@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.parts
+package jp.hotdrop.moviememory.presentation.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

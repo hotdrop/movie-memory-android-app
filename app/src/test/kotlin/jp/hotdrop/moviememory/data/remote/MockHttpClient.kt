@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.data.remote
 
+import jp.hotdrop.moviememory.data.remote.api.MovieApi
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

@@ -1,17 +1,17 @@
 package jp.hotdrop.moviememory.presentation.component
 
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.presentation.BaseFragment
 import timber.log.Timber
 
 /**
  * RecyclerViewのEndlessScrollとSwipeRefreshはTabに追加するFragment全部で共通動作なため共通のFragmentを設けた。
  */
-abstract class MovieFragmentWithEndlessRecyclerView: BaseFragment() {
+abstract class MovieFragmentWithEndlessRecyclerView: Fragment() {
 
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 

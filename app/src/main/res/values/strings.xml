@@ -23,23 +23,25 @@
     <string name="casts_label">キャスト</string>
     <string name="trailer_movie_url_link_label">予告動画</string>
     <string name="official_url_link_label">公式サイト</string>
+    <string name="my_note_title">鑑賞メモ</string>
+    <string name="my_note_desc">編集は各項目をタップしてください。</string>
     <string name="watch_date_label">鑑賞日</string>
     <string name="watch_place_label">鑑賞した映画館</string>
-    <string name="movie_memo_hint">自分用メモ</string>
+    <string name="watch_note_label">メモ</string>
     <string name="add_cast_button">追加</string>
-
     <string name="no_data_text">ー</string>
     <string name="icon_playing_date_content_description">この映画の公開日を示すアイコンです</string>
     <string name="icon_film_director_content_description">この映画の監督を示すアイコンです</string>
     <string name="icon_casts_content_description">この映画の主要キャスト一覧を示すアイコンです</string>
     <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
     <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
+    <string name="icon_watch_note_content_description">この映画を観た感想等のメモを示すアイコンです</string>
     <string name="icon_cast_delete_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
 
     <!--映画情報の編集画面-->
     <string name="movie_edit_overview_title">概要の編集</string>
     <string name="movie_edit_detail_title">詳細情報の編集</string>
-    <string name="movie_edit_my_note_title">自分用メモの編集</string>
+
     <string name="message_save_success">保存しました。</string>
     <string name="attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。</string>
     <string name="cast_delete_text">キャストから\n「%s」\nを削除します。よろしいですか？</string>
@@ -47,6 +49,14 @@
     <string name="dialog_title_cast_update">キャスト名編集</string>
     <string name="dialog_title_cast_add">キャスト追加</string>
     <string name="cast_text_hint">キャスト名を入力してください</string>
+    <string name="image_url_label">画像イメージURL</string>
+    <string name="image_url_search_browser_desc">ブラウザを起動して画像イメージを取得します。設定したい画像イメージをタップしてください。</string>
+    <string name="image_preview_description">この映画のイメージ画像です。</string>
+    <string name="movie_edit_error">映画情報の保存に失敗しました。</string>
+
+    <!-- 画像検索ダイアログ -->
+    <string name="image_search_dialog_url">https://google.co.jp</string>
+    <string name="image_search_dialog_close_label">閉じる</string>
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>
@@ -60,7 +70,7 @@
     <string name="search_result_suggestion_clear_message">
         検索キーワードの履歴を全てクリアします。よろしいですか？
     </string>
-    <string name="search_result_query_hint">キーワード検索</string>
+    <string name="search_result_query_hint">キーワードを入力</string>
     <string name="search_result_not_found">該当する映画情報は見つかりませんでした。</string>
     <string name="icon_search_content_description">このアプリに保存されている映画情報のキーワード検索アイコンです</string>
     <string name="icon_suggestion_content_description">キーワード検索の履歴を示すアイコンです</string>

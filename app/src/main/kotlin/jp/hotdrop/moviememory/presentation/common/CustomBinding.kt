@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.parts
+package jp.hotdrop.moviememory.presentation.common
 
 import androidx.databinding.BindingAdapter
 import android.widget.ImageView
@@ -30,6 +30,10 @@ fun setImageUrl(view: ImageView, url: String?) {
                     .into(view)
         }
     }
+}
+
+fun ImageView.setImageURL(url: String) {
+    setImageUrl(this, url)
 }
 
 @BindingAdapter("webLinkColor")

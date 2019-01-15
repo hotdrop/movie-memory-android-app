@@ -31,7 +31,10 @@
                     android:showAsAction="always"
                     android:paddingStart="-4dp"
                     app:defaultQueryHint="@string/search_result_query_hint"
-                    app:iconifiedByDefault="false" />
+                    app:iconifiedByDefault="false" >
+                    <requestFocus />
+                    
+                </androidx.appcompat.widget.SearchView>
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -45,6 +48,7 @@
             android:background="@drawable/shape_corner_radius"
             android:elevation="@dimen/toolbar_elevation"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="wrap"
             app:layout_constraintHeight_max="400dp"

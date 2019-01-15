@@ -7,7 +7,7 @@ import jp.hotdrop.moviememory.data.local.entity.SuggestionEntity
 @Dao
 interface SuggestionDao {
 
-    @Query("SELECT * FROM suggestion ORDER BY createAt DESC")
+    @Query("SELECT * FROM suggestion ORDER BY createdAt DESC")
     fun suggestions(): Flowable<List<SuggestionEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

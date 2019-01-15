@@ -6,27 +6,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditOverviewBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
-import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.presentation.common.setImageURL
+import jp.hotdrop.moviememory.presentation.component.SearchImageWebViewDialog
+import timber.log.Timber
 import java.lang.IllegalStateException
+import javax.inject.Inject
 
-class MovieEditOverviewFragment: BaseFragment() {
+class MovieEditOverviewFragment: Fragment() {
 
     private lateinit var binding: FragmentMovieEditOverviewBinding
 
+    @Inject
+    lateinit var dialogSearchImage: SearchImageWebViewDialog
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var viewModel: MovieEditViewModel? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: throw IllegalStateException("viewModel is null!!")
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,7 +61,16 @@ class MovieEditOverviewFragment: BaseFragment() {
     }
 
     private fun initView() {
-        // TODO ImageUrlもこの画面で修正したい。でもどうやるか考える
+
+        binding.imageIconBrowser.setOnClickListener {
+            context?.let { context ->
+                dialogSearchImage.show(context) { imageUrl ->
+                    binding.textImageUrl.setText(imageUrl)
+                    binding.imagePreview.setImageURL(imageUrl)
+                }
+            } ?: throw IllegalStateException("context is null! program bug")
+        }
+
         binding.fab.setOnClickListener {
             binding.movie?.let { movie ->
                 viewModel?.save(movie) ?: throw IllegalStateException("viewModel is null!!")

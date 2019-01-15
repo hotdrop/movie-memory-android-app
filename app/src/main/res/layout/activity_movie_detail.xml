@@ -89,16 +89,15 @@
                <TextView
                    android:id="@+id/title"
                    style="@style/Title"
-                   android:layout_width="wrap_content"
+                   android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="24dp"
-                   android:layout_marginEnd="16dp"
                    android:text="@{movie.title}"
-                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintHorizontal_bias="0.0"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
                    app:layout_constraintTop_toTopOf="parent"
-                   tools:text="アベンジャーズ・インフィニティウォー" />
+                   tools:text="アベンジャーズ・インフィニティウォー・テストべンジャーズ" />
 
                <TextView
                    android:id="@+id/category"
@@ -312,87 +311,161 @@
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/casts_recycler_view" />
 
-               <ImageView
-                   android:id="@+id/watch_date_icon"
+               <TextView
+                   android:id="@+id/my_note_title"
+                   style="@style/TextLarge"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="24dp"
-                   android:contentDescription="@string/icon_watch_date_content_description"
-                   android:src="@drawable/ic_event"
+                   android:layout_marginTop="16dp"
+                   android:text="@string/my_note_title"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/line_memo_border" />
 
                <TextView
-                   android:id="@+id/watch_date_label"
+                   android:id="@+id/my_note_memo_detail"
                    style="@style/TextNormal.Gray"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
-                   android:layout_marginTop="16dp"
-                   android:text="@string/watch_date_label"
-                   app:layout_constraintStart_toEndOf="@+id/watch_date_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/line_memo_border" />
-
-               <TextView
-                   android:id="@+id/watch_date_text"
-                   style="@style/TextNormal"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
-                   android:text="@{movie.toTextWatchDate()}"
-                   app:layout_constraintStart_toEndOf="@+id/watch_date_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/watch_date_label"
-                   tools:text="2018-04-30" />
-
-               <ImageView
-                   android:id="@+id/watch_place_icon"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="24dp"
-                   android:contentDescription="@string/icon_watch_place_content_description"
-                   android:src="@drawable/ic_place"
+                   android:text="@string/my_note_desc"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/watch_date_text" />
+                   app:layout_constraintTop_toBottomOf="@+id/my_note_title" />
 
-               <TextView
-                   android:id="@+id/watch_place_label"
-                   style="@style/TextNormal.Gray"
-                   android:layout_width="wrap_content"
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:id="@+id/watch_date_area"
+                   android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
                    android:layout_marginTop="16dp"
-                   android:text="@string/watch_place_label"
-                   app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/watch_date_text" />
+                   android:clickable="true"
+                   android:focusable="true"
+                   android:background="?attr/selectableItemBackground"
+                   app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/my_note_memo_detail">
 
-               <TextView
-                   android:id="@+id/watch_place_text"
-                   style="@style/TextNormal"
+                  <ImageView
+                      android:id="@+id/watch_date_icon"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:contentDescription="@string/icon_watch_date_content_description"
+                      android:src="@drawable/ic_event"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent" />
+
+                   <TextView
+                       android:id="@+id/watch_date_label"
+                       style="@style/TextNormal.Gray"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginStart="8dp"
+                       android:layout_marginEnd="60dp"
+                       android:text="@string/watch_date_label"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintStart_toEndOf="@+id/watch_date_icon" />
+
+                  <TextView
+                      android:id="@+id/watch_date_text"
+                      style="@style/TextNormal"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="8dp"
+                      android:text="@{movie.toTextWatchDate()}"
+                      app:layout_constraintStart_toEndOf="@+id/watch_date_icon"
+                      app:layout_constraintTop_toBottomOf="@+id/watch_date_label"
+                      tools:text="2018-04-30" />
+
+               </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/watch_place_area"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/watch_date_area">
+
+                    <ImageView
+                        android:id="@+id/watch_place_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/icon_watch_place_content_description"
+                        android:src="@drawable/ic_place"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/watch_place_label"
+                        style="@style/TextNormal.Gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="60dp"
+                        android:text="@string/watch_place_label"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/watch_place_icon" />
+
+                    <TextView
+                        android:id="@+id/watch_place_text"
+                        style="@style/TextNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{movie.toTextWatchPlace()}"
+                        app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/watch_place_label"
+                        tools:text="TOHOシネマズ日本橋" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:id="@+id/watch_note_area"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
-                   android:text="@{movie.toTextWatchPlace()}"
-                   app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-                   app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/watch_place_label"
-                   tools:text="TOHOシネマズ日本橋" />
-
-               <TextView
-                   android:id="@+id/movie_local_memo_text"
-                   style="@style/TextNormal"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
                    android:layout_marginTop="24dp"
-                   android:layout_marginEnd="16dp"
                    android:layout_marginBottom="80dp"
-                   android:text="@{movie.note}"
+                   android:clickable="true"
+                   android:focusable="true"
+                   android:background="?attr/selectableItemBackground"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-                   app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/watch_place_text"
-                   app:layout_constraintVertical_bias="0.0"
-                   tools:text="ここに自分が書いたメモが表示されます。インフィニティーウォーのラストでキャプテンマーベルにヘルプを求めていましたが、フューリーはなぜ今までハルクやソー並の強さを持つキャプテンマーベルを呼ばなかったのでしょうか？" />
+                   app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/watch_place_area">
+
+                  <ImageView
+                      android:id="@+id/watch_note_icon"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:contentDescription="@string/icon_watch_note_content_description"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintVertical_bias="0.1"
+                      app:srcCompat="@drawable/ic_note" />
+
+                  <TextView
+                      android:id="@+id/watch_note_label"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="8dp"
+                      android:text="@string/watch_note_label"
+                      app:layout_constraintStart_toEndOf="@+id/watch_note_icon" />
+
+                  <TextView
+                      android:id="@+id/watch_note_text"
+                      style="@style/TextNormal"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="8dp"
+                      android:text="@{movie.note}"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintStart_toEndOf="@+id/watch_note_icon"
+                      app:layout_constraintTop_toBottomOf="@+id/watch_note_label"
+                      tools:text="ここに自分が書いたメモが表示されます。インフィニティーウォーのラストでキャプテンマーベルにヘルプを求めていましたが、フューリーはなぜ今までハルクやソー並の強さを持つキャプテンマーベルを呼ばなかったのでしょうか？" />
+
+               </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
          </androidx.core.widget.NestedScrollView>
@@ -463,7 +536,7 @@
           android:layout_height="wrap_content"
           android:layout_marginEnd="8dp"
           android:visibility="invisible"
-          app:layout_constraintBottom_toTopOf="@+id/fab_my_note_layout"
+          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
           app:layout_constraintEnd_toEndOf="parent">
 
          <com.google.android.material.card.MaterialCardView
@@ -497,54 +570,6 @@
              android:layout_marginEnd="8dp"
              android:layout_marginBottom="8dp"
              app:backgroundTint="@color/lightPink"
-             app:elevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:srcCompat="@drawable/ic_edit" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:id="@+id/fab_my_note_layout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:visibility="invisible"
-          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
-          app:layout_constraintEnd_toEndOf="parent">
-
-         <com.google.android.material.card.MaterialCardView
-             style="@style/Widget.MaterialComponents.CardView"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginEnd="8dp"
-             android:backgroundTint="@color/lightOrange"
-             app:cardCornerRadius="@dimen/corner_radius"
-             app:cardElevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="@+id/fab_my_note"
-             app:layout_constraintEnd_toStartOf="@+id/fab_my_note"
-             app:layout_constraintTop_toTopOf="@+id/fab_my_note">
-
-            <TextView
-                android:id="@+id/fab_my_note_label"
-                style="@style/TextNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/movie_edit_my_note_title" />
-
-         </com.google.android.material.card.MaterialCardView>
-
-         <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:id="@+id/fab_my_note"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="bottom|end"
-             android:layout_marginTop="8dp"
-             android:layout_marginEnd="8dp"
-             android:layout_marginBottom="8dp"
-             app:backgroundTint="@color/lightOrange"
              app:elevation="@dimen/fab_elevation"
              app:layout_constraintBottom_toBottomOf="parent"
              app:layout_constraintEnd_toEndOf="parent"

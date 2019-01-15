@@ -22,11 +22,14 @@ import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import jp.hotdrop.moviememory.presentation.component.FavoriteStars
 import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
-import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
+import jp.hotdrop.moviememory.presentation.component.TextInputDialog
 
 class MovieDetailActivity: BaseActivity() {
 
@@ -46,7 +49,7 @@ class MovieDetailActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getComponent().inject(this)
+        component.inject(this)
 
         initView()
         observe()
@@ -72,6 +75,38 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
 
+        setOnMyNoteClickListener()
+        setOnMenuFabClickListener()
+    }
+
+    private fun setOnMyNoteClickListener() {
+        binding.watchDateArea.setOnClickListener {
+            TextInputDatePickerDialog.show(this, binding.watchDateText.text.toString()) { selectedDate ->
+                binding.watchDateText.text = selectedDate.toString()
+                viewModel.saveWatchDate(selectedDate)
+            }
+        }
+        binding.watchPlaceArea.setOnClickListener {
+            TextInputDialog.Builder(this)
+                    .setTitle(R.string.watch_place_label)
+                    .setText(binding.watchPlaceText.text.toString())
+                    .setOnPositiveListener {watchPlace ->
+                        binding.watchPlaceText.text = watchPlace
+                        viewModel.saveWatchPlace(watchPlace)
+                    }.show()
+        }
+        binding.watchNoteArea.setOnClickListener {
+            TextInputDialog.Builder(this)
+                    .setTitle(R.string.watch_note_label)
+                    .setText(binding.watchNoteText.text.toString())
+                    .setOnPositiveListener { note ->
+                        binding.watchNoteText.text = note
+                        viewModel.saveWatchNote(note)
+                    }.showWihthInputMultiLine()
+        }
+    }
+
+    private fun setOnMenuFabClickListener() {
         binding.menuFab.setOnClickListener {
             if (isOpenFabMenu()) {
                 collapseFabMenu()
@@ -86,10 +121,6 @@ class MovieDetailActivity: BaseActivity() {
         }
         binding.fabDetail.setOnClickListener {
             MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.DETAIL, MOVIE_EDIT_REQUEST_CODE)
-            collapseFabMenu()
-        }
-        binding.fabMyNote.setOnClickListener {
-            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.MYNOTE, MOVIE_EDIT_REQUEST_CODE)
             collapseFabMenu()
         }
     }
@@ -107,10 +138,8 @@ class MovieDetailActivity: BaseActivity() {
                 .start()
         binding.fabOverviewLayout.startAnimation(fabCloseAnimation)
         binding.fabDetailLayout.startAnimation(fabCloseAnimation)
-        binding.fabMyNoteLayout.startAnimation(fabCloseAnimation)
         binding.fabOverview.isClickable = false
         binding.fabDetail.isClickable = false
-        binding.fabMyNote.isClickable = false
     }
 
     private fun expandFabMenu() {
@@ -122,10 +151,8 @@ class MovieDetailActivity: BaseActivity() {
                 .start()
         binding.fabOverviewLayout.startAnimation(fabOpenAnimation)
         binding.fabDetailLayout.startAnimation(fabOpenAnimation)
-        binding.fabMyNoteLayout.startAnimation(fabOpenAnimation)
         binding.fabOverview.isClickable = true
         binding.fabDetail.isClickable = true
-        binding.fabMyNote.isClickable = true
     }
 
     private fun observe() {
@@ -141,6 +168,11 @@ class MovieDetailActivity: BaseActivity() {
                     // スター数が変更されたので呼び元に通知するためのIntentを準備する
                     onResultRefreshMovie()
                 }
+            }
+        })
+        viewModel.error.observe(this, Observer {
+            it?.run {
+                Snackbar.make(binding.snackbarArea, R.string.movie_edit_error, Snackbar.LENGTH_LONG).show()
             }
         })
         lifecycle.addObserver(viewModel)

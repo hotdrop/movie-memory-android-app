@@ -9,7 +9,6 @@ import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.usecase.MovieUseCase
-import timber.log.Timber
 import javax.inject.Inject
 
 class TabMoviesViewModel @Inject constructor(
@@ -29,21 +28,18 @@ class TabMoviesViewModel @Inject constructor(
 
     var condition: MovieCondition? = null
 
-    fun onLoad(page: Int) {
-        condition?.let { type ->
-            val index = page * OFFSET
-            useCase.findMovies(type, index, OFFSET)
-                    .observeOn(Schedulers.io())
-                    .subscribeBy(
-                            onSuccess = {
-                                Timber.d( "公開中の映画をrefresh... onComplete")
-                                mutableMovies.postValue(it)
-                            },
-                            onError = {
-                                mutableError.postValue(AppError(it))
-                            }
-                    ).addTo(compositeDisposable)
-        } ?: IllegalStateException("typeがnullです。プログラムを見直してください。")
+    /**
+     * 初回ロード時に実行
+     * LiveDataにデータが溜まっている場合は何もしない
+     */
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onLoadFirstTime() {
+        movies.value?.size?.let {
+            if (it > 0) {
+                return
+            }
+        }
+        onLoad(0)
     }
 
     /**
@@ -54,7 +50,6 @@ class TabMoviesViewModel @Inject constructor(
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
-                            Timber.d( "公開中の映画をrefresh... onComplete")
                             onLoad(0)
                         },
                         onError = {
@@ -63,12 +58,27 @@ class TabMoviesViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
+    fun onLoad(page: Int) {
+        condition?.let { type ->
+            val index = page * OFFSET
+            useCase.findMovies(type, index, OFFSET)
+                    .observeOn(Schedulers.io())
+                    .subscribeBy(
+                            onSuccess = {
+                                mutableMovies.postValue(it)
+                            },
+                            onError = {
+                                mutableError.postValue(AppError(it))
+                            }
+                    ).addTo(compositeDisposable)
+        } ?: IllegalStateException("typeがnullです。プログラムを見直してください。")
+    }
+
     fun onRefreshMovie(id: Long) {
         useCase.findMovie(id)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
-                            Timber.d( "refresh対象のMovie情報を再取得")
                             mutableRefreshMovie.postValue(it)
                         },
                         onError = {
@@ -89,6 +99,6 @@ class TabMoviesViewModel @Inject constructor(
     }
 
     companion object {
-        const val OFFSET = 20
+        const val OFFSET = 100
     }
 }

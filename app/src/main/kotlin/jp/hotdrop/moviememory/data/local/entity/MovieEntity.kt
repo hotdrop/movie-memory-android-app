@@ -2,8 +2,7 @@ package jp.hotdrop.moviememory.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import jp.hotdrop.moviememory.data.local.CategoryDatabase
-import jp.hotdrop.moviememory.model.Category
+import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.*
 
@@ -19,7 +18,7 @@ data class MovieEntity(
         val casts: List<String>?,
         val officialUrl: String?,
         val trailerMovieUrl: String?,
-        val createdAt: Instant
+        val createdAt: Long
 )
 
 fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabase): Movie {
@@ -57,7 +56,7 @@ fun Movie.toEntity(): MovieEntity {
             casts = this.casts,
             officialUrl = this.officialUrl,
             trailerMovieUrl = this.trailerMovieUrl,
-            createdAt = this.createAt
+            createdAt = this.createdAt
     )
 }
 

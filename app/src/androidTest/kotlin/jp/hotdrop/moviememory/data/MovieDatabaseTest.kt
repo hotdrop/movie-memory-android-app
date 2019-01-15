@@ -5,8 +5,8 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import jp.hotdrop.moviememory.data.local.AppDatabase
-import jp.hotdrop.moviememory.data.local.MovieDatabase
+import jp.hotdrop.moviememory.data.local.database.AppDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -147,5 +147,5 @@ class MovieDatabaseTest {
                     arrayListOf("a", "b", "c"),
                     "https://www.google.co.jp",
                     "https://www.google.co.jp",
-                    LocalDateTime.now().toInstant(ZoneOffset.UTC))
+                    LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli())
 }

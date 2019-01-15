@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -17,25 +19,34 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
-import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
-import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import java.lang.IllegalStateException
+import javax.inject.Inject
 
-class MovieEditDetailFragment: BaseFragment() {
+class MovieEditDetailFragment: Fragment() {
 
     private lateinit var binding: FragmentMovieEditDetailBinding
     private var adapter: CastsAdapter? = null
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var viewModel: MovieEditViewModel? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: throw IllegalStateException("viewModel is null!!")
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -1,13 +1,14 @@
 package jp.hotdrop.moviememory.service
 
 import com.google.firebase.auth.FirebaseAuth
+import dagger.Reusable
 import timber.log.Timber
 import javax.inject.Inject
 
+@Reusable
 class Firebase @Inject constructor() {
 
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
-    private var token: String? = null
 
     fun login(loginFailureListener: () -> Unit) {
         if (auth.currentUser == null) {
@@ -18,23 +19,6 @@ class Firebase @Inject constructor() {
                         } else {
                             Timber.d("Firebaseのログインに失敗しました。")
                             loginFailureListener()
-                        }
-                    }
-        }
-    }
-
-    fun getToken(): String? {
-        return token
-    }
-
-    private fun refreshIdToken() {
-        auth.currentUser?.let {
-            it.getIdToken(true)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            token = task.result?.token
-                        } else {
-                            Timber.d("Tokenの取得に失敗しました。")
                         }
                     }
         }

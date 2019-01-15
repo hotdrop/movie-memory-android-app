@@ -3,17 +3,15 @@ package jp.hotdrop.moviememory.presentation.movie.edit
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieEditBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.BaseActivity
-import javax.inject.Inject
 
 class MovieEditActivity: BaseActivity() {
 
@@ -27,7 +25,7 @@ class MovieEditActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getComponent().inject(this)
+        component.inject(this)
 
         observe()
         initView()
@@ -57,14 +55,12 @@ class MovieEditActivity: BaseActivity() {
             title = when (editType) {
                 EditType.OVERVIEW -> getString(R.string.movie_edit_overview_title)
                 EditType.DETAIL -> getString(R.string.movie_edit_detail_title)
-                EditType.MYNOTE -> getString(R.string.movie_edit_my_note_title)
             }
         }
 
         when (editType) {
             EditType.OVERVIEW -> replaceFragment(MovieEditOverviewFragment.newInstance(movieId))
             EditType.DETAIL -> replaceFragment(MovieEditDetailFragment.newInstance(movieId))
-            EditType.MYNOTE -> replaceFragment(MovieEditMyNoteFragment.newInstance(movieId))
         }
     }
 
@@ -75,7 +71,7 @@ class MovieEditActivity: BaseActivity() {
     }
 
     companion object {
-        enum class EditType { OVERVIEW, DETAIL, MYNOTE }
+        enum class EditType { OVERVIEW, DETAIL }
         private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
         private const val EXTRA_EDIT_TYPE = "EXTRA_EDIT_TYPE"
         fun startForResult(activity: Activity, movieId: Long, editType: EditType, requestCode: Int) =

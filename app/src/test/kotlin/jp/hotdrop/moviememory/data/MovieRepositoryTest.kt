@@ -2,7 +2,7 @@ package jp.hotdrop.moviememory.data
 
 import com.nhaarman.mockito_kotlin.mock
 import com.squareup.moshi.Moshi
-import jp.hotdrop.moviememory.data.local.MovieDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieDatabase
 import jp.hotdrop.moviememory.data.remote.AppJsonAdapterFactory
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -4,14 +4,14 @@ import dagger.Reusable
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import jp.hotdrop.moviememory.data.local.CategoryDatabase
-import jp.hotdrop.moviememory.data.local.MovieDatabase
-import jp.hotdrop.moviememory.data.local.MovieNoteDatabase
+import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieDatabase
+import jp.hotdrop.moviememory.data.local.database.MovieNoteDatabase
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import jp.hotdrop.moviememory.data.local.entity.toEntity
 import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
-import jp.hotdrop.moviememory.data.remote.MovieApi
+import jp.hotdrop.moviememory.data.remote.api.MovieApi
 import jp.hotdrop.moviememory.data.remote.response.toEntity
 import jp.hotdrop.moviememory.model.Movie
 import org.threeten.bp.LocalDate
@@ -41,11 +41,16 @@ class MovieRepository @Inject constructor(
 
     /**
      * 最新データを取得
-     * TODO 最初はIDが昇順前提で最新を持って来ればいいと考えていたが、データ取得側（node）でそれが厳しそうなのでどうするか考える。。
-     * TODO 本当は公開日で取得すればいいのだが、それで行く場合は公開日が2月とか2019年夏とか曖昧な奴をパースしてやる必要があるのでちょっとどうするか・・
+     * サーバー側の映画情報は、取得した日時のcreateAtが保存される。
+     * そのcreateAtはアプリ側でそのまま保持しているので、前回サーバーから取得した映画情報の中で最新の
+     * createAtを条件に、これより新しいものをくれ、と投げればまだもらってない最新データだけ取得できる。
      */
     fun loadRecentMovies(): Completable {
-        return Completable.complete()
+        return movieDatabase.findMaxCreatedAt()
+                .flatMapCompletable {
+                    Timber.d("最新データを取得します。createAt=$it")
+                    refresh(it)
+                }
     }
 
     fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
@@ -91,6 +96,7 @@ class MovieRepository @Inject constructor(
     fun findMovie(id: Long): Single<Movie> =
             movieDatabase.find(id)
                     .map {
+                        Timber.d("映画情報取得 id=$id")
                         entityToMovieWithLocalInfo(it)
                     }
 
@@ -115,26 +121,32 @@ class MovieRepository @Inject constructor(
     /**
      * ネットワークから最新データを取得
      */
-    private fun refresh(): Completable =
+    private fun refresh(fromCreatedAt: Long = 0L): Completable {
+
+        val singleMovies = if (fromCreatedAt == 0L) {
             movieApi.findAll()
-                    .map { responses ->
-                        Timber.d("  取得した件数=${responses.size}")
+        } else {
+            movieApi.find(fromCreatedAt)
+        }
 
-                        val categoryMap = mutableMapOf<String, Long>()
-                        responses.map { it.categoryName }
-                                .forEach { categoryName ->
-                                    categoryMap[categoryName] = categoryDatabase.register(categoryName)
-                                }
+        return singleMovies.map { responses ->
+            Timber.d("  取得した件数=${responses.size}")
 
-                        val movieEntities = responses.map { movieResponse ->
-                            movieResponse.toEntity(categoryMap)
-                        }
-                        movieDatabase.save(movieEntities)
-
-                    }.toCompletable()
+            val categoryMap = mutableMapOf<String, Long>()
+            responses.map { it.categoryName }
+                    .forEach { categoryName ->
+                        categoryMap[categoryName] = categoryDatabase.register(categoryName)
+                    }
+            val movieEntities = responses.map { movieResponse ->
+                movieResponse.toEntity(categoryMap)
+            }
+            movieDatabase.save(movieEntities)
+        }.toCompletable()
+    }
 
     private fun takeTheRange(fromIndex: Int, offset: Int, movieEntities: List<MovieEntity>): List<MovieEntity> {
         val listSize = movieEntities.size
+        Timber.d("全取得サイズ = $listSize")
         return when {
             fromIndex >= listSize -> {
                 Timber.d("  最後まで取得済みのため何もしない")
@@ -142,9 +154,9 @@ class MovieRepository @Inject constructor(
             }
             else -> {
                 val toIndex = if (fromIndex + offset < listSize) {
-                    fromIndex + offset - 1
+                    fromIndex + offset
                 } else {
-                    listSize - 1
+                    listSize
                 }
                 Timber.d("  $fromIndex から $toIndex の映画情報を取得")
                 movieEntities.subList(fromIndex, toIndex)

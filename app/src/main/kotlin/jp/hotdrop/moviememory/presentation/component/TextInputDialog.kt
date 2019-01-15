@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.DialogTextInputBinding
+import jp.hotdrop.moviememory.databinding.DialogTextMultilineInputBinding
 
 object TextInputDialog {
 
@@ -40,6 +41,26 @@ object TextInputDialog {
 
         fun show() {
             val binding = DataBindingUtil.inflate<DialogTextInputBinding>(LayoutInflater.from(context), R.layout.dialog_text_input, null, false)
+
+            title?.let { binding.title.text = it }
+            text?.let { binding.textInput.setText(it) }
+            hint?.let { binding.textInput.hint = it }
+
+            AlertDialog.Builder(context)
+                    .setView(binding.root)
+                    .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                        positiveListener?.let { listener ->
+                            listener(binding.textInput.text.toString())
+                        }
+                        dialogInterface.dismiss()
+                    }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
+                        dialogInterface.dismiss()
+                    }.setCancelable(true)
+                    .show()
+        }
+
+        fun showWihthInputMultiLine() {
+            val binding = DataBindingUtil.inflate<DialogTextMultilineInputBinding>(LayoutInflater.from(context), R.layout.dialog_text_multiline_input, null, false)
 
             title?.let { binding.title.text = it }
             text?.let { binding.textInput.setText(it) }

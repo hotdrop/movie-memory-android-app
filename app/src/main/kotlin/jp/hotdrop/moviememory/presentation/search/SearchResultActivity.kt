@@ -17,18 +17,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivitySearchResultBinding
-import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.databinding.RowSuggestionBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.presentation.BaseActivity
+import jp.hotdrop.moviememory.presentation.adapter.MoviesAdapter
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
-import jp.hotdrop.moviememory.presentation.parts.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
+import timber.log.Timber
 
 class SearchResultActivity: BaseActivity() {
 
@@ -36,7 +37,7 @@ class SearchResultActivity: BaseActivity() {
         DataBindingUtil.setContentView<ActivitySearchResultBinding>(this, R.layout.activity_search_result)
     }
 
-    private var adapter: MoviesAdapter? = null
+    private var moviesAdapter: MoviesAdapter? = null
     private var suggestionAdapter: SuggestionAdapter? = null
 
     private val viewModel: SearchResultViewModel by lazy {
@@ -45,7 +46,7 @@ class SearchResultActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getComponent().inject(this)
+        component.inject(this)
 
         initView()
         observe()
@@ -75,6 +76,20 @@ class SearchResultActivity: BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != RESULT_OK || data == null) {
+            return
+        }
+
+        if (requestCode == REQUEST_CODE_TO_DETAIL) {
+            val refreshMovieId = data.getLongExtra(MovieDetailActivity.EXTRA_MOVIE_TAG, -1)
+            Timber.d("  更新する映画ID: $refreshMovieId")
+            viewModel.onRefreshMovie(refreshMovieId)
+        }
+    }
+
     private fun initView() {
 
         setSupportActionBar(binding.toolbar)
@@ -87,7 +102,6 @@ class SearchResultActivity: BaseActivity() {
         binding.suggestionsRecyclerView.let {
             it.bringToFront()
             it.setHasFixedSize(true)
-            it.layoutManager = LinearLayoutManager(this)
             suggestionAdapter = SuggestionAdapter()
             it.adapter = suggestionAdapter
         }
@@ -95,8 +109,19 @@ class SearchResultActivity: BaseActivity() {
         // 検索結果一覧の初期化
         binding.moviesRecyclerView.let {
             it.layoutManager = GridLayoutManager(this, 2)
-            adapter = MoviesAdapter()
-            it.adapter = adapter
+            moviesAdapter = MoviesAdapter { binding, movie ->
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                        this,
+                        Pair.create(binding.favoritesStar as View, getString(R.string.transition_favorite_star1)),
+                        Pair.create(binding.favoritesStar as View, getString(R.string.transition_favorite_star2)),
+                        Pair.create(binding.favoritesStar as View, getString(R.string.transition_favorite_star3)),
+                        Pair.create(binding.favoritesStar as View, getString(R.string.transition_favorite_star4)),
+                        Pair.create(binding.favoritesStar as View, getString(R.string.transition_favorite_star5)),
+                        Pair.create(binding.imageView as View, getString(R.string.transition_movie_image))
+                )
+                MovieDetailActivity.startForResult(this, movie.id, REQUEST_CODE_TO_DETAIL, options)
+            }
+            it.adapter = moviesAdapter
         }
     }
 
@@ -126,6 +151,12 @@ class SearchResultActivity: BaseActivity() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
                 onLoadMovies(movies)
+            }
+        })
+        viewModel.refreshMovie.observe(this, Observer {
+            it?.let { movie ->
+                moviesAdapter?.refresh(movie)
+                viewModel.clear()
             }
         })
         viewModel.error.observe(this, Observer {
@@ -194,7 +225,7 @@ class SearchResultActivity: BaseActivity() {
     }
 
     private fun onLoadMovies(movies: List<Movie>) {
-        adapter?.refresh(movies)
+        moviesAdapter?.refresh(movies)
         binding.emptyMessage.isVisible = movies.isEmpty()
     }
 
@@ -213,41 +244,6 @@ class SearchResultActivity: BaseActivity() {
                 rowBinding.contentLayout.setOnClickListener {
                     binding.searchView.setQuery(keyword.keyword, true)
                 }
-            }
-        }
-    }
-
-    /**
-     * 検索結果の映画アダプター
-     */
-    inner class MoviesAdapter: RecyclerViewAdapter<Movie, RecyclerViewAdapter.BindingHolder<ItemMovieBinding>>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemMovieBinding> =
-                BindingHolder(parent, R.layout.item_movie)
-
-        override fun onBindViewHolder(holder: BindingHolder<ItemMovieBinding>, position: Int) {
-            holder.binding?.let { itemBinding ->
-                val movie = getItem(position)
-                itemBinding.movie = movie
-                itemBinding.imageView.setOnClickListener {
-                    transitionWithSharedElements(itemBinding, movie)
-                }
-            }
-        }
-
-        private fun transitionWithSharedElements(binding: ItemMovieBinding ,movie: Movie) {
-            this@SearchResultActivity.let {  activity ->
-                // アホっぽいけどtransitionするため1〜5まで用意する
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                        activity,
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star1)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star2)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star3)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star4)),
-                        Pair.create(binding.favoritesStar as View, activity.getString(R.string.transition_favorite_star5)),
-                        Pair.create(binding.imageView as View, activity.getString(R.string.transition_movie_image))
-                )
-                MovieDetailActivity.startForResult(this@SearchResultActivity, movie.id, REQUEST_CODE_TO_DETAIL, options)
             }
         }
     }

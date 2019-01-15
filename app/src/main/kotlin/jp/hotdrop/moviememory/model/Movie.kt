@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.model
 
-import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 
 data class Movie(
@@ -14,9 +13,9 @@ data class Movie(
         val casts: List<String>?,
         var officialUrl: String?,
         var trailerMovieUrl: String?,
-        val createAt: Instant,
+        val createdAt: Long,
         var favoriteCount: Int,
-        val watchDate: LocalDate?,
+        var watchDate: LocalDate?,
         var watchPlace: String?,
         var note: String?
 ) {
@@ -29,12 +28,15 @@ data class Movie(
 
     fun categoryName() = category.name
 
+    override fun equals(other: Any?): Boolean {
+        return (other as? Movie)?.id == this.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
     companion object {
         const val DEFAULT_TEXT_VALUE = "ー"
-        fun copyAll(m: Movie) =
-                Movie(m.id, m.title, m.category, m.overview, m.imageUrl,
-                        m.playingDate, m.filmDirector, m.casts, m.officialUrl,
-                        m.trailerMovieUrl, m.createAt, m.favoriteCount, m.watchDate,
-                        m.watchPlace,m.note)
     }
 }

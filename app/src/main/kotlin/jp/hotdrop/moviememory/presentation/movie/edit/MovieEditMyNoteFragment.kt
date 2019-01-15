@@ -5,25 +5,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditMyNoteBinding
-import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import java.lang.IllegalStateException
+import javax.inject.Inject
 
-class MovieEditMyNoteFragment: BaseFragment() {
+class MovieEditMyNoteFragment: Fragment() {
 
     private lateinit var binding: FragmentMovieEditMyNoteBinding
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var viewModel: MovieEditViewModel? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: throw IllegalStateException("viewModel is null!!")
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,7 +57,7 @@ class MovieEditMyNoteFragment: BaseFragment() {
         binding.watchDateEditArea.run {
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && context != null) {
-                    TextInputDatePickerDialog.show(context, binding.watchDateEditArea)
+//                    TextInputDatePickerDialog.show(context, binding.watchDateEditArea)
                 }
             }
         }

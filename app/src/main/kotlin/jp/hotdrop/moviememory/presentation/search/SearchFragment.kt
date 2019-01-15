@@ -5,30 +5,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentSearchBinding
+import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.SearchCondition
-import jp.hotdrop.moviememory.presentation.BaseFragment
-import jp.hotdrop.moviememory.presentation.MainActivity
+import timber.log.Timber
+import javax.inject.Inject
 
-class SearchFragment: BaseFragment() {
+class SearchFragment: Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var activity: MainActivity
+    private lateinit var parentActivity: Context
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
-        (context as MainActivity).let {
-            activity = it
+
+        activity?.let {
+            it.component.fragment().inject(this)
+            parentActivity = it
+        } ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
         }
     }
 
@@ -81,7 +90,7 @@ class SearchFragment: BaseFragment() {
     }
 
     private fun navigationToSearchResult(condition: SearchCondition) {
-        SearchResultActivity.start(activity, condition)
+        SearchResultActivity.start(parentActivity, condition)
     }
 
     companion object {

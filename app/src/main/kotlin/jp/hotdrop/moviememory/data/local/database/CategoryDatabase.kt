@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.data.local
+package jp.hotdrop.moviememory.data.local.database
 
 import dagger.Reusable
 import io.reactivex.Single

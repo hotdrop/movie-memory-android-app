@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -14,20 +15,26 @@ import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.BuildConfig
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentSettingBinding
-import jp.hotdrop.moviememory.presentation.BaseFragment
+import jp.hotdrop.moviememory.di.component.component
+import timber.log.Timber
 import javax.inject.Inject
 
-class SettingFragment: BaseFragment() {
+class SettingFragment: Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SettingViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SettingViewModel::class.java)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        getComponent().inject(this)
+        activity?.component?.fragment()?.inject(this) ?: kotlin.run {
+            Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
+            onDestroy()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,7 +54,7 @@ class SettingFragment: BaseFragment() {
             PopupMenu(context, view).run {
                 menuInflater.inflate(R.menu.popup_language, this.menu)
                 setOnMenuItemClickListener {
-                    // TODO 言語設定。これこのアプリに必要ないがLocale変更ってやつをやっておく
+                    // TODO 言語設定。これこのアプリに必要ないが、今後のためにLocale変更どうやるかやっておく
                     Snackbar.make(binding.snackbarArea, "${it.title} を選択しました。未実装です。", Snackbar.LENGTH_SHORT).show()
                     true
                 }
@@ -57,7 +64,6 @@ class SettingFragment: BaseFragment() {
 
         binding.dataClearArea.setOnClickListener {
             context?.let { context ->
-                // TODO このデータクリア、意味なさそうな感じになってきたので見直す必要がある
                 AlertDialog.Builder(context)
                         .setTitle(R.string.setting_label_data_clear)
                         .setMessage(R.string.dialog_data_clear_message)
@@ -72,7 +78,7 @@ class SettingFragment: BaseFragment() {
         binding.appVersion.text = BuildConfig.VERSION_NAME
 
         binding.licenseArea.setOnClickListener {
-            // TODO OSSページ
+            // TODO OSSページ作る
             Snackbar.make(binding.snackbarArea, "ライセンス表記は未実装です。", Snackbar.LENGTH_SHORT).show()
         }
     }

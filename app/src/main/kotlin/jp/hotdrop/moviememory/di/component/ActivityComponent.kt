@@ -17,5 +17,5 @@ interface ActivityComponent {
     fun inject(activity: MovieEditActivity)
     fun inject(activity: SearchResultActivity)
 
-    fun plus(): FragmentComponent
+    fun fragment(): FragmentComponent
 }
