@@ -6,6 +6,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import jp.hotdrop.moviememory.data.local.database.AppDatabase
 import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
+import jp.hotdrop.moviememory.data.local.entity.toEntity
+import jp.hotdrop.moviememory.model.Category
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -39,6 +41,57 @@ class CategoryDatabaseTest {
 
     @Test
     fun registerTest() {
+        val category1 = Category(1, "Test1", 0)
+        val category2 = Category(2, "Test2", 0)
+        db.register(category1.toEntity())
+        db.register(category2.toEntity())
+
+        db.findAll()
+                .test()
+                .assertValue { categories ->
+                    assertEquals("数が合っていません。", categories.size, 2)
+                    true
+                }
+    }
+
+    @Test
+    fun updateTest() {
+        val category1 = Category(1, "Test1", 0)
+        val category2 = Category(2, "Test2", 0)
+        db.register(category1.toEntity())
+        db.register(category2.toEntity())
+
+        val category2Copy = category2.copy(name = "Test3")
+        db.update(category2Copy.toEntity())
+
+        db.findAll()
+                .test()
+                .assertValue { categories ->
+                    assertEquals("数が合っていません。", categories.size, 2)
+                    assertEquals("値がおかしいです。", categories[1].name, "Test3")
+                    true
+                }
+    }
+
+    @Test
+    fun deleteTest() {
+        val category1 = Category(1, "Test1", 0)
+        val category2 = Category(2, "Test2", 0)
+        db.register(category1.toEntity())
+        db.register(category2.toEntity())
+
+        db.delete(category1.toEntity())
+
+        db.findAll()
+                .test()
+                .assertValue { categories ->
+                    assertEquals("数が合っていません。", categories.size, 1)
+                    true
+                }
+    }
+
+    @Test
+    fun registerForCheckingTest() {
         val name1 = "test1"
         val name2 = "test2"
         val name3 = "test3"

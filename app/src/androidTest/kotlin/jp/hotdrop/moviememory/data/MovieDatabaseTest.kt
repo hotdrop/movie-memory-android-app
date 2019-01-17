@@ -7,13 +7,11 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import jp.hotdrop.moviememory.data.local.database.AppDatabase
 import jp.hotdrop.moviememory.data.local.database.MovieDatabase
+import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
-import org.junit.After
+import org.junit.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
@@ -36,7 +34,7 @@ class MovieDatabaseTest {
         appDb = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
-        movieDb = MovieDatabase(appDb.movieDao())
+        movieDb = MovieDatabase(appDb, appDb.movieDao(), appDb.categoryDao())
     }
 
     @After
@@ -124,6 +122,26 @@ class MovieDatabaseTest {
                     true
                 }
 
+    }
+
+    @Test
+    fun integrateCategoryTest() {
+        val nowDate = LocalDate.now().toEpochDay()
+        val createAt = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+
+        val movies = mutableListOf<MovieEntity>()
+        movies.add(MovieEntity(1, "テスト1", 1, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
+        movies.add(MovieEntity(2, "テスト2", 1, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
+        movies.add(MovieEntity(3, "テスト3", 2, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
+        movies.add(MovieEntity(4, "テスト4", 2, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
+        movieDb.save(movies)
+
+        val fromCategory = CategoryEntity(id = 2, name = "消えるカテゴリー")
+        val toCategory = CategoryEntity(id = 1, name = "こっちに統合")
+        movieDb.integrateCategory(fromCategory, toCategory)
+
+        val cnt1 = movieDb.countByCategory(1)
+        Assert.assertEquals(cnt1, 4)
     }
 
     private fun assertMovieEntity(o1: List<MovieEntity>, o2: List<MovieEntity>): Boolean {
