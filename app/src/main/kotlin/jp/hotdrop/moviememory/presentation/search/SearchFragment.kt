@@ -70,7 +70,7 @@ class SearchFragment: Fragment() {
     private fun observe() {
         viewModel.categories.observe(this, Observer {
             it?.let { categories ->
-                initChipCategorikaes(categories)
+                initChipCategories(categories)
             }
         })
         lifecycle.addObserver(viewModel)
