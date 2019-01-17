@@ -3,6 +3,7 @@
 
     <!--Bottomメニュー-->
     <string name="title_movies">映画一覧</string>
+    <string name="title_category">カテゴリー</string>
     <string name="title_search">検索</string>
     <string name="title_setting">設定</string>
 
@@ -57,6 +58,9 @@
     <!-- 画像検索ダイアログ -->
     <string name="image_search_dialog_url">https://google.co.jp</string>
     <string name="image_search_dialog_close_label">閉じる</string>
+
+    <!-- カテゴリー編集 -->
+    <string name="category_desc">カテゴリーを編集します。</string>
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>

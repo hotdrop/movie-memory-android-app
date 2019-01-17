@@ -3,14 +3,18 @@ package jp.hotdrop.moviememory.data.local.database
 import dagger.Reusable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
+import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 @Reusable
 class MovieDatabase @Inject constructor(
-        private val dao: MovieDao
+        private val appDb: AppDatabase,
+        private val dao: MovieDao,
+        private val categoryDao: CategoryDao
 ) {
 
     fun findMoviesByBetween(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
@@ -54,5 +58,14 @@ class MovieDatabase @Inject constructor(
 
     fun deleteAll() {
         dao.deleteAll()
+    }
+
+    fun countByCategory(categoryId: Long): Long = dao.countCategory(categoryId)
+
+    fun integrateCategory(fromCategory: CategoryEntity, toCategory: CategoryEntity) {
+        appDb.runInTransaction {
+            dao.updateCategory(fromCategory.id, toCategory.id)
+            categoryDao.delete(fromCategory)
+        }
     }
 }

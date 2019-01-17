@@ -1,6 +1,7 @@
 package jp.hotdrop.moviememory.data.local.database
 
 import dagger.Reusable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
@@ -14,7 +15,25 @@ class CategoryDatabase @Inject constructor(
         private val dao: CategoryDao
 ) {
 
-    fun register(name: String): Long {
+    fun find(id: Long): CategoryEntity = dao.select(id)
+
+    fun findAll(): Single<List<CategoryEntity>> = dao.selectAll()
+
+    fun flowable(): Flowable<List<CategoryEntity>> = dao.flowable()
+
+    fun register(categoryEntity: CategoryEntity) {
+        dao.insert(categoryEntity)
+    }
+
+    fun update(categoryEntity: CategoryEntity) {
+        dao.update(categoryEntity)
+    }
+
+    fun delete(categoryEntity: CategoryEntity) {
+        dao.delete(categoryEntity)
+    }
+
+    fun registerForChecking(name: String): Long {
         if (name.isEmpty()) {
             dao.select(Category.UNSPECIFIED_NAME)?.let {
                 Timber.d("カテゴリー登録 未指定は登録済")
@@ -41,8 +60,4 @@ class CategoryDatabase @Inject constructor(
             }
         }
     }
-
-    fun find(id: Long): CategoryEntity = dao.select(id)
-
-    fun findAll(): Single<List<CategoryEntity>> = dao.selectAll()
 }

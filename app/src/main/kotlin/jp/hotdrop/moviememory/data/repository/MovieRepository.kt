@@ -135,7 +135,7 @@ class MovieRepository @Inject constructor(
             val categoryMap = mutableMapOf<String, Long>()
             responses.map { it.categoryName }
                     .forEach { categoryName ->
-                        categoryMap[categoryName] = categoryDatabase.register(categoryName)
+                        categoryMap[categoryName] = categoryDatabase.registerForChecking(categoryName)
                     }
             val movieEntities = responses.map { movieResponse ->
                 movieResponse.toEntity(categoryMap)

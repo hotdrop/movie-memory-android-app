@@ -40,7 +40,7 @@ class MovieEditDetailFragment: Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        activity?.let {
+        activity?.also {
             it.component.fragment().inject(this)
             viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
         } ?: kotlin.run {

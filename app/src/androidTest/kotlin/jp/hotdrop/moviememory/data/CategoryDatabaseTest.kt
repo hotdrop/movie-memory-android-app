@@ -44,16 +44,16 @@ class CategoryDatabaseTest {
         val name3 = "test3"
         val name4 = ""
 
-        val name1Id = db.register(name1)
-        db.register(name1)
-        val name2Id = db.register(name2)
-        val name3Id = db.register(name3)
-        val name4Id = db.register(name4)
+        val name1Id = db.registerForChecking(name1)
+        db.registerForChecking(name1)
+        val name2Id = db.registerForChecking(name2)
+        val name3Id = db.registerForChecking(name3)
+        val name4Id = db.registerForChecking(name4)
 
-        val existName1Id = db.register(name1)
-        val existName4Id = db.register(name4)
-        val existName3Id = db.register(name3)
-        val existName2Id = db.register(name2)
+        val existName1Id = db.registerForChecking(name1)
+        val existName4Id = db.registerForChecking(name4)
+        val existName3Id = db.registerForChecking(name3)
+        val existName2Id = db.registerForChecking(name2)
 
         assertTrue("登録時のID=$name1Id 再取得時のID=$existName1Id", name1Id == existName1Id)
         assertTrue("登録時のID=$name2Id 再取得時のID=$existName2Id", name2Id == existName2Id)

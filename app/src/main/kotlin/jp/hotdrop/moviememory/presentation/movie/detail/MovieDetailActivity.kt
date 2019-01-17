@@ -196,7 +196,7 @@ class MovieDetailActivity: BaseActivity() {
         initFavoriteStar(movie.favoriteCount)
 
         // キャスト
-        movie.casts?.let { casts ->
+        movie.casts?.also { casts ->
             binding.castsRecyclerView.let { recyclerView ->
                 recyclerView.layoutManager = FlexboxLayoutManager(this).apply {
                     flexDirection = FlexDirection.ROW

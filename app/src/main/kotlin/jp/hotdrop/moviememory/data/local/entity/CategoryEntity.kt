@@ -10,8 +10,15 @@ data class CategoryEntity (
         val name: String
 )
 
-fun CategoryEntity.toCategory(): Category =
+fun CategoryEntity.toCategory(registerCount: Long = 0): Category =
         Category(
+                id = this.id,
+                name = this.name,
+                registerCount = registerCount
+        )
+
+fun Category.toEntity(): CategoryEntity =
+        CategoryEntity(
                 id = this.id,
                 name = this.name
         )

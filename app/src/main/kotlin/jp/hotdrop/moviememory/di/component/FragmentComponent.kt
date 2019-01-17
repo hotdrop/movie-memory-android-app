@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory.di.component
 
 import dagger.Subcomponent
 import jp.hotdrop.moviememory.di.module.FragmentViewModelModule
+import jp.hotdrop.moviememory.presentation.category.CategoryFragment
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
 import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditDetailFragment
 import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditOverviewFragment
@@ -20,6 +21,7 @@ interface FragmentComponent {
     fun inject(fragment: MovieEditOverviewFragment)
     fun inject(fragment: MovieEditDetailFragment)
 
+    fun inject(fragment: CategoryFragment)
     fun inject(fragment: SearchFragment)
     fun inject(fragment: SettingFragment)
 }
