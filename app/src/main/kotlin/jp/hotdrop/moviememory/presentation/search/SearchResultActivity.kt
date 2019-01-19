@@ -15,6 +15,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -30,16 +31,17 @@ import jp.hotdrop.moviememory.presentation.adapter.MoviesAdapter
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import timber.log.Timber
+import javax.inject.Inject
 
 class SearchResultActivity: BaseActivity() {
 
-    private val binding: ActivitySearchResultBinding by lazy {
-        DataBindingUtil.setContentView<ActivitySearchResultBinding>(this, R.layout.activity_search_result)
-    }
+    private lateinit var binding: ActivitySearchResultBinding
 
     private var moviesAdapter: MoviesAdapter? = null
     private var suggestionAdapter: SuggestionAdapter? = null
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchResultViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SearchResultViewModel::class.java)
     }
@@ -47,6 +49,7 @@ class SearchResultActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_result)
 
         initView()
         observe()

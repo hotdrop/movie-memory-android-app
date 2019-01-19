@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
@@ -20,13 +21,12 @@ class MainActivity: BaseActivity() {
     @Inject
     lateinit var firebase: Firebase
 
-    private val binding: ActivityMainBinding by lazy {
-        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-    }
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         firebase.login {
             Snackbar.make(binding.snackbarArea, "Firebaseのログインに失敗しました。", Snackbar.LENGTH_LONG).show()
@@ -67,7 +67,6 @@ class MainActivity: BaseActivity() {
             }
             false
         }
-
     }
 
     private fun replaceFragment(fragment: Fragment) {

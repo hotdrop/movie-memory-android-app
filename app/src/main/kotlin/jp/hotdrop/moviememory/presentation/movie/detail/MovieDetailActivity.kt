@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -30,13 +31,14 @@ import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
+import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
 
-    private val binding: ActivityMovieDetailBinding by lazy {
-        DataBindingUtil.setContentView<ActivityMovieDetailBinding>(this, R.layout.activity_movie_detail)
-    }
+    private lateinit var binding: ActivityMovieDetailBinding
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MovieDetailViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
     }
@@ -50,6 +52,7 @@ class MovieDetailActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
 
         initView()
         observe()

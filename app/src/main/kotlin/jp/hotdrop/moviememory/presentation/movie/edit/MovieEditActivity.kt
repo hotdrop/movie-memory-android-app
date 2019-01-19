@@ -7,18 +7,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMovieEditBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.BaseActivity
+import javax.inject.Inject
 
 class MovieEditActivity: BaseActivity() {
 
-    private val binding: ActivityMovieEditBinding by lazy {
-        DataBindingUtil.setContentView<ActivityMovieEditBinding>(this, R.layout.activity_movie_edit)
-    }
+    private lateinit var binding: ActivityMovieEditBinding
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MovieEditViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MovieEditViewModel::class.java)
     }
@@ -26,6 +28,7 @@ class MovieEditActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_edit)
 
         observe()
         initView()
