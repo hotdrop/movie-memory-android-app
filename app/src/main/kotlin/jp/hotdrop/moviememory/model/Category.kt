@@ -7,6 +7,11 @@ data class Category (
         val name: String,
         val registerCount: Long
 ): Serializable {
+
+    fun isUnspecified(): Boolean {
+        return id == UNSPECIFIED_ID
+    }
+
     companion object {
         const val UNSPECIFIED_ID = -1L
         const val UNSPECIFIED_NAME = "未指定"

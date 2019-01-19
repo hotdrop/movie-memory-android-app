@@ -28,6 +28,7 @@ class CategoryRepository @Inject constructor(
     fun categoriesWithRegisterCount(): Flowable<List<Category>> {
         return categoryDatabase.flowable()
                 .map { entities ->
+                    Timber.d(" categoryのFlowableが呼ばれました。")
                     entities.map { entity ->
                         val registerCnt = movieDatabase.countByCategory(entity.id)
                         entity.toCategory(registerCnt)

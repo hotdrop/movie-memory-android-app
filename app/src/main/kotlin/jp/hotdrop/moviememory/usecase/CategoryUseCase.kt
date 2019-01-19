@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory.usecase
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.CategoryRepository
 import jp.hotdrop.moviememory.model.Category
@@ -12,6 +13,16 @@ class CategoryUseCase @Inject constructor(
 ) {
     fun flowable(): Flowable<List<Category>> =
             categoryRepository.categoriesWithRegisterCount()
+                    .map { categories ->
+                        categories.filter { !it.isUnspecified() }
+                    }
+                    .subscribeOn(Schedulers.io())
+
+    fun findAll(): Single<List<Category>> =
+            categoryRepository.findAll()
+                    .map { categories ->
+                        categories.filter { !it.isUnspecified() }
+                    }
                     .subscribeOn(Schedulers.io())
 
     fun add(category: Category): Completable =

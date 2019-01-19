@@ -15,7 +15,10 @@ class CategoryViewModel @Inject constructor(
         private val useCase: CategoryUseCase
 ): ViewModel(), LifecycleObserver {
 
-    var categories: LiveData<List<Category>> ?= null
+    private val mutableCategories = MutableLiveData<List<Category>>()
+    val categories: LiveData<List<Category>> = mutableCategories
+
+    var streamCategories: LiveData<List<Category>> ?= null
 
     private val mutableSuccess = MutableLiveData<OperationType>()
     val success: LiveData<OperationType> = mutableSuccess
@@ -27,7 +30,17 @@ class CategoryViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        categories = LiveDataReactiveStreams.fromPublisher(useCase.flowable())
+        useCase.findAll()
+                .observeOn(Schedulers.io())
+                .subscribeBy(
+                        onSuccess = {
+                            mutableCategories.postValue(it)
+                            streamCategories = LiveDataReactiveStreams.fromPublisher(useCase.flowable())
+                        },
+                        onError = {
+                            mutableError.postValue(AppError(it, "Error! Operation add category.."))
+                        }
+                ).addTo(compositeDisposable)
     }
 
     fun add(category: Category) {

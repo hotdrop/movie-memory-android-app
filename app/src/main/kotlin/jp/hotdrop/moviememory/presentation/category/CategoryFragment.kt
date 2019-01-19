@@ -48,31 +48,38 @@ class CategoryFragment: Fragment() {
     }
 
     private fun observe() {
-        viewModel.categories?.observe(this, Observer {
+        viewModel.categories.observe(this, Observer {
             it?.let { categories ->
                 initChipCategories(categories)
             }
         })
+        viewModel.streamCategories?.observe(this, Observer {
+            it?.let { categories ->
+                initChipCategories(categories)
+            }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun initView() {
-        // TODO 追加ボタン
-        Snackbar.make(binding.categoriesArea, "追加は未実装です。", Snackbar.LENGTH_SHORT).show()
-
+        binding.fab.setOnClickListener {
+            // TODO 追加ボタン
+            Snackbar.make(binding.snackbarArea, "追加は未実装です。", Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     private fun initChipCategories(categories: List<Category>) {
         binding.chipGroupCategories.removeAllViews()
         categories.forEach { category ->
-            val chip = (layoutInflater.inflate(R.layout.chip_category_action, binding.chipGroupCategories, false) as Chip).apply {
+            val chip = (layoutInflater.inflate(R.layout.chip_category_entry, binding.chipGroupCategories, false) as Chip).apply {
                 text = category.name
                 setOnClickListener {
                     // TODO 名前変更のダイアログ表示
-                    Snackbar.make(binding.categoriesArea, "更新は未実装です。", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.snackbarArea, "更新は未実装です。", Snackbar.LENGTH_SHORT).show()
                 }
                 setOnCloseIconClickListener {
                     // TODO 削除確認ダイアログ表示
-                    Snackbar.make(binding.categoriesArea, "削除は未実装です。", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.snackbarArea, "削除は未実装です。", Snackbar.LENGTH_SHORT).show()
                 }
             }
             binding.chipGroupCategories.addView(chip)
