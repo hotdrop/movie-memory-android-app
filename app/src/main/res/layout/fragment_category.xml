@@ -5,6 +5,7 @@
     tools:context=".presentation.category.CategoryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/categories_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
