@@ -60,7 +60,7 @@
     <string name="image_search_dialog_close_label">閉じる</string>
 
     <!-- カテゴリー編集 -->
-    <string name="category_desc">カテゴリーを編集します。</string>
+    <string name="category_desc">カテゴリーの追加/修正/削除を行えます。</string>
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>
