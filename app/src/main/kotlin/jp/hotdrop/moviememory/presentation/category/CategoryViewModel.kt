@@ -27,7 +27,7 @@ class CategoryViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        categories = LiveDataReactiveStreams.fromPublisher(useCase.flowalbe())
+        categories = LiveDataReactiveStreams.fromPublisher(useCase.flowable())
     }
 
     fun add(category: Category) {

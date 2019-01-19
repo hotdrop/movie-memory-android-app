@@ -2,7 +2,6 @@ package jp.hotdrop.moviememory.usecase
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.CategoryRepository
 import jp.hotdrop.moviememory.model.Category
@@ -11,7 +10,7 @@ import javax.inject.Inject
 class CategoryUseCase @Inject constructor(
         private val categoryRepository: CategoryRepository
 ) {
-    fun flowalbe(): Flowable<List<Category>> =
+    fun flowable(): Flowable<List<Category>> =
             categoryRepository.categoriesWithRegisterCount()
                     .subscribeOn(Schedulers.io())
 
