@@ -164,7 +164,7 @@ class SearchResultActivity: BaseActivity() {
         })
         viewModel.error.observe(this, Observer {
             it?.let { error ->
-                Snackbar.make(binding.snackbarArea, error.getMessage() ?: "もう一度実行してください。", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.snackbarArea, error.getMessage(), Snackbar.LENGTH_LONG).show()
                 viewModel.clear()
             }
         })

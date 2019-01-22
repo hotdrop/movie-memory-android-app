@@ -3,9 +3,9 @@ package jp.hotdrop.moviememory.model
 import java.io.Serializable
 
 data class Category (
-        val id: Long,
+        val id: Long? = null,
         val name: String,
-        val registerCount: Long
+        val registerCount: Long = 0
 ): Serializable {
 
     fun isUnspecified(): Boolean {

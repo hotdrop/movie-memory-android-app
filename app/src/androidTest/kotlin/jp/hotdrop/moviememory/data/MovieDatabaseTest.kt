@@ -138,7 +138,7 @@ class MovieDatabaseTest {
 
         val fromCategory = CategoryEntity(id = 2, name = "消えるカテゴリー")
         val toCategory = CategoryEntity(id = 1, name = "こっちに統合")
-        movieDb.integrateCategory(fromCategory, toCategory)
+        movieDb.updateCategory(fromCategory.id, toCategory.id)
 
         val cnt1 = movieDb.countByCategory(1)
         Assert.assertEquals(cnt1, 4)

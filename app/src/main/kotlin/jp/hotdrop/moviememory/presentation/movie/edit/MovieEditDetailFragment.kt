@@ -69,15 +69,15 @@ class MovieEditDetailFragment: Fragment() {
 
         binding.playDateEditArea.run { 
             setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus && context != null) {
+                if (hasFocus) {
                     TextInputDatePickerDialog.show(context, binding.playDateEditArea)
                 }
             }
         }
 
         binding.addCastButton.setOnClickListener {
-            if (context != null && adapter != null) {
-                TextInputDialog.Builder(context!!)
+            if (adapter != null) {
+                TextInputDialog.Builder(requireContext())
                         .setTitle(R.string.dialog_title_cast_add)
                         .setTextHint(R.string.cast_text_hint)
                         .setOnPositiveListener { castName ->
@@ -145,30 +145,26 @@ class MovieEditDetailFragment: Fragment() {
                 binding.iconCastDelete.isVisible = true
 
                 binding.iconCastDelete.setOnClickListener {
-                    context?.let { context ->
-                        val message = context.getString(R.string.cast_delete_text, castName)
-                        AlertDialog.Builder(context)
-                                .setMessage(message)
-                                .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
-                                    super.remove(castName)
-                                    dialogInterface.dismiss()
-                                }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
-                                    dialogInterface.dismiss()
-                                }.setCancelable(true)
-                                .show()
-                    }
+                    val message = requireContext().getString(R.string.cast_delete_text, castName)
+                    AlertDialog.Builder(requireContext())
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                                super.remove(castName)
+                                dialogInterface.dismiss()
+                            }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
+                                dialogInterface.dismiss()
+                            }.setCancelable(true)
+                            .show()
                 }
 
                 binding.castLayout.setOnClickListener {
-                    context?.let { context ->
-                        TextInputDialog.Builder(context)
-                                .setTitle(R.string.dialog_title_cast_update)
-                                .setTextHint(R.string.cast_text_hint)
-                                .setText(castName)
-                                .setOnPositiveListener { updatedCastName ->
-                                    super.update(castName, updatedCastName)
-                                }.show()
-                    }
+                    TextInputDialog.Builder(requireContext())
+                            .setTitle(R.string.dialog_title_cast_update)
+                            .setTextHint(R.string.cast_text_hint)
+                            .setText(castName)
+                            .setOnPositiveListener { updatedCastName ->
+                                super.update(castName, updatedCastName)
+                            }.show()
                 }
             }
         }

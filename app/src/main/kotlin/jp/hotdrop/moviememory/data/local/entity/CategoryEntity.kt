@@ -6,7 +6,7 @@ import jp.hotdrop.moviememory.model.Category
 
 @Entity(tableName = "category")
 data class CategoryEntity (
-        @PrimaryKey(autoGenerate = true) val id: Long = 0,
+        @PrimaryKey(autoGenerate = true) val id: Long? = null,
         val name: String
 )
 

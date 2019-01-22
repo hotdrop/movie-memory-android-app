@@ -9,9 +9,6 @@ import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 interface CategoryDao {
 
     @Query("SELECT * FROM category")
-    fun flowable(): Flowable<List<CategoryEntity>>
-
-    @Query("SELECT * FROM category")
     fun selectAll(): Single<List<CategoryEntity>>
 
     @Query("SELECT * FROM category WHERE id = :id")
@@ -26,6 +23,6 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun update(entity: CategoryEntity)
 
-    @Delete
-    fun delete(entity: CategoryEntity)
+    @Query("DELETE FROM category WHERE id = :id")
+    fun delete(id: Long)
 }

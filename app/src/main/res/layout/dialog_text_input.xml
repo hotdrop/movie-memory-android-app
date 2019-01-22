@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="100"
                 android:maxLines="1"
-                tools:text="キャストやカテゴリーなど" />
+                tools:text="キャスト名など" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

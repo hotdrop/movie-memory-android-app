@@ -62,10 +62,10 @@ class MovieDatabase @Inject constructor(
 
     fun countByCategory(categoryId: Long): Long = dao.countCategory(categoryId)
 
-    fun integrateCategory(fromCategory: CategoryEntity, toCategory: CategoryEntity) {
+    fun updateCategory(fromCategoryId: Long, toCategoryId: Long) {
         appDb.runInTransaction {
-            dao.updateCategory(fromCategory.id, toCategory.id)
-            categoryDao.delete(fromCategory)
+            dao.updateCategory(fromCategoryId, toCategoryId)
+            categoryDao.delete(fromCategoryId)
         }
     }
 }

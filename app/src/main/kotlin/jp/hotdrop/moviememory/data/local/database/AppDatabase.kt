@@ -16,7 +16,7 @@ import jp.hotdrop.moviememory.data.local.entity.*
             (CategoryEntity::class),
             (SuggestionEntity::class)
         ],
-        version = 2
+        version = 3
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {

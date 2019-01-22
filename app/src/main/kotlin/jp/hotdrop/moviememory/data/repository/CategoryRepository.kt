@@ -25,12 +25,11 @@ class CategoryRepository @Inject constructor(
                 }
     }
 
-    fun categoriesWithRegisterCount(): Flowable<List<Category>> {
-        return categoryDatabase.flowable()
+    fun findAllWithRegisterCount(): Single<List<Category>> {
+        return categoryDatabase.findAll()
                 .map { entities ->
-                    Timber.d(" categoryのFlowableが呼ばれました。")
                     entities.map { entity ->
-                        val registerCnt = movieDatabase.countByCategory(entity.id)
+                        val registerCnt = entity.id?.let {movieDatabase.countByCategory(it)} ?: 0
                         entity.toCategory(registerCnt)
                     }
                 }
@@ -52,7 +51,9 @@ class CategoryRepository @Inject constructor(
 
     fun delete(category: Category): Completable {
         return Completable.create { emitter ->
-            categoryDatabase.delete(category.toEntity())
+            // ここのカテゴリーIDは必ず存在するので!!をつける
+            movieDatabase.updateCategory(category.id!!, Category.UNSPECIFIED_ID)
+            categoryDatabase.delete(category.id)
             emitter.onComplete()
         }
     }
@@ -60,7 +61,8 @@ class CategoryRepository @Inject constructor(
     fun integrate(fromCategory: Category, toCategory: Category): Completable {
         return Completable.create { emitter ->
             Timber.d("登録されている映画情報を ${fromCategory.name} から ${toCategory.name} にリプレイスします。")
-            movieDatabase.integrateCategory(fromCategory.toEntity(), toCategory.toEntity())
+            // ここのカテゴリーIDは必ず存在するので!!をつける
+            movieDatabase.updateCategory(fromCategory.id!!, toCategory.id!!)
             emitter.onComplete()
         }
     }

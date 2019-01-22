@@ -60,7 +60,22 @@
     <string name="image_search_dialog_close_label">閉じる</string>
 
     <!-- カテゴリー編集 -->
-    <string name="category_desc">カテゴリーの追加/修正/削除を行えます。</string>
+    <string name="category_desc">カテゴリー名の右にあるカッコは、このカテゴリーに登録されている映画数です。</string>
+    <string name="category_name_text">%1$s (%2$d)</string>
+    <string name="category_add_dialog_duplicate_message">入力したカテゴリー名は既に登録されています。</string>
+    <string name="category_edit_dialog_duplicate_message">
+        入力したカテゴリー名は既に登録されています。
+        \nOKをタップした場合、編集前のカテゴリーは削除され現在入力されているカテゴリーに統合します。
+    </string>
+    <string name="category_delete_dialog_message">「%1$s」を削除します。このカテゴリーに登録されている映画情報は全て未設定になりますがよろしいですか？</string>
+    <string name="category_dialog_add_title">カテゴリーの新規登録</string>
+    <string name="category_dialog_edit_title">カテゴリー名編集</string>
+    <string name="category_dialog_delete_title">カテゴリー削除</string>
+    <string name="category_dialog_text_input_hint">カテゴリー名</string>
+    <string name="category_add_success_message">カテゴリーを登録しました。</string>
+    <string name="category_update_success_message">カテゴリー名を更新しました。</string>
+    <string name="category_delete_success_message">カテゴリーを削除しました。</string>
+    <string name="category_integrate_success_message">カテゴリーを統合しました。</string>
 
     <!--検索-->
     <string name="search_label_keyword">キーワードで検索する</string>

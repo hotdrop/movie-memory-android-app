@@ -18,8 +18,6 @@ class CategoryViewModel @Inject constructor(
     private val mutableCategories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = mutableCategories
 
-    var streamCategories: LiveData<List<Category>> ?= null
-
     private val mutableSuccess = MutableLiveData<OperationType>()
     val success: LiveData<OperationType> = mutableSuccess
 
@@ -30,12 +28,15 @@ class CategoryViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
+        refresh()
+    }
+
+    fun refresh() {
         useCase.findAll()
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
                             mutableCategories.postValue(it)
-                            streamCategories = LiveDataReactiveStreams.fromPublisher(useCase.flowable())
                         },
                         onError = {
                             mutableError.postValue(AppError(it, "Error! Operation add category.."))
@@ -69,14 +70,22 @@ class CategoryViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun integrate(category: Category, integrateCategoryName: String) {
-        categories?.value?.let { categories ->
-            val toCategory = categories.find { it.name == integrateCategoryName }
-            if (toCategory == null) {
-                Timber.d("カテゴリー $integrateCategoryName は存在しません。おかしいです。")
-                return
-            }
-            useCase.integrate(category, toCategory)
+    fun delete(category: Category) {
+        useCase.delete(category)
+                .observeOn(Schedulers.io())
+                .subscribeBy(
+                        onComplete = {
+                            mutableSuccess.postValue(OperationType.DELETE)
+                        },
+                        onError = {
+                            mutableError.postValue(AppError(it, "Error! Operation update category name.."))
+                        }
+                ).addTo(compositeDisposable)
+    }
+
+    // 名前の重複はView側で確認すれば良さそう
+    fun integrate(fromCategory: Category, toCategory: Category) {
+            useCase.integrate(fromCategory, toCategory)
                     .observeOn(Schedulers.io())
                     .subscribeBy(
                             onComplete = {
@@ -86,7 +95,6 @@ class CategoryViewModel @Inject constructor(
                                 mutableError.postValue(AppError(it, "Error! Operation update category name.."))
                             }
                     ).addTo(compositeDisposable)
-        }
     }
 
     override fun onCleared() {

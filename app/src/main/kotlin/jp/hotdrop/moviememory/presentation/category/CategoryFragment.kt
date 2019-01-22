@@ -15,6 +15,7 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentCategoryBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
+import jp.hotdrop.moviememory.presentation.component.CategoryDialog
 import javax.inject.Inject
 
 class CategoryFragment: Fragment() {
@@ -53,9 +54,15 @@ class CategoryFragment: Fragment() {
                 initChipCategories(categories)
             }
         })
-        viewModel.streamCategories?.observe(this, Observer {
-            it?.let { categories ->
-                initChipCategories(categories)
+        viewModel.success.observe(this, Observer {
+            it?.let { type ->
+                onSuccessSnackbar(type)
+                viewModel.refresh()
+            }
+        })
+        viewModel.error.observe(this, Observer {
+            it?.let { error ->
+                Snackbar.make(binding.snackbarArea, error.getMessage(), Snackbar.LENGTH_LONG).show()
             }
         })
         lifecycle.addObserver(viewModel)
@@ -63,8 +70,9 @@ class CategoryFragment: Fragment() {
 
     private fun initView() {
         binding.fab.setOnClickListener {
-            // TODO 追加ボタン
-            Snackbar.make(binding.snackbarArea, "追加は未実装です。", Snackbar.LENGTH_SHORT).show()
+            viewModel.categories.value?.let { categories ->
+                showAddDialog(categories)
+            }
         }
     }
 
@@ -72,17 +80,62 @@ class CategoryFragment: Fragment() {
         binding.chipGroupCategories.removeAllViews()
         categories.forEach { category ->
             val chip = (layoutInflater.inflate(R.layout.chip_category_entry, binding.chipGroupCategories, false) as Chip).apply {
-                text = category.name
-                setOnClickListener {
-                    // TODO 名前変更のダイアログ表示
-                    Snackbar.make(binding.snackbarArea, "更新は未実装です。", Snackbar.LENGTH_SHORT).show()
+                this.text = getString(R.string.category_name_text, category.name, category.registerCount)
+                this.setOnClickListener {
+                    showEditDialog(category, categories)
                 }
-                setOnCloseIconClickListener {
-                    // TODO 削除確認ダイアログ表示
-                    Snackbar.make(binding.snackbarArea, "削除は未実装です。", Snackbar.LENGTH_SHORT).show()
+                this.setOnCloseIconClickListener {
+                    showDeleteDialog(category)
                 }
             }
             binding.chipGroupCategories.addView(chip)
+        }
+    }
+
+    private fun showAddDialog(categories: List<Category>) {
+        CategoryDialog.Builder(requireContext())
+                .setCategoriesForCheckDuplicate(categories)
+                .setOnPositiveListener { newCategory, _ ->
+                    viewModel.add(newCategory)
+                }.showAdd()
+    }
+
+    private fun showEditDialog(category: Category, categories: List<Category>) {
+        // TODO ここのintegrateがバグってる
+        CategoryDialog.Builder(requireContext())
+                .setEditCategory(category)
+                .setCategoriesForCheckDuplicate(categories)
+                .setOnPositiveListener { newCategory, isIntegrate ->
+                    if (isIntegrate) {
+                        viewModel.integrate(category, newCategory)
+                    } else {
+                        viewModel.update(newCategory)
+                    }
+                }.showEdit()
+    }
+
+    private fun showDeleteDialog(category: Category) {
+        CategoryDialog.Builder(requireContext())
+                .setMessage(R.string.category_delete_dialog_message, category.name)
+                .setOnPositiveListener { _, _ ->
+                    viewModel.delete(category)
+                }.showDelete()
+    }
+
+    private fun onSuccessSnackbar(type: CategoryViewModel.Companion.OperationType) {
+        when (type) {
+            CategoryViewModel.Companion.OperationType.ADD -> {
+                Snackbar.make(binding.snackbarArea, R.string.category_add_success_message, Snackbar.LENGTH_SHORT).show()
+            }
+            CategoryViewModel.Companion.OperationType.UPDATE -> {
+                Snackbar.make(binding.snackbarArea, R.string.category_update_success_message, Snackbar.LENGTH_SHORT).show()
+            }
+            CategoryViewModel.Companion.OperationType.DELETE -> {
+                Snackbar.make(binding.snackbarArea, R.string.category_delete_success_message, Snackbar.LENGTH_SHORT).show()
+            }
+            CategoryViewModel.Companion.OperationType.REPLACE -> {
+                Snackbar.make(binding.snackbarArea, R.string.category_integrate_success_message, Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -80,7 +80,7 @@ class CategoryDatabaseTest {
         db.register(category1.toEntity())
         db.register(category2.toEntity())
 
-        db.delete(category1.toEntity())
+        db.delete(category1.id)
 
         db.findAll()
                 .test()
