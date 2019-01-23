@@ -11,6 +11,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.DialogCategoryBinding
 import jp.hotdrop.moviememory.model.Category
+import timber.log.Timber
 
 class CategoryDialog {
 
@@ -33,9 +34,9 @@ class CategoryDialog {
         }
 
         fun setCategoriesForCheckDuplicate(categories: List<Category>): Builder {
-            // カテゴリー入力時に重複チェックするため自分以外のカテゴリー名を保持。
+            // カテゴリー入力時に重複チェックするため自分以外のカテゴリーを保持
             category?.run {
-                categoriesForCheckDuplicate = categories.filter { it.name != this.name }
+                categoriesForCheckDuplicate = categories.filter { it.id != this.id }
             } ?: kotlin.run {
                 categoriesForCheckDuplicate = categories
             }
@@ -85,8 +86,18 @@ class CategoryDialog {
 
             binding.okButton.setOnClickListener {
                 positiveListener?.let { listener ->
+
                     val newCategoryName = binding.textInput.text.toString()
-                    val newCategory = category?.copy(name = newCategoryName) ?: Category(name = newCategoryName)
+
+                    // 統合の場合は統合先をnewCategoryとして参照する
+                    // isIntegrateがtrueの状態でcategoriesForCheckDuplicateもfindもnullになることはないので共に!!をつける。
+                    val newCategory = if (isIntegrate) {
+                        categoriesForCheckDuplicate?.find {
+                            category -> category.name == newCategoryName
+                        } ?: throw IllegalStateException("program bag!!")
+                    } else {
+                        category?.copy(name = newCategoryName) ?: Category(name = newCategoryName)
+                    }
                     listener(newCategory, isIntegrate)
                 }
                 dialog.dismiss()
@@ -100,7 +111,7 @@ class CategoryDialog {
                     .textChanges()
                     .skipInitialValue()
                     .map { inputCategoryName ->
-                        categoriesForCheckDuplicate?.any { it.name == inputCategoryName } ?: false
+                        categoriesForCheckDuplicate?.any { it.name == inputCategoryName.toString() } ?: false
                     }.subscribeBy(
                             onNext = { isDuplicateName ->
                                 if (isDuplicateName && enableDuplicateName) {

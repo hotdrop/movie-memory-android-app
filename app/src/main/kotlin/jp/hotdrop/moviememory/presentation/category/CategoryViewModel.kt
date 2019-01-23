@@ -84,6 +84,7 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun integrate(fromCategory: Category, toCategory: Category) {
+        Timber.d("")
             useCase.integrate(fromCategory, toCategory)
                     .observeOn(Schedulers.io())
                     .subscribeBy(

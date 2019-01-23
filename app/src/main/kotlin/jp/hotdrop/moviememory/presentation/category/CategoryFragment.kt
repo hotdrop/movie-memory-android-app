@@ -16,6 +16,7 @@ import jp.hotdrop.moviememory.databinding.FragmentCategoryBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.presentation.component.CategoryDialog
+import timber.log.Timber
 import javax.inject.Inject
 
 class CategoryFragment: Fragment() {
@@ -101,14 +102,15 @@ class CategoryFragment: Fragment() {
     }
 
     private fun showEditDialog(category: Category, categories: List<Category>) {
-        // TODO ここのintegrateがバグってる
         CategoryDialog.Builder(requireContext())
                 .setEditCategory(category)
                 .setCategoriesForCheckDuplicate(categories)
                 .setOnPositiveListener { newCategory, isIntegrate ->
                     if (isIntegrate) {
+                        Timber.d("重複があるためカテゴリーを統合します。統合元:${category.id}, ${category.name} 統合先:${newCategory.id} ${newCategory.name}")
                         viewModel.integrate(category, newCategory)
                     } else {
+                        Timber.d("普通にカテゴリー名を更新します。")
                         viewModel.update(newCategory)
                     }
                 }.showEdit()
