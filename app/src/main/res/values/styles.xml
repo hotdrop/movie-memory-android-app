@@ -74,4 +74,9 @@
         <item name="lottie_fileName">FavoriteIcon.json</item>
     </style>
 
+    <style name="InputTextSingleLine" parent="TextNormal">
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
 </resources>

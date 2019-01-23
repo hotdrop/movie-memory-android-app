@@ -83,7 +83,6 @@ class CategoryViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    // 名前の重複はView側で確認すれば良さそう
     fun integrate(fromCategory: Category, toCategory: Category) {
             useCase.integrate(fromCategory, toCategory)
                     .observeOn(Schedulers.io())

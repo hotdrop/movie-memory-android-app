@@ -34,11 +34,10 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/text_input"
-                style="@style/TextNormal"
+                style="@style/InputTextSingleLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="100"
-                android:maxLines="1"
                 tools:text="キャスト名など" />
 
         </com.google.android.material.textfield.TextInputLayout>

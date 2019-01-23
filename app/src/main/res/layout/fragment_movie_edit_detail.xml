@@ -114,19 +114,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="200"
+                    app:counterEnabled="false"
                     app:layout_constraintEnd_toStartOf="@id/right_guideline"
                     app:layout_constraintStart_toEndOf="@id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/text_input_trailer_movie_url">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        style="@style/TextNormal"
+                        style="@style/InputTextSingleLine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/film_director_label"
-                        android:maxLength="200"
-                        android:maxLines="3"
+                        android:maxLength="50"
                         android:text="@={movie.filmDirector}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
