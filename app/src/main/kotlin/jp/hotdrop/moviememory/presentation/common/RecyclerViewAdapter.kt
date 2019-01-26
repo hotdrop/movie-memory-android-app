@@ -42,10 +42,10 @@ abstract class RecyclerViewAdapter<T, VH: RecyclerView.ViewHolder>: RecyclerView
         }
 
         list.addAll(items)
-        val endIdx = list.size - 1
+        val itemCount = items.size
 
-        Timber.d("Adapter addAll. 開始位置 $startIdx 終了位置 $endIdx 総件数: ${list.size} ")
-        notifyItemRangeChanged(startIdx, endIdx)
+        Timber.d("Adapter addAll. 開始位置 $startIdx 更新数 $itemCount 総件数: ${list.size} ")
+        notifyItemRangeChanged(startIdx, itemCount)
     }
 
     fun refresh(items: List<T>) {

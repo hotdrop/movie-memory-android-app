@@ -48,7 +48,7 @@ fun Movie.toEntity(): MovieEntity {
     return MovieEntity(
             id = this.id,
             title = this.title,
-            categoryId = this.category.id,
+            categoryId = this.category.id!!, // ここのカテゴリーIDは必ず存在する。しなければバグなのでnpeで落とす
             overview = this.overview,
             imageUrl = this.imageUrl,
             playingDate = this.playingDate?.toEpochDay(),

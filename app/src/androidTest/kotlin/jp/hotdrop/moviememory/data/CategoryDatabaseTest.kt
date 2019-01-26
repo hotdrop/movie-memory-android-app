@@ -6,6 +6,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import jp.hotdrop.moviememory.data.local.database.AppDatabase
 import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
+import jp.hotdrop.moviememory.data.local.entity.toEntity
+import jp.hotdrop.moviememory.model.Category
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -39,21 +41,72 @@ class CategoryDatabaseTest {
 
     @Test
     fun registerTest() {
+        val category1 = Category(1, "Test1", 0)
+        val category2 = Category(2, "Test2", 0)
+        db.register(category1.toEntity())
+        db.register(category2.toEntity())
+
+        db.findAll()
+                .test()
+                .assertValue { categories ->
+                    assertEquals("数が合っていません。", categories.size, 2)
+                    true
+                }
+    }
+
+    @Test
+    fun updateTest() {
+        val category1 = Category(1, "Test1", 0)
+        val category2 = Category(2, "Test2", 0)
+        db.register(category1.toEntity())
+        db.register(category2.toEntity())
+
+        val category2Copy = category2.copy(name = "Test3")
+        db.update(category2Copy.toEntity())
+
+        db.findAll()
+                .test()
+                .assertValue { categories ->
+                    assertEquals("数が合っていません。", categories.size, 2)
+                    assertEquals("値がおかしいです。", categories[1].name, "Test3")
+                    true
+                }
+    }
+
+    @Test
+    fun deleteTest() {
+        val category1 = Category(1, "Test1", 0)
+        val category2 = Category(2, "Test2", 0)
+        db.register(category1.toEntity())
+        db.register(category2.toEntity())
+
+        db.delete(category1.id)
+
+        db.findAll()
+                .test()
+                .assertValue { categories ->
+                    assertEquals("数が合っていません。", categories.size, 1)
+                    true
+                }
+    }
+
+    @Test
+    fun registerForCheckingTest() {
         val name1 = "test1"
         val name2 = "test2"
         val name3 = "test3"
         val name4 = ""
 
-        val name1Id = db.register(name1)
-        db.register(name1)
-        val name2Id = db.register(name2)
-        val name3Id = db.register(name3)
-        val name4Id = db.register(name4)
+        val name1Id = db.registerForChecking(name1)
+        db.registerForChecking(name1)
+        val name2Id = db.registerForChecking(name2)
+        val name3Id = db.registerForChecking(name3)
+        val name4Id = db.registerForChecking(name4)
 
-        val existName1Id = db.register(name1)
-        val existName4Id = db.register(name4)
-        val existName3Id = db.register(name3)
-        val existName2Id = db.register(name2)
+        val existName1Id = db.registerForChecking(name1)
+        val existName4Id = db.registerForChecking(name4)
+        val existName3Id = db.registerForChecking(name3)
+        val existName2Id = db.registerForChecking(name2)
 
         assertTrue("登録時のID=$name1Id 再取得時のID=$existName1Id", name1Id == existName1Id)
         assertTrue("登録時のID=$name2Id 再取得時のID=$existName2Id", name2Id == existName2Id)

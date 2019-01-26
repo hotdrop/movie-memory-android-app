@@ -46,7 +46,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        activity?.let {
+        activity?.also {
             it.component.fragment().inject(this)
             parentActivity = it
         } ?: kotlin.run {

@@ -35,7 +35,7 @@ class MovieUseCase @Inject constructor(
     private fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
         val endAt = LocalDate.now()
         val startAt = endAt.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
-        Timber.d("公開中のデータを取得します。$startAt 〜 $endAt epoch ${startAt.toEpochDay()}　〜 ${endAt.toEpochDay()}")
+        Timber.d("公開中のデータを取得します。")
         return movieRepository.findNowPlayingMovies(startAt, endAt, index, offset)
                 .subscribeOn(Schedulers.io())
     }

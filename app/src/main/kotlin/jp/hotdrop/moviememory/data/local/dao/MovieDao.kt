@@ -28,6 +28,9 @@ interface MovieDao {
     @Query("SELECT COUNT(*) FROM movie")
     fun count(): Single<Long>
 
+    @Query("SELECT COUNT(*) FROM movie WHERE categoryId = :categoryId")
+    fun countCategory(categoryId: Long): Long
+
     @Query("SELECT * FROM movie WHERE id = :id")
     fun selectWithFlowable(id: Long): Flowable<MovieEntity>
 
@@ -46,6 +49,9 @@ interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movie: MovieEntity)
+
+    @Query("UPDATE movie SET categoryId = :toCategoryId WHERE categoryId = :fromCategoryId")
+    fun updateCategory(fromCategoryId: Long, toCategoryId: Long)
 
     @Query("DELETE FROM movie")
     fun deleteAll()

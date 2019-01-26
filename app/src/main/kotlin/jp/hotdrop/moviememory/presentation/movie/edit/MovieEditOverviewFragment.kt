@@ -35,7 +35,7 @@ class MovieEditOverviewFragment: Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        activity?.let {
+        activity?.also {
             it.component.fragment().inject(this)
             viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
         } ?: kotlin.run {
@@ -96,7 +96,7 @@ class MovieEditOverviewFragment: Fragment() {
         binding.chipGroupCategories.removeAllViews()
 
         categories.forEach { category ->
-            val chip = (layoutInflater.inflate(R.layout.chip_category_choice, binding.chipGroupCategories, false) as Chip)
+            val chip = (layoutInflater.inflate(R.layout.chip_category_filter, binding.chipGroupCategories, false) as Chip)
                     .apply {
                         val categoryName = category.name
                         text = categoryName

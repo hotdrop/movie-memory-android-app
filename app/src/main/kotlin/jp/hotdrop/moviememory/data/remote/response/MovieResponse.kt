@@ -24,7 +24,7 @@ fun QueryDocumentSnapshot.toResponse(): MovieResponse {
     fun getFieldToString(key: String): String = this.getString(key) ?: ""
     fun getFieldToLong(key: String): Long = this.getLong(key) ?: 0
 
-    val casts = this.get("casts") as? List<String>
+    val casts = (this.get("casts") as? List<*>)?.filterIsInstance<String>()
     return MovieResponse(
             this.id.toLong(),
             getFieldToString("title"),

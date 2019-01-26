@@ -1,6 +1,7 @@
 package jp.hotdrop.moviememory.data.local.database
 
 import dagger.Reusable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
@@ -14,11 +15,27 @@ class CategoryDatabase @Inject constructor(
         private val dao: CategoryDao
 ) {
 
-    fun register(name: String): Long {
+    fun find(id: Long): CategoryEntity = dao.select(id)
+
+    fun findAll(): Single<List<CategoryEntity>> = dao.selectAll()
+
+    fun register(entity: CategoryEntity) {
+        dao.insert(entity)
+    }
+
+    fun update(entity: CategoryEntity) {
+        dao.update(entity)
+    }
+
+    fun delete(id: Long) {
+        dao.delete(id)
+    }
+
+    fun registerForChecking(name: String): Long {
         if (name.isEmpty()) {
             dao.select(Category.UNSPECIFIED_NAME)?.let {
                 Timber.d("カテゴリー登録 未指定は登録済")
-                return it.id
+                return it.id!!
             } ?: kotlin.run {
                 Timber.d("カテゴリー登録 未指定 を登録します。")
                 var id: Long = 0
@@ -30,7 +47,7 @@ class CategoryDatabase @Inject constructor(
         } else {
             dao.select(name)?.let {
                 Timber.d("カテゴリー登録 $name は登録済。")
-                return it.id
+                return it.id!!
             } ?: kotlin.run {
                 Timber.d("カテゴリー登録 $name を登録します。")
                 var id: Long = 0
@@ -41,8 +58,4 @@ class CategoryDatabase @Inject constructor(
             }
         }
     }
-
-    fun find(id: Long): CategoryEntity = dao.select(id)
-
-    fun findAll(): Single<List<CategoryEntity>> = dao.selectAll()
 }

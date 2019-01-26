@@ -14,6 +14,7 @@ import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.model.Movie
 import timber.log.Timber
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 @Reusable
@@ -59,11 +60,15 @@ class SearchRepository @Inject constructor(
     }
 
     fun findMovies(category: Category): Single<List<Movie>> {
-        return movieDatabase.findMovies(category.id)
-                .map {
-                    Timber.d("検索結果は ${it.size} ")
-                    it.map { entity -> entityToMovieWithLocalInfo(entity) }
-                }
+        category.id?.let {
+            return movieDatabase.findMovies(category.id)
+                    .map { movieEntities ->
+                        Timber.d("検索結果は ${movieEntities.size} ")
+                        movieEntities.map {
+                            entity -> entityToMovieWithLocalInfo(entity)
+                        }
+                    }
+        } ?: throw IllegalStateException("Searchで映画情報をcategoryで取得しようとしたらIDがnullでした。プログラムバグです。")
     }
 
     fun findMoviesMoreThan(favoriteNum: Int): Single<List<Movie>> {

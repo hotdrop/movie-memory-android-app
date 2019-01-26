@@ -18,5 +18,5 @@ class AppError constructor(
         }
     }
 
-    fun getMessage(): String? = message ?: throwable?.message
+    fun getMessage(): String = message ?: throwable?.message ?: "Unknown error!! Program gucyagucya!"
 }
