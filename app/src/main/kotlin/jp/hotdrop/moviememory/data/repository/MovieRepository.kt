@@ -141,7 +141,7 @@ class MovieRepository @Inject constructor(
                 movieResponse.toEntity(categoryMap)
             }
             movieDatabase.save(movieEntities)
-        }.toCompletable()
+        }.ignoreElement()
     }
 
     private fun takeTheRange(fromIndex: Int, offset: Int, movieEntities: List<MovieEntity>): List<MovieEntity> {

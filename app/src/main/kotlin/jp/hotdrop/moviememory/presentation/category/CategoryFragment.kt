@@ -29,7 +29,7 @@ class CategoryFragment: Fragment() {
         ViewModelProviders.of(this, viewModelFactory).get(CategoryViewModel::class.java)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         activity?.also {

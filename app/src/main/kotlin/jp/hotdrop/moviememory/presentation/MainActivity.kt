@@ -3,8 +3,7 @@ package jp.hotdrop.moviememory.presentation
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.transaction
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.commit
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
@@ -70,7 +69,7 @@ class MainActivity: BaseActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.transaction {
+        supportFragmentManager.commit {
             replace(R.id.content_view, fragment)
         }
     }

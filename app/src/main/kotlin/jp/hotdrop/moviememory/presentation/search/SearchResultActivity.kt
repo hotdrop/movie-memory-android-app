@@ -196,7 +196,7 @@ class SearchResultActivity: BaseActivity() {
                     viewModel.find(query)
                     viewModel.save(query)
                     return true
-                }
+                } ?: return false
             }
         })
 
