@@ -8,7 +8,9 @@ schemas
 /build
 /captures
 .externalNativeBuild
+app/keystore
+app/product
 
-app/src/debug/google-services.json
+app/src/develop/google-services.json
 app/src/main/google-services.json
-app/src/release/google-services.json
+app/src/product/google-services.json
