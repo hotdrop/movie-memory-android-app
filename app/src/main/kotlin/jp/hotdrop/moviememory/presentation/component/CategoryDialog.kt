@@ -11,9 +11,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.DialogCategoryBinding
 import jp.hotdrop.moviememory.model.Category
-import timber.log.Timber
 
-class CategoryDialog {
+object CategoryDialog {
 
     class Builder constructor(private val context: Context) {
 
