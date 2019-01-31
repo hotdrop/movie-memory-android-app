@@ -15,8 +15,12 @@
         android:layout_height="match_parent">
 
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/scroll_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -100,17 +104,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:src="@drawable/ic_open_in_browser"
                     android:contentDescription="@string/image_url_search_browser_desc"
+                    android:src="@drawable/ic_open_in_browser"
                     app:layout_constraintStart_toEndOf="@+id/image_preview"
                     app:layout_constraintTop_toBottomOf="@+id/text_input_image_url" />
 
                 <TextView
                     android:id="@+id/textView"
+                    style="@style/TextSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    style="@style/TextSmall"
                     android:text="@string/image_url_search_browser_desc"
                     app:layout_constraintBottom_toBottomOf="@+id/image_icon_browser"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
@@ -131,10 +135,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:singleSelection="true"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/category_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/category_label"
+                    app:singleSelection="true" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_overview"
@@ -171,6 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_save" />

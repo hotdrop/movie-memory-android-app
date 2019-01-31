@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -68,7 +69,7 @@ class MovieEditActivity: BaseActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.transaction {
+        supportFragmentManager.commit {
             replace(R.id.content_view, fragment)
         }
     }

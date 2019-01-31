@@ -3,31 +3,45 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'org.owasp.dependencycheck'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
-
     dataBinding {
         enabled = true
     }
     kapt {
         useBuildCache = true
     }
-
     defaultConfig {
-        applicationId "jp.hotdrop.moviememory"
         minSdkVersion 21
-        targetSdkVersion 28
         versionCode 1
         versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        debug.java.srcDirs += 'src/debug/kotlin'
+        release.java.srcDirs += 'src/release/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
+    }
+    productFlavors {
+        develop {
+            applicationId 'jp.hotdrop.moviememory.dev'
+        }
+        product {
+            applicationId 'jp.hotdrop.moviememory'
         }
     }
     buildTypes {
@@ -41,26 +55,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        debug.java.srcDirs += 'src/debug/kotlin'
-        release.java.srcDirs += 'src/release/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
-    }
-
-    lintOptions {
-        disable 'GoogleAppIndexingWarning'
-    }
+    flavorDimensions "default"
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.annotation:annotation:1.0.1'
@@ -68,14 +69,11 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'com.android.support:multidex:1.0.3'
-
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android:flexbox:1.1.0'
-
     // android-ktx
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation 'androidx.fragment:fragment-ktx:1.1.0-alpha03'
-
     // architecture components
     implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
@@ -83,73 +81,59 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.1.0-alpha04'
     implementation 'androidx.room:room-rxjava2:2.1.0-alpha04'
     kapt 'androidx.room:room-compiler:2.1.0-alpha04'
-
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-firestore:18.0.0'
-
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
     // dagger
     implementation 'com.google.dagger:dagger:2.20'
     kapt 'com.google.dagger:dagger-compiler:2.20'
-
     // lottie
     implementation 'com.airbnb.android:lottie:2.8.0'
-
     // Rx
     implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
-
     // network
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-
     // kotshi
     implementation 'se.ansman.kotshi:api:1.0.4'
     kapt 'se.ansman.kotshi:compiler:1.0.4'
     implementation 'com.google.code.gson:gson:2.8.4'
-
     // log
     implementation 'com.jakewharton.timber:timber:4.6.0'
-
     // threeten
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
-
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
     kapt 'androidx.annotation:annotation:1.0.1'
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
-
     // stetho
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
-
     // test
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.6.1'
-
     // mockito
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
-
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.10.0'
-    testImplementation "androidx.arch.core:core-testing:2.0.0"
+    testImplementation 'androidx.arch.core:core-testing:2.0.0'
     testImplementation('org.threeten:threetenbp:1.3.2') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
-
     androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation "androidx.test.ext:junit:1.1.0"
-    androidTestImplementation "androidx.test:rules:1.1.1"
-    androidTestImplementation "androidx.room:room-testing:2.1.0-alpha04"
-    androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'androidx.room:room-testing:2.1.0-alpha04'
+    androidTestImplementation 'androidx.arch.core:core-testing:2.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-
 }
 
 apply plugin: 'com.google.gms.google-services'

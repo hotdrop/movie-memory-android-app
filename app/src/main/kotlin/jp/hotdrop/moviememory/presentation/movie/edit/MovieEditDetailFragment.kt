@@ -127,13 +127,15 @@ class MovieEditDetailFragment: Fragment() {
                 flexDirection = FlexDirection.ROW
                 flexWrap = FlexWrap.WRAP
             }
-            adapter = CastsAdapter().apply { addAll(casts) }
+            adapter = CastsAdapter(requireContext()).apply { addAll(casts) }
             recyclerView.adapter = adapter
             recyclerView.isVisible = true
         }
     }
 
-    inner class CastsAdapter: RecyclerViewAdapter<String, RecyclerViewAdapter.BindingHolder<ItemCastBinding>>() {
+    class CastsAdapter(
+            private val context: Context
+    ): RecyclerViewAdapter<String, RecyclerViewAdapter.BindingHolder<ItemCastBinding>>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemCastBinding> =
                 BindingHolder(parent, R.layout.item_cast)
 
@@ -145,20 +147,39 @@ class MovieEditDetailFragment: Fragment() {
                 binding.iconCastDelete.isVisible = true
 
                 binding.iconCastDelete.setOnClickListener {
-                    val message = requireContext().getString(R.string.cast_delete_text, castName)
-                    AlertDialog.Builder(requireContext())
+                    val message = context.getString(R.string.cast_delete_text, castName)
+                    // proguardを有効にしたらsetPositiveButtonのラムダで「can't find referenced class」エラーが発生した。
+                    // proguardに除外設定書くかラムダやめるか迷ったが、とりあえずいちいち書いてみることにした。
+//                    AlertDialog.Builder(context)
+//                            .setMessage(message)
+//                            .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+//                                super.remove(castName)
+//                                dialogInterface.dismiss()
+//                            }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
+//                                dialogInterface.dismiss()
+//                            }.setCancelable(true)
+//                            .show()
+                    val positiveOnClickListener = (object: DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            remove(castName)
+                            dialog?.dismiss()
+                        }
+                    })
+                    val negativeOnClickListener = (object: DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            dialog?.dismiss()
+                        }
+                    })
+                    AlertDialog.Builder(context)
                             .setMessage(message)
-                            .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
-                                super.remove(castName)
-                                dialogInterface.dismiss()
-                            }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
-                                dialogInterface.dismiss()
-                            }.setCancelable(true)
+                            .setPositiveButton(android.R.string.ok, positiveOnClickListener)
+                            .setNegativeButton(android.R.string.cancel, negativeOnClickListener)
+                            .setCancelable(true)
                             .show()
                 }
 
                 binding.castLayout.setOnClickListener {
-                    TextInputDialog.Builder(requireContext())
+                    TextInputDialog.Builder(context)
                             .setTitle(R.string.dialog_title_cast_update)
                             .setTextHint(R.string.cast_text_hint)
                             .setText(castName)
