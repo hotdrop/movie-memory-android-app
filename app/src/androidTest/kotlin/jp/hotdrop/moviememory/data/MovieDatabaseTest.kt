@@ -116,9 +116,9 @@ class MovieDatabaseTest {
                 .test()
                 .assertValue { moviesFromDB ->
                     val casts = moviesFromDB[0].casts
-                    assertEquals("値がおかしいです。casts[0] = ${casts!![0]}", casts[0], "a")
-                    assertEquals("値がおかしいです。casts[1] = ${casts[1]}", casts[1], "b")
-                    assertEquals("値がおかしいです。casts[2] = ${casts[2]}", casts[2], "c")
+                    assertEquals("値がおかしいです。casts[0] = ${casts!![0]}", "a", casts[0])
+                    assertEquals("値がおかしいです。casts[1] = ${casts[1]}", "b", casts[1])
+                    assertEquals("値がおかしいです。casts[2] = ${casts[2]}", "c", casts[2])
                     true
                 }
 
@@ -138,7 +138,7 @@ class MovieDatabaseTest {
 
         val fromCategory = CategoryEntity(id = 2, name = "消えるカテゴリー")
         val toCategory = CategoryEntity(id = 1, name = "こっちに統合")
-        movieDb.updateCategory(fromCategory.id, toCategory.id)
+        movieDb.updateCategory(fromCategory.id!!, toCategory.id!!)
 
         val cnt1 = movieDb.countByCategory(1)
         Assert.assertEquals(cnt1, 4)

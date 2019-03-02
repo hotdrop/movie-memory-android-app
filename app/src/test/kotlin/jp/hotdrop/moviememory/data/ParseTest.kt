@@ -1,6 +1,5 @@
 package jp.hotdrop.moviememory.data
 
-import android.util.Log
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -16,7 +15,8 @@ class ParseTest {
         val originalPlayDate = "20181102"
         val formatterDate = originalPlayDate.substring(0, 4) + "-" + originalPlayDate.substring(4, 6) + "-" + originalPlayDate.substring(6, 8)
         assertEquals("2018-11-02", formatterDate)
-        val convertDate = LocalDate.parse(formatterDate).toEpochDay()
+        // ここはparseで落ちなければOK
+        LocalDate.parse(formatterDate).toEpochDay()
         assertTrue(true)
     }
 }

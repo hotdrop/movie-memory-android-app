@@ -49,7 +49,7 @@ class CategoryDatabaseTest {
         db.findAll()
                 .test()
                 .assertValue { categories ->
-                    assertEquals("数が合っていません。", categories.size, 2)
+                    assertEquals("数が合っていません。", 2, categories.size)
                     true
                 }
     }
@@ -67,8 +67,8 @@ class CategoryDatabaseTest {
         db.findAll()
                 .test()
                 .assertValue { categories ->
-                    assertEquals("数が合っていません。", categories.size, 2)
-                    assertEquals("値がおかしいです。", categories[1].name, "Test3")
+                    assertEquals("数が合っていません。", 2, categories.size)
+                    assertEquals("値がおかしいです。", "Test3", categories[1].name)
                     true
                 }
     }
@@ -80,12 +80,12 @@ class CategoryDatabaseTest {
         db.register(category1.toEntity())
         db.register(category2.toEntity())
 
-        db.delete(category1.id)
+        db.delete(category1.id!!)
 
         db.findAll()
                 .test()
                 .assertValue { categories ->
-                    assertEquals("数が合っていません。", categories.size, 1)
+                    assertEquals("数が合っていません。", 1, categories.size)
                     true
                 }
     }
@@ -116,7 +116,7 @@ class CategoryDatabaseTest {
         db.findAll()
                 .test()
                 .assertValue { categories ->
-                    assertEquals("数が合っていません。", categories.size, 4)
+                    assertEquals("数が合っていません。", 4, categories.size)
                     true
                 }
     }
