@@ -1,14 +1,26 @@
 package jp.hotdrop.moviememory.data.remote.api
 
-import androidx.annotation.CheckResult
+import dagger.Reusable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.remote.response.MovieResponse
+import jp.hotdrop.moviememory.service.Firebase
+import javax.inject.Inject
 
-interface MovieApi {
+@Reusable
+class MovieApi @Inject constructor(
+        private val firestore: Firebase
+) {
 
-    @CheckResult
-    fun findAll(): Single<List<MovieResponse>>
+    fun findAll(): Single<List<MovieResponse>> {
+        return firestore.getDocuments()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+    }
 
-    @CheckResult
-    fun find(fromCreatedAt: Long): Single<List<MovieResponse>>
+    fun find(fromCreatedAt: Long): Single<List<MovieResponse>> {
+        return firestore.getDocument(fromCreatedAt)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+    }
 }
