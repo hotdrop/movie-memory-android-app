@@ -65,31 +65,31 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.annotation:annotation:1.0.1'
+    implementation 'androidx.annotation:annotation:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android:flexbox:1.1.0'
 
     // android-ktx
     implementation 'androidx.core:core-ktx:1.0.1'
-    implementation 'androidx.fragment:fragment-ktx:1.1.0-alpha03'
+    implementation 'androidx.fragment:fragment-ktx:1.1.0-alpha06'
 
     // architecture components
     implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
-    implementation 'androidx.room:room-runtime:2.1.0-alpha04'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha04'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha04'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha06'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha06'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha06'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:16.0.6'
-    implementation 'com.google.firebase:firebase-auth:16.1.0'
-    implementation 'com.google.firebase:firebase-firestore:18.0.0'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-auth:16.2.1'
+    implementation 'com.google.firebase:firebase-firestore:18.2.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     // dagger
     implementation 'com.google.dagger:dagger:2.20'
@@ -117,7 +117,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.4'
 
     // log
-    implementation 'com.jakewharton.timber:timber:4.6.0'
+    implementation 'com.jakewharton.timber:timber:4.7.0'
 
     // threeten
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
@@ -125,7 +125,7 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
-    kapt 'androidx.annotation:annotation:1.0.1'
+    kapt 'androidx.annotation:annotation:1.0.2'
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
     // stetho
@@ -139,15 +139,15 @@ dependencies {
     // mockito
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.10.0'
-    testImplementation 'androidx.arch.core:core-testing:2.0.0'
+    testImplementation 'androidx.arch.core:core-testing:2.0.1'
     testImplementation('org.threeten:threetenbp:1.3.2') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestImplementation 'androidx.room:room-testing:2.1.0-alpha04'
-    androidTestImplementation 'androidx.arch.core:core-testing:2.0.0'
+    androidTestImplementation 'androidx.room:room-testing:2.1.0-alpha06'
+    androidTestImplementation 'androidx.arch.core:core-testing:2.0.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
 
