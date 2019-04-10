@@ -20,6 +20,7 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
 import jp.hotdrop.moviememory.di.component.component
+import jp.hotdrop.moviememory.model.Cast
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
@@ -81,7 +82,7 @@ class MovieEditDetailFragment: Fragment() {
                         .setTitle(R.string.dialog_title_cast_add)
                         .setTextHint(R.string.cast_text_hint)
                         .setOnPositiveListener { castName ->
-                            adapter!!.add(castName)
+                            adapter!!.add(Cast(castName, null))
                         }.show()
             }
         }
@@ -97,6 +98,7 @@ class MovieEditDetailFragment: Fragment() {
                 }
 
                 val newCasts = adapter?.getAll() ?: movie.casts
+
                 val newMovie = movie.copy(playingDate = newPlayingDate, casts = newCasts)
 
                 viewModel?.save(newMovie) ?: throw IllegalStateException("viewModel is null!!")
@@ -113,7 +115,7 @@ class MovieEditDetailFragment: Fragment() {
         }) ?: throw IllegalStateException("viewModel is null!!")
     }
 
-    private fun initViewForCastsEdit(casts: List<String>?) {
+    private fun initViewForCastsEdit(casts: List<Cast>?) {
 
         binding.progressbar.isGone = true
 
@@ -135,19 +137,19 @@ class MovieEditDetailFragment: Fragment() {
 
     class CastsAdapter(
             private val context: Context
-    ): RecyclerViewAdapter<String, RecyclerViewAdapter.BindingHolder<ItemCastBinding>>() {
+    ): RecyclerViewAdapter<Cast, RecyclerViewAdapter.BindingHolder<ItemCastBinding>>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemCastBinding> =
                 BindingHolder(parent, R.layout.item_cast)
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCastBinding>, position: Int) {
             val holderBinding = holder.binding
             holderBinding?.let { binding ->
-                val castName = getItem(position)
-                binding.castName.text = castName
+                val cast = getItem(position)
+                binding.castName.text = cast.actor?.let { "${cast.name}:${cast.actor}" } ?: cast.name
                 binding.iconCastDelete.isVisible = true
 
                 binding.iconCastDelete.setOnClickListener {
-                    val message = context.getString(R.string.cast_delete_text, castName)
+                    val message = context.getString(R.string.cast_delete_text, cast.name)
                     // proguardを有効にしたらsetPositiveButtonのラムダで「can't find referenced class」エラーが発生した。
                     // proguardに除外設定書くかラムダやめるか迷ったが、とりあえずいちいち書いてみることにした。
 //                    AlertDialog.Builder(context)
@@ -161,7 +163,7 @@ class MovieEditDetailFragment: Fragment() {
 //                            .show()
                     val positiveOnClickListener = (object: DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
-                            remove(castName)
+                            remove(cast)
                             dialog?.dismiss()
                         }
                     })
@@ -178,13 +180,14 @@ class MovieEditDetailFragment: Fragment() {
                             .show()
                 }
 
+                // TODO これはキャスト名と俳優を定義する必要があるのでダイアログじゃダメ
                 binding.castLayout.setOnClickListener {
                     TextInputDialog.Builder(context)
                             .setTitle(R.string.dialog_title_cast_update)
                             .setTextHint(R.string.cast_text_hint)
-                            .setText(castName)
+                            .setText(cast.name)
                             .setOnPositiveListener { updatedCastName ->
-                                super.update(castName, updatedCastName)
+                                super.update(cast, cast.copy(name = updatedCastName))
                             }.show()
                 }
             }

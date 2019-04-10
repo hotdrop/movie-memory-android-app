@@ -2,6 +2,8 @@ package jp.hotdrop.moviememory.di.module
 
 import androidx.room.Room
 import android.content.Context
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import jp.hotdrop.moviememory.data.local.dao.CategoryDao
@@ -14,10 +16,21 @@ import javax.inject.Singleton
 @Module
 object DatabaseModule {
 
+    private val MIGRATION_3_TO_4 = object: Migration(3, 4) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE movie ADD COLUMN originalAuthor TEXT")
+            database.execSQL("ALTER TABLE movie ADD COLUMN distribution TEXT")
+            database.execSQL("ALTER TABLE movie ADD COLUMN makeCountry TEXT")
+            database.execSQL("ALTER TABLE movie ADD COLUMN makeYear INTEGER")
+            database.execSQL("ALTER TABLE movie ADD COLUMN playTime INTEGER")
+        }
+    }
+
     @JvmStatic @Provides @Singleton
     fun provideDb(context: Context): AppDatabase =
             Room.databaseBuilder(context, AppDatabase::class.java, "MovieMemory.db")
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_3_TO_4)
+                    .fallbackToDestructiveMigrationFrom(1, 2)
                     .build()
 
     @JvmStatic @Provides @Singleton

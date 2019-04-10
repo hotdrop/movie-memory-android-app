@@ -10,9 +10,14 @@ data class Movie(
         var imageUrl: String?,
         val playingDate: LocalDate?,
         var filmDirector: String?,
-        val casts: List<String>?,
+        val originalAuthor: String?,
+        val casts: List<Cast>?,
         var officialUrl: String?,
         var trailerMovieUrl: String?,
+        val distribution: String?,
+        val makeCountry: String?,
+        val makeYear: Int?,
+        val playTime: Int?,
         val createdAt: Long,
         var favoriteCount: Int,
         var watchDate: LocalDate?,
@@ -40,3 +45,6 @@ data class Movie(
         const val DEFAULT_TEXT_VALUE = "ー"
     }
 }
+
+// キャラは必ず存在するが担当する俳優はこの時点で未定の可能性があるためnull許容としている
+data class Cast(val name: String, val actor: String?)
