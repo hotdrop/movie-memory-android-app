@@ -36,8 +36,6 @@
                     app:defaultQueryHint="@string/search_result_query_hint"
                     app:iconifiedByDefault="false">
 
-                    <requestFocus />
-
                 </androidx.appcompat.widget.SearchView>
 
             </androidx.appcompat.widget.Toolbar>
