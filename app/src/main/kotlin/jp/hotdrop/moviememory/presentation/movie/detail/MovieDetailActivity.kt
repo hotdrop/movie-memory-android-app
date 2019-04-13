@@ -105,7 +105,7 @@ class MovieDetailActivity: BaseActivity() {
                     .setOnPositiveListener { note ->
                         binding.watchNoteText.text = note
                         viewModel.saveWatchNote(note)
-                    }.showWihthInputMultiLine()
+                    }.showWithInputMultiLine()
         }
     }
 

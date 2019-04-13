@@ -59,7 +59,7 @@ object TextInputDialog {
                     .show()
         }
 
-        fun showWihthInputMultiLine() {
+        fun showWithInputMultiLine() {
             val binding = DataBindingUtil.inflate<DialogTextMultilineInputBinding>(LayoutInflater.from(context), R.layout.dialog_text_multiline_input, null, false)
 
             title?.let { binding.title.text = it }
