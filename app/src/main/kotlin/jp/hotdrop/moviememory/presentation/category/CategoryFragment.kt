@@ -103,7 +103,6 @@ class CategoryFragment: Fragment() {
 
     private fun showEditDialog(category: Category, categories: List<Category>) {
         CategoryDialog.Builder(requireContext())
-                .setEditCategory(category)
                 .setCategoriesForCheckDuplicate(categories)
                 .setOnPositiveListener { newCategory, isIntegrate ->
                     if (isIntegrate) {
@@ -113,7 +112,7 @@ class CategoryFragment: Fragment() {
                         Timber.d("普通にカテゴリー名を更新します。")
                         viewModel.update(newCategory)
                     }
-                }.showEdit()
+                }.showEdit(category)
     }
 
     private fun showDeleteDialog(category: Category) {

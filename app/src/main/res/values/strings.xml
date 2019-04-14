@@ -47,13 +47,18 @@
     <string name="attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。</string>
     <string name="cast_delete_text">キャストから\n「%s」\nを削除します。よろしいですか？</string>
     <string name="empty_casts">※キャストは未登録です。</string>
-    <string name="dialog_title_cast_update">キャスト名編集</string>
-    <string name="dialog_title_cast_add">キャスト追加</string>
     <string name="cast_text_hint">キャスト名を入力してください</string>
     <string name="image_url_label">画像イメージURL</string>
     <string name="image_url_search_browser_desc">ブラウザを起動して画像イメージを取得します。設定したい画像イメージをタップしてください。</string>
     <string name="image_preview_description">この映画のイメージ画像です。</string>
     <string name="movie_edit_error">映画情報の保存に失敗しました。</string>
+
+    <!-- キャスト情報ダイアログ -->
+    <string name="dialog_title_cast_update">キャスト編集</string>
+    <string name="dialog_title_cast_add">キャスト追加</string>
+    <string name="dialog_edit_cast_hint">配役名</string>
+    <string name="dialog_edit_actor_hint">俳優名</string>
+    <string name="dialog_cast_not_input_error">配役名は必須です。</string>
 
     <!-- 画像検索ダイアログ -->
     <string name="image_search_dialog_url">https://google.co.jp</string>

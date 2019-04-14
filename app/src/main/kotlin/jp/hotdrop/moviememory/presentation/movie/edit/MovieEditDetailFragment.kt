@@ -22,8 +22,8 @@ import jp.hotdrop.moviememory.databinding.ItemCastBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Cast
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
-import jp.hotdrop.moviememory.presentation.component.TextInputDialog
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.component.CastDialog
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import java.lang.IllegalStateException
@@ -68,7 +68,7 @@ class MovieEditDetailFragment: Fragment() {
 
     private fun initView() {
 
-        binding.playDateEditArea.run { 
+        binding.playDateEditArea.run {
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     TextInputDatePickerDialog.show(context, binding.playDateEditArea)
@@ -77,14 +77,10 @@ class MovieEditDetailFragment: Fragment() {
         }
 
         binding.addCastButton.setOnClickListener {
-            if (adapter != null) {
-                TextInputDialog.Builder(requireContext())
-                        .setTitle(R.string.dialog_title_cast_add)
-                        .setTextHint(R.string.cast_text_hint)
-                        .setOnPositiveListener { castName ->
-                            adapter!!.add(Cast(castName, null))
-                        }.show()
-            }
+            CastDialog.Builder(requireContext())
+                    .setOnPositiveListener { cast ->
+                        adapter!!.add(cast)
+                    }.showAdd()
         }
 
         binding.fab.setOnClickListener {
@@ -98,7 +94,6 @@ class MovieEditDetailFragment: Fragment() {
                 }
 
                 val newCasts = adapter?.getAll() ?: movie.casts
-
                 val newMovie = movie.copy(playingDate = newPlayingDate, casts = newCasts)
 
                 viewModel?.save(newMovie) ?: throw IllegalStateException("viewModel is null!!")
@@ -119,19 +114,22 @@ class MovieEditDetailFragment: Fragment() {
 
         binding.progressbar.isGone = true
 
-        if (casts == null || casts.isEmpty()) {
-            binding.castsEmptyMessage.isVisible = true
-            return
-        }
-
         binding.castsRecyclerView.let { recyclerView ->
             recyclerView.layoutManager = FlexboxLayoutManager(context).apply {
                 flexDirection = FlexDirection.ROW
                 flexWrap = FlexWrap.WRAP
             }
-            adapter = CastsAdapter(requireContext()).apply { addAll(casts) }
+            adapter = CastsAdapter(requireContext())
             recyclerView.adapter = adapter
-            recyclerView.isVisible = true
+
+        }
+
+        if (casts == null || casts.isEmpty()) {
+            binding.castsEmptyMessage.isVisible = true
+            return
+        } else {
+            adapter!!.addAll(casts)
+            binding.castsRecyclerView.isVisible = true
         }
     }
 
@@ -152,15 +150,6 @@ class MovieEditDetailFragment: Fragment() {
                     val message = context.getString(R.string.cast_delete_text, cast.name)
                     // proguardを有効にしたらsetPositiveButtonのラムダで「can't find referenced class」エラーが発生した。
                     // proguardに除外設定書くかラムダやめるか迷ったが、とりあえずいちいち書いてみることにした。
-//                    AlertDialog.Builder(context)
-//                            .setMessage(message)
-//                            .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
-//                                super.remove(castName)
-//                                dialogInterface.dismiss()
-//                            }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
-//                                dialogInterface.dismiss()
-//                            }.setCancelable(true)
-//                            .show()
                     val positiveOnClickListener = (object: DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
                             remove(cast)
@@ -180,15 +169,11 @@ class MovieEditDetailFragment: Fragment() {
                             .show()
                 }
 
-                // TODO これはキャスト名と俳優を定義する必要があるのでダイアログじゃダメ
                 binding.castLayout.setOnClickListener {
-                    TextInputDialog.Builder(context)
-                            .setTitle(R.string.dialog_title_cast_update)
-                            .setTextHint(R.string.cast_text_hint)
-                            .setText(cast.name)
-                            .setOnPositiveListener { updatedCastName ->
-                                super.update(cast, cast.copy(name = updatedCastName))
-                            }.show()
+                    CastDialog.Builder(context)
+                            .setOnPositiveListener { newCast ->
+                                super.update(cast, newCast)
+                            }.showEdit(cast)
                 }
             }
         }

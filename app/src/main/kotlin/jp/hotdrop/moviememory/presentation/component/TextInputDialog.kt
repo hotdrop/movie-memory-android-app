@@ -16,7 +16,6 @@ object TextInputDialog {
 
         private var title: String? = null
         private var text: String? = null
-        private var hint: String? = null
         private var positiveListener: ((String) -> Unit)? = null
 
         fun setTitle(@StringRes resId: Int): Builder {
@@ -26,11 +25,6 @@ object TextInputDialog {
 
         fun setText(text: String): Builder {
             this.text = text
-            return this
-        }
-
-        fun setTextHint(@StringRes resId: Int, vararg args: Any): Builder {
-            hint = context.getString(resId, *args)
             return this
         }
 
@@ -44,17 +38,16 @@ object TextInputDialog {
 
             title?.let { binding.title.text = it }
             text?.let { binding.textInput.setText(it) }
-            hint?.let { binding.textInput.hint = it }
 
             AlertDialog.Builder(context)
                     .setView(binding.root)
-                    .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                    .setPositiveButton(android.R.string.ok) { dialog, _ ->
                         positiveListener?.let { listener ->
                             listener(binding.textInput.text.toString())
                         }
-                        dialogInterface.dismiss()
-                    }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
-                        dialogInterface.dismiss()
+                        dialog.dismiss()
+                    }.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                        dialog.dismiss()
                     }.setCancelable(true)
                     .show()
         }
@@ -64,17 +57,16 @@ object TextInputDialog {
 
             title?.let { binding.title.text = it }
             text?.let { binding.textInput.setText(it) }
-            hint?.let { binding.textInput.hint = it }
 
             AlertDialog.Builder(context)
                     .setView(binding.root)
-                    .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                    .setPositiveButton(android.R.string.ok) { dialog, _ ->
                         positiveListener?.let { listener ->
                             listener(binding.textInput.text.toString())
                         }
-                        dialogInterface.dismiss()
-                    }.setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
-                        dialogInterface.dismiss()
+                        dialog.dismiss()
+                    }.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                        dialog.dismiss()
                     }.setCancelable(true)
                     .show()
         }

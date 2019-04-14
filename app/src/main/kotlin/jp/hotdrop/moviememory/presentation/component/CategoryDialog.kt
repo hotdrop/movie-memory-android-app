@@ -16,16 +16,14 @@ object CategoryDialog {
 
     class Builder constructor(private val context: Context) {
 
+        private lateinit var title: String
+
         private var category: Category? = null
         private var message: String? = null
+
         private var positiveListener: ((Category, Boolean) -> Unit)? = null
         private var categoriesForCheckDuplicate: List<Category>? = null
         private var isIntegrate: Boolean = false
-
-        fun setEditCategory(category: Category): Builder {
-            this.category = category
-            return this
-        }
 
         fun setMessage(@StringRes resId: Int, vararg args: String): Builder {
             message = context.getString(resId, *args)
@@ -48,23 +46,25 @@ object CategoryDialog {
         }
 
         fun showAdd() {
-            show(R.string.category_dialog_add_title, false, true)
+            title = context.getString(R.string.category_dialog_add_title)
+            show(enableDuplicateName = false, showInputTextView = true)
         }
 
-        fun showEdit() {
-            show(R.string.category_dialog_edit_title, true, true)
+        fun showEdit(category: Category) {
+            title = context.getString(R.string.category_dialog_edit_title)
+            this.category = category
+            show(enableDuplicateName = true, showInputTextView = true)
         }
 
         fun  showDelete() {
-            show(R.string.category_dialog_delete_title, false, false)
+            title = context.getString(R.string.category_dialog_delete_title)
+            show(enableDuplicateName = false, showInputTextView = false)
         }
 
-        private fun show(@StringRes titleResId: Int, enableDuplicateName: Boolean, showInputTextView: Boolean) {
-
+        private fun show(enableDuplicateName: Boolean, showInputTextView: Boolean) {
             val binding = DataBindingUtil.inflate<DialogCategoryBinding>(LayoutInflater.from(context), R.layout.dialog_category, null, false)
 
-            binding.title.text = context.getString(titleResId)
-
+            binding.title.text = title
             message?.let { binding.message.text = message }
             category?.let { binding.textInput.setText(it.name) }
 
