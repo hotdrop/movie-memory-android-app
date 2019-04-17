@@ -100,16 +100,26 @@
     <string name="icon_suggestion_content_description">キーワード検索の履歴を示すアイコンです</string>
 
     <!--設定-->
-    <string name="setting_label_general">全般</string>
-    <string name="setting_label_language">言語設定</string>
-    <string name="setting_label_language_desc">使用する言語を切り替えます。</string>
+    <string name="setting_label_local">映画データ</string>
+    <string name="setting_label_local_count">取得済の映画数:</string>
+    <string name="setting_label_local_count_desc">現在アプリに保存されている映画情報数です。</string>
     <string name="setting_label_data_clear">データクリア</string>
     <string name="setting_label_data_clear_desc">保持している映画情報をクリアします。\n（自分用メモはクリアされません。）</string>
+    <string name="setting_label_remote">サーバー情報</string>
+    <string name="setting_label_previous_remote_request">前回リクエスト:</string>
+    <string name="setting_label_request_description">サーバーで保持している映画情報の最新化リクエストを出します。\nステータスが完了になった後、映画一覧をロードしてください。</string>
+    <string name="setting_label_status">処理状況:</string>
+    <string name="setting_status_none">ー</string>
+    <string name="setting_status_complete">完了</string>
+    <string name="setting_status_process">処理中</string>
+    <string name="setting_status_error">エラー</string>
+    <string name="setting_button_request">リクエスト依頼</string>
     <string name="setting_label_app_info">アプリ情報</string>
     <string name="setting_label_app_version">アプリのバージョン</string>
     <string name="setting_label_license">オープンソースライセンス</string>
     <string name="setting_label_license_desc">このアプリで利用しているOSSの詳細</string>
-    <string name="icon_language_content_description">言語設定を変更するメニューのアイコンです</string>
+    <string name="icon_storage_content_description">映画データ数メニューのアイコンです</string>
+    <string name="icon_movie_update_request_content_description">映画データの更新をサーバーに要求するメニューのアイコンです</string>
     <string name="icon_data_clear_content_description">データクリアメニューのアイコンです</string>
     <string name="icon_app_version_content_description">このアプリのバージョンを表示している領域を示すアイコンです</string>
     <string name="icon_license_content_description">このアプリで利用しているオープンソースソフトウェアのライセンス表示メニューのアイコンです</string>

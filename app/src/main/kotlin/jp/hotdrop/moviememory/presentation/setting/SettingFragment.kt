@@ -31,7 +31,7 @@ class SettingFragment: Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        activity?.component?.fragment()?.inject(this) ?: kotlin.run {
+        activity?.component?.fragment()?.inject(this) ?: run {
             Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
             onDestroy()
         }
@@ -50,17 +50,6 @@ class SettingFragment: Fragment() {
     }
 
     private fun initView() {
-        binding.langArea.setOnClickListener { view ->
-            PopupMenu(context, view).run {
-                menuInflater.inflate(R.menu.popup_language, this.menu)
-                setOnMenuItemClickListener {
-                    // TODO 言語設定。これこのアプリに必要ないが、今後のためにLocale変更どうやるかやっておく
-                    Snackbar.make(binding.snackbarArea, "${it.title} を選択しました。未実装です。", Snackbar.LENGTH_SHORT).show()
-                    true
-                }
-                show()
-            }
-        }
 
         binding.dataClearArea.setOnClickListener {
             context?.let { context ->

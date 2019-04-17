@@ -55,6 +55,14 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="TextSmall.Red" parent="TextSmall">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="TextSmall.Blue" parent="TextSmall">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
     <style name="FavoriteCountLabel">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/darkYellow</item>
