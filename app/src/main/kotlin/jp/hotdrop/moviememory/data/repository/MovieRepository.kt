@@ -14,8 +14,8 @@ import jp.hotdrop.moviememory.data.local.entity.toLocal
 import jp.hotdrop.moviememory.data.local.entity.toMovie
 import jp.hotdrop.moviememory.data.remote.api.MovieApi
 import jp.hotdrop.moviememory.data.remote.response.toEntity
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Movie
-import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -55,21 +55,21 @@ class MovieRepository @Inject constructor(
                 }
     }
 
-    fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
+    fun findNowPlayingMovies(startAt: AppDate, endAt: AppDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByBetween(startAt, endAt)
                     .map { findTheRange(startIndex, offset, it) }
                     .map { movieEntities ->
                         movieEntities.map { entityToMovieWithLocalInfo(it) }
                     }
 
-    fun findComingSoonMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
+    fun findComingSoonMovies(startAt: AppDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByAfter(startAt)
                     .map { findTheRange(startIndex, offset, it) }
                     .map { movieEntities ->
                         movieEntities.map { entityToMovieWithLocalInfo(it) }
                     }
 
-    fun findPastMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
+    fun findPastMovies(startAt: AppDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByBefore(startAt)
                     .map { findTheRange(startIndex, offset, it) }
                     .map { movieEntities ->
@@ -148,7 +148,7 @@ class MovieRepository @Inject constructor(
                 movieResponse.toEntity(categoryMap)
             }
             movieDatabase.save(movieEntities)
-            sharedPreferences.dateOfLastGetMovieFromRemote = LocalDate.now().toEpochDay()
+            sharedPreferences.dateOfLastGetMovieFromRemote = AppDate.nowEpochDay()
         }.ignoreElement()
     }
 

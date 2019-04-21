@@ -2,7 +2,6 @@ package jp.hotdrop.moviememory.data.repository
 
 import dagger.Reusable
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
 import jp.hotdrop.moviememory.data.local.database.MovieDatabase

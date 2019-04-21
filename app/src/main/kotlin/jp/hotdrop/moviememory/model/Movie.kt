@@ -1,14 +1,12 @@
 package jp.hotdrop.moviememory.model
 
-import org.threeten.bp.LocalDate
-
 data class Movie(
         val id: Long,
         var title: String,
         val category: Category,
         var overview: String?,
         var imageUrl: String?,
-        val playingDate: LocalDate?,
+        val playingDate: AppDate?,
         var filmDirector: String?,
         val originalAuthor: String?,
         val casts: List<Cast>?,
@@ -20,7 +18,7 @@ data class Movie(
         val playTime: Int?,
         val createdAt: Long,
         var favoriteCount: Int,
-        var watchDate: LocalDate?,
+        var watchDate: AppDate?,
         var watchPlace: String?,
         var note: String?
 ) {

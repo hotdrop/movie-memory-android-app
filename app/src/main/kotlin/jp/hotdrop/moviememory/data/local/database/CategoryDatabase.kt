@@ -1,7 +1,6 @@
 package jp.hotdrop.moviememory.data.local.database
 
 import dagger.Reusable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity

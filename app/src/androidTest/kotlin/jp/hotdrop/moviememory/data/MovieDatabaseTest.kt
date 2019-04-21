@@ -9,13 +9,12 @@ import jp.hotdrop.moviememory.data.local.database.AppDatabase
 import jp.hotdrop.moviememory.data.local.database.MovieDatabase
 import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.model.AppDate
+import jp.hotdrop.moviememory.model.AppDateTime
 import org.junit.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.runner.RunWith
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.ZoneOffset
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -47,13 +46,13 @@ class MovieDatabaseTest {
         // 指定した期間のデータのみ取得対象であることをテスト
         val movieEntities = mutableListOf<MovieEntity>()
         (1..9).forEach {
-            val nowEpoch = LocalDate.now().toEpochDay()
+            val nowEpoch = AppDate.nowEpochDay()
             val entity = createTestMovieEntity(it.toLong(), nowEpoch)
             movieEntities.add(entity)
         }
 
         // ちょうど2ヶ月前はOK
-        val nowDate = LocalDate.now()
+        val nowDate = AppDate()
         val startAt = nowDate.minusMonths(2L)
         val justTwoMonthAgoEpoch = startAt.toEpochDay()
         val justTwoMonthAgoEntity = createTestMovieEntity(10, justTwoMonthAgoEpoch)
@@ -84,7 +83,7 @@ class MovieDatabaseTest {
     fun orderByTest() {
         val movieEntities = mutableListOf<MovieEntity>()
 
-        val nowDate = LocalDate.now()
+        val nowDate = AppDate()
         val secondReleaseEpoch = nowDate.minusDays(5L).toEpochDay()
         movieEntities.add(createTestMovieEntity(1, secondReleaseEpoch))
 
@@ -107,7 +106,7 @@ class MovieDatabaseTest {
 
     @Test
     fun saveTest() {
-        val nowDate = LocalDate.now().toEpochDay()
+        val nowDate = AppDate.nowEpochDay()
         val movies = (0..2).map { it.toLong() }
                 .map { createTestMovieEntity(it, nowDate) }
         movieDb.save(movies)
@@ -126,14 +125,14 @@ class MovieDatabaseTest {
 
     @Test
     fun integrateCategoryTest() {
-        val nowDate = LocalDate.now().toEpochDay()
-        val createAt = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+        val nowDate = AppDate.nowEpochDay()
+        val createAt = AppDateTime().toEpochMilli()
 
         val movies = mutableListOf<MovieEntity>()
-        movies.add(MovieEntity(1, "テスト1", 1, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
-        movies.add(MovieEntity(2, "テスト2", 1, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
-        movies.add(MovieEntity(3, "テスト3", 2, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
-        movies.add(MovieEntity(4, "テスト4", 2, "概要", "https://test.test", nowDate, null, null, null, null, createAt))
+        movies.add(MovieEntity(1, "テスト1", 1, "概要", "https://test.test", nowDate, null, null, null, null, createAt, null, null, null, null, null))
+        movies.add(MovieEntity(2, "テスト2", 1, "概要", "https://test.test", nowDate, null, null, null, null, createAt, null, null, null, null, null))
+        movies.add(MovieEntity(3, "テスト3", 2, "概要", "https://test.test", nowDate, null, null, null, null, createAt, null, null, null, null, null))
+        movies.add(MovieEntity(4, "テスト4", 2, "概要", "https://test.test", nowDate, null, null, null, null, createAt, null, null, null, null, null))
         movieDb.save(movies)
 
         val fromCategory = CategoryEntity(id = 2, name = "消えるカテゴリー")
@@ -141,7 +140,7 @@ class MovieDatabaseTest {
         movieDb.updateCategory(fromCategory.id!!, toCategory.id!!)
 
         val cnt1 = movieDb.countByCategory(1)
-        Assert.assertEquals(cnt1, 4)
+        assertEquals(4, cnt1)
     }
 
     private fun assertMovieEntity(o1: List<MovieEntity>, o2: List<MovieEntity>): Boolean {
@@ -165,5 +164,10 @@ class MovieDatabaseTest {
                     arrayListOf("a", "b", "c"),
                     "https://www.google.co.jp",
                     "https://www.google.co.jp",
-                    LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli())
+                    AppDateTime.nowEpoch(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null)
 }

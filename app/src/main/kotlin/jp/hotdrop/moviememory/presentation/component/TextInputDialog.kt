@@ -1,7 +1,6 @@
 package jp.hotdrop.moviememory.presentation.component
 
 import android.content.Context
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog

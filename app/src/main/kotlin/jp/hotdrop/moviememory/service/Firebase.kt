@@ -6,7 +6,7 @@ import dagger.Reusable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.remote.response.MovieResponse
 import jp.hotdrop.moviememory.data.remote.response.toResponse
-import jp.hotdrop.moviememory.util.DateParser
+import jp.hotdrop.moviememory.model.AppDate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -97,7 +97,7 @@ class Firebase @Inject constructor() {
     private fun haveUpdateData(lastLocalUpdateDateEpoch: Long, remoteUpdateDateStr: String?): Boolean {
         // remoteUpdateDateStrとParse結果のどちらかがnullなら例外を投げたかったのでletで書いた。
         val remoteUpdateDateEpoch = remoteUpdateDateStr?.let {
-            DateParser.toEpochFormatHyphen(remoteUpdateDateStr)
+            AppDate.toEpochFormatHyphen(remoteUpdateDateStr)
         } ?: run {
             throw IllegalArgumentException("Firestoreから取得したDateの形式が不正です。lastDate=$remoteUpdateDateStr")
         }

@@ -2,8 +2,8 @@ package jp.hotdrop.moviememory.data.remote.response
 
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Category
-import org.threeten.bp.LocalDate
 
 data class MovieResponse(
         val id: Long,
@@ -52,12 +52,7 @@ fun QueryDocumentSnapshot.toResponse(): MovieResponse {
 
 fun MovieResponse.toEntity(categoryMap: Map<String, Long>): MovieEntity {
 
-    val playingDateEpoch = if (this.playingDate != null && this.playingDate.length == 10) {
-        LocalDate.parse(this.playingDate).toEpochDay()
-    } else {
-        null
-    }
-
+    val playingDateEpoch = AppDate.toEpochFormatHyphen(this.playingDate)
     val categoryName = if (this.categoryName.isEmpty()) {
         Category.UNSPECIFIED_NAME
     } else {

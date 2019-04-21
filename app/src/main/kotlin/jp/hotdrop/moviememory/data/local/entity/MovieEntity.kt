@@ -3,9 +3,9 @@ package jp.hotdrop.moviememory.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Cast
 import jp.hotdrop.moviememory.model.Movie
-import org.threeten.bp.*
 
 @Entity(tableName = "movie")
 data class MovieEntity(
@@ -34,8 +34,8 @@ data class MovieEntity(
 fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabase): Movie {
 
     val category = categoryDb.find(this.categoryId).toCategory()
-    val playingDate = this.playingDate?.let { LocalDate.ofEpochDay(it) }
-    val watchDate = movieNote?.watchDate?.let { LocalDate.ofEpochDay(it) }
+    val playingDate = this.playingDate?.let { AppDate(it) }
+    val watchDate = movieNote?.watchDate?.let { AppDate(it) }
     val casts = this.casts
             ?.map { it.split(MovieEntity.CAST_SEPARATOR) }
             ?.filter { it.size > 1 }

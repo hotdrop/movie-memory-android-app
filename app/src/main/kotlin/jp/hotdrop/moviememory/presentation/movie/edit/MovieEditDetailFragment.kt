@@ -20,11 +20,11 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditDetailBinding
 import jp.hotdrop.moviememory.databinding.ItemCastBinding
 import jp.hotdrop.moviememory.di.component.component
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Cast
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import jp.hotdrop.moviememory.presentation.component.CastDialog
-import org.threeten.bp.LocalDate
 import timber.log.Timber
 import java.lang.IllegalStateException
 import javax.inject.Inject
@@ -88,7 +88,7 @@ class MovieEditDetailFragment: Fragment() {
 
                 val newPlayingDateText = binding.playDateEditArea.text.toString()
                 val newPlayingDate = if (newPlayingDateText.isNotEmpty()) {
-                    LocalDate.parse(newPlayingDateText)
+                    AppDate(dateStr = newPlayingDateText)
                 } else {
                     movie.playingDate
                 }
