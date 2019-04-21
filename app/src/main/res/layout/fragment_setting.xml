@@ -67,9 +67,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:text="@string/setting_label_local_count_loading_label"
                     app:layout_constraintStart_toEndOf="@+id/local_count_label"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="34"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/local_count_description"
@@ -159,7 +159,7 @@
             app:layout_constraintTop_toBottomOf="@+id/border_local" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/request_card_view"
+            android:id="@+id/remote_card_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:cardElevation="0dp"
@@ -168,7 +168,7 @@
             app:layout_constraintTop_toBottomOf="@+id/remote_label">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/request_area"
+                android:id="@+id/remote_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground"
@@ -176,7 +176,7 @@
                 android:focusable="true">
 
                 <ImageView
-                    android:id="@+id/request_image_icon"
+                    android:id="@+id/remote_image_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -188,72 +188,58 @@
                     app:srcCompat="@drawable/ic_update" />
 
                 <TextView
-                    android:id="@+id/request_date_label"
+                    android:id="@+id/remote_update_label"
                     style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
-                    android:text="@string/setting_label_previous_remote_request"
-                    app:layout_constraintStart_toEndOf="@+id/request_image_icon"
+                    android:text="@string/setting_label_remote_update_label"
+                    app:layout_constraintStart_toEndOf="@+id/remote_image_icon"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/request_date"
+                    android:id="@+id/remote_update"
                     style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    app:layout_constraintStart_toEndOf="@+id/request_date_label"
-                    app:layout_constraintTop_toTopOf="@+id/request_date_label"
-                    tools:text="2019年4月20日"/>
+                    app:layout_constraintStart_toEndOf="@+id/remote_update_label"
+                    app:layout_constraintTop_toTopOf="@+id/remote_update_label"
+                    tools:text="あり"/>
 
                 <TextView
-                    android:id="@+id/request_description"
+                    android:id="@+id/remote_description"
                     style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/setting_label_request_description"
-                    app:layout_constraintStart_toEndOf="@+id/request_image_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/request_date_label" />
+                    android:text="@string/setting_label_remote_description"
+                    app:layout_constraintStart_toEndOf="@+id/remote_image_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/remote_update" />
 
                 <TextView
                     android:id="@+id/remote_status_label"
                     style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/setting_label_status"
-                    app:layout_constraintStart_toEndOf="@+id/request_image_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/request_description" />
+                    app:layout_constraintStart_toEndOf="@+id/remote_image_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/remote_description" />
 
                 <TextView
                     android:id="@+id/remote_status"
-                    style="@style/TextSmall.Red"
+                    style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
                     tools:text="処理中"
                     app:layout_constraintStart_toEndOf="@+id/remote_status_label"
-                    app:layout_constraintTop_toBottomOf="@+id/request_description"/>
-
-                <Button
-                    android:id="@+id/request_button"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/setting_button_request"
-                    app:layout_constraintTop_toBottomOf="@+id/request_description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@+id/remote_description"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -261,9 +247,10 @@
         <View
             android:id="@+id/border_remote"
             style="@style/BorderLine"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/request_card_view" />
+            app:layout_constraintTop_toBottomOf="@+id/remote_card_view" />
 
         <TextView
             android:id="@+id/app_info_label"

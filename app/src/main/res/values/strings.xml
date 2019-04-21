@@ -102,30 +102,25 @@
     <!--設定-->
     <string name="setting_label_local">映画データ</string>
     <string name="setting_label_local_count">取得済の映画数:</string>
+    <string name="setting_label_local_count_loading_label">ロード中…</string>
     <string name="setting_label_local_count_desc">現在アプリに保存されている映画情報数です。</string>
     <string name="setting_label_data_clear">データクリア</string>
     <string name="setting_label_data_clear_desc">保持している映画情報をクリアします。\n（自分用メモはクリアされません。）</string>
     <string name="setting_label_remote">サーバー情報</string>
-    <string name="setting_label_previous_remote_request">前回リクエスト:</string>
-    <string name="setting_label_request_description">サーバーで保持している映画情報の最新化リクエストを出します。\nステータスが完了になった後、映画一覧をロードしてください。</string>
-    <string name="setting_label_status">処理状況:</string>
-    <string name="setting_status_none">ー</string>
-    <string name="setting_status_complete">完了</string>
-    <string name="setting_status_process">処理中</string>
-    <string name="setting_status_error">エラー</string>
-    <string name="setting_button_request">リクエスト依頼</string>
+    <string name="setting_label_remote_update_label">更新データ:</string>
+    <string name="setting_label_remote_update_have">あり</string>
+    <string name="setting_label_remote_update_none">なし</string>
+    <string name="setting_label_remote_description">サーバーが保持している映画データの更新情報です。</string>
+    <string name="setting_label_status">ステータス:</string>
     <string name="setting_label_app_info">アプリ情報</string>
     <string name="setting_label_app_version">アプリのバージョン</string>
     <string name="setting_label_license">オープンソースライセンス</string>
     <string name="setting_label_license_desc">このアプリで利用しているOSSの詳細</string>
     <string name="icon_storage_content_description">映画データ数メニューのアイコンです</string>
-    <string name="icon_movie_update_request_content_description">映画データの更新をサーバーに要求するメニューのアイコンです</string>
+    <string name="icon_movie_update_request_content_description">サーバー情報を表示している領域を示すアイコンです</string>
     <string name="icon_data_clear_content_description">データクリアメニューのアイコンです</string>
     <string name="icon_app_version_content_description">このアプリのバージョンを表示している領域を示すアイコンです</string>
     <string name="icon_license_content_description">このアプリで利用しているオープンソースソフトウェアのライセンス表示メニューのアイコンです</string>
-
-    <string name="menu_language_japanese">日本語</string>
-    <string name="menu_language_english">English</string>
 
     <string name="dialog_data_clear_message">
         取得した映画情報をクリアします。よろしいですか？\n

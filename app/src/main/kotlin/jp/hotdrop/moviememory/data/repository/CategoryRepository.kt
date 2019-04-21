@@ -29,7 +29,7 @@ class CategoryRepository @Inject constructor(
         return categoryDatabase.findAll()
                 .map { entities ->
                     entities.map { entity ->
-                        val registerCnt = entity.id?.let {movieDatabase.countByCategory(it)} ?: 0
+                        val registerCnt = entity.id?.let { movieDatabase.countByCategory(it) } ?: 0
                         entity.toCategory(registerCnt)
                     }
                 }

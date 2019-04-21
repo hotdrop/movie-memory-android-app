@@ -32,6 +32,10 @@ class MovieUseCase @Inject constructor(
         }
     }
 
+    fun count(): Single<Long> =
+            movieRepository.count()
+                    .subscribeOn(Schedulers.io())
+
     private fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
         val endAt = LocalDate.now()
         val startAt = endAt.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
@@ -80,6 +84,10 @@ class MovieUseCase @Inject constructor(
 
     fun saveLocalEdit(movie: Movie): Completable =
             movieRepository.saveLocalMovieInfo(movie)
+                    .subscribeOn(Schedulers.io())
+
+    fun findDateOfGetMovieFromRemote(): Single<Long> =
+            movieRepository.findDateOfGetMovieFromRemote()
                     .subscribeOn(Schedulers.io())
 
     companion object {

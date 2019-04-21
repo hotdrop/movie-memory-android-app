@@ -10,14 +10,16 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     ViewModelModule::class,
-    DatabaseModule::class,
+    LocalStorageModule::class,
     NetworkModule::class
 ])
 interface AppComponent {
 
     @Component.Builder
     interface Builder {
-        @BindsInstance fun appContext(appContext: Context): Builder
+        @BindsInstance
+        fun appContext(appContext: Context): Builder
+
         fun build(): AppComponent
     }
 

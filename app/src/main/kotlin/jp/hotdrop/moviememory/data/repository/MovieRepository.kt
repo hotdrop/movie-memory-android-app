@@ -4,6 +4,7 @@ import dagger.Reusable
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import jp.hotdrop.moviememory.data.local.SharedPreferences
 import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
 import jp.hotdrop.moviememory.data.local.database.MovieDatabase
 import jp.hotdrop.moviememory.data.local.database.MovieNoteDatabase
@@ -23,7 +24,8 @@ class MovieRepository @Inject constructor(
         private val movieApi: MovieApi,
         private val movieDatabase: MovieDatabase,
         private val movieNoteDatabase: MovieNoteDatabase,
-        private val categoryDatabase: CategoryDatabase
+        private val categoryDatabase: CategoryDatabase,
+        private val sharedPreferences: SharedPreferences
 ) {
 
     /**
@@ -55,24 +57,26 @@ class MovieRepository @Inject constructor(
 
     fun findNowPlayingMovies(startAt: LocalDate, endAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByBetween(startAt, endAt)
-                    .map { takeTheRange(startIndex, offset, it) }
-                    .map {
-                        it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                    .map { findTheRange(startIndex, offset, it) }
+                    .map { movieEntities ->
+                        movieEntities.map { entityToMovieWithLocalInfo(it) }
                     }
 
     fun findComingSoonMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByAfter(startAt)
-                    .map { takeTheRange(startIndex, offset, it) }
-                    .map {
-                        it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                    .map { findTheRange(startIndex, offset, it) }
+                    .map { movieEntities ->
+                        movieEntities.map { entityToMovieWithLocalInfo(it) }
                     }
 
     fun findPastMovies(startAt: LocalDate, startIndex: Int, offset: Int): Single<List<Movie>> =
             movieDatabase.findMoviesByBefore(startAt)
-                    .map { takeTheRange(startIndex, offset, it) }
-                    .map {
-                        it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                    .map { findTheRange(startIndex, offset, it) }
+                    .map { movieEntities ->
+                        movieEntities.map { entityToMovieWithLocalInfo(it) }
                     }
+
+    fun count(): Single<Long> = movieDatabase.count()
 
     fun clearMovies(): Completable =
             Completable.create {
@@ -118,6 +122,9 @@ class MovieRepository @Inject constructor(
                 it.onComplete()
             }
 
+    fun findDateOfGetMovieFromRemote(): Single<Long> =
+            Single.just(sharedPreferences.dateOfLastGetMovieFromRemote)
+
     /**
      * ネットワークから最新データを取得
      */
@@ -141,10 +148,11 @@ class MovieRepository @Inject constructor(
                 movieResponse.toEntity(categoryMap)
             }
             movieDatabase.save(movieEntities)
+            sharedPreferences.dateOfLastGetMovieFromRemote = LocalDate.now().toEpochDay()
         }.ignoreElement()
     }
 
-    private fun takeTheRange(fromIndex: Int, offset: Int, movieEntities: List<MovieEntity>): List<MovieEntity> {
+    private fun findTheRange(fromIndex: Int, offset: Int, movieEntities: List<MovieEntity>): List<MovieEntity> {
         val listSize = movieEntities.size
         Timber.d("全取得サイズ = $listSize")
         return when {

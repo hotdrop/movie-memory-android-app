@@ -17,6 +17,9 @@ class ParseTest {
         assertEquals("2018-11-02", formatterDate)
         // ここはparseで落ちなければOK
         LocalDate.parse(formatterDate).toEpochDay()
-        assertTrue(true)
+
+        val dateSplit = "2019-4-1".split("-")
+        val dateStr = String.format("%s-%s-%s", dateSplit[0], dateSplit[1].padStart(2, '0'), dateSplit[2].padStart(2, '0'))
+        assertEquals("2019-04-01", dateStr)
     }
 }

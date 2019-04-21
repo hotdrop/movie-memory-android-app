@@ -50,17 +50,13 @@
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="TextSmall">
-        <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/gray</item>
-    </style>
-
-    <style name="TextSmall.Red" parent="TextSmall">
+    <style name="TextNormal.Red" parent="TextNormal">
         <item name="android:textColor">@color/red</item>
     </style>
 
-    <style name="TextSmall.Blue" parent="TextSmall">
-        <item name="android:textColor">@color/blue</item>
+    <style name="TextSmall">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="FavoriteCountLabel">
