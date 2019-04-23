@@ -11,11 +11,14 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMoviesTabBinding
 import jp.hotdrop.moviememory.di.component.component
+import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.MovieCondition
 import jp.hotdrop.moviememory.presentation.adapter.MoviesAdapter
 import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
@@ -99,13 +102,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private fun observe() {
         viewModel.movies.observe(this, Observer {
             it?.let { movies ->
-                // TODO 0件だったらSnackbarにだす
-                binding.progress.visibility = View.GONE
-                when (loadMode) {
-                    LoadMode.Add -> adapter?.addAll(movies)
-                    LoadMode.Refresh -> adapter?.refresh(movies)
-                }
-                loadMode = LoadMode.Add
+                onLoadData(movies)
             }
         })
         viewModel.refreshMovie.observe(this, Observer {
@@ -136,6 +133,23 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
             Timber.d("  更新する映画ID: $refreshMovieId")
             viewModel.onRefreshMovie(refreshMovieId)
         }
+    }
+
+    private fun onLoadData(movies: List<Movie>) {
+        binding.progress.visibility = View.GONE
+
+        if (movies.isEmpty()) {
+            binding.notHaveMoviesLabel.isVisible = true
+        } else {
+            binding.notHaveMoviesLabel.isGone = true
+            when (loadMode) {
+                LoadMode.Add -> adapter?.addAll(movies)
+                LoadMode.Refresh -> adapter?.refresh(movies)
+            }
+        }
+
+        // 初期値に戻す
+        loadMode = LoadMode.Add
     }
 
     companion object {
