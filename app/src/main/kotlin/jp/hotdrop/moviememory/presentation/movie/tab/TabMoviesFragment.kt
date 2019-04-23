@@ -11,7 +11,6 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
@@ -86,7 +85,7 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
                     Pair.create(binding.favoritesStar as View, parentActivity.getString(R.string.transition_favorite_star5)),
                     Pair.create(binding.imageView as View, parentActivity.getString(R.string.transition_movie_image))
             )
-            MovieDetailActivity.startForResult(this@TabMoviesFragment, movie.id, TabMoviesFragment.REQUEST_CODE_TO_DETAIL, options)
+            MovieDetailActivity.startForResult(this@TabMoviesFragment, movie.id, REQUEST_CODE_TO_DETAIL, options)
         }
 
         binding.moviesRecyclerView.adapter = adapter

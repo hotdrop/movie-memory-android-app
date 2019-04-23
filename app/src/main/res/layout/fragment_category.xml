@@ -23,9 +23,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_categories"
-            android:layout_width="0dp"
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -34,7 +33,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_desc_label" />
+            app:layout_constraintTop_toBottomOf="@+id/category_desc_label">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="36dp" />
+
+        </ScrollView>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/snackbar_area"

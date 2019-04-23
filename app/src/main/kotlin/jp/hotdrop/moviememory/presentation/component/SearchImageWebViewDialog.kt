@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import dagger.Reusable
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.DialogSearchImageWebViewBinding
-import timber.log.Timber
 import javax.inject.Inject
 
 @Reusable

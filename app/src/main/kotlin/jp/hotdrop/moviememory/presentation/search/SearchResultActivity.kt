@@ -55,6 +55,14 @@ class SearchResultActivity: BaseActivity() {
         observe()
 
         val searchCondition = intent.getSerializableExtra(EXTRA_SEARCH_CONDITION) as SearchCondition
+        when (searchCondition) {
+            is SearchCondition.Keyword -> {
+                binding.searchView.isFocusable = true
+            }
+            else -> {
+                binding.searchView.isFocusable = false
+            }
+        }
         viewModel.prepared(searchCondition)
     }
 
@@ -172,7 +180,6 @@ class SearchResultActivity: BaseActivity() {
     }
 
     private fun onSuccessPrepared() {
-
         binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding.suggestionsRecyclerView.run {

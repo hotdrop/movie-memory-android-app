@@ -2,8 +2,8 @@ package jp.hotdrop.moviememory.data.remote.response
 
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Category
-import org.threeten.bp.LocalDate
 
 data class MovieResponse(
         val id: Long,
@@ -12,8 +12,13 @@ data class MovieResponse(
         val overview: String?,
         val imageUrl: String?,
         val playingDate: String?,
+        val originalAuthor: String?,
         val filmDirector: String?,
         val casts: List<String>?,
+        val distribution: String?,
+        val makeCountry: String?,
+        val makeYear: String?,
+        val playTime: String?,
         val officialUrl: String?,
         val trailerMovieUrl: String?,
         val createdAt: Long
@@ -32,8 +37,13 @@ fun QueryDocumentSnapshot.toResponse(): MovieResponse {
             getFieldToString("overview"),
             getFieldToString("imageUrl"),
             getFieldToString("playingDate"),
+            getFieldToString("originalAuthor"),
             getFieldToString("director"),
             casts,
+            getFieldToString("distribution"),
+            getFieldToString("makeCountry"),
+            getFieldToString("makeYear"),
+            getFieldToString("playTime"),
             getFieldToString("officialUrl"),
             getFieldToString("pvUrl"),
             getFieldToLong("createdAt")
@@ -42,12 +52,7 @@ fun QueryDocumentSnapshot.toResponse(): MovieResponse {
 
 fun MovieResponse.toEntity(categoryMap: Map<String, Long>): MovieEntity {
 
-    val playingDateEpoch = if (this.playingDate != null && this.playingDate.length == 10) {
-        LocalDate.parse(this.playingDate).toEpochDay()
-    } else {
-        null
-    }
-
+    val playingDateEpoch = AppDate.toEpochFormatHyphen(this.playingDate)
     val categoryName = if (this.categoryName.isEmpty()) {
         Category.UNSPECIFIED_NAME
     } else {
@@ -61,10 +66,15 @@ fun MovieResponse.toEntity(categoryMap: Map<String, Long>): MovieEntity {
             this.overview,
             this.imageUrl,
             playingDateEpoch,
-            this.filmDirector,
+            this.originalAuthor,
             casts,
             this.officialUrl,
             this.trailerMovieUrl,
-            this.createdAt
+            this.createdAt,
+            this.filmDirector,
+            this.distribution,
+            this.makeCountry,
+            this.makeYear?.replace("年", "")?.toIntOrNull(),
+            this.playTime?.replace("分", "")?.toIntOrNull()
     )
 }

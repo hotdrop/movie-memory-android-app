@@ -3,8 +3,9 @@ package jp.hotdrop.moviememory.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
+import jp.hotdrop.moviememory.model.AppDate
+import jp.hotdrop.moviememory.model.Cast
 import jp.hotdrop.moviememory.model.Movie
-import org.threeten.bp.*
 
 @Entity(tableName = "movie")
 data class MovieEntity(
@@ -18,13 +19,34 @@ data class MovieEntity(
         val casts: List<String>?,
         val officialUrl: String?,
         val trailerMovieUrl: String?,
-        val createdAt: Long
-)
+        val createdAt: Long,
+        val originalAuthor: String?,
+        val distribution: String?,
+        val makeCountry: String?,
+        val makeYear: Int?,
+        val playTime: Int?
+) {
+    companion object {
+        const val CAST_SEPARATOR = " : "
+    }
+}
 
 fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabase): Movie {
+
     val category = categoryDb.find(this.categoryId).toCategory()
-    val playingDate = this.playingDate?.let { LocalDate.ofEpochDay(it) }
-    val watchDate = movieNote?.watchDate?.let { LocalDate.ofEpochDay(it) }
+    val playingDate = this.playingDate?.let { AppDate(it) }
+    val watchDate = movieNote?.watchDate?.let { AppDate(it) }
+    val casts = this.casts
+            ?.map { it.split(MovieEntity.CAST_SEPARATOR) }
+            ?.filter { it.size > 1 }
+            ?.map {
+                if (it.size == 2) {
+                    Cast(it[1], it[0])
+                } else {
+                    Cast(it[0], null)
+                }
+            }
+
     return Movie(
             this.id,
             this.title,
@@ -33,9 +55,14 @@ fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabas
             this.imageUrl,
             playingDate,
             this.filmDirector,
-            this.casts,
+            this.originalAuthor,
+            casts,
             this.officialUrl,
             this.trailerMovieUrl,
+            this.distribution,
+            this.makeCountry,
+            this.makeYear,
+            this.playTime,
             this.createdAt,
             movieNote?.favoriteCount ?: 0,
             watchDate,
@@ -53,10 +80,15 @@ fun Movie.toEntity(): MovieEntity {
             imageUrl = this.imageUrl,
             playingDate = this.playingDate?.toEpochDay(),
             filmDirector = this.filmDirector,
-            casts = this.casts,
+            casts = this.casts?.map { String.format("%s${MovieEntity.CAST_SEPARATOR}%s", it.name, it.actor) },
             officialUrl = this.officialUrl,
             trailerMovieUrl = this.trailerMovieUrl,
-            createdAt = this.createdAt
+            createdAt = this.createdAt,
+            originalAuthor = this.originalAuthor,
+            distribution = this.distribution,
+            makeCountry = this.makeCountry,
+            makeYear = this.makeYear,
+            playTime = this.playTime
     )
 }
 

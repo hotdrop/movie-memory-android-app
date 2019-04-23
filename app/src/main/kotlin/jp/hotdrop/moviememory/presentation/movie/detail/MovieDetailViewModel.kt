@@ -5,10 +5,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.usecase.MovieUseCase
 import jp.hotdrop.moviememory.model.Movie
-import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    fun saveWatchDate(watchDate: LocalDate) {
+    fun saveWatchDate(watchDate: AppDate) {
         movie?.value?.let { movie ->
             movie.watchDate = watchDate
             useCase.saveLocalEdit(movie)

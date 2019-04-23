@@ -5,9 +5,8 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.dao.CategoryDao
 import jp.hotdrop.moviememory.data.local.dao.MovieDao
-import jp.hotdrop.moviememory.data.local.entity.CategoryEntity
 import jp.hotdrop.moviememory.data.local.entity.MovieEntity
-import org.threeten.bp.LocalDate
+import jp.hotdrop.moviememory.model.AppDate
 import javax.inject.Inject
 
 @Reusable
@@ -17,36 +16,28 @@ class MovieDatabase @Inject constructor(
         private val categoryDao: CategoryDao
 ) {
 
-    fun findMoviesByBetween(startAt: LocalDate, endAt: LocalDate): Single<List<MovieEntity>> =
+    fun findMoviesByBetween(startAt: AppDate, endAt: AppDate): Single<List<MovieEntity>> =
             dao.selectMoviesByBetween(startAt.toEpochDay(), endAt.toEpochDay())
 
-    fun findMoviesByAfter(startAt: LocalDate): Single<List<MovieEntity>> =
-            dao.selectMoviesByAfter(startAt.toEpochDay())
+    fun findMoviesByAfter(startAt: AppDate): Single<List<MovieEntity>> = dao.selectMoviesByAfter(startAt.toEpochDay())
 
-    fun findMoviesByBefore(startAt: LocalDate): Single<List<MovieEntity>> =
-            dao.selectMoviesByBefore(startAt.toEpochDay())
+    fun findMoviesByBefore(startAt: AppDate): Single<List<MovieEntity>> = dao.selectMoviesByBefore(startAt.toEpochDay())
 
-    fun findMovies(keyword: String): Single<List<MovieEntity>> =
-            dao.selectMovies(keyword)
+    fun findMovies(keyword: String): Single<List<MovieEntity>> = dao.selectMovies(keyword)
 
-    fun findMovies(categoryId: Long): Single<List<MovieEntity>> =
-            dao.selectMovies(categoryId)
+    fun findMovies(categoryId: Long): Single<List<MovieEntity>> = dao.selectMovies(categoryId)
 
+    fun count(): Single<Long> = dao.count()
 
-    fun movieWithFlowable(id: Long): Flowable<MovieEntity> =
-            dao.selectWithFlowable(id)
+    fun movieWithFlowable(id: Long): Flowable<MovieEntity> = dao.selectWithFlowable(id)
 
-    fun find(id: Long): Single<MovieEntity> =
-            dao.select(id)
+    fun find(id: Long): Single<MovieEntity> = dao.select(id)
 
-    fun findWithDirect(id: Long): MovieEntity =
-            dao.selectWithDirect(id)
+    fun findWithDirect(id: Long): MovieEntity = dao.selectWithDirect(id)
 
-    fun isExist(): Single<Boolean> =
-            dao.count().map { it > 0 }
+    fun isExist(): Single<Boolean> = dao.count().map { it > 0 }
 
-    fun findMaxCreatedAt(): Single<Long> =
-            dao.selectMaxCreatedAt()
+    fun findMaxCreatedAt(): Single<Long> = dao.selectMaxCreatedAt()
 
     fun save(entities: List<MovieEntity>) {
         dao.insert(entities)

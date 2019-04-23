@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import jp.hotdrop.moviememory.BuildConfig
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentSettingBinding
 import jp.hotdrop.moviememory.di.component.component
+import jp.hotdrop.moviememory.service.Firebase
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,9 +31,12 @@ class SettingFragment: Fragment() {
         ViewModelProviders.of(this, viewModelFactory).get(SettingViewModel::class.java)
     }
 
+    @Inject
+    lateinit var firebase: Firebase
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        activity?.component?.fragment()?.inject(this) ?: kotlin.run {
+        activity?.component?.fragment()?.inject(this) ?: run {
             Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
             onDestroy()
         }
@@ -50,17 +55,6 @@ class SettingFragment: Fragment() {
     }
 
     private fun initView() {
-        binding.langArea.setOnClickListener { view ->
-            PopupMenu(context, view).run {
-                menuInflater.inflate(R.menu.popup_language, this.menu)
-                setOnMenuItemClickListener {
-                    // TODO 言語設定。これこのアプリに必要ないが、今後のためにLocale変更どうやるかやっておく
-                    Snackbar.make(binding.snackbarArea, "${it.title} を選択しました。未実装です。", Snackbar.LENGTH_SHORT).show()
-                    true
-                }
-                show()
-            }
-        }
 
         binding.dataClearArea.setOnClickListener {
             context?.let { context ->
@@ -84,16 +78,43 @@ class SettingFragment: Fragment() {
     }
 
     private fun observe() {
+        viewModel.movieCount.observe(this, Observer {
+            it?.run {
+                binding.localCount.text = this.toString()
+            }
+        })
+        viewModel.lastUpdateDateEpoch.observe(this, Observer {
+            it?.run {
+                connectFirebase(this)
+            }
+        })
         viewModel.clearedMovies.observe(this, Observer {
-            it?.let { success ->
-                if (success) {
+            it?.run {
+                if (this) {
                     Snackbar.make(binding.snackbarArea, "データをクリアしました。", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(binding.snackbarArea, "データのクリアに失敗しました。何かがおかしいです。", Snackbar.LENGTH_INDEFINITE).show()
                 }
             }
         })
+        viewModel.error.observe(this, Observer {
+            it?.run {
+                Snackbar.make(binding.snackbarArea, "エラーが発生しました。", Snackbar.LENGTH_SHORT).show()
+            }
+        })
         lifecycle.addObserver(viewModel)
+    }
+
+    private fun connectFirebase(lastUpdateDateEpoch: Long) {
+        firebase.listenStatus(lastUpdateDateEpoch) { isUpdateData, status ->
+            binding.remoteUpdate.let {
+                if (isUpdateData) {
+                    it.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                    it.text = getString(R.string.setting_label_remote_update_have)
+                } else {
+                    it.text = getString(R.string.setting_label_remote_update_none)
+                }
+            }
+            binding.remoteStatus.text = status
+        }
     }
 
     companion object {

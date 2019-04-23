@@ -27,8 +27,8 @@ class SearchRepository @Inject constructor(
 
     fun suggestion(): Flowable<List<Suggestion>> =
             suggestionDatabase.suggestion()
-                    .map {
-                        it.map { entity -> entity.toSuggestion() }
+                    .map { suggestionEntities ->
+                        suggestionEntities.map { it.toSuggestion() }
                     }
 
     fun save(suggestion: Suggestion): Completable =
@@ -64,8 +64,8 @@ class SearchRepository @Inject constructor(
             return movieDatabase.findMovies(category.id)
                     .map { movieEntities ->
                         Timber.d("検索結果は ${movieEntities.size} ")
-                        movieEntities.map {
-                            entity -> entityToMovieWithLocalInfo(entity)
+                        movieEntities.map { entity ->
+                            entityToMovieWithLocalInfo(entity)
                         }
                     }
         } ?: throw IllegalStateException("Searchで映画情報をcategoryで取得しようとしたらIDがnullでした。プログラムバグです。")
@@ -73,23 +73,25 @@ class SearchRepository @Inject constructor(
 
     fun findMoviesMoreThan(favoriteNum: Int): Single<List<Movie>> {
         return movieNoteDatabase.findMoreThan(favoriteNum)
-                .map {
-                    Timber.d("検索結果は ${it.size} ")
-                    it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                .map { movieNoteEntities ->
+                    Timber.d("検索結果は ${movieNoteEntities.size} ")
+                    movieNoteEntities.map { entity ->
+                        entityToMovieWithLocalInfo(entity)
+                    }
                 }
     }
 
     private fun findMoviesFirstSearchFromMain(keyword: String): Single<List<Movie>> {
         return movieDatabase.findMovies(keyword)
-                .map {
-                    it.map { entity -> entityToMovieWithLocalInfo(entity) }
+                .map { movieEntities ->
+                    movieEntities.map { entityToMovieWithLocalInfo(it) }
                 }
     }
 
     private fun findMoviesFirstSearchFromLocalInfo(keyword: String): Single<List<Movie>> {
         return movieNoteDatabase.find(keyword)
-                .map {
-                    it.map { entity -> entityToMovieWithLocalInfo(entity)}
+                .map { movieEntities ->
+                    movieEntities.map { entityToMovieWithLocalInfo(it)}
                 }
     }
 

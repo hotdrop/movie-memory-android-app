@@ -2,7 +2,6 @@ package jp.hotdrop.moviememory.data.repository
 
 import dagger.Reusable
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.local.database.CategoryDatabase
 import jp.hotdrop.moviememory.data.local.database.MovieDatabase
@@ -29,7 +28,7 @@ class CategoryRepository @Inject constructor(
         return categoryDatabase.findAll()
                 .map { entities ->
                     entities.map { entity ->
-                        val registerCnt = entity.id?.let {movieDatabase.countByCategory(it)} ?: 0
+                        val registerCnt = entity.id?.let { movieDatabase.countByCategory(it) } ?: 0
                         entity.toCategory(registerCnt)
                     }
                 }

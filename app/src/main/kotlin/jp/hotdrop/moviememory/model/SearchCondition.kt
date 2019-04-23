@@ -7,7 +7,7 @@ sealed class SearchCondition: Serializable {
     class Keyword (
             val keyword: String = NONE
     ): SearchCondition() {
-        // メモリで持っているオブジェクト用。必ずRoomの条件と一致させること
+        // メモリで持っているオブジェクト用。必ずcompanion objectに定義しているRoomのLike条件と一致させること
         fun condition(movie: Movie): Boolean {
             return (movie.title.contains(keyword) ||
                     movie.overview?.contains(keyword) == true ||

@@ -12,12 +12,18 @@ import jp.hotdrop.moviememory.presentation.search.SearchResultViewModel
 @Module
 abstract class ActivityViewModelModule {
 
-    @Binds @IntoMap @ViewModelKey(SearchResultViewModel::class)
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchResultViewModel::class)
     abstract fun bindSearchResultViewModel(viewModel: SearchResultViewModel): ViewModel
 
-    @Binds @IntoMap @ViewModelKey(MovieDetailViewModel::class)
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailViewModel::class)
     abstract fun bindMovieDetailViewModel(viewModel: MovieDetailViewModel): ViewModel
 
-    @Binds @IntoMap @ViewModelKey(MovieEditViewModel::class)
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieEditViewModel::class)
     abstract fun bindMovieEditViewModel(viewModel: MovieEditViewModel): ViewModel
 }

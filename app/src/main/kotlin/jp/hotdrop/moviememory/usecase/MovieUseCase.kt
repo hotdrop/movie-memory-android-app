@@ -7,10 +7,10 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.data.repository.CategoryRepository
 import jp.hotdrop.moviememory.data.repository.MovieRepository
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.MovieCondition
-import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,8 +32,12 @@ class MovieUseCase @Inject constructor(
         }
     }
 
+    fun count(): Single<Long> =
+            movieRepository.count()
+                    .subscribeOn(Schedulers.io())
+
     private fun findNowPlayingMovies(index: Int, offset: Int): Single<List<Movie>> {
-        val endAt = LocalDate.now()
+        val endAt = AppDate()
         val startAt = endAt.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
         Timber.d("公開中のデータを取得します。")
         return movieRepository.findNowPlayingMovies(startAt, endAt, index, offset)
@@ -42,14 +46,14 @@ class MovieUseCase @Inject constructor(
 
     private fun findComingSoonMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
         Timber.d("公開予定のデータを取得します。")
-        val startAt = LocalDate.now()
+        val startAt = AppDate()
         return movieRepository.findComingSoonMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
 
     private fun findPastMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
         Timber.d("公開終了のデータを取得します。")
-        val startAt = LocalDate.now().minusMonths(NOW_PLAYING_BETWEEN_MONTH)
+        val startAt = AppDate().apply { minusMonths(NOW_PLAYING_BETWEEN_MONTH) }
         return movieRepository.findPastMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
@@ -80,6 +84,10 @@ class MovieUseCase @Inject constructor(
 
     fun saveLocalEdit(movie: Movie): Completable =
             movieRepository.saveLocalMovieInfo(movie)
+                    .subscribeOn(Schedulers.io())
+
+    fun findDateOfGetMovieFromRemote(): Single<Long> =
+            movieRepository.findDateOfGetMovieFromRemote()
                     .subscribeOn(Schedulers.io())
 
     companion object {

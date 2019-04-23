@@ -47,13 +47,18 @@
     <string name="attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。</string>
     <string name="cast_delete_text">キャストから\n「%s」\nを削除します。よろしいですか？</string>
     <string name="empty_casts">※キャストは未登録です。</string>
-    <string name="dialog_title_cast_update">キャスト名編集</string>
-    <string name="dialog_title_cast_add">キャスト追加</string>
     <string name="cast_text_hint">キャスト名を入力してください</string>
     <string name="image_url_label">画像イメージURL</string>
     <string name="image_url_search_browser_desc">ブラウザを起動して画像イメージを取得します。設定したい画像イメージをタップしてください。</string>
     <string name="image_preview_description">この映画のイメージ画像です。</string>
     <string name="movie_edit_error">映画情報の保存に失敗しました。</string>
+
+    <!-- キャスト情報ダイアログ -->
+    <string name="dialog_title_cast_update">キャスト編集</string>
+    <string name="dialog_title_cast_add">キャスト追加</string>
+    <string name="dialog_edit_cast_hint">配役名</string>
+    <string name="dialog_edit_actor_hint">俳優名</string>
+    <string name="dialog_cast_not_input_error">配役名は必須です。</string>
 
     <!-- 画像検索ダイアログ -->
     <string name="image_search_dialog_url">https://google.co.jp</string>
@@ -95,22 +100,27 @@
     <string name="icon_suggestion_content_description">キーワード検索の履歴を示すアイコンです</string>
 
     <!--設定-->
-    <string name="setting_label_general">全般</string>
-    <string name="setting_label_language">言語設定</string>
-    <string name="setting_label_language_desc">使用する言語を切り替えます。</string>
+    <string name="setting_label_local">映画データ</string>
+    <string name="setting_label_local_count">取得済の映画数:</string>
+    <string name="setting_label_local_count_loading_label">ロード中…</string>
+    <string name="setting_label_local_count_desc">現在アプリに保存されている映画情報数です。</string>
     <string name="setting_label_data_clear">データクリア</string>
     <string name="setting_label_data_clear_desc">保持している映画情報をクリアします。\n（自分用メモはクリアされません。）</string>
+    <string name="setting_label_remote">サーバー情報</string>
+    <string name="setting_label_remote_update_label">更新データ:</string>
+    <string name="setting_label_remote_update_have">あり</string>
+    <string name="setting_label_remote_update_none">なし</string>
+    <string name="setting_label_remote_description">サーバーが保持している映画データの更新情報です。</string>
+    <string name="setting_label_status">ステータス:</string>
     <string name="setting_label_app_info">アプリ情報</string>
     <string name="setting_label_app_version">アプリのバージョン</string>
     <string name="setting_label_license">オープンソースライセンス</string>
     <string name="setting_label_license_desc">このアプリで利用しているOSSの詳細</string>
-    <string name="icon_language_content_description">言語設定を変更するメニューのアイコンです</string>
+    <string name="icon_storage_content_description">映画データ数メニューのアイコンです</string>
+    <string name="icon_movie_update_request_content_description">サーバー情報を表示している領域を示すアイコンです</string>
     <string name="icon_data_clear_content_description">データクリアメニューのアイコンです</string>
     <string name="icon_app_version_content_description">このアプリのバージョンを表示している領域を示すアイコンです</string>
     <string name="icon_license_content_description">このアプリで利用しているオープンソースソフトウェアのライセンス表示メニューのアイコンです</string>
-
-    <string name="menu_language_japanese">日本語</string>
-    <string name="menu_language_english">English</string>
 
     <string name="dialog_data_clear_message">
         取得した映画情報をクリアします。よろしいですか？\n

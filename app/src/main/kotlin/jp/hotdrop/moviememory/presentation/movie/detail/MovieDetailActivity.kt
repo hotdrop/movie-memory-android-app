@@ -105,7 +105,7 @@ class MovieDetailActivity: BaseActivity() {
                     .setOnPositiveListener { note ->
                         binding.watchNoteText.text = note
                         viewModel.saveWatchNote(note)
-                    }.showWihthInputMultiLine()
+                    }.showWithInputMultiLine()
         }
     }
 
@@ -205,7 +205,7 @@ class MovieDetailActivity: BaseActivity() {
                     flexDirection = FlexDirection.ROW
                     flexWrap = FlexWrap.WRAP
                 }
-                recyclerView.adapter = CastsAdapter().apply { addAll(casts) }
+                recyclerView.adapter = CastsAdapter().apply { addAll(casts.map { "${it.name}:${it.actor}" }) }
                 recyclerView.isVisible = true
             }
         } ?: kotlin.run {
