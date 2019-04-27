@@ -465,86 +465,12 @@
           android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
           android:layout_marginBottom="8dp"
-          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
+          app:layout_constraintBottom_toTopOf="@+id/fab_edit"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent" />
 
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:id="@+id/fab_overview_layout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:visibility="invisible"
-          app:layout_constraintBottom_toTopOf="@+id/fab_detail_layout"
-          app:layout_constraintEnd_toEndOf="parent">
-
-         <com.google.android.material.card.MaterialCardView
-             style="@style/Widget.MaterialComponents.CardView"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginEnd="8dp"
-             app:cardBackgroundColor="@color/colorPrimary"
-             app:cardCornerRadius="@dimen/corner_radius"
-             app:cardElevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="@+id/fab_overview"
-             app:layout_constraintEnd_toStartOf="@+id/fab_overview"
-             app:layout_constraintTop_toTopOf="@+id/fab_overview">
-
-            <TextView
-                android:id="@+id/fab_overview_label"
-                style="@style/TextNormal.White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/movie_edit_overview_title" />
-
-         </com.google.android.material.card.MaterialCardView>
-
-         <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:id="@+id/fab_overview"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="bottom|end"
-             android:layout_marginTop="8dp"
-             android:layout_marginEnd="8dp"
-             android:layout_marginBottom="8dp"
-             app:backgroundTint="@color/colorPrimary"
-             app:elevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:srcCompat="@drawable/ic_edit" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:id="@+id/fab_detail_layout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:visibility="invisible"
-          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
-          app:layout_constraintEnd_toEndOf="parent">
-
-         <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:id="@+id/fab_detail"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="bottom|end"
-             android:layout_marginTop="8dp"
-             android:layout_marginEnd="8dp"
-             android:layout_marginBottom="8dp"
-             app:backgroundTint="@color/colorPrimary"
-             app:elevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:srcCompat="@drawable/ic_edit" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
       <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/menu_fab"
+          android:id="@+id/fab_edit"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="bottom|end"
@@ -553,7 +479,7 @@
           app:elevation="@dimen/fab_elevation"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          app:srcCompat="@drawable/ic_menu" />
+          app:srcCompat="@drawable/ic_edit" />
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

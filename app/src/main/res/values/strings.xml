@@ -47,7 +47,7 @@
     <string name="icon_cast_delete_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
 
     <!--映画情報の編集画面-->
-    <string name="movie_edit_overview_title">概要の編集</string>
+    <string name="movie_edit_title">概要の編集</string>
     <string name="message_save_success">保存しました。</string>
 
     <!-- 画像検索ダイアログ -->

@@ -49,20 +49,14 @@ class MovieEditActivity: BaseActivity() {
     private fun initView() {
 
         val movieId = intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
-        val editType = intent.getSerializableExtra(EXTRA_EDIT_TYPE) as EditType
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-            title = when (editType) {
-                EditType.OVERVIEW -> getString(R.string.movie_edit_overview_title)
-            }
         }
 
-        when (editType) {
-            EditType.OVERVIEW -> replaceFragment(MovieEditOverviewFragment.newInstance(movieId))
-        }
+        replaceFragment(MovieEditOverviewFragment.newInstance(movieId))
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -72,14 +66,11 @@ class MovieEditActivity: BaseActivity() {
     }
 
     companion object {
-        enum class EditType { OVERVIEW }
         private const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
-        private const val EXTRA_EDIT_TYPE = "EXTRA_EDIT_TYPE"
-        fun startForResult(activity: Activity, movieId: Long, editType: EditType, requestCode: Int) =
+        fun startForResult(activity: Activity, movieId: Long, requestCode: Int) =
                 activity.startActivityForResult(Intent(activity, MovieEditActivity::class.java)
                         .apply {
                             putExtra(EXTRA_MOVIE_TAG, movieId)
-                            putExtra(EXTRA_EDIT_TYPE, editType)
                         }, requestCode)
     }
 }

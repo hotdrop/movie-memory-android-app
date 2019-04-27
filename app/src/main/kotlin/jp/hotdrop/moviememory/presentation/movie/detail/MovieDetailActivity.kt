@@ -7,11 +7,7 @@ import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.view.animation.OvershootInterpolator
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -34,7 +30,6 @@ import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
-import timber.log.Timber
 import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
@@ -82,17 +77,22 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
 
+        binding.fabEdit.setOnClickListener {
+            MovieEditActivity.startForResult(this, movieId, MOVIE_EDIT_REQUEST_CODE)
+        }
+
         setOnMyNoteClickListener()
-        setOnMenuFabClickListener()
     }
 
     private fun setOnMyNoteClickListener() {
+
         binding.watchDateArea.setOnClickListener {
             TextInputDatePickerDialog.show(this, binding.watchDateText.text.toString()) { selectedDate ->
                 binding.watchDateText.text = selectedDate.toString()
                 viewModel.saveWatchDate(selectedDate)
             }
         }
+
         binding.watchPlaceArea.setOnClickListener {
             TextInputDialog.Builder(this)
                     .setTitle(R.string.watch_place_label)
@@ -102,6 +102,7 @@ class MovieDetailActivity: BaseActivity() {
                         viewModel.saveWatchPlace(watchPlace)
                     }.show()
         }
+
         binding.watchNoteArea.setOnClickListener {
             TextInputDialog.Builder(this)
                     .setTitle(R.string.watch_note_label)
@@ -111,51 +112,6 @@ class MovieDetailActivity: BaseActivity() {
                         viewModel.saveWatchNote(note)
                     }.showWithInputMultiLine()
         }
-    }
-
-    private fun setOnMenuFabClickListener() {
-        binding.menuFab.setOnClickListener {
-            if (isOpenFabMenu()) {
-                collapseFabMenu()
-            } else {
-                expandFabMenu()
-            }
-        }
-
-        binding.fabOverview.setOnClickListener {
-            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.OVERVIEW, MOVIE_EDIT_REQUEST_CODE)
-            collapseFabMenu()
-        }
-    }
-
-    private val fabCloseAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_close) }
-    private val fabOpenAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_open) }
-    private fun isOpenFabMenu(): Boolean = binding.menuFab.rotation == FAB_MENU_OPEN_ROTATION
-
-    private fun collapseFabMenu() {
-        ViewCompat.animate(binding.menuFab)
-                .rotation(FAB_MENU_CLOSE_ROTATION)
-                .withLayer()
-                .setDuration(300)
-                .setInterpolator(OvershootInterpolator(10f))
-                .start()
-        binding.fabOverviewLayout.startAnimation(fabCloseAnimation)
-        binding.fabDetailLayout.startAnimation(fabCloseAnimation)
-        binding.fabOverview.isClickable = false
-        binding.fabDetail.isClickable = false
-    }
-
-    private fun expandFabMenu() {
-        ViewCompat.animate(binding.menuFab)
-                .rotation(FAB_MENU_OPEN_ROTATION)
-                .withLayer()
-                .setDuration(300)
-                .setInterpolator(OvershootInterpolator(10f))
-                .start()
-        binding.fabOverviewLayout.startAnimation(fabOpenAnimation)
-        binding.fabDetailLayout.startAnimation(fabOpenAnimation)
-        binding.fabOverview.isClickable = true
-        binding.fabDetail.isClickable = true
     }
 
     private fun observe() {
@@ -263,9 +219,6 @@ class MovieDetailActivity: BaseActivity() {
     }
 
     companion object {
-
-        const val FAB_MENU_OPEN_ROTATION = 90f
-        const val FAB_MENU_CLOSE_ROTATION = 0f
 
         const val MOVIE_EDIT_REQUEST_CODE = 900
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
