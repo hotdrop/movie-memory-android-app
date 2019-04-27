@@ -10,12 +10,15 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
+import android.widget.TextView
 import androidx.core.view.ViewCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -31,6 +34,7 @@ import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
+import timber.log.Timber
 import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
@@ -122,10 +126,6 @@ class MovieDetailActivity: BaseActivity() {
             MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.OVERVIEW, MOVIE_EDIT_REQUEST_CODE)
             collapseFabMenu()
         }
-        binding.fabDetail.setOnClickListener {
-            MovieEditActivity.startForResult(this, movieId, MovieEditActivity.Companion.EditType.DETAIL, MOVIE_EDIT_REQUEST_CODE)
-            collapseFabMenu()
-        }
     }
 
     private val fabCloseAnimation: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.fab_close) }
@@ -199,17 +199,19 @@ class MovieDetailActivity: BaseActivity() {
         initFavoriteStar(movie.favoriteCount)
 
         // キャスト
+        val castsRecyclerView = binding.castsEditArea.findViewById<RecyclerView>(R.id.casts_recycler_view)
+        val emptyTextView = binding.castsEditArea.findViewById<TextView>(R.id.casts_empty_message)
         movie.casts?.also { casts ->
-            binding.castsRecyclerView.let { recyclerView ->
-                recyclerView.layoutManager = FlexboxLayoutManager(this).apply {
-                    flexDirection = FlexDirection.ROW
-                    flexWrap = FlexWrap.WRAP
-                }
-                recyclerView.adapter = CastsAdapter().apply { addAll(casts.map { "${it.name}:${it.actor}" }) }
-                recyclerView.isVisible = true
+            castsRecyclerView.layoutManager = FlexboxLayoutManager(this).apply {
+                flexDirection = FlexDirection.ROW
+                flexWrap = FlexWrap.WRAP
             }
-        } ?: kotlin.run {
-            binding.castsNoDataText.isVisible = true
+            castsRecyclerView.adapter = CastsAdapter().apply { addAll(casts.map { "${it.name}:${it.actor}" }) }
+            castsRecyclerView.isVisible = true
+            emptyTextView.isGone = true
+        } ?: run {
+            castsRecyclerView.isGone = true
+            emptyTextView.isVisible = true
         }
     }
 

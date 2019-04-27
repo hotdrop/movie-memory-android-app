@@ -63,6 +63,8 @@ dependencies {
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // layout
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.annotation:annotation:1.0.2'
@@ -70,8 +72,11 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
     implementation 'com.android.support:multidex:1.0.3'
+
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android:flexbox:1.1.0'
+
+    implementation 'com.alespero:expandable-cardview:0.8'
 
     // android-ktx
     implementation 'androidx.core:core-ktx:1.0.1'
