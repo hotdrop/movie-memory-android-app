@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentMovieEditOverviewBinding
+import jp.hotdrop.moviememory.databinding.FragmentMovieEditBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Category
@@ -21,9 +21,9 @@ import timber.log.Timber
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class MovieEditOverviewFragment: Fragment() {
+class MovieEditFragment: Fragment() {
 
-    private lateinit var binding: FragmentMovieEditOverviewBinding
+    private lateinit var binding: FragmentMovieEditBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -42,7 +42,7 @@ class MovieEditOverviewFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMovieEditOverviewBinding.inflate(layoutInflater, container, false)
+        binding = FragmentMovieEditBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -123,7 +123,7 @@ class MovieEditOverviewFragment: Fragment() {
 
     companion object {
         private const val EXTRA_MOVIE_ID = "EXTRA_MOVIE_ID"
-        fun newInstance(movieId: Long): MovieEditOverviewFragment = MovieEditOverviewFragment().apply {
+        fun newInstance(movieId: Long): MovieEditFragment = MovieEditFragment().apply {
             arguments = Bundle().apply { putLong(EXTRA_MOVIE_ID, movieId) }
         }
     }

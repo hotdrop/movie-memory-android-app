@@ -56,7 +56,7 @@ class MovieEditActivity: BaseActivity() {
             setDisplayShowTitleEnabled(true)
         }
 
-        replaceFragment(MovieEditOverviewFragment.newInstance(movieId))
+        replaceFragment(MovieEditFragment.newInstance(movieId))
     }
 
     private fun replaceFragment(fragment: Fragment) {
