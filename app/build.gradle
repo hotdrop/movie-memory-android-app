@@ -16,7 +16,7 @@ android {
     defaultConfig {
         minSdkVersion 21
         versionCode 1
-        versionName "0.1.0"
+        versionName "0.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -63,6 +63,8 @@ dependencies {
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // layout
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.annotation:annotation:1.0.2'
@@ -70,8 +72,11 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
     implementation 'com.android.support:multidex:1.0.3'
+
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android:flexbox:1.1.0'
+
+    implementation 'com.alespero:expandable-cardview:0.8'
 
     // android-ktx
     implementation 'androidx.core:core-ktx:1.0.1'
@@ -92,16 +97,16 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     // dagger
-    implementation 'com.google.dagger:dagger:2.20'
-    kapt 'com.google.dagger:dagger-compiler:2.20'
+    implementation 'com.google.dagger:dagger:2.21'
+    kapt 'com.google.dagger:dagger-compiler:2.21'
 
     // lottie
     implementation 'com.airbnb.android:lottie:2.8.0'
 
     // Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
 
     // network
@@ -120,7 +125,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.0'
 
     // threeten
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'

@@ -165,7 +165,7 @@
                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/favorite_area"
-                   tools:text="テスト" />
+                   tools:text="ここには概要が入ります。" />
 
                <TextView
                    android:id="@+id/official_url_link"
@@ -208,6 +208,7 @@
                    android:id="@+id/playing_date_icon"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:layout_marginStart="12dp"
                    android:layout_marginTop="24dp"
                    android:contentDescription="@string/icon_playing_date_content_description"
                    android:src="@drawable/ic_event"
@@ -240,6 +241,7 @@
                    android:id="@+id/film_director_icon"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:layout_marginStart="12dp"
                    android:layout_marginTop="24dp"
                    android:contentDescription="@string/icon_film_director_content_description"
                    android:src="@drawable/ic_person"
@@ -268,46 +270,22 @@
                    app:layout_constraintTop_toBottomOf="@+id/film_director_label"
                    tools:text="アンソニー・ルッソ、ジョー・ルッソ" />
 
-               <ImageView
-                   android:id="@+id/casts_icon"
-                   android:layout_width="wrap_content"
+               <com.alespero.expandablecardview.ExpandableCardView
+                   android:id="@+id/casts_edit_area"
+                   android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginStart="16dp"
-                   android:layout_marginTop="24dp"
-                   android:contentDescription="@string/icon_casts_content_description"
-                   app:layout_constraintStart_toStartOf="parent"
-                   app:layout_constraintTop_toBottomOf="@+id/film_director"
-                   app:srcCompat="@drawable/ic_people" />
-
-               <TextView
-                   android:id="@+id/casts_label"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
-                   android:layout_marginTop="16dp"
-                   android:text="@string/casts_label"
-                   app:layout_constraintStart_toEndOf="@+id/casts_icon"
+                   android:layout_marginTop="8dp"
+                   app:title="@string/casts_label"
+                   app:icon="@drawable/ic_people"
+                   app:inner_view="@layout/cast_layout"
+                   app:expandOnClick="true"
+                   app:animationDuration="300"
+                   app:startExpanded="false"
+                   app:cardCornerRadius="@dimen/corner_radius"
+                   app:cardUseCompatPadding="true"
+                   app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                   app:layout_constraintStart_toStartOf="@+id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/film_director" />
-
-               <TextView
-                   android:id="@+id/casts_no_data_text"
-                   style="@style/TextNormal"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
-                   android:text="@string/no_data_text"
-                   android:visibility="gone"
-                   app:layout_constraintStart_toEndOf="@+id/casts_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/casts_label" />
-
-               <androidx.recyclerview.widget.RecyclerView
-                   android:id="@+id/casts_recycler_view"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:visibility="gone"
-                   app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintStart_toStartOf="@+id/casts_label"
-                   app:layout_constraintTop_toBottomOf="@+id/casts_label" />
 
                <View
                    android:id="@+id/line_memo_border"
@@ -315,7 +293,7 @@
                    android:layout_marginTop="24dp"
                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/casts_recycler_view" />
+                   app:layout_constraintTop_toBottomOf="@+id/casts_edit_area" />
 
                <TextView
                    android:id="@+id/my_note_title"
@@ -365,6 +343,7 @@
                        android:layout_marginStart="8dp"
                        android:layout_marginEnd="60dp"
                        android:text="@string/watch_date_label"
+                       app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintEnd_toEndOf="parent"
                        app:layout_constraintStart_toEndOf="@+id/watch_date_icon" />
 
@@ -410,6 +389,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="60dp"
                         android:text="@string/watch_place_label"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/watch_place_icon" />
 
@@ -457,6 +437,7 @@
                       android:layout_height="wrap_content"
                       android:layout_marginStart="8dp"
                       android:text="@string/watch_note_label"
+                      app:layout_constraintTop_toTopOf="parent"
                       app:layout_constraintStart_toEndOf="@+id/watch_note_icon" />
 
                   <TextView
@@ -484,108 +465,12 @@
           android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
           android:layout_marginBottom="8dp"
-          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
+          app:layout_constraintBottom_toTopOf="@+id/fab_edit"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent" />
 
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:id="@+id/fab_overview_layout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:visibility="invisible"
-          app:layout_constraintBottom_toTopOf="@+id/fab_detail_layout"
-          app:layout_constraintEnd_toEndOf="parent">
-
-         <com.google.android.material.card.MaterialCardView
-             style="@style/Widget.MaterialComponents.CardView"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginEnd="8dp"
-             app:cardBackgroundColor="@color/colorPrimary"
-             app:cardCornerRadius="@dimen/corner_radius"
-             app:cardElevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="@+id/fab_overview"
-             app:layout_constraintEnd_toStartOf="@+id/fab_overview"
-             app:layout_constraintTop_toTopOf="@+id/fab_overview">
-
-            <TextView
-                android:id="@+id/fab_overview_label"
-                style="@style/TextNormal.White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/movie_edit_overview_title" />
-
-         </com.google.android.material.card.MaterialCardView>
-
-         <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:id="@+id/fab_overview"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="bottom|end"
-             android:layout_marginTop="8dp"
-             android:layout_marginEnd="8dp"
-             android:layout_marginBottom="8dp"
-             app:backgroundTint="@color/colorPrimary"
-             app:elevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:srcCompat="@drawable/ic_edit" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:id="@+id/fab_detail_layout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:visibility="invisible"
-          app:layout_constraintBottom_toTopOf="@+id/menu_fab"
-          app:layout_constraintEnd_toEndOf="parent">
-
-         <com.google.android.material.card.MaterialCardView
-             style="@style/Widget.MaterialComponents.CardView"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginEnd="8dp"
-             app:cardBackgroundColor="@color/colorPrimary"
-             app:cardCornerRadius="@dimen/corner_radius"
-             app:cardElevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="@+id/fab_detail"
-             app:layout_constraintEnd_toStartOf="@+id/fab_detail"
-             app:layout_constraintTop_toTopOf="@+id/fab_detail">
-
-            <TextView
-                android:id="@+id/fab_detail_label"
-                style="@style/TextNormal.White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/movie_edit_detail_title" />
-
-         </com.google.android.material.card.MaterialCardView>
-
-         <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:id="@+id/fab_detail"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="bottom|end"
-             android:layout_marginTop="8dp"
-             android:layout_marginEnd="8dp"
-             android:layout_marginBottom="8dp"
-             app:backgroundTint="@color/colorPrimary"
-             app:elevation="@dimen/fab_elevation"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:srcCompat="@drawable/ic_edit" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
       <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/menu_fab"
+          android:id="@+id/fab_edit"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="bottom|end"
@@ -594,7 +479,7 @@
           app:elevation="@dimen/fab_elevation"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          app:srcCompat="@drawable/ic_menu" />
+          app:srcCompat="@drawable/ic_edit" />
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -14,9 +14,9 @@ import com.google.android.material.chip.Chip
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentMovieEditOverviewBinding
 import jp.hotdrop.moviememory.di.component.component
+import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Category
-import jp.hotdrop.moviememory.presentation.common.setImageURL
-import jp.hotdrop.moviememory.presentation.component.SearchImageWebViewDialog
+import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import timber.log.Timber
 import java.lang.IllegalStateException
 import javax.inject.Inject
@@ -24,9 +24,6 @@ import javax.inject.Inject
 class MovieEditOverviewFragment: Fragment() {
 
     private lateinit var binding: FragmentMovieEditOverviewBinding
-
-    @Inject
-    lateinit var dialogSearchImage: SearchImageWebViewDialog
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -38,7 +35,7 @@ class MovieEditOverviewFragment: Fragment() {
         activity?.also {
             it.component.fragment().inject(this)
             viewModel = ViewModelProviders.of(it, viewModelFactory).get(MovieEditViewModel::class.java)
-        } ?: kotlin.run {
+        } ?: run {
             Timber.d("onAttachが呼ばれましたがgetActivityがnullだったので終了します")
             onDestroy()
         }
@@ -62,18 +59,25 @@ class MovieEditOverviewFragment: Fragment() {
 
     private fun initView() {
 
-        binding.imageIconBrowser.setOnClickListener {
-            context?.let { context ->
-                dialogSearchImage.show(context) { imageUrl ->
-                    binding.textImageUrl.setText(imageUrl)
-                    binding.imagePreview.setImageURL(imageUrl)
+        binding.playDateEditArea.run {
+            setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    TextInputDatePickerDialog.show(context, binding.playDateEditArea)
                 }
-            } ?: throw IllegalStateException("context is null! program bug")
+            }
         }
 
         binding.fab.setOnClickListener {
             binding.movie?.let { movie ->
-                viewModel?.save(movie) ?: throw IllegalStateException("viewModel is null!!")
+                val newPlayingDateText = binding.playDateEditArea.text.toString()
+                val newPlayingDate = if (newPlayingDateText.isNotEmpty()) {
+                    AppDate(dateStr = newPlayingDateText)
+                } else {
+                    movie.playingDate
+                }
+                val newMovie = movie.copy(playingDate = newPlayingDate)
+
+                viewModel?.save(newMovie) ?: throw IllegalStateException("viewModel is null!!")
             }
         }
     }

@@ -3,16 +3,18 @@ package jp.hotdrop.moviememory.model
 import org.threeten.bp.LocalDate
 
 class AppDate constructor(
-        epoch: Long = 0,
-        dateStr: String? = null,
-        localDate: LocalDate? = null
+        private val epoch: Long = 0,
+        private val dateStr: String? = null,
+        private val localDate: LocalDate? = null
 ) {
 
-    private val date: LocalDate = when {
-        epoch > 0 -> LocalDate.ofEpochDay(epoch)
-        dateStr != null -> toLocalDate(dateStr)
-        localDate != null -> localDate
-        else -> LocalDate.now()
+    private val date: LocalDate by lazy {
+        when {
+            epoch > 0 -> LocalDate.ofEpochDay(epoch)
+            dateStr != null -> toLocalDate(dateStr)
+            localDate != null -> localDate
+            else -> LocalDate.now()
+        }
     }
 
     val year: Int
