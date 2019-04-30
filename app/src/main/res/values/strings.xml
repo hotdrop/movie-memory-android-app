@@ -3,7 +3,7 @@
 
     <!--Bottomメニュー-->
     <string name="title_movies">映画一覧</string>
-    <string name="title_category">カテゴリー</string>
+    <string name="title_category">カテゴリー編集</string>
     <string name="title_search">検索</string>
     <string name="title_setting">設定</string>
 
@@ -23,31 +23,29 @@
 
     <!--映画詳細-->
     <string name="title_label">映画名</string>
-    <string name="category_label">カテゴリー</string>
-    <string name="overview_label">あらすじ</string>
-    <string name="playing_date_label">公開日</string>
-    <string name="film_director_label">監督</string>
-    <string name="casts_label">キャスト</string>
-    <string name="empty_casts">※1名も登録されていません。</string>
     <string name="trailer_movie_url_link_label">予告動画</string>
     <string name="official_url_link_label">公式サイト</string>
-    <string name="my_note_title">鑑賞メモ</string>
-    <string name="my_note_desc">編集は各項目をタップしてください。</string>
-    <string name="watch_date_label">鑑賞日</string>
-    <string name="watch_place_label">鑑賞した映画館</string>
+    <string name="film_director_label">監督　:</string>
+    <string name="original_author_label">原作者:</string>
+    <string name="distribution_label">制作元:</string>
+    <string name="make_country_label">制作国:</string>
+    <string name="make_year_label">制作年:</string>
+    <string name="casts_label">キャスト</string>
+    <string name="empty_casts">※1名も登録されていません。</string>
+    <string name="my_note_title">観賞記録</string>
+    <string name="my_note_desc">各項目をタップし、観賞した記録を残しましょう。</string>
+    <string name="watch_date_label">観た日</string>
+    <string name="watch_place_label">映画館</string>
     <string name="watch_note_label">メモ</string>
-    <string name="no_data_text">ー</string>
+    <string name="watch_item_empty_hint">ー</string>
     <string name="movie_edit_error">映画情報の保存に失敗しました。</string>
-    <string name="icon_playing_date_content_description">この映画の公開日を示すアイコンです</string>
-    <string name="icon_film_director_content_description">この映画の監督を示すアイコンです</string>
-    <string name="icon_casts_content_description">この映画の主要キャスト一覧を示すアイコンです</string>
+    <string name="icon_desc_content_description">この映画の詳細情報を示すアイコンです</string>
     <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
     <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
     <string name="icon_watch_note_content_description">この映画を観た感想等のメモを示すアイコンです</string>
-    <string name="icon_cast_delete_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
 
     <!--映画情報の編集画面-->
-    <string name="movie_edit_title">概要の編集</string>
+    <string name="movie_edit_title">カテゴリーの登録/編集</string>
     <string name="message_save_success">保存しました。</string>
 
     <!-- 画像検索ダイアログ -->
