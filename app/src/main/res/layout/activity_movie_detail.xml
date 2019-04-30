@@ -541,11 +541,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_margin="@dimen/fab_margin"
-          app:backgroundTint="@color/colorPrimary"
+          app:backgroundTint="@color/lightBlue"
           app:elevation="@dimen/fab_elevation"
           app:layout_anchor="@id/app_bar"
           app:layout_anchorGravity="bottom|end"
-          app:srcCompat="@drawable/ic_edit" />
+          app:srcCompat="@drawable/ic_style" />
 
       <androidx.coordinatorlayout.widget.CoordinatorLayout
           android:id="@+id/snackbar_area"

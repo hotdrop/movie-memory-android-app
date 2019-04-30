@@ -49,7 +49,6 @@ class MovieEditFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        initView()
         observe()
 
         arguments?.getLong(EXTRA_MOVIE_ID)?.let {
@@ -57,38 +56,14 @@ class MovieEditFragment: Fragment() {
         }
     }
 
-    private fun initView() {
-
-        binding.playDateEditArea.run {
-            setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    TextInputDatePickerDialog.show(context, binding.playDateEditArea)
-                }
-            }
-        }
-
-        binding.fab.setOnClickListener {
-            binding.movie?.let { movie ->
-                val newPlayingDateText = binding.playDateEditArea.text.toString()
-                val newPlayingDate = if (newPlayingDateText.isNotEmpty()) {
-                    AppDate(dateStr = newPlayingDateText)
-                } else {
-                    movie.playingDate
-                }
-                val newMovie = movie.copy(playingDate = newPlayingDate)
-
-                viewModel?.save(newMovie) ?: throw IllegalStateException("viewModel is null!!")
-            }
-        }
-    }
-
     private fun observe() {
+
         viewModel?.movie?.observe(this, Observer {
-            it?.let { movie ->
-                binding.movie = movie
-                viewModel?.findCategories() ?: throw IllegalStateException("viewModel is null!!")
+            it?.let {
+                viewModel!!.findCategories()
             }
         }) ?: throw IllegalStateException("viewModel is null!!")
+
         viewModel?.categories?.observe(this, Observer {
             it?.let { categories ->
                 initChipCategories(categories)
@@ -103,19 +78,21 @@ class MovieEditFragment: Fragment() {
             val chip = (layoutInflater.inflate(R.layout.chip_category_filter, binding.chipGroupCategories, false) as Chip)
                     .apply {
                         val categoryName = category.name
-                        text = categoryName
-                        setOnClickListener {
-                            viewModel?.stockCategory(categoryName) ?: throw IllegalStateException("viewModel is null!!")
-                            (0 until binding.chipGroupCategories.childCount).forEach { idx ->
-                                val chip = binding.chipGroupCategories[idx] as Chip
-                                if (chip.text != categoryName) {
-                                    chip.isChecked = false
+                        this.text = categoryName
+                        viewModel?.also { movieEditViewModel ->
+                            this.setOnClickListener {
+                                movieEditViewModel.save(categoryName)
+                                (0 until binding.chipGroupCategories.childCount).forEach { idx ->
+                                    val chip = binding.chipGroupCategories[idx] as Chip
+                                    if (chip.text != categoryName) {
+                                        chip.isChecked = false
+                                    }
                                 }
                             }
-                        }
-                        if (categoryName == binding.movie?.categoryName()) {
-                            this.isChecked = true
-                        }
+                            if (categoryName == movieEditViewModel.movie.value!!.categoryName()) {
+                                this.isChecked = true
+                            }
+                        } ?: throw IllegalStateException("viewModel is null!!")
                     }
             binding.chipGroupCategories.addView(chip)
         }

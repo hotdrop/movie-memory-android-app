@@ -30,8 +30,6 @@ class MovieEditViewModel @Inject constructor(
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
 
-    private var category: Category? = null
-
     fun find(id: Long) {
         useCase.findMovie(id)
                 .subscribeBy(
@@ -57,28 +55,23 @@ class MovieEditViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun stockCategory(name: String) {
-        Timber.d("$name カテゴリーをストックします。")
-        category = categories.value?.find {
-            it.name == name
-        }
-    }
-
-    fun save(movie: Movie) {
-        val newMovie = category?.let {
-            Timber.d("${it.name} カテゴリーに変更します。")
-            movie.copy(category = it)
-        } ?: movie
-        useCase.save(newMovie)
-                .observeOn(Schedulers.io())
-                .subscribeBy(
-                        onComplete = {
-                            mutableSaveSuccess.postValue(true)
-                        },
-                        onError = {
-                            mutableError.postValue(AppError(it, "映画情報の編集画面 保存"))
-                        }
-                ).addTo(compositeDisposable)
+    fun save(categoryName: String) {
+        Timber.d("カテゴリーを $categoryName に設定します。")
+        categories.value
+                ?.find { it.name == categoryName }
+                ?.run {
+                    val newMovie = movie.value!!.copy(category = this)
+                    useCase.save(newMovie)
+                            .observeOn(Schedulers.io())
+                            .subscribeBy(
+                                    onComplete = {
+                                        mutableSaveSuccess.postValue(true)
+                                    },
+                                    onError = {
+                                        mutableError.postValue(AppError(it, "映画情報の編集画面 保存"))
+                                    }
+                            ).addTo(compositeDisposable)
+                }
     }
 
     fun clear() {
