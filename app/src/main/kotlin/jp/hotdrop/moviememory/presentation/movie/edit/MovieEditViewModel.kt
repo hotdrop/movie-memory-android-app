@@ -74,11 +74,6 @@ class MovieEditViewModel @Inject constructor(
                 }
     }
 
-    fun clear() {
-        mutableSaveSuccess.postValue(false)
-        mutableError.postValue(null)
-    }
-
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()

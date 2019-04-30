@@ -23,10 +23,8 @@
 
     <!--映画詳細-->
     <string name="title_label">映画名</string>
-    <string name="overview_label">あらすじ</string>
     <string name="trailer_movie_url_link_label">予告動画</string>
     <string name="official_url_link_label">公式サイト</string>
-    <string name="playing_date_label">公開日</string>
     <string name="film_director_label">監督　:</string>
     <string name="original_author_label">原作者:</string>
     <string name="distribution_label">制作元:</string>
@@ -45,7 +43,6 @@
     <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
     <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
     <string name="icon_watch_note_content_description">この映画を観た感想等のメモを示すアイコンです</string>
-    <string name="icon_cast_delete_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
 
     <!--映画情報の編集画面-->
     <string name="movie_edit_title">カテゴリーの登録/編集</string>
