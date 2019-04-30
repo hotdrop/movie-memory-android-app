@@ -91,11 +91,10 @@
                    style="@style/Title"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="24dp"
+                   android:layout_marginTop="16dp"
                    android:text="@{movie.title}"
-                   app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-                   app:layout_constraintHorizontal_bias="0.0"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
+                   app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintTop_toTopOf="parent"
                    tools:text="アベンジャーズ・インフィニティウォー・テストべンジャーズ" />
 
@@ -103,19 +102,40 @@
                    android:id="@+id/category"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:layout_marginTop="16dp"
                    android:text="@{movie.categoryName()}"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
                    app:layout_constraintTop_toBottomOf="@+id/title"
                    tools:text="SF・ファンタジー" />
 
+               <TextView
+                   android:id="@+id/play_time"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@{movie.toTextPlayTime()}"
+                   android:layout_marginTop="16dp"
+                   android:layout_marginStart="32dp"
+                   app:layout_constraintStart_toEndOf="@+id/category"
+                   app:layout_constraintTop_toBottomOf="@+id/title"
+                   tools:text="153分"/>
+
+               <TextView
+                   android:id="@+id/playing_date"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:text="@{movie.toTextPlayingDate()}"
+                   app:layout_constraintStart_toStartOf="@id/left_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/category"
+                   tools:text="2018-04-28" />
+
                <androidx.constraintlayout.widget.ConstraintLayout
                    android:id="@+id/favorite_area"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="8dp"
+                   android:layout_marginTop="16dp"
                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/category">
+                   app:layout_constraintTop_toBottomOf="@+id/playing_date" >
 
                   <com.airbnb.lottie.LottieAnimationView
                       android:id="@+id/favorite_1"
@@ -205,48 +225,15 @@
                    app:layout_constraintTop_toBottomOf="@+id/official_url_link" />
 
                <ImageView
-                   android:id="@+id/playing_date_icon"
+                   android:id="@+id/other_description_icon"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="12dp"
-                   android:layout_marginTop="24dp"
-                   android:contentDescription="@string/icon_playing_date_content_description"
-                   android:src="@drawable/ic_event"
-                   app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/line_overview" />
-
-               <TextView
-                   android:id="@+id/playing_date_label"
-                   style="@style/TextNormal.Gray"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
                    android:layout_marginTop="16dp"
-                   android:text="@string/playing_date_label"
-                   app:layout_constraintStart_toEndOf="@+id/playing_date_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/line_overview" />
-
-               <TextView
-                   android:id="@+id/playing_date_text"
-                   style="@style/TextNormal"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="8dp"
-                   android:text="@{movie.toTextPlayingDate()}"
-                   app:layout_constraintStart_toEndOf="@+id/playing_date_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/playing_date_label"
-                   tools:text="2018-04-28" />
-
-               <ImageView
-                   android:id="@+id/film_director_icon"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="12dp"
-                   android:layout_marginTop="24dp"
-                   android:contentDescription="@string/icon_film_director_content_description"
-                   android:src="@drawable/ic_person"
+                   android:contentDescription="@string/icon_desc_content_description"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
+                   app:layout_constraintTop_toBottomOf="@+id/line_overview"
+                   app:srcCompat="@drawable/ic_info" />
 
                <TextView
                    android:id="@+id/film_director_label"
@@ -256,8 +243,8 @@
                    android:layout_marginStart="8dp"
                    android:layout_marginTop="16dp"
                    android:text="@string/film_director_label"
-                   app:layout_constraintStart_toEndOf="@+id/film_director_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/playing_date_text" />
+                   app:layout_constraintStart_toEndOf="@+id/other_description_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/line_overview" />
 
                <TextView
                    android:id="@+id/film_director"
@@ -265,10 +252,100 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="8dp"
+                   android:layout_marginTop="16dp"
                    android:text="@{movie.toTextFilmDirector()}"
-                   app:layout_constraintStart_toEndOf="@+id/film_director_icon"
-                   app:layout_constraintTop_toBottomOf="@+id/film_director_label"
+                   app:layout_constraintStart_toEndOf="@+id/film_director_label"
+                   app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/line_overview"
                    tools:text="アンソニー・ルッソ、ジョー・ルッソ" />
+
+               <TextView
+                   android:id="@+id/film_original_author_label"
+                   style="@style/TextNormal.Gray"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@string/original_author_label"
+                   app:layout_constraintStart_toEndOf="@+id/other_description_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/film_director_label" />
+
+               <TextView
+                   android:id="@+id/original_author"
+                   style="@style/TextNormal"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@{movie.toTextOriginalAuthor()}"
+                   app:layout_constraintStart_toEndOf="@+id/film_original_author_label"
+                   app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/film_director_label"
+                   tools:text="スタン・リー" />
+
+               <TextView
+                   android:id="@+id/distribution_label"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/TextNormal.Gray"
+                   android:layout_marginStart="8dp"
+                   android:text="@string/distribution_label"
+                   app:layout_constraintStart_toEndOf="@+id/other_description_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/film_original_author_label" />
+
+               <TextView
+                   android:id="@+id/distribution"
+                   style="@style/TextNormal"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@{movie.toTextDistribution()}"
+                   tools:text="テストシネマズ"
+                   app:layout_constraintStart_toEndOf="@+id/distribution_label"
+                   app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/film_original_author_label" />
+
+               <TextView
+                   android:id="@+id/make_country_label"
+                   style="@style/TextNormal.Gray"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@string/make_country_label"
+                   app:layout_constraintStart_toEndOf="@+id/other_description_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/distribution_label" />
+
+               <TextView
+                   android:id="@+id/make_country"
+                   style="@style/TextNormal"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@{movie.toTextMakeCountry()}"
+                   tools:text="日本"
+                   app:layout_constraintStart_toEndOf="@+id/make_country_label"
+                   app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/distribution_label" />
+
+               <TextView
+                   android:id="@+id/make_year_label"
+                   style="@style/TextNormal.Gray"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@string/make_year_label"
+                   app:layout_constraintStart_toEndOf="@+id/other_description_icon"
+                   app:layout_constraintTop_toBottomOf="@+id/make_country_label" />
+
+               <TextView
+                   android:id="@+id/make_year"
+                   style="@style/TextNormal"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:text="@{movie.toTextMakeYear()}"
+                   tools:text="2019年"
+                   app:layout_constraintStart_toEndOf="@+id/make_year_label"
+                   app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                   app:layout_constraintTop_toBottomOf="@+id/make_country_label" />
 
                <com.alespero.expandablecardview.ExpandableCardView
                    android:id="@+id/casts_edit_area"
@@ -285,7 +362,7 @@
                    app:cardUseCompatPadding="true"
                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                   app:layout_constraintTop_toBottomOf="@+id/film_director" />
+                   app:layout_constraintTop_toBottomOf="@+id/make_year_label" />
 
                <View
                    android:id="@+id/line_memo_border"
@@ -354,6 +431,7 @@
                       android:layout_height="wrap_content"
                       android:layout_marginStart="8dp"
                       android:text="@{movie.toTextWatchDate()}"
+                      android:hint="@string/watch_item_empty_hint"
                       app:layout_constraintStart_toEndOf="@+id/watch_date_icon"
                       app:layout_constraintTop_toBottomOf="@+id/watch_date_label"
                       tools:text="2018-04-30" />
@@ -400,6 +478,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@{movie.toTextWatchPlace()}"
+                        android:hint="@string/watch_item_empty_hint"
                         app:layout_constraintStart_toEndOf="@+id/watch_place_icon"
                         app:layout_constraintTop_toBottomOf="@+id/watch_place_label"
                         tools:text="TOHOシネマズ日本橋" />
@@ -424,11 +503,10 @@
                       android:id="@+id/watch_note_icon"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
+                      android:layout_marginTop="8dp"
                       android:contentDescription="@string/icon_watch_note_content_description"
-                      app:layout_constraintBottom_toBottomOf="parent"
                       app:layout_constraintStart_toStartOf="parent"
                       app:layout_constraintTop_toTopOf="parent"
-                      app:layout_constraintVertical_bias="0.1"
                       app:srcCompat="@drawable/ic_note" />
 
                   <TextView
@@ -446,7 +524,8 @@
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_marginStart="8dp"
-                      android:text="@{movie.note}"
+                      android:text="@{movie.toTextNote()}"
+                      android:hint="@string/watch_item_empty_hint"
                       app:layout_constraintEnd_toEndOf="parent"
                       app:layout_constraintStart_toEndOf="@+id/watch_note_icon"
                       app:layout_constraintTop_toBottomOf="@+id/watch_note_label"

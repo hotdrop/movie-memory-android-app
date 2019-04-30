@@ -12,7 +12,7 @@ data class Movie(
         val casts: List<Cast>?,
         var officialUrl: String?,
         var trailerMovieUrl: String?,
-        val distribution: String?,
+        val distribution: String?, // 制作元のこと
         val makeCountry: String?,
         val makeYear: Int?,
         val playTime: Int?,
@@ -23,11 +23,18 @@ data class Movie(
         var note: String?
 ) {
 
+    fun toTextPlayTime() = playTime?.toString() ?: ""
     fun toTextPlayingDate() = playingDate?.toString() ?: DEFAULT_TEXT_VALUE
-    fun toTextWatchDate() = watchDate?.toString() ?: DEFAULT_TEXT_VALUE
     fun toTextFavoriteCount() = favoriteCount.toString()
     fun toTextFilmDirector() = filmDirector ?: DEFAULT_TEXT_VALUE
-    fun toTextWatchPlace() = watchPlace ?: DEFAULT_TEXT_VALUE
+    fun toTextOriginalAuthor() = originalAuthor ?: DEFAULT_TEXT_VALUE
+    fun toTextDistribution() = distribution ?: DEFAULT_TEXT_VALUE
+    fun toTextMakeCountry() = makeCountry ?: DEFAULT_TEXT_VALUE
+    fun toTextMakeYear() = makeYear?.toString() ?: DEFAULT_TEXT_VALUE
+
+    fun toTextWatchDate() = watchDate?.toString() ?: ""
+    fun toTextWatchPlace() = watchPlace ?: ""
+    fun toTextNote() = note ?: ""
 
     fun categoryName() = category.name
 
