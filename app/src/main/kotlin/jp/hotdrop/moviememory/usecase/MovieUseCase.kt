@@ -53,7 +53,8 @@ class MovieUseCase @Inject constructor(
 
     private fun findPastMovies(startIndex: Int, offset: Int): Single<List<Movie>> {
         Timber.d("公開終了のデータを取得します。")
-        val startAt = AppDate().apply { minusMonths(NOW_PLAYING_BETWEEN_MONTH) }
+        val nowDate = AppDate()
+        val startAt = nowDate.minusMonths(NOW_PLAYING_BETWEEN_MONTH)
         return movieRepository.findPastMovies(startAt, startIndex, offset)
                 .subscribeOn(Schedulers.io())
     }
