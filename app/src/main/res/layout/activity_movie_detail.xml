@@ -488,13 +488,11 @@
                 android:id="@+id/watch_note_area"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="16dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                 app:layout_constraintStart_toStartOf="@+id/left_guideline"
                 app:layout_constraintTop_toBottomOf="@+id/watch_place_area">
@@ -533,11 +531,23 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <Button
+                android:id="@+id/edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_button_label"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:layout_constraintTop_toBottomOf="@+id/watch_note_area"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
          </androidx.constraintlayout.widget.ConstraintLayout>
       </androidx.core.widget.NestedScrollView>
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/fab_edit"
+          android:id="@+id/fab_category"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_margin="@dimen/fab_margin"

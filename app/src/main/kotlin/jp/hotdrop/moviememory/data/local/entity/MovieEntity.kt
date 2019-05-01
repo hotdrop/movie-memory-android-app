@@ -25,11 +25,7 @@ data class MovieEntity(
         val makeCountry: String?,
         val makeYear: Int?,
         val playTime: Int?
-) {
-    companion object {
-        const val CAST_SEPARATOR = " : "
-    }
-}
+)
 
 fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabase): Movie {
 
@@ -37,7 +33,7 @@ fun MovieEntity.toMovie(movieNote: MovieNoteEntity?, categoryDb: CategoryDatabas
     val playingDate = this.playingDate?.let { AppDate(it) }
     val watchDate = movieNote?.watchDate?.let { AppDate(it) }
     val casts = this.casts
-            ?.map { it.split(MovieEntity.CAST_SEPARATOR) }
+            ?.map { it.split(Movie.CAST_SEPARATOR) }
             ?.filter { it.size > 1 }
             ?.map {
                 if (it.size == 2) {
@@ -80,7 +76,7 @@ fun Movie.toEntity(): MovieEntity {
             imageUrl = this.imageUrl,
             playingDate = this.playingDate?.toEpochDay(),
             filmDirector = this.filmDirector,
-            casts = this.casts?.map { String.format("%s${MovieEntity.CAST_SEPARATOR}%s", it.name, it.actor) },
+            casts = this.casts?.map { String.format("%s${Movie.CAST_SEPARATOR}%s", it.actor, it.charName) },
             officialUrl = this.officialUrl,
             trailerMovieUrl = this.trailerMovieUrl,
             createdAt = this.createdAt,
