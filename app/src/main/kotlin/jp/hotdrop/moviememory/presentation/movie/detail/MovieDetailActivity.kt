@@ -78,7 +78,7 @@ class MovieDetailActivity: BaseActivity() {
         }
 
         binding.fabCategory.setOnClickListener {
-            MovieEditActivity.startForResult(this, movieId, MOVIE_EDIT_REQUEST_CODE)
+            CategoryAttachActivity.startForResult(this, movieId, REQUEST_CODE_ATTACH_CATEGORY)
         }
 
         setOnMyNoteClickListener()
@@ -191,7 +191,7 @@ class MovieDetailActivity: BaseActivity() {
         if (resultCode != Activity.RESULT_OK) {
             return
         }
-        if (requestCode == MOVIE_EDIT_REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE_ATTACH_CATEGORY) {
             Snackbar.make(binding.snackbarArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
             onResultRefreshMovie()
         }
@@ -220,7 +220,7 @@ class MovieDetailActivity: BaseActivity() {
 
     companion object {
 
-        const val MOVIE_EDIT_REQUEST_CODE = 900
+        const val REQUEST_CODE_ATTACH_CATEGORY = 900
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
 
         fun startForResult(fragment: Fragment, movieId: Long, requestCode: Int, options: ActivityOptions? = null) =

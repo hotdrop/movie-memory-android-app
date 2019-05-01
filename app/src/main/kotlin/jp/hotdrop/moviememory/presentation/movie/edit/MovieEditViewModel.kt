@@ -21,9 +21,6 @@ class MovieEditViewModel @Inject constructor(
     private val mutableMovie = MutableLiveData<Movie>()
     var movie: LiveData<Movie> = mutableMovie
 
-    private val mutableCategories = MutableLiveData<List<Category>>()
-    val categories: LiveData<List<Category>> = mutableCategories
-
     private val mutableSaveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
 
@@ -42,36 +39,17 @@ class MovieEditViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun findCategories() {
-        useCase.findCategories()
+    fun save(movie: Movie) {
+        useCase.save(movie)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
-                        onSuccess = {
-                            mutableCategories.postValue(it)
+                        onComplete = {
+                            mutableSaveSuccess.postValue(true)
                         },
                         onError = {
-                            mutableError.postValue(AppError(it, "映画情報のカテゴリー 取得"))
+                            mutableError.postValue(AppError(it, "映画情報の編集画面 保存"))
                         }
                 ).addTo(compositeDisposable)
-    }
-
-    fun save(categoryName: String) {
-        Timber.d("カテゴリーを $categoryName に設定します。")
-        categories.value
-                ?.find { it.name == categoryName }
-                ?.run {
-                    val newMovie = movie.value!!.copy(category = this)
-                    useCase.save(newMovie)
-                            .observeOn(Schedulers.io())
-                            .subscribeBy(
-                                    onComplete = {
-                                        mutableSaveSuccess.postValue(true)
-                                    },
-                                    onError = {
-                                        mutableError.postValue(AppError(it, "映画情報の編集画面 保存"))
-                                    }
-                            ).addTo(compositeDisposable)
-                }
     }
 
     override fun onCleared() {

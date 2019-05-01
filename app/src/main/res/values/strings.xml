@@ -45,9 +45,12 @@
     <string name="icon_watch_place_content_description">この映画を観た映画館名を示すアイコンです</string>
     <string name="icon_watch_note_content_description">この映画を観た感想等のメモを示すアイコンです</string>
 
-    <!--映画情報の編集画面-->
-    <string name="movie_edit_title">カテゴリー設定</string>
-    <string name="message_save_success">保存しました。</string>
+    <!-- カテゴリー設定 -->
+    <string name="movie_attach_category_title">カテゴリー設定</string>
+    <string name="message_save_success">カテゴリーを設定しました。</string>
+
+    <!-- 映画情報修正 -->
+    <string name="movie_edit_title">映画情報の修正</string>
 
     <!-- 画像検索ダイアログ -->
     <string name="image_search_dialog_url">https://google.co.jp</string>

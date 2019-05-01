@@ -10,14 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.ActivityMovieEditBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.presentation.BaseActivity
 import javax.inject.Inject
 
 class MovieEditActivity: BaseActivity() {
 
-    private lateinit var binding: ActivityMovieEditBinding
+//    private lateinit var binding: ActivityMovieEditBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -28,7 +27,7 @@ class MovieEditActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_edit)
+//        binding = DataBindingUtil.setContentView(this, R.layout)
 
         observe()
         initView()
@@ -50,18 +49,10 @@ class MovieEditActivity: BaseActivity() {
 
         val movieId = intent.getLongExtra(EXTRA_MOVIE_TAG, -1)
 
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-        }
-
-        replaceFragment(MovieEditFragment.newInstance(movieId))
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.commit {
-            replace(R.id.content_view, fragment)
         }
     }
 
