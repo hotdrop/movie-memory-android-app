@@ -21,16 +21,11 @@ class MovieEditViewModel @Inject constructor(
     private val mutableMovie = MutableLiveData<Movie>()
     var movie: LiveData<Movie> = mutableMovie
 
-    private val mutableCategories = MutableLiveData<List<Category>>()
-    val categories: LiveData<List<Category>> = mutableCategories
-
     private val mutableSaveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
 
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
-
-    private var category: Category? = null
 
     fun find(id: Long) {
         useCase.findMovie(id)
@@ -44,32 +39,9 @@ class MovieEditViewModel @Inject constructor(
                 ).addTo(compositeDisposable)
     }
 
-    fun findCategories() {
-        useCase.findCategories()
-                .observeOn(Schedulers.io())
-                .subscribeBy(
-                        onSuccess = {
-                            mutableCategories.postValue(it)
-                        },
-                        onError = {
-                            mutableError.postValue(AppError(it, "映画情報のカテゴリー 取得"))
-                        }
-                ).addTo(compositeDisposable)
-    }
-
-    fun stockCategory(name: String) {
-        Timber.d("$name カテゴリーをストックします。")
-        category = categories.value?.find {
-            it.name == name
-        }
-    }
-
     fun save(movie: Movie) {
-        val newMovie = category?.let {
-            Timber.d("${it.name} カテゴリーに変更します。")
-            movie.copy(category = it)
-        } ?: movie
-        useCase.save(newMovie)
+        // TODO これはローカルのsaveだが、Firestoreへのsaveもしたい。
+        useCase.save(movie)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {
@@ -79,11 +51,6 @@ class MovieEditViewModel @Inject constructor(
                             mutableError.postValue(AppError(it, "映画情報の編集画面 保存"))
                         }
                 ).addTo(compositeDisposable)
-    }
-
-    fun clear() {
-        mutableSaveSuccess.postValue(false)
-        mutableError.postValue(null)
     }
 
     override fun onCleared() {

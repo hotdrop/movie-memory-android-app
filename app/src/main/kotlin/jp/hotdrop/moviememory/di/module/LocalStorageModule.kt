@@ -59,5 +59,5 @@ object LocalStorageModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideSharedPregerences(context: Context): SharedPreferences = SharedPreferences(context)
+    fun provideSharedPreferences(context: Context): SharedPreferences = SharedPreferences(context)
 }

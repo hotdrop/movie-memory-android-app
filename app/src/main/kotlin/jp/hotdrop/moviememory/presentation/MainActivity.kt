@@ -8,7 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.di.component.component
-import jp.hotdrop.moviememory.presentation.category.CategoryFragment
+import jp.hotdrop.moviememory.presentation.category.CategoryEditFragment
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
 import jp.hotdrop.moviememory.presentation.search.SearchFragment
 import jp.hotdrop.moviememory.presentation.setting.SettingFragment
@@ -53,7 +53,7 @@ class MainActivity: BaseActivity() {
                 }
                 R.id.navigation_category -> {
                     binding.toolbar.title = getString(R.string.title_category)
-                    replaceFragment(CategoryFragment.newInstance())
+                    replaceFragment(CategoryEditFragment.newInstance())
                 }
                 R.id.navigation_search -> {
                     binding.toolbar.title = getString(R.string.title_search)

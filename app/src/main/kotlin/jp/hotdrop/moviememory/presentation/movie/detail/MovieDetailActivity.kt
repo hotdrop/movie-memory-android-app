@@ -30,6 +30,7 @@ import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.component.TextInputDialog
+import timber.log.Timber
 import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
@@ -77,8 +78,12 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
 
-        binding.fabEdit.setOnClickListener {
-            MovieEditActivity.startForResult(this, movieId, MOVIE_EDIT_REQUEST_CODE)
+        binding.fabCategory.setOnClickListener {
+            CategoryAttachActivity.startForResult(this, movieId, REQUEST_CODE_ATTACH_CATEGORY)
+        }
+
+        binding.editButton.setOnClickListener {
+            MovieEditActivity.startForResult(this, movieId, REQUEST_CODE_EDIT)
         }
 
         setOnMyNoteClickListener()
@@ -162,7 +167,7 @@ class MovieDetailActivity: BaseActivity() {
                 flexDirection = FlexDirection.ROW
                 flexWrap = FlexWrap.WRAP
             }
-            castsRecyclerView.adapter = CastsAdapter().apply { addAll(casts.map { "${it.name}:${it.actor}" }) }
+            castsRecyclerView.adapter = CastsAdapter().apply { addAll(casts.map { "${it.charName}:${it.actor}" }) }
             castsRecyclerView.isVisible = true
             emptyTextView.isGone = true
         } ?: run {
@@ -188,12 +193,23 @@ class MovieDetailActivity: BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode != Activity.RESULT_OK) {
             return
         }
-        if (requestCode == MOVIE_EDIT_REQUEST_CODE) {
-            Snackbar.make(binding.snackbarArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
-            onResultRefreshMovie()
+
+        when (requestCode) {
+            REQUEST_CODE_ATTACH_CATEGORY -> {
+                Snackbar.make(binding.snackbarArea, R.string.message_save_success, Snackbar.LENGTH_SHORT).show()
+                onResultRefreshMovie()
+            }
+            REQUEST_CODE_EDIT -> {
+                Snackbar.make(binding.snackbarArea, R.string.movie_edit_message_save_success, Snackbar.LENGTH_SHORT).show()
+                onResultRefreshMovie()
+            }
+            else -> {
+                Timber.d("ここには来ないはず")
+            }
         }
     }
 
@@ -220,7 +236,8 @@ class MovieDetailActivity: BaseActivity() {
 
     companion object {
 
-        const val MOVIE_EDIT_REQUEST_CODE = 900
+        const val REQUEST_CODE_ATTACH_CATEGORY = 900
+        const val REQUEST_CODE_EDIT = 901
         const val EXTRA_MOVIE_TAG = "EXTRA_MOVIE_TAG"
 
         fun startForResult(fragment: Fragment, movieId: Long, requestCode: Int, options: ActivityOptions? = null) =

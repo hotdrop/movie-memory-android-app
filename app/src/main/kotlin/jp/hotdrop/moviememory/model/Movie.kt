@@ -8,12 +8,12 @@ data class Movie(
         var imageUrl: String?,
         val playingDate: AppDate?,
         var filmDirector: String?,
-        val originalAuthor: String?,
+        var originalAuthor: String?,
         val casts: List<Cast>?,
         var officialUrl: String?,
         var trailerMovieUrl: String?,
-        val distribution: String?,
-        val makeCountry: String?,
+        var distribution: String?, // 制作元のこと
+        var makeCountry: String?,
         val makeYear: Int?,
         val playTime: Int?,
         val createdAt: Long,
@@ -23,11 +23,18 @@ data class Movie(
         var note: String?
 ) {
 
+    fun toTextPlayTime() = playTime?.let { String.format("${playTime}分") } ?: ""
     fun toTextPlayingDate() = playingDate?.toString() ?: DEFAULT_TEXT_VALUE
-    fun toTextWatchDate() = watchDate?.toString() ?: DEFAULT_TEXT_VALUE
     fun toTextFavoriteCount() = favoriteCount.toString()
     fun toTextFilmDirector() = filmDirector ?: DEFAULT_TEXT_VALUE
-    fun toTextWatchPlace() = watchPlace ?: DEFAULT_TEXT_VALUE
+    fun toTextOriginalAuthor() = originalAuthor ?: DEFAULT_TEXT_VALUE
+    fun toTextDistribution() = distribution ?: DEFAULT_TEXT_VALUE
+    fun toTextMakeCountry() = makeCountry ?: DEFAULT_TEXT_VALUE
+    fun toTextMakeYear() = makeYear?.let { String.format("${playTime}年") } ?: DEFAULT_TEXT_VALUE
+
+    fun toTextWatchDate() = watchDate?.toString() ?: ""
+    fun toTextWatchPlace() = watchPlace ?: ""
+    fun toTextNote() = note ?: ""
 
     fun categoryName() = category.name
 
@@ -39,10 +46,28 @@ data class Movie(
         return id.hashCode()
     }
 
+    fun toMap(): Map<String, Any> {
+        return hashMapOf("title" to title,
+                "category" to category.name,
+                "overview" to (overview ?: ""),
+                "imageUrl" to (imageUrl ?: ""),
+                "playingDate" to (playingDate?.toString() ?: ""),
+                "director" to (filmDirector ?: ""),
+                "originalAuthor" to (originalAuthor ?: ""),
+                "officialUrl" to (officialUrl ?: ""),
+                "pvUrl" to (trailerMovieUrl ?: ""),
+                "distribution" to (distribution ?: ""),
+                "makeCountry" to (makeCountry ?: ""),
+                "makeYear" to (makeYear?.toString() ?: ""),
+                "playTime" to (playTime?.toString() ?: ""),
+                "casts" to (casts?.map { String.format("%s${CAST_SEPARATOR}%s", it.actor, it.charName) } ?: "")
+        )
+    }
+
     companion object {
         const val DEFAULT_TEXT_VALUE = "ー"
+        const val CAST_SEPARATOR = " : "
     }
 }
 
-// キャラは必ず存在するが担当する俳優はこの時点で未定の可能性があるためnull許容としている
-data class Cast(val name: String, val actor: String?)
+data class Cast(val actor: String, val charName: String?)

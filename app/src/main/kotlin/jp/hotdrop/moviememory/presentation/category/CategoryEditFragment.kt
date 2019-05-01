@@ -12,16 +12,16 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
-import jp.hotdrop.moviememory.databinding.FragmentCategoryBinding
+import jp.hotdrop.moviememory.databinding.FragmentCategoryEditBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.presentation.component.CategoryDialog
 import timber.log.Timber
 import javax.inject.Inject
 
-class CategoryFragment: Fragment() {
+class CategoryEditFragment: Fragment() {
 
-    private lateinit var binding: FragmentCategoryBinding
+    private lateinit var binding: FragmentCategoryEditBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -38,7 +38,7 @@ class CategoryFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCategoryBinding.inflate(layoutInflater, container, false  )
+        binding = FragmentCategoryEditBinding.inflate(layoutInflater, container, false  )
         return binding.root
     }
 
@@ -141,6 +141,6 @@ class CategoryFragment: Fragment() {
     }
 
     companion object {
-        fun newInstance(): CategoryFragment = CategoryFragment()
+        fun newInstance(): CategoryEditFragment = CategoryEditFragment()
     }
 }
