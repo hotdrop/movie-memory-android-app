@@ -77,7 +77,7 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
 
-        binding.fabEdit.setOnClickListener {
+        binding.fabCategory.setOnClickListener {
             MovieEditActivity.startForResult(this, movieId, MOVIE_EDIT_REQUEST_CODE)
         }
 

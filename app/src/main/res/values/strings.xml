@@ -38,6 +38,7 @@
     <string name="watch_place_label">映画館</string>
     <string name="watch_note_label">メモ</string>
     <string name="watch_item_empty_hint">ー</string>
+    <string name="edit_button_label">誤っている箇所を修正</string>
     <string name="movie_edit_error">映画情報の保存に失敗しました。</string>
     <string name="icon_desc_content_description">この映画の詳細情報を示すアイコンです</string>
     <string name="icon_watch_date_content_description">この映画を観た日を示すアイコンです</string>
@@ -45,7 +46,7 @@
     <string name="icon_watch_note_content_description">この映画を観た感想等のメモを示すアイコンです</string>
 
     <!--映画情報の編集画面-->
-    <string name="movie_edit_title">カテゴリーの登録/編集</string>
+    <string name="movie_edit_title">カテゴリー設定</string>
     <string name="message_save_success">保存しました。</string>
 
     <!-- 画像検索ダイアログ -->

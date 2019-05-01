@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.usecase
 
+import dagger.Reusable
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -9,6 +10,7 @@ import jp.hotdrop.moviememory.model.Category
 import timber.log.Timber
 import javax.inject.Inject
 
+@Reusable
 class CategoryUseCase @Inject constructor(
         private val categoryRepository: CategoryRepository
 ) {
