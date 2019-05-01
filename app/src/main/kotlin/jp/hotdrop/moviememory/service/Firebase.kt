@@ -76,6 +76,7 @@ class Firebase @Inject constructor() {
     }
 
     fun saveDocument(movie: Movie): Completable {
+        // TODO SNS認証を実装してからこれを呼ぶ機能作る
         return Completable.create { emitter ->
             db.collection(MOVIE_COLLECTION_NAME)
                     .document(movie.id.toString())
