@@ -70,6 +70,7 @@ class MovieEditActivity: BaseActivity() {
             CastDialog.Builder(this)
                     .setOnPositiveListener { cast ->
                         adapter!!.add(cast)
+                        refreshCasts()
                     }.showAdd()
         }
 
@@ -136,6 +137,16 @@ class MovieEditActivity: BaseActivity() {
         }
     }
 
+    private fun refreshCasts() {
+        val casts = adapter?.getAll()
+        if (casts == null || casts.isEmpty()) {
+            binding.castsRecyclerView.isGone = true
+            binding.castsEmptyMessage.isVisible = true
+        } else {
+            binding.castsRecyclerView.isVisible = true
+            binding.castsEmptyMessage.isGone = true
+        }
+    }
 
     inner class CastsAdapter: RecyclerViewAdapter<Cast, RecyclerViewAdapter.BindingHolder<ItemCastBinding>>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemCastBinding> =
@@ -155,6 +166,7 @@ class MovieEditActivity: BaseActivity() {
                     val positiveOnClickListener = (object: DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
                             remove(cast)
+                            refreshCasts()
                             dialog?.dismiss()
                         }
                     })
