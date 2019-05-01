@@ -40,6 +40,7 @@ class MovieEditViewModel @Inject constructor(
     }
 
     fun save(movie: Movie) {
+        // TODO これはローカルのsaveだが、Firestoreへのsaveもしたい。
         useCase.save(movie)
                 .observeOn(Schedulers.io())
                 .subscribeBy(

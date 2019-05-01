@@ -22,7 +22,6 @@
     <string name="star_content_description">この映画をお気に入り登録しているかの星画像です</string>
 
     <!--映画詳細-->
-    <string name="title_label">映画名</string>
     <string name="trailer_movie_url_link_label">予告動画</string>
     <string name="official_url_link_label">公式サイト</string>
     <string name="film_director_label">監督　:</string>
@@ -51,10 +50,34 @@
 
     <!-- 映画情報修正 -->
     <string name="movie_edit_title">映画情報の修正</string>
+    <string name="movie_edit_title_label">映画名</string>
+    <string name="movie_edit_playing_time_label">上映時間</string>
+    <string name="movie_edit_play_date_label">公開日</string>
+    <string name="movie_edit_overview_label">あらすじ</string>
+    <string name="movie_edit_official_url_label">公式サイトのURL</string>
+    <string name="movie_edit_trailer_movie_url_label">トレーラー動画のURL</string>
+    <string name="movie_edit_film_director_label">監督</string>
+    <string name="movie_edit_original_author_label">原作者</string>
+    <string name="movie_edit_distribution_label">制作元</string>
+    <string name="movie_edit_make_country_label">制作国</string>
+    <string name="movie_edit_make_year_label">制作年</string>
+    <string name="movie_edit_add_cast_button">追加</string>
+    <string name="movie_edit_attention_edit_casts">※キャスト情報の追加や削除は保存ボタンで保存しない限り反映されません。</string>
+    <string name="movie_edit_cast_delete_text">キャストから\n「%s」\nを削除します。よろしいですか？</string>
+    <string name="movie_edit_icon_casts_content_description">この映画の主要キャスト一覧を示すアイコンです</string>
+    <string name="icon_cast_delete_description">このキャストを現在の映画情報から削除することを示すアイコンです</string>
+    <string name="movie_edit_message_save_success">映画情報を修正しました。</string>
 
     <!-- 画像検索ダイアログ -->
     <string name="image_search_dialog_url">https://google.co.jp</string>
     <string name="image_search_dialog_close_label">閉じる</string>
+
+    <!-- キャスト情報ダイアログ -->
+    <string name="dialog_title_cast_update">キャスト編集</string>
+    <string name="dialog_title_cast_add">キャスト追加</string>
+    <string name="dialog_edit_actor_hint">俳優名</string>
+    <string name="dialog_edit_char_name_hint">配役名</string>
+    <string name="dialog_actor_not_input_error">俳優名は必須です。</string>
 
     <!-- カテゴリー編集 -->
     <string name="category_desc">カテゴリー名の右にあるカッコは、このカテゴリーに登録されている映画数です。</string>

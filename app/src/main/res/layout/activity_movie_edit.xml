@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.movie.edit.MovieEditActivity">
+
+    <data>
+        <variable
+            name="movie"
+            type="jp.hotdrop.moviememory.model.Movie" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/toolbar_elevation"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/gradient"
+                app:title="@string/movie_edit_title"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/left_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="@dimen/guide_line_default_margin" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/right_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="@dimen/guide_line_default_margin" />
+
+                <!-- 映画タイトル -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_title"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="200"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/InputTextSingleLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_title_label"
+                        android:maxLength="200"
+                        android:text="@={movie.title}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--上映時間-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_playing_time"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="20"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/playing_time_edit_area"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_playing_time_label"
+                        app:counterMaxLength="20"
+                        android:text="@{movie.toTextPlayTime()}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 公開日 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_play_date"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_playing_time">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/play_date_edit_area"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_event"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/movie_edit_play_date_label"
+                        android:text="@{movie.toTextPlayingDate()}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 概要 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_overview"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="1000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_play_date"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_overview_label"
+                        android:maxLength="1000"
+                        android:maxLines="10"
+                        android:text="@={movie.overview}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 公式サイトURL -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_official_url"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="200"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_overview">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_official_url_label"
+                        android:maxLength="200"
+                        android:maxLines="3"
+                        android:text="@={movie.officialUrl}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- トレーラームービーURL -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_trailer_movie_url"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="200"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_official_url">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_trailer_movie_url_label"
+                        android:maxLength="200"
+                        android:maxLines="3"
+                        android:text="@={movie.trailerMovieUrl}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 監督 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_film_director"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_trailer_movie_url">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/InputTextSingleLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_film_director_label"
+                        android:maxLength="50"
+                        android:text="@={movie.filmDirector}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--原作者-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_original_author"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_film_director">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/InputTextSingleLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_original_author_label"
+                        android:maxLength="50"
+                        android:text="@={movie.originalAuthor}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--制作元-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_distribution"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_original_author">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/InputTextSingleLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_distribution_label"
+                        android:maxLength="50"
+                        android:text="@={movie.distribution}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--制作国-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_make_country"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_distribution">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/InputTextSingleLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_make_country_label"
+                        android:maxLength="50"
+                        android:text="@={movie.makeCountry}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--制作年-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_make_year"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    app:layout_constraintEnd_toStartOf="@id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_make_country">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/InputTextSingleLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/movie_edit_make_year_label"
+                        android:maxLength="50"
+                        android:text="@{movie.toTextMakeYear()}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- キャスト -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/casts_edit_area"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="80dp"
+                    app:cardCornerRadius="@dimen/corner_radius"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_make_year">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/casts_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/movie_edit_icon_casts_content_description"
+                            app:layout_constraintBottom_toTopOf="@+id/line_casts_border"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_people" />
+
+                        <TextView
+                            android:id="@+id/casts_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/casts_label"
+                            app:layout_constraintStart_toEndOf="@+id/casts_icon"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/casts_desc"
+                            style="@style/TextSmall"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/movie_edit_attention_edit_casts"
+                            app:layout_constraintEnd_toStartOf="@+id/add_cast_button"
+                            app:layout_constraintStart_toEndOf="@+id/casts_icon"
+                            app:layout_constraintTop_toBottomOf="@+id/casts_label" />
+
+                        <Button
+                            android:id="@+id/add_cast_button"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/movie_edit_add_cast_button"
+                            app:layout_constraintBottom_toTopOf="@+id/line_casts_border"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/line_casts_border"
+                            style="@style/BorderLine"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/casts_desc" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/casts_recycler_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/line_casts_border" />
+
+                        <ProgressBar
+                            android:id="@+id/progressbar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/line_casts_border" />
+
+                        <TextView
+                            android:id="@+id/casts_empty_message"
+                            style="@style/TextNormal.Accent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="@string/empty_casts"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/line_casts_border" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/snackbar_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/fab"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_save" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

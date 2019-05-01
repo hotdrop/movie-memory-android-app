@@ -106,6 +106,7 @@ class MovieRepository @Inject constructor(
 
     fun save(movie: Movie): Completable =
             Completable.create {
+                // TODO Firestoreにも保存を反映したい。別メソッドにしたほうがいい
                 movieDatabase.saveMovie(movie.toEntity())
                 it.onComplete()
             }

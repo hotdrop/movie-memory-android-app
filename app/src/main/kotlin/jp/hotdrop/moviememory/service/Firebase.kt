@@ -3,10 +3,12 @@ package jp.hotdrop.moviememory.service
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Reusable
+import io.reactivex.Completable
 import io.reactivex.Single
 import jp.hotdrop.moviememory.data.remote.response.MovieResponse
 import jp.hotdrop.moviememory.data.remote.response.toResponse
 import jp.hotdrop.moviememory.model.AppDate
+import jp.hotdrop.moviememory.model.Movie
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -69,6 +71,19 @@ class Firebase @Inject constructor() {
                                 emitter.onError(it)
                             } ?: throw IllegalStateException("Firestoreからのデータ取得に失敗し、exceptionもnullでした。")
                         }
+                    }
+        }
+    }
+
+    fun saveDocument(movie: Movie): Completable {
+        return Completable.create { emitter ->
+            db.collection(MOVIE_COLLECTION_NAME)
+                    .document(movie.id.toString())
+                    .set(movie.toMap())
+                    .addOnSuccessListener {
+                        emitter.onComplete()
+                    }.addOnFailureListener {
+                        emitter.onError(it)
                     }
         }
     }
