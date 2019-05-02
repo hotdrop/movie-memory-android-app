@@ -138,15 +138,15 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     private fun onLoadData(movies: List<Movie>) {
         binding.progress.visibility = View.GONE
 
-        if (movies.isEmpty()) {
-            binding.notHaveMoviesLabel.isVisible = true
-        } else {
-            binding.notHaveMoviesLabel.isGone = true
+        if (movies.isNotEmpty()) {
             when (loadMode) {
                 LoadMode.Add -> adapter?.addAll(movies)
                 LoadMode.Refresh -> adapter?.refresh(movies)
             }
         }
+
+        val numAddItems = adapter?.itemCount ?: 0
+        binding.notHaveMoviesLabel.isVisible = (numAddItems <= 0)
 
         // 初期値に戻す
         loadMode = LoadMode.Add
