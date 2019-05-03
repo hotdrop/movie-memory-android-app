@@ -9,17 +9,12 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.GoogleAuthProvider
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentAccountBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.service.Firebase
+import jp.hotdrop.moviememory.service.GoogleAuth
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,7 +24,7 @@ class AccountFragment: Fragment() {
 
     @Inject
     lateinit var firebase: Firebase
-    lateinit var googleSignInClient: GoogleSignInClient
+    lateinit var googleAuth: GoogleAuth
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,15 +53,11 @@ class AccountFragment: Fragment() {
     }
 
     private fun initGoogleSignInButton() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("TODO") // TODO
-                .requestEmail()
-                .build()
-        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+        googleAuth = GoogleAuth(getString(R.string.google_auth_token), requireActivity())
 
         binding.googleSignInButton.setOnClickListener {
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
+            val intent = googleAuth.getSignInIntent()
+            startActivityForResult(intent, RC_GOOGLE_SIGN_IN)
         }
     }
 
@@ -74,23 +65,21 @@ class AccountFragment: Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_GOOGLE_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
-            } catch (e: ApiException) {
-                Timber.w(e, "Googleアカウントのサインインに失敗しました。")
-                Snackbar.make(binding.contentArea, R.string.account_login_failure, Snackbar.LENGTH_LONG).show()
-            }
+            firebaseAuthWithGoogle(data)
         }
     }
 
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        firebase.loginByGoogle(credential, {
+    private fun firebaseAuthWithGoogle(data: Intent?) {
+        val idToken = googleAuth.takeTokenFromIntent(data)
+        if (idToken == null) {
+            Snackbar.make(binding.snackbarArea, R.string.account_login_failure, Snackbar.LENGTH_LONG).show()
+            return
+        }
+
+        firebase.loginByGoogle(idToken, {
             updateView()
         }, {
-            Snackbar.make(binding.contentArea, R.string.account_login_failure, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.snackbarArea, R.string.account_login_failure, Snackbar.LENGTH_LONG).show()
         })
     }
 
