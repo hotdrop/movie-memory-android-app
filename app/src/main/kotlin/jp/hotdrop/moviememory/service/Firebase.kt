@@ -1,5 +1,6 @@
 package jp.hotdrop.moviememory.service
 
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Reusable
@@ -24,7 +25,7 @@ class Firebase @Inject constructor() {
         const val INFO_DOCUMENT_NAME = "info"
     }
 
-    fun login(loginFailureListener: () -> Unit) {
+    fun loginByAnonymous(loginFailureListener: () -> Unit) {
         if (auth.currentUser == null) {
             auth.signInAnonymously()
                     .addOnCompleteListener { task ->
@@ -37,6 +38,26 @@ class Firebase @Inject constructor() {
                     }
         }
     }
+
+    fun loginByGoogle(credential: AuthCredential, onSuccess: () -> Unit, onFailure: () -> Unit) {
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Timber.d("Googleアカウント経由の認証でFirebaseへのログインに成功しました。")
+                        onSuccess()
+                    } else {
+                        Timber.e("Googleアカウント経由の認証でFirebaseへのログインに失敗しました。")
+                        onFailure()
+                    }
+                }
+    }
+
+    fun isLoginNotAnonymous(): Boolean {
+        val user = auth.currentUser ?: return false
+        return !user.isAnonymous
+    }
+
+    fun getUserName(): String? = auth.currentUser?.displayName
 
     fun getDocuments(): Single<List<MovieResponse>> {
         return Single.create<List<MovieResponse>> { emitter ->

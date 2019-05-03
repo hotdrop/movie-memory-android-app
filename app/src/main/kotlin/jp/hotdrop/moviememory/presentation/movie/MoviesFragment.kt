@@ -89,7 +89,7 @@ class MoviesFragment: Fragment() {
     /**
      * Tabのアダプター
      */
-    private inner class MoviesViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
+    private inner class MoviesViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm, RESUME_ONLY_CURRENT_FRAGMENT) {
 
         private val tabFragments = mutableListOf<MovieTab>()
 

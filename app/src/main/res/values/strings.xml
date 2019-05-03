@@ -6,6 +6,7 @@
     <string name="title_category">カテゴリー編集</string>
     <string name="title_search">検索</string>
     <string name="title_setting">設定</string>
+    <string name="title_account">アカウント</string>
 
     <!--映画情報一覧-->
     <string name="tab_name_now_playing">公開中</string>
@@ -113,6 +114,13 @@
     <string name="search_result_not_found">該当する映画情報は見つかりませんでした。</string>
     <string name="icon_search_content_description">このアプリに保存されている映画情報のキーワード検索アイコンです</string>
     <string name="icon_suggestion_content_description">キーワード検索の履歴を示すアイコンです</string>
+
+    <!--アカウント情報-->
+    <string name="account_not_login_label">
+        このアプリは以下のいずれかの方法でログイン可能です。
+        \nログインすると映画情報の誤り修正をサーバーに反映することができます。
+    </string>
+    <string name="account_login_failure">ログインに失敗しました。</string>
 
     <!--設定-->
     <string name="setting_label_local">映画データ</string>

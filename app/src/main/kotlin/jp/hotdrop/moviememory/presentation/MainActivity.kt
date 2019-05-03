@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ActivityMainBinding
 import jp.hotdrop.moviememory.di.component.component
+import jp.hotdrop.moviememory.presentation.account.AccountFragment
 import jp.hotdrop.moviememory.presentation.category.CategoryEditFragment
 import jp.hotdrop.moviememory.presentation.movie.MoviesFragment
 import jp.hotdrop.moviememory.presentation.search.SearchFragment
@@ -27,7 +28,7 @@ class MainActivity: BaseActivity() {
         component.inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        firebase.login {
+        firebase.loginByAnonymous {
             Snackbar.make(binding.snackbarArea, "Firebaseのログインに失敗しました。", Snackbar.LENGTH_LONG).show()
         }
 
@@ -62,6 +63,10 @@ class MainActivity: BaseActivity() {
                 R.id.navigation_setting -> {
                     binding.toolbar.title = getString(R.string.title_setting)
                     replaceFragment(SettingFragment.newInstance())
+                }
+                R.id.navigation_account -> {
+                    binding.toolbar.title = getString(R.string.title_account)
+                    replaceFragment(AccountFragment.newInstance())
                 }
             }
             false
