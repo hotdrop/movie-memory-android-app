@@ -14,11 +14,13 @@ internal class InterceptorModule {
     @Singleton
     @Provides
     @IntoSet
+    @NetworkInterceptorQualifier
     fun provideStetho(): Interceptor = StethoInterceptor()
 
     @Singleton
     @Provides
     @IntoSet
+    @NetworkInterceptorQualifier
     fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }

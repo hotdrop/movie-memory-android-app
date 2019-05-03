@@ -13,6 +13,7 @@ internal class InterceptorModule {
     @Singleton
     @Provides
     @IntoSet
+    @NetworkInterceptorQualifier
     fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.NONE
     }
