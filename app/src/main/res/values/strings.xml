@@ -121,6 +121,7 @@
         \nログインすると映画情報の誤り修正をサーバーに反映することができます。
     </string>
     <string name="account_login_failure">ログインに失敗しました。</string>
+    <string name="account_name_no_setting">未設定</string>
 
     <!--設定-->
     <string name="setting_label_local">映画データ</string>

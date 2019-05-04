@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentAccountBinding
 import jp.hotdrop.moviememory.di.component.component
-import jp.hotdrop.moviememory.service.Firebase
+import jp.hotdrop.moviememory.model.User
 import jp.hotdrop.moviememory.service.GoogleAuth
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,7 +26,11 @@ class AccountFragment: Fragment() {
     private lateinit var binding: FragmentAccountBinding
 
     @Inject
-    lateinit var firebase: Firebase
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: AccountViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(AccountViewModel::class.java)
+    }
+
     lateinit var googleAuth: GoogleAuth
 
     override fun onAttach(context: Context) {
@@ -43,13 +50,33 @@ class AccountFragment: Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         initView()
+        observe()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            firebaseAuthWithGoogle(data)
+        }
     }
 
     private fun initView() {
-
         initGoogleSignInButton()
+    }
 
-        updateView()
+    private fun observe() {
+        viewModel.user.observe(this, Observer {
+            it?.run {
+                updateView(this)
+            }
+        })
+        viewModel.error.observe(this, Observer {
+            it?.run {
+                Snackbar.make(binding.snackbarArea, R.string.account_login_failure, Snackbar.LENGTH_LONG).show()
+            }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
     private fun initGoogleSignInButton() {
@@ -61,14 +88,6 @@ class AccountFragment: Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_GOOGLE_SIGN_IN) {
-            firebaseAuthWithGoogle(data)
-        }
-    }
-
     private fun firebaseAuthWithGoogle(data: Intent?) {
         val idToken = googleAuth.takeTokenFromIntent(data)
         if (idToken == null) {
@@ -76,16 +95,12 @@ class AccountFragment: Fragment() {
             return
         }
 
-        firebase.loginByGoogle(idToken, {
-            updateView()
-        }, {
-            Snackbar.make(binding.snackbarArea, R.string.account_login_failure, Snackbar.LENGTH_LONG).show()
-        })
+        viewModel.loginByGoogle(idToken)
     }
 
-    private fun updateView() {
-        if (firebase.isLoginNotAnonymous()) {
-            binding.accountName.text = firebase.getUserName() ?: ""
+    private fun updateView(user: User) {
+        if (!user.isAnonymous) {
+            binding.accountName.text = user.name ?: getString(R.string.account_name_no_setting)
 
             binding.snsContentArea.isGone = true
             binding.accountContentArea.isVisible = true
@@ -96,5 +111,4 @@ class AccountFragment: Fragment() {
         private const val RC_GOOGLE_SIGN_IN = 1000
         fun newInstance() = AccountFragment()
     }
-
 }

@@ -6,10 +6,8 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.AppError
-import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.usecase.MovieUseCase
-import timber.log.Timber
 import javax.inject.Inject
 
 class MovieEditViewModel @Inject constructor(
@@ -29,6 +27,7 @@ class MovieEditViewModel @Inject constructor(
 
     fun find(id: Long) {
         useCase.findMovie(id)
+                .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
                             mutableMovie.postValue(it)
