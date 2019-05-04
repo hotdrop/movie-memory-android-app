@@ -104,12 +104,20 @@ class MovieRepository @Inject constructor(
                         entityToMovieWithLocalInfo(it)
                     }
 
-    fun save(movie: Movie): Completable =
-            Completable.create {
-                // TODO Firestoreにも保存を反映したい。別メソッドにしたほうがいい
-                movieDatabase.saveMovie(movie.toEntity())
-                it.onComplete()
-            }
+    fun save(movie: Movie): Completable {
+        return Completable.create {
+            movieDatabase.saveMovie(movie.toEntity())
+            it.onComplete()
+        }
+    }
+
+    fun saveWithRemote(movie: Movie): Completable {
+        return movieApi.save(movie)
+                .doOnComplete {
+                    Timber.d(" ${movie.title} のサーバー情報更新に成功しました。ローカルの情報も更新します。")
+                    movieDatabase.saveMovie(movie.toEntity())
+                }
+    }
 
     private fun entityToMovieWithLocalInfo(entity: MovieEntity): Movie {
         val localMovieInfo = movieNoteDatabase.find(entity.id)

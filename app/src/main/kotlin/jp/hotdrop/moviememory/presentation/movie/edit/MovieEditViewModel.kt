@@ -19,7 +19,7 @@ class MovieEditViewModel @Inject constructor(
     private val compositeDisposable = CompositeDisposable()
 
     private val mutableMovie = MutableLiveData<Movie>()
-    var movie: LiveData<Movie> = mutableMovie
+    val movie: LiveData<Movie> = mutableMovie
 
     private val mutableSaveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
@@ -40,8 +40,7 @@ class MovieEditViewModel @Inject constructor(
     }
 
     fun save(movie: Movie) {
-        // TODO これはローカルのsaveだが、Firestoreへのsaveもしたい。
-        useCase.save(movie)
+        useCase.saveWithRemote(movie)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {

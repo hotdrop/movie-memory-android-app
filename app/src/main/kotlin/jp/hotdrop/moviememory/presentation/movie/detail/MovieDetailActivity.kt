@@ -30,12 +30,15 @@ import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
 import jp.hotdrop.moviememory.presentation.common.adapter.RecyclerViewAdapter
 import jp.hotdrop.moviememory.presentation.common.dialog.TextInputDatePickerDialog
 import jp.hotdrop.moviememory.presentation.common.dialog.TextInputDialog
+import jp.hotdrop.moviememory.service.Firebase
 import timber.log.Timber
 import javax.inject.Inject
 
 class MovieDetailActivity: BaseActivity() {
 
     private lateinit var binding: ActivityMovieDetailBinding
+    @Inject
+    lateinit var firebase: Firebase
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -84,6 +87,11 @@ class MovieDetailActivity: BaseActivity() {
 
         binding.editButton.setOnClickListener {
             MovieEditActivity.startForResult(this, movieId, REQUEST_CODE_EDIT)
+        }
+
+        // TODO これRepositoryから持ってきた方がいい
+        if (firebase.isLoginNotAnonymous()) {
+            binding.editButton.isVisible = true
         }
 
         setOnMyNoteClickListener()
