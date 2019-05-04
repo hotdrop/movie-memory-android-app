@@ -11,7 +11,6 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -20,8 +19,8 @@ import jp.hotdrop.moviememory.databinding.FragmentMoviesTabBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.MovieCondition
-import jp.hotdrop.moviememory.presentation.adapter.MoviesAdapter
-import jp.hotdrop.moviememory.presentation.component.MovieFragmentWithEndlessRecyclerView
+import jp.hotdrop.moviememory.presentation.common.adapter.MoviesAdapter
+import jp.hotdrop.moviememory.presentation.common.component.MovieFragmentWithEndlessRecyclerView
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
 import timber.log.Timber
 import javax.inject.Inject

@@ -1,10 +1,9 @@
-package jp.hotdrop.moviememory.presentation.adapter
+package jp.hotdrop.moviememory.presentation.common.adapter
 
 import android.view.ViewGroup
 import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.ItemMovieBinding
 import jp.hotdrop.moviememory.model.Movie
-import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
 
 class MoviesAdapter constructor(
         private val onMovieClickListener: (binding: ItemMovieBinding, movie: Movie) -> Unit

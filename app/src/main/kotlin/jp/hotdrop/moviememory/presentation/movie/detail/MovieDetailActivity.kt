@@ -25,11 +25,11 @@ import jp.hotdrop.moviememory.databinding.ItemCastBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.presentation.BaseActivity
-import jp.hotdrop.moviememory.presentation.component.FavoriteStars
+import jp.hotdrop.moviememory.presentation.common.component.FavoriteStars
 import jp.hotdrop.moviememory.presentation.movie.edit.MovieEditActivity
-import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
-import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
-import jp.hotdrop.moviememory.presentation.component.TextInputDialog
+import jp.hotdrop.moviememory.presentation.common.adapter.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.dialog.TextInputDatePickerDialog
+import jp.hotdrop.moviememory.presentation.common.dialog.TextInputDialog
 import timber.log.Timber
 import javax.inject.Inject
 

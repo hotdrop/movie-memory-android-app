@@ -27,9 +27,9 @@ import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.model.SearchCondition
 import jp.hotdrop.moviememory.model.Suggestion
 import jp.hotdrop.moviememory.presentation.BaseActivity
-import jp.hotdrop.moviememory.presentation.adapter.MoviesAdapter
+import jp.hotdrop.moviememory.presentation.common.adapter.MoviesAdapter
 import jp.hotdrop.moviememory.presentation.movie.detail.MovieDetailActivity
-import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.adapter.RecyclerViewAdapter
 import timber.log.Timber
 import javax.inject.Inject
 

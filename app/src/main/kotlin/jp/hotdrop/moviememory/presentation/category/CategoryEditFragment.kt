@@ -15,7 +15,7 @@ import jp.hotdrop.moviememory.R
 import jp.hotdrop.moviememory.databinding.FragmentCategoryEditBinding
 import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.Category
-import jp.hotdrop.moviememory.presentation.component.CategoryDialog
+import jp.hotdrop.moviememory.presentation.common.dialog.CategoryDialog
 import timber.log.Timber
 import javax.inject.Inject
 
