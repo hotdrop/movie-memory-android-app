@@ -28,7 +28,6 @@ class MainActivity: BaseActivity() {
         component.inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        // TODO ここもViewModel-Repository経由にした方がいい
         firebase.loginByAnonymous {
             Snackbar.make(binding.snackbarArea, "ログインに失敗しました。", Snackbar.LENGTH_LONG).show()
         }
