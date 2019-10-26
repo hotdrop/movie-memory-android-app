@@ -2,6 +2,7 @@ package jp.hotdrop.moviememory.presentation.movie
 
 import androidx.lifecycle.*
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.AppError
@@ -35,7 +36,7 @@ class MoviesViewModel @Inject constructor(
                         onError = {
                             mutableError.postValue(AppError(it))
                         }
-                )
+                ).addTo(compositeDisposable)
     }
 
     fun clear() {

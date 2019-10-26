@@ -64,8 +64,8 @@ class CategoryAttachActivity: BaseActivity() {
         })
 
         viewModel.saveSuccess.observe(this, Observer {
-            it?.let { success ->
-                if (success) {
+            it?.run {
+                if (this) {
                     setResult(Activity.RESULT_OK)
                     finish()
                 }

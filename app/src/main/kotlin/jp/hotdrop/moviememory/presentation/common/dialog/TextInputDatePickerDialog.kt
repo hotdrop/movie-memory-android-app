@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.component
+package jp.hotdrop.moviememory.presentation.common.dialog
 
 import android.app.DatePickerDialog
 import android.content.Context

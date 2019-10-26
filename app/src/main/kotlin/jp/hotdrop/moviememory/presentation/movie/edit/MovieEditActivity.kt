@@ -23,9 +23,9 @@ import jp.hotdrop.moviememory.di.component.component
 import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Cast
 import jp.hotdrop.moviememory.presentation.BaseActivity
-import jp.hotdrop.moviememory.presentation.common.RecyclerViewAdapter
-import jp.hotdrop.moviememory.presentation.component.CastDialog
-import jp.hotdrop.moviememory.presentation.component.TextInputDatePickerDialog
+import jp.hotdrop.moviememory.presentation.common.adapter.RecyclerViewAdapter
+import jp.hotdrop.moviememory.presentation.common.dialog.CastDialog
+import jp.hotdrop.moviememory.presentation.common.dialog.TextInputDatePickerDialog
 import javax.inject.Inject
 
 class MovieEditActivity: BaseActivity() {

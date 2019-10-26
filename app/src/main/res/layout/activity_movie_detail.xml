@@ -92,7 +92,7 @@
                 app:layout_constraintStart_toStartOf="@id/left_guideline"
                 app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="アベンジャーズ・インフィニティウォー・テストべンジャーズ" />
+                tools:text="テストべンジャーズで2行になった時の確認をするマーベル" />
 
             <TextView
                 android:id="@+id/category"
@@ -253,17 +253,17 @@
                 app:layout_constraintStart_toEndOf="@+id/film_director_label"
                 app:layout_constraintEnd_toEndOf="@id/right_guideline"
                 app:layout_constraintTop_toBottomOf="@+id/line_overview"
-                tools:text="アンソニー・ルッソ、ジョー・ルッソ" />
+                tools:text="アンソニー・ルッソ、ジョー・ルッソ、アンドスペシャルサンクスとかで2行になったら？" />
 
             <TextView
-                android:id="@+id/film_original_author_label"
+                android:id="@+id/original_author_label"
                 style="@style/TextNormal.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/original_author_label"
                 app:layout_constraintStart_toEndOf="@+id/other_description_icon"
-                app:layout_constraintTop_toBottomOf="@+id/film_director_label" />
+                app:layout_constraintTop_toBottomOf="@+id/film_director" />
 
             <TextView
                 android:id="@+id/original_author"
@@ -272,10 +272,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@{movie.toTextOriginalAuthor()}"
-                app:layout_constraintStart_toEndOf="@+id/film_original_author_label"
+                app:layout_constraintStart_toEndOf="@+id/original_author_label"
                 app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/film_director_label"
-                tools:text="スタン・リー" />
+                app:layout_constraintTop_toBottomOf="@+id/film_director"
+                tools:text="スペシャルサンクス。キャプテンマーベルのOPは粋な計らいでした。" />
 
             <TextView
                 android:id="@+id/distribution_label"
@@ -285,7 +285,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/distribution_label"
                 app:layout_constraintStart_toEndOf="@+id/other_description_icon"
-                app:layout_constraintTop_toBottomOf="@+id/film_original_author_label" />
+                app:layout_constraintTop_toBottomOf="@+id/original_author" />
 
             <TextView
                 android:id="@+id/distribution"
@@ -294,10 +294,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@{movie.toTextDistribution()}"
-                tools:text="テストシネマズ"
+                tools:text="ワーナースペシャルアンドスペシャルブラザーズアイウエオ。"
                 app:layout_constraintStart_toEndOf="@+id/distribution_label"
                 app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/film_original_author_label" />
+                app:layout_constraintTop_toBottomOf="@+id/original_author" />
 
             <TextView
                 android:id="@+id/make_country_label"
@@ -307,7 +307,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/make_country_label"
                 app:layout_constraintStart_toEndOf="@+id/other_description_icon"
-                app:layout_constraintTop_toBottomOf="@+id/distribution_label" />
+                app:layout_constraintTop_toBottomOf="@+id/distribution" />
 
             <TextView
                 android:id="@+id/make_country"
@@ -316,10 +316,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@{movie.toTextMakeCountry()}"
-                tools:text="日本"
+                tools:text="ここに2行入ることはあまりないかもしれないがアメリカ・オーストラリアの合作です"
                 app:layout_constraintStart_toEndOf="@+id/make_country_label"
                 app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/distribution_label" />
+                app:layout_constraintTop_toBottomOf="@+id/distribution" />
 
             <TextView
                 android:id="@+id/make_year_label"
@@ -329,7 +329,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/make_year_label"
                 app:layout_constraintStart_toEndOf="@+id/other_description_icon"
-                app:layout_constraintTop_toBottomOf="@+id/make_country_label" />
+                app:layout_constraintTop_toBottomOf="@+id/make_country" />
 
             <TextView
                 android:id="@+id/make_year"
@@ -341,7 +341,7 @@
                 tools:text="2019年"
                 app:layout_constraintStart_toEndOf="@+id/make_year_label"
                 app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/make_country_label" />
+                app:layout_constraintTop_toBottomOf="@+id/make_country" />
 
             <com.alespero.expandablecardview.ExpandableCardView
                 android:id="@+id/casts_edit_area"
@@ -358,7 +358,7 @@
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                 app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/make_year_label" />
+                app:layout_constraintTop_toBottomOf="@+id/make_year" />
 
             <View
                 android:id="@+id/line_memo_border"
@@ -538,6 +538,7 @@
                 android:text="@string/edit_button_label"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:visibility="invisible"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 app:layout_constraintTop_toBottomOf="@+id/watch_note_area"
                 app:layout_constraintEnd_toEndOf="@+id/right_guideline"

@@ -1,4 +1,4 @@
-package jp.hotdrop.moviememory.presentation.component
+package jp.hotdrop.moviememory.presentation.common.component
 
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager

@@ -6,10 +6,8 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.moviememory.model.AppError
-import jp.hotdrop.moviememory.model.Category
 import jp.hotdrop.moviememory.model.Movie
 import jp.hotdrop.moviememory.usecase.MovieUseCase
-import timber.log.Timber
 import javax.inject.Inject
 
 class MovieEditViewModel @Inject constructor(
@@ -19,7 +17,7 @@ class MovieEditViewModel @Inject constructor(
     private val compositeDisposable = CompositeDisposable()
 
     private val mutableMovie = MutableLiveData<Movie>()
-    var movie: LiveData<Movie> = mutableMovie
+    val movie: LiveData<Movie> = mutableMovie
 
     private val mutableSaveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = mutableSaveSuccess
@@ -29,6 +27,7 @@ class MovieEditViewModel @Inject constructor(
 
     fun find(id: Long) {
         useCase.findMovie(id)
+                .observeOn(Schedulers.io())
                 .subscribeBy(
                         onSuccess = {
                             mutableMovie.postValue(it)
@@ -40,8 +39,7 @@ class MovieEditViewModel @Inject constructor(
     }
 
     fun save(movie: Movie) {
-        // TODO これはローカルのsaveだが、Firestoreへのsaveもしたい。
-        useCase.save(movie)
+        useCase.saveWithRemote(movie)
                 .observeOn(Schedulers.io())
                 .subscribeBy(
                         onComplete = {

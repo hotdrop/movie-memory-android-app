@@ -9,22 +9,39 @@ import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.AppError
 import jp.hotdrop.moviememory.usecase.MovieUseCase
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.model.User
+import jp.hotdrop.moviememory.usecase.AccountUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
 class MovieDetailViewModel @Inject constructor(
-        private val useCase: MovieUseCase
+        private val useCase: MovieUseCase,
+        private val accountUseCase: AccountUseCase
 ): ViewModel(), LifecycleObserver {
 
     private val compositeDisposable = CompositeDisposable()
 
     var movie: LiveData<Movie>? = null
 
+    private val mutableUser = MutableLiveData<User>()
+    val user: LiveData<User> = mutableUser
+
     private val mutableIsRefreshMovie = MutableLiveData<Boolean>()
     val isRefreshMovie: LiveData<Boolean> = mutableIsRefreshMovie
 
     private val mutableError = MutableLiveData<AppError>()
     val error: LiveData<AppError> = mutableError
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate() {
+        accountUseCase.getUser()
+                .observeOn(Schedulers.io())
+                .subscribeBy(
+                        onSuccess = {
+                            mutableUser.postValue(it)
+                        }
+                ).addTo(compositeDisposable)
+    }
 
     fun setUp(id: Long) {
         movie = LiveDataReactiveStreams.fromPublisher(useCase.movieFlowable(id))
