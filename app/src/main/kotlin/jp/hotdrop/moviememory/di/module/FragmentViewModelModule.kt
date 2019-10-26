@@ -5,6 +5,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import jp.hotdrop.moviememory.di.ViewModelKey
+import jp.hotdrop.moviememory.presentation.account.AccountViewModel
 import jp.hotdrop.moviememory.presentation.category.CategoryViewModel
 import jp.hotdrop.moviememory.presentation.movie.MoviesViewModel
 import jp.hotdrop.moviememory.presentation.movie.tab.TabMoviesViewModel
@@ -38,4 +39,9 @@ abstract class FragmentViewModelModule {
     @IntoMap
     @ViewModelKey(SettingViewModel::class)
     abstract fun bindSettingViewModel(viewModel: SettingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AccountViewModel::class)
+    abstract fun bindAccountViewModel(viewModel: AccountViewModel): ViewModel
 }

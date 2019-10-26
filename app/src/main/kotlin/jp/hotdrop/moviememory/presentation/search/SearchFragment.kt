@@ -68,9 +68,9 @@ class SearchFragment: Fragment() {
     }
 
     private fun observe() {
-        viewModel.categories.observe(this, Observer {
-            it?.let { categories ->
-                initChipCategories(categories)
+        viewModel.categories.observe(viewLifecycleOwner, Observer {
+            it?.run {
+                initChipCategories(this)
             }
         })
         lifecycle.addObserver(viewModel)

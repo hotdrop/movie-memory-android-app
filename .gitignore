@@ -12,5 +12,6 @@ app/keystore
 app/product
 
 app/src/develop/google-services.json
-app/src/main/google-services.json
 app/src/product/google-services.json
+app/src/develop/res/values/credential.xml
+app/src/product/res/values/credential.xml

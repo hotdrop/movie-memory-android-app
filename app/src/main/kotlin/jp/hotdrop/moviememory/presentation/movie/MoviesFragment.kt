@@ -64,7 +64,7 @@ class MoviesFragment: Fragment() {
     }
 
     private fun observe() {
-        viewModel.prepared.observe(this, Observer {
+        viewModel.prepared.observe(viewLifecycleOwner, Observer {
             it?.run {
                 binding.progress.isGone = true
                 if (this) {
@@ -75,7 +75,7 @@ class MoviesFragment: Fragment() {
                 }
             }
         })
-        viewModel.error.observe(this, Observer {
+        viewModel.error.observe(viewLifecycleOwner, Observer {
             it?.run {
                 binding.progress.isGone = true
                 val message = getString(R.string.message_failure_load_data)
@@ -89,7 +89,7 @@ class MoviesFragment: Fragment() {
     /**
      * Tabのアダプター
      */
-    private inner class MoviesViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
+    private inner class MoviesViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         private val tabFragments = mutableListOf<MovieTab>()
 

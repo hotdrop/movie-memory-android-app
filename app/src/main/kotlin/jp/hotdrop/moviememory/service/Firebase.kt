@@ -1,6 +1,7 @@
 package jp.hotdrop.moviememory.service
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Reusable
 import io.reactivex.Completable
@@ -9,6 +10,7 @@ import jp.hotdrop.moviememory.data.remote.response.MovieResponse
 import jp.hotdrop.moviememory.data.remote.response.toResponse
 import jp.hotdrop.moviememory.model.AppDate
 import jp.hotdrop.moviememory.model.Movie
+import jp.hotdrop.moviememory.model.User
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,7 +26,7 @@ class Firebase @Inject constructor() {
         const val INFO_DOCUMENT_NAME = "info"
     }
 
-    fun login(loginFailureListener: () -> Unit) {
+    fun loginByAnonymous(onFailure: () -> Unit) {
         if (auth.currentUser == null) {
             auth.signInAnonymously()
                     .addOnCompleteListener { task ->
@@ -32,10 +34,36 @@ class Firebase @Inject constructor() {
                             Timber.d("Firebaseのログインに成功しました。")
                         } else {
                             Timber.d("Firebaseのログインに失敗しました。")
-                            loginFailureListener()
+                            onFailure()
                         }
                     }
         }
+    }
+
+    fun loginByGoogle(idToken: String): Completable {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        return Completable.create { emitter ->
+            auth.signInWithCredential(credential)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Timber.d("Googleアカウント経由の認証でFirebaseへのログインに成功しました。")
+                            emitter.onComplete()
+                        } else {
+                            Timber.e("Googleアカウント経由の認証でFirebaseへのログインに失敗しました。")
+                            emitter.onError(IllegalStateException("Googleアカウント経由の認証でFirebaseへのログインに失敗"))
+                        }
+                    }
+        }
+    }
+
+    fun getUserInfo(): User {
+        return auth.currentUser?.let { firebaseUser ->
+            User(id = firebaseUser.uid,
+                    name = firebaseUser.displayName,
+                    emailAddress = firebaseUser.email,
+                    isAnonymous = firebaseUser.isAnonymous
+            )
+        } ?: User()
     }
 
     fun getDocuments(): Single<List<MovieResponse>> {
@@ -75,8 +103,11 @@ class Firebase @Inject constructor() {
         }
     }
 
+    /**
+     * この機能は匿名ユーザーログインでは実行しないこと。
+     * Firestoreのルールで縛っているため。
+     */
     fun saveDocument(movie: Movie): Completable {
-        // TODO SNS認証を実装してからこれを呼ぶ機能作る
         return Completable.create { emitter ->
             db.collection(MOVIE_COLLECTION_NAME)
                     .document(movie.id.toString())

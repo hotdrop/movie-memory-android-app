@@ -83,6 +83,10 @@ class MovieUseCase @Inject constructor(
             movieRepository.save(movie)
                     .subscribeOn(Schedulers.io())
 
+    fun saveWithRemote(movie: Movie): Completable =
+            movieRepository.saveWithRemote(movie)
+                    .subscribeOn(Schedulers.io())
+
     fun saveLocalEdit(movie: Movie): Completable =
             movieRepository.saveLocalMovieInfo(movie)
                     .subscribeOn(Schedulers.io())
