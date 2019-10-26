@@ -24,6 +24,9 @@
 -dontwarn okio.**
 -dontwarn javax.annotation.**
 
+# kotlin coroutine
+-dontwarn kotlinx.coroutines.flow.**inlined**
+
 # dagger2
 -dontwarn com.google.errorprone.annotations.*
 
