@@ -138,8 +138,8 @@ class SearchResultActivity: BaseActivity() {
 
     private fun observe() {
         viewModel.prepared.observe(this, Observer {
-            it?.let { prepared ->
-                if (prepared) {
+            it?.run {
+                if (this) {
                     onSuccessPrepared()
                 } else {
                     onFailurePrepared()
@@ -147,32 +147,32 @@ class SearchResultActivity: BaseActivity() {
             }
         })
         viewModel.suggestion.observe(this, Observer {
-            it?.let { searchKeywords ->
-                onLoadSearchKeywordHistory(searchKeywords)
+            it?.run {
+                onLoadSearchKeywordHistory(this)
             }
         })
         viewModel.clearedSuggestions.observe(this, Observer {
-            it?.let { success ->
-                if (success) {
+            it?.run {
+                if (this) {
                     Snackbar.make(binding.snackbarArea, "履歴をクリアしました。", Snackbar.LENGTH_SHORT).show()
                     viewModel.clear()
                 }
             }
         })
         viewModel.movies.observe(this, Observer {
-            it?.let { movies ->
-                onLoadMovies(movies)
+            it?.run {
+                onLoadMovies(this)
             }
         })
         viewModel.refreshMovie.observe(this, Observer {
-            it?.let { movie ->
-                moviesAdapter?.refresh(movie)
+            it?.run {
+                moviesAdapter?.refresh(this)
                 viewModel.clear()
             }
         })
         viewModel.error.observe(this, Observer {
-            it?.let { error ->
-                Snackbar.make(binding.snackbarArea, error.getMessage(), Snackbar.LENGTH_LONG).show()
+            it?.run {
+                Snackbar.make(binding.snackbarArea, this.getMessage(), Snackbar.LENGTH_LONG).show()
                 viewModel.clear()
             }
         })

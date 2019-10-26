@@ -99,19 +99,19 @@ class TabMoviesFragment: MovieFragmentWithEndlessRecyclerView() {
     }
 
     private fun observe() {
-        viewModel.movies.observe(this, Observer {
-            it?.let { movies ->
-                onLoadData(movies)
+        viewModel.movies.observe(viewLifecycleOwner, Observer {
+            it?.run {
+                onLoadData(this)
             }
         })
-        viewModel.refreshMovie.observe(this, Observer {
-            it?.let { movie ->
-                adapter?.refresh(movie)
+        viewModel.refreshMovie.observe(viewLifecycleOwner, Observer {
+            it?.run {
+                adapter?.refresh(this)
                 viewModel.clear()
             }
         })
-        viewModel.error.observe(this, Observer {
-            it?.let {
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            it?.run {
                 val message = getString(R.string.message_failure_load_data)
                 Snackbar.make(binding.moviesArea, message, Snackbar.LENGTH_LONG).show()
                 viewModel.clear()
